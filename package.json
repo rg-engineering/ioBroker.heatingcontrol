@@ -1,0 +1,36 @@
+{
+  "name": "iobroker.heatingcontrol",
+  "version": "0.0.1",
+  "description": "HeatingControl Adapter",
+  "author": {
+    "name": "René G.",
+    "email": "info@rg-engineering.eu"
+  },
+  "homepage": "https://github.com/rg-engineering/ioBroker.heatingcontrol",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "heating"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
+  },
+  "dependencies": {
+    
+    "@iobroker/adapter-core": "^1.0.3"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "mocha": "^5.2.0",
+    "chai": "^4.2.0"
+  },
+  "main": "main.js",
+  "bugs": {
+    "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --exit"
+  },
+  "readmeFilename": "README.md"
+}

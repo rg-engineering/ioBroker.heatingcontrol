@@ -1,0 +1,117 @@
+﻿<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="words.js"></script>
+
+    <style>
+        .polled {
+            height: 100px !important;
+        }
+
+        .adapter-body {
+            overflow: hidden !important;
+        }
+    </style>
+    <!-- you have to define 2 functions in the global scope: -->
+    <script type="text/javascript">
+
+        // Dictionary (systemDictionary is global variable from adapter-settings.js)
+
+
+       
+
+
+        // the function loadSettings has to exist ...
+        function load(settings, onChange) {
+
+            if (!settings) return;
+
+            // example: select elements with id=key and class=value and insert value
+            for (var key in settings) {
+                // example: select elements with id=key and class=value and insert value
+                if ($('#' + key + '.value').attr('type') == 'checkbox') {
+                    $('#' + key + '.value').prop('checked', settings[key]).change(function () {
+                        onChange();
+                    });
+                } else {
+                    $('#' + key + '.value').val(settings[key]).change(function () {
+                        onChange();
+                    }).keyup(function () {
+                        $(this).trigger('change');
+                    });
+                }
+            }
+
+
+            // Signal to admin, that no changes yet
+            onChange(false);
+
+            M.updateTextFields();
+
+            
+
+
+        }
+
+
+        // ... and the function save has to exist.
+        // you have to make sure the callback is called with the settings object as first param!
+        function save(callback) {
+            // example: select elements with class=value and build settings object
+            var obj = {};
+            $('.value').each(function () {
+                var $this = $(this);
+                obj[$this.attr('id')] = $this.val();
+            });
+
+            
+
+            callback(obj);
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <!-- you have to put your config page in a div with id adapter-container -->
+    <div class="m adapter-container">
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s2"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s2 le-settings"><a href="#tab-devices" class="translate">devices</a></li>
+                </ul>
+            </div>
+
+            <!-- tab "main - settings"  -->
+            <div id="tab-main" class="col s12 page">
+                <div class="row">
+                    <div class="col s6 m4 l2">
+                        <img src="heatingcontrol.png" class="logo">
+                    </div>
+                </div>
+
+              
+            </div>
+
+            <!-- tab "devices" -->
+            <div id="tab-devices" class="col s12 page">
+ 
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

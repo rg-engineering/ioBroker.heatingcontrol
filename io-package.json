@@ -1,0 +1,41 @@
+{
+  "common": {
+    "name": "myhomecontrol",
+    "version": "0.0.1",
+    "news": {
+     
+      "0.0.1": {
+        "en": "initial",
+        "de": "Empfangsfunktion optimiert"
+      }
+    },
+    "title": "HeatingControl",
+    "desc": {
+      "en": "HeatingControl Adapter",
+      "de": "HeatingControl Adapter"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "heatingcontrol.png",
+    "enabled": true,
+    "messagebox": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
+    "keywords": [ "heating" ],
+    "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
+    "loglevel": "debug",
+    "stopBeforeUpdate": true,
+    "type": "hardware",
+    "license": "MIT",
+    "materialize": true,
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ]
+  },
+  "native": {
+   
+  }
+}

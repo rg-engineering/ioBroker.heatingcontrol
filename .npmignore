@@ -1,0 +1,13 @@
+test
+.travis.yml
+appveyor.yml
+admin/i18n
+gulpfile.js
+tasks
+node_modules
+.idea
+.git
+/node_modules
+test
+.travis.yml
+appveyor.yml

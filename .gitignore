@@ -1,0 +1,10 @@
+.idea
+node_modules
+/bin/
+
+/*.njsproj
+/todo.txt
+/typings/
+/todo1.txt
+/.project
+/.settings/
