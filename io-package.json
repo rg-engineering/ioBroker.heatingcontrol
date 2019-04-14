@@ -36,6 +36,17 @@
     ]
   },
   "native": {
-   
+    "devices": [],
+    "UseActors": false,
+    "Gewerk": "Heizung",
+    "UseHoliday": false,
+    "ProfileType": 1,
+    "NumberOfProfiles": 1,
+    "NumberOfPeriods": 5,
+    "PathThermostats": "hm-rpc.0.",
+    "PathActors": "hm-rpc.0.",
+    "timezone": "Europe/Berlin",
+    "deleteall":  false
+
   }
 }

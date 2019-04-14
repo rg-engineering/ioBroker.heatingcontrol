@@ -12,16 +12,47 @@
 "use strict";
 
 // you have to require the utils module and call adapter function
-//var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 const utils = require('@iobroker/adapter-core');
 
+//structure for devices:
+//      room:               room name
+//      thermostat:         thermostat address without instance
+//      thermostatType:     type name
+//      thermostatTypeID:   type ID in list below
+//      actor1:             actor address without instance
+//      actor1Type:         type name
+//      actor1TypeID:       type ID in list below
+//      isActive:           use that room
+
+// Die ThermostatTypeTab definiert die Thermostat Typen.
+const ThermostatTypeTab = [];
+ThermostatTypeTab[0] = ['HM-TC-IT-WM-W-EU',     'Wandthermostat (neu)',         '2.SET_TEMPERATURE',            '1.TEMPERATURE',            '2.CONTROL_MODE'    ];
+ThermostatTypeTab[1] = ['HM-CC-TC',             'Wandthermostat (alt)',         '2.SETPOINT',                   '1.TEMPERATURE',            false               ];
+ThermostatTypeTab[2] = ['HM-CC-RT-DN',          'Heizkoerperthermostat(neu)',   '4.SET_TEMPERATURE',            '4.ACTUAL_TEMPERATURE',     '4.CONTROL_MODE'    ];
+ThermostatTypeTab[3] = ['HmIP-eTRV',            'Heizkoerperthermostat(HMIP)',  '1.SET_POINT_TEMPERATURE',      '1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
+ThermostatTypeTab[4] = ['HmIP-WTH',             'Wandthermostat(HMIP)',         '1.SET_POINT_TEMPERATURE',      '1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
+ThermostatTypeTab[5] = ['HmIP-WTH-2',           'Wandthermostat(HMIP)',         '1.SET_POINT_TEMPERATURE',      '1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
+ThermostatTypeTab[6] = ['HmIP-STH',             'Wandthermostat(HMIP)',         '1.SET_POINT_TEMPERATURE',      '1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
+ThermostatTypeTab[7] = ['HmIP-STHD',            'Wandthermostat(HMIP)',         '1.SET_POINT_TEMPERATURE',      '1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
+ThermostatTypeTab[8] = ['HmIP-eTRV-2',          'Heizkoerperthermostat(HMIP)',  '1.SET_POINT_TEMPERATURE',       '1.ACTUAL_TEMPERATURE',    '1.CONTROL_MODE'    ];
+ThermostatTypeTab[9] = ['HmIP-eTRV-B',          'Heizkoerperthermostat(HMIP)',  '1.SET_POINT_TEMPERATURE',     '1.ACTUAL_TEMPERATURE',      '1.SET_POINT_MODE'  ];
+
+const ActorTypeTab = [];
+ActorTypeTab[0] = ['HM-LC-Sw4-PCB', 'Funk-Schaltaktor 4-fach, Platine',             '.STATE'    ];
+ActorTypeTab[1] = ['HM-LC-Sw4-DR', 'Funk-Schaltaktor 4-fach, Hutschienenmontage',   '.STATE'    ];
+ActorTypeTab[2] = ['HM-LC-Sw4-SM', 'Funk-Schaltaktor 4-fach, Aufputzmontage',       '.STATE'    ];
 
 
+var HeizungGewerk = "Heizung";
 
+const DefaultTargets = [];
+DefaultTargets[0] = ['05:00', 19];
+DefaultTargets[1] = ['08:00', 21];
+DefaultTargets[2] = ['12:00', 21];
+DefaultTargets[3] = ['16:00', 19];
+DefaultTargets[4] = ['21:00', 21];
 
-
-
-
+let crons = {};
 
 let adapter;
 function startAdapter(options) {
@@ -37,8 +68,29 @@ function startAdapter(options) {
                 adapter.log.error('exception catch after ready [' + e + ']');
             }
         },
-        //Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-        message: function (obj) {
+        //#######################################
+        //  is called when adapter shuts down
+        //unload: function () {
+        //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
+        //    // todo
+        //    //CronStop();
+        //},
+        //SIGINT: function () {
+        //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
+        //    //todo
+        //    //CronStop();
+        //},
+        //#######################################
+        //  is called if a subscribed object changes
+        //objectChange: function (id, obj) {
+        //    adapter.log.debug('[OBJECT CHANGE] ==== ' + id + ' === ' + JSON.stringify(state));
+        //},
+        //#######################################
+        // is called if a subscribed state changes
+        //stateChange: function (id, state) {
+        //    adapter.log.debug('[STATE CHANGE] ==== ' + id + ' === ' + JSON.stringify(state));
+        //},
+        message: async (obj) => {
             if (obj) {
                 switch (obj.command) {
                     case 'send':
@@ -48,8 +100,12 @@ function startAdapter(options) {
                         // Send response in callback if required
                         if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
                         break;
-                    
+                    case 'listDevices':
+                        //adapter.log.debug('got list devices');
+                        await ListDevices(obj);
+                        break;
                     default:
+                        adapter.log.error('unknown message ' + obj.command);
                         break;
                 }
             }
@@ -67,14 +123,451 @@ function main() {
 
 
     try {
-        
+        adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
+        CreateDatepoints();
+        processTasks(tasks);
+        SubscribeStates();
+
     }
     catch (e) {
-        adapter.log.error('exception in  init timer [' + e + ']');
+        adapter.log.error('exception in  main [' + e + ']');
     }
 
 }
+/*
+[{
+        "room": "Wohnzimmer",
+        "thermostat": "IEQ0067957",
+        "thermostatType": "HM-CC-TC",
+        "thermostatTypeID": 1,
+        "actor1": "IEQ0383091:3",
+        "actor1Type": "HM-LC-Sw4-SM",
+        "actor1TypeID": 2,
+        "actor2": null,
+        "actor2Type": null,
+        "actor2TypeID": null,
+        "isActive": true
+    }, {
+        "room": "Küche", "thermostat": "IEQ0068237", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:4", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Schlafzimmer", "thermostat": "JEQ0035953", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "KiZi_Links", "thermostat": "JEQ0035713", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "KiZi_Rechts", "thermostat": "JEQ0035956", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Arbeitszimmer", "thermostat": "IEQ0067581", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:1", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Bad-OG", "thermostat": "JEQ0035545", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "HWR", "thermostat": "LEQ0900578", "thermostatType": null, "thermostatTypeID": null, "actor1": "LEQ0900578:1", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Mittelzimmer", "thermostat": "JEQ0036000", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Flur-EG", "thermostat": "IEQ0077386", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:2", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Sauna", "thermostat": "JEQ0081286", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "LEQ0900578:4", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Gästezimmer", "thermostat": "JEQ0080886", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "LEQ0900578:3", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }, {
+        "room": "Flur-KG", "thermostat": "LEQ0900578", "thermostatType": null, "thermostatTypeID": null, "actor1": "LEQ0900578:2", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
+    }]
+*/
 
+async function ListDevices(obj) {
+
+    if (adapter.config.deleteall) {
+        adapter.log.warn("delete device list " + JSON.stringify(adapter.config.devices));
+        adapter.config.devices.length = 0;
+        adapter.log.warn("after delete " + JSON.stringify(adapter.config.devices));
+    }
+
+
+    //get room enums first; this includes members as well
+    const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+    const rooms = AllRoomsEnum.result;
+
+    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+    //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
+    const functions = AllFunctionsEnum.result;
+
+    const HeatingMember = [];
+    for (var e1 in functions) {
+
+        if (functions[e1].common.name === HeizungGewerk) {
+            var ids1 = functions[e1].common.members;
+            for (var n1 in ids1) {
+
+                HeatingMember.push({
+                    id: ids1[n1]
+                });
+            }
+        }
+    }
+    //adapter.log.debug("function enums: " + JSON.stringify(HeatingMember));
+
+    //over all rooms
+    for (var e in rooms) {
+
+        //over all members
+        var ids = rooms[e].common.members;
+        for (var n in ids) {
+            
+            const adapterObj = await adapter.getForeignObjectAsync(ids[n]);
+            
+            if (adapterObj && adapterObj.native) {
+
+                //adapter.log.debug("member" + JSON.stringify(adapterObj));
+                //***********************************
+
+                var IsInHeatingList = findObjectIdByKey(HeatingMember, 'id', adapterObj._id);
+
+                if (IsInHeatingList > -1 ) {
+                    //adapter.log.debug("found as Heating Gewerk " + IsInHeatingList + " " + adapterObj._id);
+                
+                    //check if member is a supported RT 
+                    var supportedRT = -1;
+                    for (var x1 = 0; x1 < ThermostatTypeTab.length; x1++) {
+                        if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
+                            supportedRT = x1;
+                        }
+                    }
+
+                    var supportedActor = -1;
+                    for (var x2 = 0; x2 < ActorTypeTab.length; x2++) {
+                        if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
+                            supportedActor = x2;
+                        }
+                    }
+
+                /*
+                if (supportedActor) {
+                    adapter.log.debug("supported actor found " + adapterObj.native.PARENT + " " + JSON.stringify(adapterObj));
+                }
+                */
+                /*
+                if (supportedRT) {
+                    adapter.log.debug("supported thermostat found " + adapterObj.native.PARENT + " " + JSON.stringify(adapterObj));
+                }
+                */
+                    if (supportedRT > -1 || supportedActor > -1) {
+
+                        adapter.log.debug("check room " + rooms[e].common.name);
+                        var roomInList = findObjectIdByKey(adapter.config.devices, 'room', rooms[e].common.name);
+
+                        if (roomInList > -1) { // room already in list; just update
+                            adapter.log.debug("room already in list ");
+
+                            if (supportedRT > -1) {
+                                adapter.config.devices[roomInList].thermostat = adapterObj.native.PARENT;
+                                adapter.config.devices[roomInList].thermostatType = ThermostatTypeTab[supportedRT][0];
+                                //adapter.config.devices[roomInList].thermostatTypeID = supportedRT;
+                            }
+
+                            //hier nicht parent merken, sondern channel
+                            else if (supportedActor > -1) {
+                                if (adapter.config.devices[roomInList].actor1 !== ""
+                                    && adapter.config.devices[roomInList].actor1 !== adapterObj.native.ADDRESS) {
+                                    adapter.config.devices[roomInList].actor2 = adapterObj.native.ADDRESS;
+                                    adapter.config.devices[roomInList].actor2Type = ActorTypeTab[supportedActor][0];
+                                    //adapter.config.devices[roomInList].actor2TypeID = supportedActor;
+                                }
+                                else {
+                                    adapter.config.devices[roomInList].actor1 = adapterObj.native.ADDRESS;
+                                    adapter.config.devices[roomInList].actor1Type = ActorTypeTab[supportedActor][0];
+                                    //adapter.config.devices[roomInList].actor1TypeID = supportedActor;
+                                }
+                            }
+                        }
+                        else {// room not yet in list, add to list
+                            adapter.log.debug("room not yet in list, push new room ");
+
+                            adapter.config.devices.push({
+                                room: rooms[e].common.name,
+                                thermostat: supportedRT ? adapterObj.native.PARENT : null,
+                                thermostatType: supportedRT > -1 ? ThermostatTypeTab[supportedRT][0] : null,
+                                //thermostatTypeID: supportedRT > -1 ? supportedRT : null,
+                                actor1: supportedActor > -1 ? adapterObj.native.ADDRESS : null,
+                                actor1Type: supportedActor > -1 ? ActorTypeTab[supportedActor][0] : null,
+                                //actor1TypeID: supportedActor > -1 ? supportedActor : null,
+                                actor2:  null,
+                                actor2Type:  null,
+                                //actor2TypeID: null,
+                                isActive: true
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        adapter.log.debug('members done for ' + rooms[e].common.name);
+    }
+    adapter.log.debug('all rooms done ' + JSON.stringify(adapter.config.devices));
+
+    adapter.sendTo(obj.from, obj.command, adapter.config.devices, obj.callback);
+}
+
+function CreateDatepoints() {
+
+    adapter.log.debug('CreateDatepoints');
+
+    setObjectNotExistsDelayed('LastProgramRun', {
+        type: 'state',
+        common: {
+            name: 'LastProgramRun',
+            type: 'date',
+            role: 'history',
+            unit: '',
+            read: true,
+            write: false
+        },
+        native: { id: 'LastProgramRun' }
+    });
+
+    if (adapter.config.ProfileType === 1) {
+        adapter.log.debug('Profile Type  Mo-So, profiles ' + adapter.config.NumberOfProfiles);
+        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
+            adapter.log.debug('rooms ' + adapter.config.devices.length);
+            for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+
+                adapter.log.debug('room ' + adapter.config.devices[rooms].room + ' with ' + adapter.config.NumberOfPeriods + " periods");
+
+                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+
+                    const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period;
+
+                    adapter.log.debug('add state ' + id + " max " + DefaultTargets.length);
+
+                    setObjectNotExistsDelayed(id + '.time', {
+                        type: 'state',
+                        common: {
+                            name: 'period until',
+                            type: 'date',
+                            role: 'profile',
+                            unit: '',
+                            read: true,
+                            write: true
+                        },
+                        native: { id: id + '.time' }
+                    });
+
+                    if (period < DefaultTargets.length) {
+                        updateObjectDelayed(id + '.time', DefaultTargets[period][0]);
+                    }
+
+                    setObjectNotExistsDelayed(id + '.Temperature', {
+                        type: 'state',
+                        common: {
+                            name: 'target temperature',
+                            type: 'number',
+                            role: 'profile',
+                            unit: '°C',
+                            read: true,
+                            write: true
+                        },
+                        native: { id: id + '.Temperature' }
+                    });
+
+                    if (period < DefaultTargets.length) {
+                        updateObjectDelayed(id + '.Temperature', DefaultTargets[period][1]);
+                    }
+
+                }
+            }
+        }
+    }
+    else {
+        adapter.log.warn('not implemented yet, profile type is ' + adapter.config.ProfileType);
+    }
+}
+
+
+function SubscribeStates() {
+
+    //if we need to handle actors, then subscribe on current and target temperature
+    adapter.log.debug('start subscribtion ');
+    //if (adapter.config.UseActors) {
+
+    //    for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+
+    //        if (adapter.config.devices[rooms].thermostat !== null) {
+
+                //hm-rpc.0.IEQ0067581.2.SETPOINT
+                //hm-rpc.0.IEQ0067581.1.TEMPERATURE
+
+                /*
+                 * to do
+                var state1 = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2];
+                var state2 = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][3];
+
+                adapter.log.debug('subscribe ' + adapter.config.devices[rooms].thermostat + " " + state1 + " " + state2);
+
+                adapter.subscribeForeignStates(state1);
+                adapter.subscribeForeignStates(state2);
+                */
+    //       }
+    //    }
+
+    //}
+}
+
+function findObjectByKey(array, key, value) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return array[i];
+        }
+    }
+    return null;
+}
+
+function findObjectIdByKey(array, key, value) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][key] === value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+const tasks = [];
+
+function setObjectNotExistsDelayed(id, obj) {
+
+    //adapter.log.debug('list before ' + tasks.length);
+
+    tasks.push({
+        name: 'add',
+        key: id,
+        obj: obj
+    });
+
+    //adapter.log.debug('list after ' + tasks.length);
+}
+
+function updateObjectDelayed(id, value) {
+
+    //adapter.log.debug('list before ' + tasks.length);
+
+    tasks.push({
+        name: 'update',
+        key: id,
+        value: value
+    });
+
+    //adapter.log.debug('list after ' + tasks.length);
+}
+
+function processTasks(tasks) {
+    if (!tasks || !tasks.length) {
+        adapter.log.debug('nothing to do ' + tasks.length); 
+    } else {
+        const task = tasks.shift();
+        // console.log(`${tasks.length} Task ${task.name}: ${task.key}`);
+        if (task.name === 'add') {
+            createExtendObject(task.key, task.obj, task.value, () => setImmediate(processTasks, tasks));
+        } else if (task.name === 'update') {
+            updateExtendObject(task.key, task.value, () => setImmediate(processTasks, tasks));
+        } else if (task.name === 'delete_channel') {
+            deleteChannel(task.key, () => setImmediate(processTasks, tasks));
+        } else if (task.name === 'delete_state') {
+            deleteState(task.key, () => setImmediate(processTasks, tasks));
+        } else {
+            throw 'Unknown task';
+        }
+    }
+}
+
+function createExtendObject(key, objData, value, callback) {
+    try {
+        adapter.getObject(key, (err, obj) => {
+            if (!obj) {
+                if (value !== undefined) {
+                    adapter.log.debug('back to list: ' + key + ' ' + value);
+                    insertIntoList(key, value);
+                }
+                objData.native = objData.native || {};
+                adapter.setObject(key, objData, callback);
+            } else if (value !== undefined) {
+                if (obj.common.type === 'number') {
+                    value = parseFloat(value);
+                }
+                adapter.setState(key, { ack: true, val: value }, callback);
+            } else if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
+    catch (e) {
+        adapter.log.error('exception in createExtendObject [' + e + ']');
+    }
+}
+
+function updateExtendObject(key, value, callback) {
+    try {
+        adapter.setState(key, { ack: true, val: value }, callback);
+    }
+    catch (e) {
+        adapter.log.error('exception in updateExtendObject [' + e + ']');
+    }
+}
+
+function deleteChannel(channel, callback) {
+
+    try {
+        adapter.log.debug("try deleting channel " + channel);
+        //just do nothing at the moment
+        //if (callback) callback();
+
+        adapter.delObject(channel, err =>
+            adapter.deleteChannel(channel, callback));
+
+    }
+    catch (e) {
+        adapter.log.error('exception in deleteChannel [' + e + ']');
+    }
+}
+
+function deleteState(state, callback) {
+    try {
+        adapter.log.debug("try deleting state " + state);
+        //just do nothing at the moment
+        //if (callback) callback();
+
+        adapter.delObject(state, err =>
+            // Delete state
+            adapter.delState(state, callback));
+    }
+    catch (e) {
+        adapter.log.error('exception in deleteState [' + e + ']');
+    }
+}
+
+//#######################################
+// cron fucntions
+function CronStop() {
+    for (const type in crons) {
+        if (crons.hasOwnProperty(type) && crons[type]) {
+            crons[type].stop();
+            crons[type] = null;
+        }
+    }
+}
+
+function CronCreate() {
+    const timezone = adapter.config.timezone || 'Europe/Berlin';
+
+    // test every minute
+    //crons.daySave = new CronJob('0 * * * * *',
+    /*
+    crons.daySave = new CronJob('0 0 0 * * *',
+        () => ResetValues(),
+        () => adapter.log.debug('Reset values at midnight'), // This function is executed when the job stops
+        true,
+        timezone
+    );
+    */
+}
 
 
 

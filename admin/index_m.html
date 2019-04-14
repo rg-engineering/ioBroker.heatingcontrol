@@ -21,12 +21,30 @@
             overflow: hidden !important;
         }
     </style>
-    <!-- you have to define 2 functions in the global scope: -->
+
     <script type="text/javascript">
 
-        // Dictionary (systemDictionary is global variable from adapter-settings.js)
+     
+        var timeout;
+        function getDevices(onChange, instance) {
+            timeout = setTimeout(function () {
+                getDevices();
+            }, 2000);
 
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listDevices', null, function (list) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
 
+                console.log('got devices ' + JSON.stringify(list));
+
+                values2table('values', list, onChange);
+
+                
+            });
+        }
        
 
 
@@ -56,11 +74,18 @@
             onChange(false);
 
             M.updateTextFields();
+            getAdapterInstances('heatingcontrol', function (arr) {
+                for (var i = 0; i < arr.length; i++) {
+                    var _id = arr[i]._id.replace('system.adapter.', '');
 
-            
+                    console.log('got instance ' + _id);
 
+                    getDevices(onChange, _id);
+                }
+            });
 
         }
+        
 
 
         // ... and the function save has to exist.
@@ -73,7 +98,7 @@
                 obj[$this.attr('id')] = $this.val();
             });
 
-            
+            obj.devices = table2values('values');
 
             callback(obj);
         }
@@ -90,6 +115,7 @@
             <div class="col s12">
                 <ul class="tabs">
                     <li class="tab col s2"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s2 le-settings"><a href="#tab-profiles" class="translate">profile</a></li>
                     <li class="tab col s2 le-settings"><a href="#tab-devices" class="translate">devices</a></li>
                 </ul>
             </div>
@@ -101,16 +127,103 @@
                         <img src="heatingcontrol.png" class="logo">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="UseActors" class="value" />
+                        <label for="UseActors" class="translate">use_actors</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" id="Gewerk" class="value" />
+                        <label for="Gewerk" class="translate">Gewerk</label>
+                    </div>
 
-              
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" id="PathThermostats" class="value" />
+                        <label for="PathThermostats" class="translate">PathThermostats</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" id="PathActors" class="value" />
+                        <label for="PathActors" class="translate">PathActors</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" id="timezone" class="value" />
+                        <label for="timezone" class="translate">timezone</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="deleteall" class="value" />
+                        <label for="deleteall" class="translate">deleteall</label>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- tab "profile - settings"  -->
+            <div id="tab-profiles" class="col s12 page">
+
+                <div class="row">
+                    <div class="input-field col s4">
+                        <select id="ProfileType" class="value">
+                            <option value="1">Mo-So</option>
+                            <option value="2">Mo-Fr + Sa-So</option>
+                            <option value="3">every Day</option>
+                        </select>
+                        <label for="ProfileType" class="translate">ProfileType</label>
+                    </div>
+               
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfProfiles" class="value" />
+                        <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
+                    </div>
+                
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfPeriods" class="value" />
+                        <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input type="checkbox" id="UseHoliday" class="value" />
+                        <label for="UseHoliday" class="translate">Feiertag</label>
+                    </div>
+                </div>
             </div>
 
             <!-- tab "devices" -->
             <div id="tab-devices" class="col s12 page">
- 
-
+                <div class="col s12" id="values">
+                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                    <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
+                    <div class="table-values-div">
+                        <table class="table-values" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th data-name="room" style="width: 20%" class="translate">room</th>
+                                    <th data-name="thermostat" class="translate">thermostat</th>
+                                    <th data-name="thermostatType" class="translate">type</th>
+                                    <th data-name="thermostatTypeID" class="translate">typeID</th>
+                                    <th data-name="actor1" class="translate">actor1</th>
+                                    <th data-name="actor1Type" class="translate">type</th>
+                                    <th data-name="actor1TypeID" class="translate">typeID</th>
+                                    <th data-name="actor2" class="translate">actor2</th>
+                                    <th data-name="actor2Type" class="translate">type</th>
+                                    <th data-name="actor2TypeID" class="translate">typeID</th>
+                                    <th data-name="isActive" data-type="checkbox" class="translate">active</th>
+                                    <th data-buttons="delete" style="width: 40px"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 </body>
