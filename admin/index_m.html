@@ -29,7 +29,7 @@
         function getDevices(onChange, instance) {
             timeout = setTimeout(function () {
                 getDevices();
-            }, 2000);
+            }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
             sendTo(instance, 'listDevices', null, function (list) {
@@ -45,7 +45,23 @@
                 
             });
         }
-       
+
+        function getTest(onChange, instance) {
+            timeout = setTimeout(function () {
+                getDevices();
+            }, 2000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'Test', null, function (list) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+
+                console.log('got Test ' + JSON.stringify(list));
+                
+            });
+        }
 
 
         // the function loadSettings has to exist ...
@@ -81,6 +97,8 @@
                     console.log('got instance ' + _id);
 
                     getDevices(onChange, _id);
+
+                    getTest(onChange, _id);
                 }
             });
 
