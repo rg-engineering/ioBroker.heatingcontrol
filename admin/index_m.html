@@ -71,15 +71,19 @@
 
             // example: select elements with id=key and class=value and insert value
             for (var key in settings) {
-                // example: select elements with id=key and class=value and insert value
-                if ($('#' + key + '.value').attr('type') == 'checkbox') {
-                    $('#' + key + '.value').prop('checked', settings[key]).change(function () {
+                 if (!settings.hasOwnProperty(key)) continue;
+                var $value = $('#' + key + '.value');
+                if ($value.attr('type') === 'checkbox') {
+                    $value.prop('checked', settings[key]).on('change', function () {
+                        
                         onChange();
                     });
                 } else {
-                    $('#' + key + '.value').val(settings[key]).change(function () {
+                    $value.val(settings[key]).on('change', function () {
+                        console.log('on change');
+                       
                         onChange();
-                    }).keyup(function () {
+                    }).on('keyup', function () {
                         $(this).trigger('change');
                     });
                 }
@@ -109,11 +113,17 @@
         // ... and the function save has to exist.
         // you have to make sure the callback is called with the settings object as first param!
         function save(callback) {
-            // example: select elements with class=value and build settings object
             var obj = {};
             $('.value').each(function () {
                 var $this = $(this);
-                obj[$this.attr('id')] = $this.val();
+
+                var id = $this.attr('id');
+
+                if ($this.attr('type') === 'checkbox') {
+                    obj[$this.attr('id')] = $this.prop('checked');
+                } else {
+                    obj[$this.attr('id')] = $this.val();
+                }
             });
 
             obj.devices = table2values('values');
@@ -235,7 +245,6 @@
                                     <th data-name="actor2TypeID" class="translate">typeID</th>
                                     <th data-name="isActive" data-type="checkbox" class="translate">active</th>
                                     <th data-buttons="delete" style="width: 40px"></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                         </table>

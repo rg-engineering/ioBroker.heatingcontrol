@@ -15,6 +15,7 @@
 
 // you have to require the utils module and call adapter function
 const utils = require('@iobroker/adapter-core');
+const CronJob = require('cron').CronJob;
 
 //structure for devices:
 //      room:               room name
@@ -54,8 +55,6 @@ DefaultTargets[2] = ['12:00', 21];
 DefaultTargets[3] = ['16:00', 19];
 DefaultTargets[4] = ['21:00', 21];
 
-//let crons = {};
-
 let adapter;
 function startAdapter(options) {
     options = options || {};
@@ -85,7 +84,7 @@ function startAdapter(options) {
         //#######################################
         //  is called if a subscribed object changes
         objectChange: function (id, obj) {
-            adapter.log.debug('[OBJECT CHANGE] ==== ' + id + ' === ' + JSON.stringify(state));
+            adapter.log.debug('[OBJECT CHANGE] ==== ' + id + ' === ' + JSON.stringify(obj));
         },
         //#######################################
         // is called if a subscribed state changes
@@ -125,7 +124,8 @@ function startAdapter(options) {
         
 
 
-
+//#######################################
+//
 function main() {
 
 
@@ -134,6 +134,7 @@ function main() {
         CreateDatepoints();
         processTasks(tasks);
         SubscribeStates();
+        CalculateNextTime();
 
     }
     catch (e) {
@@ -181,6 +182,10 @@ function main() {
     }]
 */
 
+
+//#######################################
+//
+// used as interface to admin
 async function ListDevices(obj) {
 
     if (adapter.config.deleteall) {
@@ -321,6 +326,10 @@ async function ListDevices(obj) {
     adapter.sendTo(obj.from, obj.command, adapter.config.devices, obj.callback);
 }
 
+//#######################################
+//
+// create all necessary datapaoints
+// will be called at ecery start of adapter
 function CreateDatepoints() {
 
     adapter.log.debug('CreateDatepoints');
@@ -365,7 +374,11 @@ function CreateDatepoints() {
                         native: { id: id + '.time' }
                     });
 
+                    //we want to be informed when this is changed by vis or others
+                    adapter.subscribeStates(id + '.time');
+
                     if (period < DefaultTargets.length) {
+                        //we set a default value
                         updateObjectDelayed(id + '.time', DefaultTargets[period][0]);
                     }
 
@@ -396,7 +409,9 @@ function CreateDatepoints() {
 
 }
 
-
+//#######################################
+//
+// subscribe thermostate states to be informed when target or current is changed
 function SubscribeStates() {
 
     //if we need to handle actors, then subscribe on current and target temperature
@@ -441,7 +456,7 @@ async function HandleStateChange(id, state) {
 
         const deviceID = findObjectIdByKey(adapter.config.devices, 'thermostat', ids[2]);
         if (deviceID > -1) {
-            
+
             var check = "." + ids[3] + "." + ids[4];
             if (check === ThermostatTypeTab[adapter.config.devices[deviceID].thermostatTypeID][3]) { // got current temperature
                 //adapter.log.debug('room ' + adapter.config.devices[deviceID].room + " new current temp " + state.val);
@@ -464,10 +479,15 @@ async function HandleStateChange(id, state) {
             }
         }
         else {
-            adapter.log.debug('#### ' + JSON.stringify(ids));
+            adapter.log.debug('#### not found ' + JSON.stringify(ids));
         }
 
     }
+    else {
+        adapter.log.debug('#### not handled ' + JSON.stringify(id));
+    }
+
+
 }
 
 //*******************************************************************
@@ -658,22 +678,111 @@ function CronStop() {
     //}
 }
 
-function CronCreate() {
+
+//https://crontab-generator.org/
+
+let cronJobs = [];
+
+function CronCreate(Hour, Minute) {
     const timezone = adapter.config.timezone || 'Europe/Berlin';
 
-    // test every minute
-    //crons.daySave = new CronJob('0 * * * * *',
-    /*
-    crons.daySave = new CronJob('0 0 0 * * *',
-        () => ResetValues(),
-        () => adapter.log.debug('Reset values at midnight'), // This function is executed when the job stops
+    const cronString = '0 ' + Minute + ' ' + Hour + ' * * * ';
+
+    const nextCron = cronJobs.length;
+
+    adapter.log.debug("create cron job #" + nextCron);
+
+    cronJobs[nextCron] = new CronJob(cronString,
+        () => CheckTemperatureChange(),
+        () => adapter.log.debug('cron fired'), // This function is executed when the job stops
         true,
         timezone
     );
-    */
+    }
+
+//#######################################
+//
+// we fill a list with all time stamps and start cron jobs
+// this must be calles when
+//  * adapter starts
+//  * everytime a time value is changed
+//  
+async function CalculateNextTime() {
+
+    adapter.log.debug("start CalculateNextTime");
+
+    if (cronJobs.length > 0) {
+        adapter.log.debug("delete cron jobs " + cronJobs.length);
+        //cancel all cron jobs...
+        for (n = 0; n < cronJobs.length; n++) {
+            cronJobs[n].stop();
+        }
+    }
+    let timerList = [];
+
+    if (parseInt(adapter.config.ProfileType, 10) === 1) {
+        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
+            for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                    const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
+
+                    adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
+
+                    /*
+                    adapter.getState(id, function (err, states) {
+                        if (err) {
+                            adapter.log.error("error in  CalculateNextTime " + err);
+                        } else {
+                            adapter.log.debug("found time for  at " + JSON.stringify(states));
+                        }
+                    });
+                    */
+
+                    const nextTime = await adapter.getStateAsync(id);
+                    adapter.log.debug("found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val );
+
+                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                    //add to list if not already there
+                    let bFound = false;
+                    for (var i = 0; i < timerList.length; i++) {
+                        if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
+                            bFound = true;
+                            adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                        }
+                    }
+                    if (!bFound) {
+                        adapter.log.debug("push to list "  + " = " + nextTimes);
+                        timerList.push({
+                            hour: parseInt( nextTimes[0]),
+                            minute: parseInt(nextTimes[1])
+                        });
+                    }
+                    
+                }
+            }
+        }
+
+        //and now start all cron jobs
+        for (var m = 0; m < timerList.length; m++) {
+            CronCreate(timerList[m].hour, timerList[m].minute);
+        }
+    }
+    else {
+        adapter.log.warn('CalculateNextTime: not implemented yet, profile type is ' + adapter.config.ProfileType);
+    }
 }
 
+//#######################################
+//
+// this is called by cron
+// so we need to find out what needs to be changed and change it
+//normally it's a temperature target value
+function CheckTemperatureChange() {
 
+    adapter.log.debug('CheckTemperatureChange is called');
+
+}
 
 
 // If started as allInOne/compact mode => return function to create instance
