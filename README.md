@@ -8,14 +8,46 @@
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
+Adapter for controlling thermostats.
+features:
+* Setting the set temperature at specific times
+* Number of daily sections with different setpoint temperatures adjustable
+* Supports various homematic thermostats
+* supports multiple profiles (to do)
+* If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
+* Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is undershot, the actuator is switched on again. Later, a better regulation will be implemented here.
+* up to two actuators are supported
+* Thermostat and actuator are automatically detected per room. The function (eg "heating") is used for this.
+* Rooms can be deactivated in the admin if a room has a thermostat but should not be controlled
+* A visualization example will be available here later
 
 
+## Settings
+### main
+* use actors = if you want to control actuators directly from adapter. Just in case there is no direct connection between thermostat and actuator.
+* Gewerk = Function to be used to detect thermostats and actuators per room
+* Path to Thermostats = object path to thermostats, e.g. "hm-rpc.0."
+* Path To Actors = object path to actuators, e.g. "hm-rpc.0."
+* timezone = to be used for cron to adjust cron jobs
+* delete all = delete all room settings when admin opens. After that a new scan for rooms will start
+###profile
+* Profile Type = at this moment only monday to sunday is supportet. The others will be implemented soon
+* number of profiles = if you need more then on profile increase that value. You can then select which profile will be used.
+* number of periods = define how many daily sections with different temperature you need. As more you set as more datapoints will be created. Better to use a low value (e.g. 5)
+* public holyday = if you check this you get a separate adhjustment for public holidays (not implemented yet)
+###devices
+* a list of all rooms with thermostats and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
+
+## Notes
+
+* node with version higher then 8 is necessary!
+
+##known bugs
+see github
 
 ## Changelog
 
-
-
-### 0.0.1 (2019-mm-dd)
+### 0.0.1 (2019-05-dd)
 * (René) initial release
 
 ## License

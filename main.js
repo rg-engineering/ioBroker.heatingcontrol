@@ -69,17 +69,17 @@ function startAdapter(options) {
                 adapter.log.error('exception catch after ready [' + e + ']');
             }
         },
+
+        //to do
         //#######################################
         //  is called when adapter shuts down
         //unload: function () {
         //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
-        //    // todo
-        //    //CronStop();
+        //    CronStop();
         //},
         //SIGINT: function () {
         //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
-        //    //todo
-        //    //CronStop();
+        //    CronStop();
         //},
         //#######################################
         //  is called if a subscribed object changes
@@ -135,7 +135,6 @@ function main() {
         processTasks(tasks);
         SubscribeStates();
         CalculateNextTime();
-
     }
     catch (e) {
         adapter.log.error('exception in  main [' + e + ']');
@@ -330,7 +329,7 @@ async function ListDevices(obj) {
 //
 // create all necessary datapaoints
 // will be called at ecery start of adapter
-function CreateDatepoints() {
+async function CreateDatepoints() {
 
     adapter.log.debug('CreateDatepoints');
 
@@ -377,7 +376,9 @@ function CreateDatepoints() {
                     //we want to be informed when this is changed by vis or others
                     adapter.subscribeStates(id + '.time');
 
-                    if (period < DefaultTargets.length) {
+                    const nextTime = await adapter.getStateAsync(id + '.time');
+                    //set default only if nothing was set before
+                    if (nextTime === null && period < DefaultTargets.length) {
                         //we set a default value
                         updateObjectDelayed(id + '.time', DefaultTargets[period][0]);
                     }
@@ -395,7 +396,9 @@ function CreateDatepoints() {
                         native: { id: id + '.Temperature' }
                     });
 
-                    if (period < DefaultTargets.length) {
+                    const nextTemp = await adapter.getStateAsync(id + '.Temperature');
+                    //set default only if nothing was set before
+                    if (nextTemp === null && period < DefaultTargets.length) {
                         updateObjectDelayed(id + '.Temperature', DefaultTargets[period][1]);
                     }
 
@@ -670,35 +673,75 @@ function deleteState(state, callback) {
 //#######################################
 // cron fucntions
 function CronStop() {
-    //for (const type in crons) {
-    //    if (crons.hasOwnProperty(type) && crons[type]) {
-    //        crons[type].stop();
-    //        crons[type] = null;
-    //    }
-    //}
+    for (var n = 0; n < cronJobs.length; n++) {
+
+        cronJobs[n].stop;
+        cronJobs[n] = null;
+    }
 }
 
 
-//https://crontab-generator.org/
+
 
 let cronJobs = [];
 
 function CronCreate(Hour, Minute) {
     const timezone = adapter.config.timezone || 'Europe/Berlin';
 
+    //https://crontab-generator.org/
     const cronString = '0 ' + Minute + ' ' + Hour + ' * * * ';
 
     const nextCron = cronJobs.length;
 
-    adapter.log.debug("create cron job #" + nextCron);
+    adapter.log.debug("create cron job #" + nextCron + " at " + Hour + ":" + Minute + " string: " + cronString + " " + timezone);
 
+    //details see https://www.npmjs.com/package/cron
     cronJobs[nextCron] = new CronJob(cronString,
         () => CheckTemperatureChange(),
         () => adapter.log.debug('cron fired'), // This function is executed when the job stops
         true,
         timezone
     );
+
+    
+}
+
+function getCronStat() {
+
+    adapter.log.debug("cron jobs");
+    for (var n = 0; n < cronJobs.length; n++) {
+
+        adapter.log.debug('[INFO] ' + '      status = ' + cronJobs[n].running + ' next event: ' + timeConverter(cronJobs[n].nextDates()));
+
     }
+}
+
+function timeConverter(time) {
+
+    const a = new Date(time);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = a.getFullYear();
+    const month = months[a.getMonth()];
+    let date = a.getDate();
+    date = date < 10 ? ' ' + date : date;
+    let hour = a.getHours();
+    hour = hour < 10 ? '0' + hour : hour;
+    let min = a.getMinutes();
+    min = min < 10 ? '0' + min : min;
+    let sec = a.getSeconds();
+    sec = sec < 10 ? '0' + sec : sec;
+
+    var sRet = "";
+    //if (timeonly) {
+    //    sRet = hour + ':' + min + ':' + sec;
+    //}
+    //else {
+        sRet = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec
+    //}
+
+    return sRet;
+}
+
 
 //#######################################
 //
@@ -767,6 +810,8 @@ async function CalculateNextTime() {
         for (var m = 0; m < timerList.length; m++) {
             CronCreate(timerList[m].hour, timerList[m].minute);
         }
+
+        getCronStat();
     }
     else {
         adapter.log.warn('CalculateNextTime: not implemented yet, profile type is ' + adapter.config.ProfileType);
@@ -778,10 +823,49 @@ async function CalculateNextTime() {
 // this is called by cron
 // so we need to find out what needs to be changed and change it
 //normally it's a temperature target value
-function CheckTemperatureChange() {
+async function CheckTemperatureChange() {
 
     adapter.log.debug('CheckTemperatureChange is called');
 
+    const now = new Date();
+
+    if (parseInt(adapter.config.ProfileType, 10) === 1) {
+        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
+            for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                    const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
+
+                    //adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
+
+                    const nextTime = await adapter.getStateAsync(id);
+                    adapter.log.debug("##found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                    adapter.log.debug("# " + nextTimes + " " + now.getHours() + " " + now.getMinutes());
+
+                    if (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1])) {
+
+                        adapter.log.debug("*1 ");
+                        const id2 = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.temperature';
+                        adapter.log.debug("*2 " + id2);
+                        const nextTemperature = await adapter.getStateAsync(id2);
+                        adapter.log.debug("*3 " + adapter.config.PathThermostats + " " + adapter.config.devices[rooms].thermostat + " " + ThermostateTypeTab[adapter.config.devices[rooms].ThermostatTypeID[2]]);
+                        const state = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostateTypeTab[adapter.config.devices[rooms].ThermostatTypeID[2]];
+                        adapter.log.debug("*4 ");
+                        await adapter.setForeignStateAsync(state, nextTemperature);
+                        adapter.log.debug('room ' + adapter.config.devices[rooms].room + "Thermostate set to " + nextTemperature);
+
+                    }
+                   
+
+                    
+                }
+            }
+        }
+    }
+
+    getCronStat();
 }
 
 
