@@ -126,15 +126,17 @@ function startAdapter(options) {
 
 //#######################################
 //
-function main() {
+async function main() {
 
 
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
-        CreateDatepoints();
-        processTasks(tasks);
-        SubscribeStates();
-        CalculateNextTime();
+        await CreateDatepoints();
+        await SubscribeStates();
+        await CalculateNextTime();
+        await CheckTemperatureChange(true);
+
+
     }
     catch (e) {
         adapter.log.error('exception in  main [' + e + ']');
@@ -333,7 +335,7 @@ async function CreateDatepoints() {
 
     adapter.log.debug('CreateDatepoints');
 
-    setObjectNotExistsDelayed('LastProgramRun', {
+    await adapter.setObjectNotExistsAsync('LastProgramRun', {
         type: 'state',
         common: {
             name: 'LastProgramRun',
@@ -345,6 +347,20 @@ async function CreateDatepoints() {
         },
         native: { id: 'LastProgramRun' }
     });
+
+    await adapter.setObjectNotExistsAsync('CurrentProfile', {
+        type: 'state',
+        common: {
+            name: 'CurrentProfile',
+            type: 'number',
+            role: 'history',
+            unit: '',
+            read: true,
+            write: true
+        },
+        native: { id: 'CurrentProfile' }
+    });
+    adapter.subscribeStates('CurrentProfile');
 
     if (parseInt(adapter.config.ProfileType,10) === 1) {
         adapter.log.debug('Profile Type  Mo-So, profiles ' + adapter.config.NumberOfProfiles);
@@ -360,7 +376,7 @@ async function CreateDatepoints() {
 
                     adapter.log.debug('add state ' + id + " max " + DefaultTargets.length);
 
-                    setObjectNotExistsDelayed(id + '.time', {
+                    await adapter.setObjectNotExistsAsync(id + '.time', {
                         type: 'state',
                         common: {
                             name: 'period until',
@@ -380,10 +396,10 @@ async function CreateDatepoints() {
                     //set default only if nothing was set before
                     if (nextTime === null && period < DefaultTargets.length) {
                         //we set a default value
-                        updateObjectDelayed(id + '.time', DefaultTargets[period][0]);
+                        await adapter.setStateAsync(id + '.time', DefaultTargets[period][0]);
                     }
 
-                    setObjectNotExistsDelayed(id + '.Temperature', {
+                    await adapter.setObjectNotExistsAsync(id + '.Temperature', {
                         type: 'state',
                         common: {
                             name: 'target temperature',
@@ -399,9 +415,8 @@ async function CreateDatepoints() {
                     const nextTemp = await adapter.getStateAsync(id + '.Temperature');
                     //set default only if nothing was set before
                     if (nextTemp === null && period < DefaultTargets.length) {
-                        updateObjectDelayed(id + '.Temperature', DefaultTargets[period][1]);
+                        await adapter.setStateAsync(id + '.Temperature', DefaultTargets[period][1]);
                     }
-
                 }
             }
         }
@@ -415,10 +430,10 @@ async function CreateDatepoints() {
 //#######################################
 //
 // subscribe thermostate states to be informed when target or current is changed
-function SubscribeStates() {
+function SubscribeStates(callback) {
 
     //if we need to handle actors, then subscribe on current and target temperature
-    adapter.log.debug('start subscribtion ');
+    adapter.log.debug('#start subscribtion ');
     if (adapter.config.UseActors) {
 
         for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
@@ -443,7 +458,9 @@ function SubscribeStates() {
             }
         }
     }
-    adapter.log.debug('subscribtion finished');
+    adapter.log.debug('#subscribtion finished');
+
+    if (callback) callback();
 }
 
 //*******************************************************************
@@ -482,12 +499,12 @@ async function HandleStateChange(id, state) {
             }
         }
         else {
-            adapter.log.debug('#### not found ' + JSON.stringify(ids));
+            adapter.log.debug('#### not found ' + JSON.stringify(ids) );
         }
 
     }
     else {
-        adapter.log.debug('#### not handled ' + JSON.stringify(id));
+        adapter.log.debug('#### not handled ' + JSON.stringify(id) + " " + JSON.stringify(state));
     }
 
 
@@ -557,118 +574,10 @@ function findObjectIdByKey(array, key, value) {
 }
 
 
-const tasks = [];
 
-function setObjectNotExistsDelayed(id, obj) {
 
-    //adapter.log.debug('list before ' + tasks.length);
 
-    tasks.push({
-        name: 'add',
-        key: id,
-        obj: obj
-    });
 
-    //adapter.log.debug('list after ' + tasks.length);
-}
-
-function updateObjectDelayed(id, value) {
-
-    //adapter.log.debug('list before ' + tasks.length);
-
-    tasks.push({
-        name: 'update',
-        key: id,
-        value: value
-    });
-
-    //adapter.log.debug('list after ' + tasks.length);
-}
-
-function processTasks(tasks) {
-    if (!tasks || !tasks.length) {
-        adapter.log.debug('nothing to do ' + tasks.length); 
-    } else {
-        const task = tasks.shift();
-        // console.log(`${tasks.length} Task ${task.name}: ${task.key}`);
-        if (task.name === 'add') {
-            createExtendObject(task.key, task.obj, task.value, () => setImmediate(processTasks, tasks));
-        } else if (task.name === 'update') {
-            updateExtendObject(task.key, task.value, () => setImmediate(processTasks, tasks));
-        } else if (task.name === 'delete_channel') {
-            deleteChannel(task.key, () => setImmediate(processTasks, tasks));
-        } else if (task.name === 'delete_state') {
-            deleteState(task.key, () => setImmediate(processTasks, tasks));
-        } else {
-            throw 'Unknown task';
-        }
-    }
-}
-
-function createExtendObject(key, objData, value, callback) {
-    try {
-        adapter.getObject(key, (err, obj) => {
-            if (!obj) {
-                if (value !== undefined) {
-                    adapter.log.debug('back to list: ' + key + ' ' + value);
-                    insertIntoList(key, value);
-                }
-                objData.native = objData.native || {};
-                adapter.setObject(key, objData, callback);
-            } else if (value !== undefined) {
-                if (obj.common.type === 'number') {
-                    value = parseFloat(value);
-                }
-                adapter.setState(key, { ack: true, val: value }, callback);
-            } else if (typeof callback === 'function') {
-                callback();
-            }
-        });
-    }
-    catch (e) {
-        adapter.log.error('exception in createExtendObject [' + e + ']');
-    }
-}
-
-function updateExtendObject(key, value, callback) {
-    try {
-        adapter.setState(key, { ack: true, val: value }, callback);
-    }
-    catch (e) {
-        adapter.log.error('exception in updateExtendObject [' + e + ']');
-    }
-}
-
-function deleteChannel(channel, callback) {
-
-    try {
-        adapter.log.debug("try deleting channel " + channel);
-        //just do nothing at the moment
-        //if (callback) callback();
-
-        adapter.delObject(channel, err =>
-            adapter.deleteChannel(channel, callback));
-
-    }
-    catch (e) {
-        adapter.log.error('exception in deleteChannel [' + e + ']');
-    }
-}
-
-function deleteState(state, callback) {
-    try {
-        adapter.log.debug("try deleting state " + state);
-        //just do nothing at the moment
-        //if (callback) callback();
-
-        adapter.delObject(state, err =>
-            // Delete state
-            adapter.delState(state, callback));
-    }
-    catch (e) {
-        adapter.log.error('exception in deleteState [' + e + ']');
-    }
-}
 
 //#######################################
 // cron fucntions
@@ -764,47 +673,49 @@ async function CalculateNextTime() {
     let timerList = [];
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
-        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
-            for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
-                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
-                    const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
-                    adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
+        const currentProfile = await GetCurrentProfile();
 
-                    /*
-                    adapter.getState(id, function (err, states) {
-                        if (err) {
-                            adapter.log.error("error in  CalculateNextTime " + err);
-                        } else {
-                            adapter.log.debug("found time for  at " + JSON.stringify(states));
-                        }
-                    });
-                    */
+        for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+            for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                const id = "Profiles." + currentProfile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
-                    const nextTime = await adapter.getStateAsync(id);
-                    adapter.log.debug("found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val );
+                adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
 
-                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                    //add to list if not already there
-                    let bFound = false;
-                    for (var i = 0; i < timerList.length; i++) {
-                        if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
-                            bFound = true;
-                            adapter.log.debug("already in list " + JSON.stringify(nextTime));
-                        }
+                /*
+                adapter.getState(id, function (err, states) {
+                    if (err) {
+                        adapter.log.error("error in  CalculateNextTime " + err);
+                    } else {
+                        adapter.log.debug("found time for  at " + JSON.stringify(states));
                     }
-                    if (!bFound) {
-                        adapter.log.debug("push to list "  + " = " + nextTimes);
-                        timerList.push({
-                            hour: parseInt( nextTimes[0]),
-                            minute: parseInt(nextTimes[1])
-                        });
+                });
+                */
+
+                const nextTime = await adapter.getStateAsync(id);
+                adapter.log.debug("---found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                //add to list if not already there
+                let bFound = false;
+                for (var i = 0; i < timerList.length; i++) {
+                    if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
+                        bFound = true;
+                        adapter.log.debug("already in list " + JSON.stringify(nextTime));
                     }
-                    
                 }
+                if (!bFound) {
+                    adapter.log.debug("push to list " + " = " + nextTimes);
+                    timerList.push({
+                        hour: parseInt(nextTimes[0]),
+                        minute: parseInt(nextTimes[1])
+                    });
+                }
+
             }
         }
+        
 
         //and now start all cron jobs
         for (var m = 0; m < timerList.length; m++) {
@@ -818,54 +729,82 @@ async function CalculateNextTime() {
     }
 }
 
+async function GetCurrentProfile() {
+
+    adapter.log.debug('get profile');
+
+    const id = 'CurrentProfile';
+    let currentProfile = await adapter.getStateAsync(id);
+    if (currentProfile > 0 && currentProfile <= adapter.config.NumberOfProfiles) {
+        currentProfile--; //zero based!!
+    }
+    else {
+        currentProfile = 0;
+    }
+    adapter.log.debug('profile ' + currentProfile);
+    return currentProfile;
+}
+
+
 //#######################################
 //
 // this is called by cron
 // so we need to find out what needs to be changed and change it
 //normally it's a temperature target value
-async function CheckTemperatureChange() {
+async function CheckTemperatureChange(CheckOurOnly=false) {
 
     adapter.log.debug('CheckTemperatureChange is called');
 
     const now = new Date();
+    adapter.setStateAsync('LastProgramRun', now.toLocaleString());
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
-        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
-            for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
-                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
-                    const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
-                    //adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
+        const currentProfile = await GetCurrentProfile();
 
-                    const nextTime = await adapter.getStateAsync(id);
-                    adapter.log.debug("##found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+        for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+            for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                const id = "Profiles." + currentProfile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
-                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+                //adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
 
-                    adapter.log.debug("# " + nextTimes + " " + now.getHours() + " " + now.getMinutes());
+                const nextTime = await adapter.getStateAsync(id);
+                //adapter.log.debug("##found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
 
-                    if (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1])) {
+                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                        adapter.log.debug("*1 ");
-                        const id2 = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.temperature';
-                        adapter.log.debug("*2 " + id2);
+                //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
+
+               
+                if (    (CheckOurOnly === true && now.getHours() === parseInt(nextTimes[0]))
+                    ||  (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1]))) {
+
+                    if (adapter.config.devices[rooms].thermostat && adapter.config.devices[rooms].thermostat !== null) {
+                        
+                        //adapter.log.debug("*1 ");
+                        const id2 = "Profiles." + currentProfile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.Temperature';
+                        //adapter.log.debug("*2 " + id2);
+                        /*
+                        heatingcontrol.0.Profiles.0.Wohnzimmer.Periods.0.Temperature
+                                         Profiles.0.Wohnzimmer.Periods.1.Temperature
+                        heatingcontrol.0.Profiles.0.Wohnzimmer.Periods.1.Temperature
+                        */
                         const nextTemperature = await adapter.getStateAsync(id2);
-                        adapter.log.debug("*3 " + adapter.config.PathThermostats + " " + adapter.config.devices[rooms].thermostat + " " + ThermostateTypeTab[adapter.config.devices[rooms].ThermostatTypeID[2]]);
-                        const state = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostateTypeTab[adapter.config.devices[rooms].ThermostatTypeID[2]];
-                        adapter.log.debug("*4 ");
-                        await adapter.setForeignStateAsync(state, nextTemperature);
-                        adapter.log.debug('room ' + adapter.config.devices[rooms].room + "Thermostate set to " + nextTemperature);
+                        //adapter.log.debug("*3 " + adapter.config.devices[rooms].room + " " + adapter.config.devices[rooms].thermostat + " TypeID " + adapter.config.devices[rooms].thermostatTypeID);
 
+                        //adapter.log.debug("*3 " + adapter.config.PathThermostats + " " + adapter.config.devices[rooms].thermostat + " " + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2]);
+                        const state = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2];
+                        //adapter.log.debug("*4 " + state);
+                        await adapter.setForeignStateAsync(state, nextTemperature.val);
+                        adapter.log.debug('room ' + adapter.config.devices[rooms].room + " Thermostate " + state + " set to " + nextTemperature.val);
                     }
-                   
-
-                    
                 }
             }
         }
     }
 
     getCronStat();
+
 }
 
 
