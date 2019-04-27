@@ -46,7 +46,7 @@ see github
 
 ## Changelog
 
-### 0.0.1 (2019-05-dd)
+### 0.0.1 (2019-04-27)
 * (René) initial release
 
 ## License
