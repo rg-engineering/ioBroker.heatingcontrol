@@ -60,6 +60,8 @@ function startAdapter(options) {
     options = options || {};
     Object.assign(options, {
         name: 'heatingcontrol',
+        //#######################################
+        //
         ready: function () {
             try {
                 //adapter.log.debug('start');
@@ -69,18 +71,18 @@ function startAdapter(options) {
                 adapter.log.error('exception catch after ready [' + e + ']');
             }
         },
-
-        //to do
         //#######################################
         //  is called when adapter shuts down
-        //unload: function () {
-        //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
-        //    CronStop();
-        //},
-        //SIGINT: function () {
-        //    adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
-        //    CronStop();
-        //},
+        unload: function () {
+            adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
+            CronStop();
+        },
+        //#######################################
+        //
+        SIGINT: function () {
+            adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
+            CronStop();
+        },
         //#######################################
         //  is called if a subscribed object changes
         objectChange: function (id, obj) {
@@ -90,8 +92,12 @@ function startAdapter(options) {
         // is called if a subscribed state changes
         stateChange: function (id, state) {
             //adapter.log.debug('[STATE CHANGE] ==== ' + id + ' === ' + JSON.stringify(state));
-             HandleStateChange(id, state);
+            if (state && state.ack !== true) {
+                HandleStateChange(id, state);
+            }
         },
+        //#######################################
+        //
         message: async (obj) => {
             if (obj) {
                 switch (obj.command) {
@@ -363,14 +369,14 @@ async function CreateDatepoints() {
     adapter.subscribeStates('CurrentProfile');
 
     if (parseInt(adapter.config.ProfileType,10) === 1) {
-        adapter.log.debug('Profile Type  Mo-So, profiles ' + adapter.config.NumberOfProfiles);
-        for (var profile = 0; profile < adapter.config.NumberOfProfiles; profile++) {
+        adapter.log.debug('Profile Type  Mo-So, profiles ' + parseInt(adapter.config.NumberOfProfiles,10));
+        for (var profile = 0; profile < parseInt(adapter.config.NumberOfProfiles,10); profile++) {
             adapter.log.debug('rooms ' + adapter.config.devices.length);
             for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
 
-                adapter.log.debug('room ' + adapter.config.devices[rooms].room + ' with ' + adapter.config.NumberOfPeriods + " periods");
+                adapter.log.debug('room ' + adapter.config.devices[rooms].room + ' with ' + parseInt(adapter.config.NumberOfPeriods,10) + " periods");
 
-                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods,10); period++) {
 
                     const id = "Profiles." + profile + "." + adapter.config.devices[rooms].room + ".Periods." + period;
 
@@ -396,7 +402,7 @@ async function CreateDatepoints() {
                     //set default only if nothing was set before
                     if (nextTime === null && period < DefaultTargets.length) {
                         //we set a default value
-                        await adapter.setStateAsync(id + '.time', DefaultTargets[period][0]);
+                        await adapter.setStateAsync(id + '.time', { ack: true, val: DefaultTargets[period][0] } );
                     }
 
                     await adapter.setObjectNotExistsAsync(id + '.Temperature', {
@@ -412,17 +418,20 @@ async function CreateDatepoints() {
                         native: { id: id + '.Temperature' }
                     });
 
+                    //we want to be informed when this is changed by vis or others
+                    adapter.subscribeStates(id + '.Temperature');
+
                     const nextTemp = await adapter.getStateAsync(id + '.Temperature');
                     //set default only if nothing was set before
                     if (nextTemp === null && period < DefaultTargets.length) {
-                        await adapter.setStateAsync(id + '.Temperature', DefaultTargets[period][1]);
+                        await adapter.setStateAsync(id + '.Temperature', { ack: true, val: DefaultTargets[period][1] } );
                     }
                 }
             }
         }
     }
     else {
-        adapter.log.warn('not implemented yet, profile type is ' + adapter.config.ProfileType);
+        adapter.log.warn('not implemented yet, profile type is ' + parseInt(adapter.config.ProfileType,10));
     }
 
 }
@@ -465,10 +474,71 @@ function SubscribeStates(callback) {
 
 //*******************************************************************
 //
-// handles state chages of subscribed states
+// handles state changes of subscribed states
+async function HandleStateChange(id, state) {
+
+    //first set ack flag
+    //await adapter.setStateAsync(id, { ack: true });
+
+    adapter.log.debug("### handle state change " + id + " " + state);
+
+    let bHandled = false;
+
+    if (HandleStateChangeGeneral(id, state)) {
+        bHandled = true;
+    }
+
+    if (HandleStateChangeActors(id, state)) {
+        bHandled = true;
+    }
+
+
+    if (!bHandled) {
+        adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
+    }
+    else {
+        adapter.log.debug("### all handled ");
+    }
+}
+
+//*******************************************************************
+//
+// handles state changes of subscribed states
+async function HandleStateChangeGeneral(id, state) {
+    let bRet = false;
+
+    var ids = id.split('.'); //
+
+    if (ids[2] === "CurrentProfile") {
+
+        if (state.val > parseInt(adapter.config.NumberOfProfiles,10)) {
+            await adapter.setStateAsync(id, { ack: true, val: parseInt(adapter.config.NumberOfProfiles,10)  });
+        }
+        if (state.val < 1 ) {
+            await adapter.setStateAsync(id, { ack: true, val: 1 });
+        }
+    }
+
+    if (ids[7] === "time" || ids[2] ==="CurrentProfile") {
+        await CalculateNextTime();
+        bRet = true;
+    }
+
+    if (ids[7] === "temperature") {
+        bRet = true;
+    }
+
+    return bRet;
+}
+
+//*******************************************************************
+//
+// handles state changes of subscribed states
 // * find the room
 // * check if with actor handling; if so then check if target is different to current
-async function HandleStateChange(id, state) {
+async function HandleStateChangeActors(id, state) {
+
+    let bRet = false;
 
     if (adapter.config.UseActors) {
 
@@ -476,6 +546,9 @@ async function HandleStateChange(id, state) {
 
         const deviceID = findObjectIdByKey(adapter.config.devices, 'thermostat', ids[2]);
         if (deviceID > -1) {
+
+            //target or current temperature change from Thermostat
+
 
             var check = "." + ids[3] + "." + ids[4];
             if (check === ThermostatTypeTab[adapter.config.devices[deviceID].thermostatTypeID][3]) { // got current temperature
@@ -497,16 +570,11 @@ async function HandleStateChange(id, state) {
             else {
                 adapter.log.debug('room ' + adapter.config.devices[deviceID].room + " not found " + check + " " + ThermostatTypeTab[adapter.config.devices[deviceID].thermostatTypeID][3]);
             }
+            bRet = true;
         }
-        else {
-            adapter.log.debug('#### not found ' + JSON.stringify(ids) );
-        }
-
-    }
-    else {
-        adapter.log.debug('#### not handled ' + JSON.stringify(id) + " " + JSON.stringify(state));
     }
 
+    return bRet;
 
 }
 
@@ -582,10 +650,15 @@ function findObjectIdByKey(array, key, value) {
 //#######################################
 // cron fucntions
 function CronStop() {
-    for (var n = 0; n < cronJobs.length; n++) {
-
-        cronJobs[n].stop;
-        cronJobs[n] = null;
+    if (cronJobs.length > 0) {
+        adapter.log.debug("delete " + cronJobs.length + " cron jobs");
+        //cancel all cron jobs...
+        var start = cronJobs.length - 1;
+        for (var n = start; n >= 0; n--) {
+            //adapter.log.debug("stop cron job " + n);
+            cronJobs[n].stop();
+        }
+        cronJobs=[];
     }
 }
 
@@ -607,7 +680,7 @@ function CronCreate(Hour, Minute) {
     //details see https://www.npmjs.com/package/cron
     cronJobs[nextCron] = new CronJob(cronString,
         () => CheckTemperatureChange(),
-        () => adapter.log.debug('cron fired'), // This function is executed when the job stops
+        () => adapter.log.debug('cron job stopped'), // This function is executed when the job stops
         true,
         timezone
     );
@@ -663,14 +736,11 @@ async function CalculateNextTime() {
 
     adapter.log.debug("start CalculateNextTime");
 
-    if (cronJobs.length > 0) {
-        adapter.log.debug("delete cron jobs " + cronJobs.length);
-        //cancel all cron jobs...
-        for (n = 0; n < cronJobs.length; n++) {
-            cronJobs[n].stop();
-        }
-    }
+    CronStop();
+
     let timerList = [];
+
+    adapter.log.debug("profile type " + parseInt(adapter.config.ProfileType, 10));
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -735,7 +805,7 @@ async function GetCurrentProfile() {
 
     const id = 'CurrentProfile';
     let currentProfile = await adapter.getStateAsync(id);
-    if (currentProfile > 0 && currentProfile <= adapter.config.NumberOfProfiles) {
+    if (currentProfile > 0 && currentProfile <= parseInt(adapter.config.NumberOfProfiles,10)) {
         currentProfile--; //zero based!!
     }
     else {
@@ -756,14 +826,14 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
     adapter.log.debug('CheckTemperatureChange is called');
 
     const now = new Date();
-    adapter.setStateAsync('LastProgramRun', now.toLocaleString());
+    adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() } );
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
         const currentProfile = await GetCurrentProfile();
 
         for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
-            for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+            for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods,10); period++) {
                 const id = "Profiles." + currentProfile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
                 //adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);

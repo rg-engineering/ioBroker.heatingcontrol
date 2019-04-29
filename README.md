@@ -9,6 +9,7 @@
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
 Adapter for controlling thermostats.
+
 features:
 * Setting the set temperature at specific times
 * Number of daily sections with different setpoint temperatures adjustable
@@ -30,27 +31,32 @@ features:
 * Path To Actors = object path to actuators, e.g. "hm-rpc.0."
 * timezone = to be used for cron to adjust cron jobs
 * delete all = delete all room settings when admin opens. After that a new scan for rooms will start
-###profile
+
+### profile
 * Profile Type = at this moment only monday to sunday is supportet. The others will be implemented soon
 * number of profiles = if you need more then on profile increase that value. You can then select which profile will be used.
 * number of periods = define how many daily sections with different temperature you need. As more you set as more datapoints will be created. Better to use a low value (e.g. 5)
-* public holyday = if you check this you get a separate adhjustment for public holidays (not implemented yet)
-###devices
+* public holyday = if you check this you get a separate adjustment for public holidays (not implemented yet)
+
+### devices
 * a list of all rooms with thermostats and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
 
 ## Notes
 * node with version higher then 8 is necessary!
 
-##known bugs
-see github
+## known issues
+* please create issues at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) if you find bugs or whish new features
+
 
 ## Changelog
+
+### 0.0.2 (2019-xx-xx)
+* (René) 
 
 ### 0.0.1 (2019-04-27)
 * (René) initial release
 
 ## License
-
 
 Copyright (C) <2019>  <info@rg-engineering.eu>
 

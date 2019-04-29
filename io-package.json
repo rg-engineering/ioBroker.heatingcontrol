@@ -1,12 +1,13 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
-     
+
       "0.0.1": {
         "en": "initial",
-        "de": "Empfangsfunktion optimiert"
+        "de": "initial"
+
       }
     },
     "title": "HeatingControl",
