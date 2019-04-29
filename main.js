@@ -73,9 +73,16 @@ function startAdapter(options) {
         },
         //#######################################
         //  is called when adapter shuts down
-        unload: function () {
-            adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
-            CronStop();
+        unload: function (callback) {
+            try {
+                adapter && adapter.log && adapter.log.info && adapter.log.info('cleaned everything up...');
+                CronStop();
+                callback();
+            } catch (e) {
+                callback();
+            }
+
+
         },
         //#######################################
         //
