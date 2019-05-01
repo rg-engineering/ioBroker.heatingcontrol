@@ -49,11 +49,11 @@ ActorTypeTab[2] = ['HM-LC-Sw4-SM', 'Funk-Schaltaktor 4-fach, Aufputzmontage',   
 var HeizungGewerk = "Heizung";
 
 const DefaultTargets = [];
-DefaultTargets[0] = ['05:00', 19];
-DefaultTargets[1] = ['08:00', 21];
-DefaultTargets[2] = ['12:00', 21];
-DefaultTargets[3] = ['16:00', 19];
-DefaultTargets[4] = ['21:00', 21];
+DefaultTargets[0] = ['05:00:00', 19];
+DefaultTargets[1] = ['08:00:00', 21];
+DefaultTargets[2] = ['12:00:00', 21];
+DefaultTargets[3] = ['16:00:00', 19];
+DefaultTargets[4] = ['21:00:00', 21];
 
 let adapter;
 function startAdapter(options) {
@@ -524,6 +524,39 @@ async function HandleStateChangeGeneral(id, state) {
         if (state.val < 1 ) {
             await adapter.setStateAsync(id, { ack: true, val: 1 });
         }
+    }
+
+    if (ids[7] === "time") {
+        let values = state.val.split(':');
+
+        let hour = 0;
+        let minute = 0;
+        let second = 0;
+
+        if (values[0] && values[0] >= 0 && values[0] < 24) {
+            hour = parseInt(values[0]);
+            
+        }
+        if (values[1] && values[1] >= 0 && values[1] < 60) {
+            minute = parseInt(values[1]);
+            
+        }
+        if (values[2] && values[2] >= 0 && values[2] < 60) {
+            second = parseInt(values[2]);
+            
+        }
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+        if (second < 10) {
+            second = "0" + second;
+        }
+        let sTime = hour + ":" + minute + ":" + second;
+
+        await adapter.setStateAsync(id, { ack: true, val: sTime });
     }
 
     if (ids[7] === "time" || ids[2] ==="CurrentProfile") {
