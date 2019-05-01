@@ -485,7 +485,7 @@ function SubscribeStates(callback) {
 async function HandleStateChange(id, state) {
 
     //first set ack flag
-    //await adapter.setStateAsync(id, { ack: true });
+    await adapter.setStateAsync(id, { ack: true });
 
     adapter.log.debug("### handle state change " + id + " " + state);
 
