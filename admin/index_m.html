@@ -1,30 +1,30 @@
 ﻿<html>
 
 <head>
+    <!-- Load ioBroker scripts and styles-->
     <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+    <link rel="stylesheet" type="text/css" href="../../lib/css/fancytree/ui.fancytree.min.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
 
     <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
 
-    <script type="text/javascript" src="../../js/translate.js"></script>
     <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery.fancytree-all.min.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/selectID.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+
+
+    <!-- my own styles -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript" src="words.js"></script>
-
-    <style>
-        .polled {
-            height: 100px !important;
-        }
-
-        .adapter-body {
-            overflow: hidden !important;
-        }
-    </style>
 
     <script type="text/javascript">
 
-     
+
         var timeout;
         function getDevices(onChange, instance) {
             timeout = setTimeout(function () {
@@ -42,7 +42,7 @@
 
                 values2table('values', list, onChange);
 
-                
+
             });
         }
 
@@ -59,7 +59,7 @@
                 }
 
                 console.log('got Test ' + JSON.stringify(list));
-                
+
             });
         }
 
@@ -71,17 +71,17 @@
 
             // example: select elements with id=key and class=value and insert value
             for (var key in settings) {
-                 if (!settings.hasOwnProperty(key)) continue;
+                if (!settings.hasOwnProperty(key)) continue;
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
                     $value.prop('checked', settings[key]).on('change', function () {
-                        
+
                         onChange();
                     });
                 } else {
                     $value.val(settings[key]).on('change', function () {
                         console.log('on change');
-                       
+
                         onChange();
                     }).on('keyup', function () {
                         $(this).trigger('change');
@@ -107,7 +107,7 @@
             });
 
         }
-        
+
 
 
         // ... and the function save has to exist.
