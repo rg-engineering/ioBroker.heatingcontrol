@@ -1199,7 +1199,60 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
             }
         }
     }
+
+    await HandleActorsGeneral(HeatingPeriodActive);
+
     getCronStat();
+}
+
+
+async function HandleActorsGeneral(HeatingPeriodActive) {
+    if (adapter.config.UseActors) {
+
+        var room;
+        //if no heating period and acturs should be set to on or off
+        if (!HeatingPeriodActive && adapter.config.UseActorsIfNotHeating > 1) {
+
+            let target = adapter.config.UseActorsIfNotHeating === 2 ? false : true;
+
+            for (room = 0; room < adapter.config.devices.length; room++) {
+
+                if (adapter.config.devices[room].actor1 && adapter.config.devices[room].actor1 !== null) {
+                    const state = adapter.config.PathActors + adapter.config.devices[room].actor1 + ActorTypeTab[adapter.config.devices[room].actor1TypeID][2];
+                    await adapter.setForeignStateAsync(state, target);
+                    adapter.log.debug('room ' + adapter.config.devices[room].room + " actor1 " + target + " " + state);
+                }
+                if (adapter.config.devices[room].actor2 && adapter.config.devices[room].actor2 !== null) {
+                    const state = adapter.config.PathActors + adapter.config.devices[room].actor2 + ActorTypeTab[adapter.config.devices[room].actor2TypeID][2];
+                    await adapter.setForeignStateAsync(state, target);
+                    adapter.log.debug('room ' + adapter.config.devices[room].room + " actor2 " + target + " " + state);
+                }
+            }
+        }
+
+
+        //if we are in heating period but room has no thermostat
+        if (HeatingPeriodActive && adapter.config.UseActorsIfNoThermostat > 1) {
+
+            let target = adapter.config.UseActorsIfNoThermostat === 2 ? false : true;
+
+            for (room = 0; room < adapter.config.devices.length; room++) {
+
+                if (adapter.config.devices[room].thermostat === null) {
+                    if (adapter.config.devices[room].actor1 && adapter.config.devices[room].actor1 !== null) {
+                        const state = adapter.config.PathActors + adapter.config.devices[room].actor1 + ActorTypeTab[adapter.config.devices[room].actor1TypeID][2];
+                        await adapter.setForeignStateAsync(state, target);
+                        adapter.log.debug('room ' + adapter.config.devices[room].room + " actor1 " + target + " " + state);
+                    }
+                    if (adapter.config.devices[room].actor2 && adapter.config.devices[room].actor2 !== null) {
+                        const state = adapter.config.PathActors + adapter.config.devices[room].actor2 + ActorTypeTab[adapter.config.devices[room].actor2TypeID][2];
+                        await adapter.setForeignStateAsync(state, target);
+                        adapter.log.debug('room ' + adapter.config.devices[room].room + " actor2 " + target + " " + state);
+                    }
+                }
+            }
+        }
+    }
 }
 
 

@@ -156,14 +156,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s6">
-                        <input type="checkbox" id="UseActors" class="value" />
-                        <label for="UseActors" class="translate">use_actors</label>
-                    </div>
+
                     <div class="input-field col s6">
                         <input type="text" id="Gewerk" class="value" />
                         <label for="Gewerk" class="translate">Gewerk</label>
                     </div>
+
+
 
                 </div>
                 <div class="row">
@@ -189,69 +188,94 @@
                     </div>
                 </div>
 
-
-            </div>
-
-            <!-- tab "profile - settings"  -->
-            <div id="tab-profiles" class="col s12 page">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="UseActors" class="value" />
+                        <label for="UseActors" class="translate">use_actors</label>
+                    </div>
+                </div>
 
                 <div class="row">
-                    <div class="input-field col s4">
-                        <select id="ProfileType" class="value">
-                            <option value="1">Mo-So</option>
-                            <option value="2">Mo-Fr + Sa-So</option>
-                            <option value="3">every Day</option>
+                    <div class="input-field col s6">
+                        <select id="UseActorsIfNotHeating" class="value">
+                            <option value="1">nothing</option>
+                            <option value="2">off</option>
+                            <option value="3">on</option>
                         </select>
-                        <label for="ProfileType" class="translate">ProfileType</label>
+                        <label for="UseActorsIfNotHeating" class="translate">UseActorsIfNotHeating</label>
                     </div>
-               
-                    <div class="input-field col s4">
-                        <input type="number" id="NumberOfProfiles" class="value" />
-                        <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
-                    </div>
-                
-                    <div class="input-field col s4">
-                        <input type="number" id="NumberOfPeriods" class="value" />
-                        <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
+                    <div class="input-field col s6">
+                        <select id="UseActorsIfNoThermostat" class="value">
+                            <option value="1">nothing</option>
+                            <option value="2">off</option>
+                            <option value="3">on</option>
+                        </select>
+                        <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="input-field col s4">
-                        <input type="checkbox" id="UseHoliday" class="value" />
-                        <label for="UseHoliday" class="translate">Feiertag</label>
-                    </div>
-                </div>
             </div>
 
-            <!-- tab "devices" -->
-            <div id="tab-devices" class="col s12 page">
-                <div class="col s12" id="values">
-                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                    <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
-                    <div class="table-values-div">
-                        <table class="table-values" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th data-name="room" style="width: 20%" class="translate">room</th>
-                                    <th data-name="thermostat" class="translate">thermostat</th>
-                                    <th data-name="thermostatType" class="translate">type</th>
-                                    <th data-name="thermostatTypeID" class="translate">typeID</th>
-                                    <th data-name="actor1" class="translate">actor1</th>
-                                    <th data-name="actor1Type" class="translate">type</th>
-                                    <th data-name="actor1TypeID" class="translate">typeID</th>
-                                    <th data-name="actor2" class="translate">actor2</th>
-                                    <th data-name="actor2Type" class="translate">type</th>
-                                    <th data-name="actor2TypeID" class="translate">typeID</th>
-                                    <th data-name="isActive" data-type="checkbox" class="translate">active</th>
-                                    <th data-buttons="delete" style="width: 40px"></th>
-                                </tr>
-                            </thead>
-                        </table>
+                <!-- tab "profile - settings"  -->
+                <div id="tab-profiles" class="col s12 page">
+
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <select id="ProfileType" class="value">
+                                <option value="1">Mo-So</option>
+                                <option value="2">Mo-Fr + Sa-So</option>
+                                <option value="3">every Day</option>
+                            </select>
+                            <label for="ProfileType" class="translate">ProfileType</label>
+                        </div>
+
+                        <div class="input-field col s4">
+                            <input type="number" id="NumberOfProfiles" class="value" />
+                            <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
+                        </div>
+
+                        <div class="input-field col s4">
+                            <input type="number" id="NumberOfPeriods" class="value" />
+                            <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input type="checkbox" id="UseHoliday" class="value" />
+                            <label for="UseHoliday" class="translate">Feiertag</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- tab "devices" -->
+                <div id="tab-devices" class="col s12 page">
+                    <div class="col s12" id="values">
+                        <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                        <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
+                        <div class="table-values-div">
+                            <table class="table-values" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th data-name="room" style="width: 20%" class="translate">room</th>
+                                        <th data-name="thermostat" class="translate">thermostat</th>
+                                        <th data-name="thermostatType" class="translate">type</th>
+                                        <th data-name="thermostatTypeID" class="translate">typeID</th>
+                                        <th data-name="actor1" class="translate">actor1</th>
+                                        <th data-name="actor1Type" class="translate">type</th>
+                                        <th data-name="actor1TypeID" class="translate">typeID</th>
+                                        <th data-name="actor2" class="translate">actor2</th>
+                                        <th data-name="actor2Type" class="translate">type</th>
+                                        <th data-name="actor2TypeID" class="translate">typeID</th>
+                                        <th data-name="isActive" data-type="checkbox" class="translate">active</th>
+                                        <th data-buttons="delete" style="width: 40px"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </body>
 </html>

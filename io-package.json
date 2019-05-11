@@ -47,7 +47,10 @@
     "PathThermostats": "hm-rpc.0.",
     "PathActors": "hm-rpc.0.",
     "timezone": "Europe/Berlin",
-    "deleteall":  false
+    "deleteall": false,
+    "UseActorsIfNotHeating": 1,
+    "UseActorsIfNoThermostat": 1
+
 
   }
 }
