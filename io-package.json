@@ -25,7 +25,7 @@
     "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
     "loglevel": "debug",
     "stopBeforeUpdate": true,
-    "type": "hardware",
+    "type": "climate-control",
     "license": "MIT",
     "materialize": true,
     "compact": true,
