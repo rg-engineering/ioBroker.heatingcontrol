@@ -1,19 +1,45 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "news": {
-
-      "0.0.1": {
-        "en": "initial",
-        "de": "initial"
-
+      "0.0.3": {
+        "en": "ready for first publish",
+        "pt": "pronto para primeiro publicar",
+        "de": "bereit für die erste Veröffentlichung",
+        "nl": "klaar voor de eerste publicatie",
+        "it": "pronto per la prima pubblicazione",
+        "es": "listo para primera publicacion",
+        "pl": "gotowy do pierwszego opublikowania",
+        "zh-cn": "准备好首次发布",
+        "fr": "prêt pour la première publication",
+        "ru": "готов к первой публикации"
+      },
+      "0.0.2": {
+        "en": "actuator handling added",
+        "de": "Aktuatorhandling hinzugefügt",
+        "pl": "dodano obsługę siłownika",
+        "zh-cn": "执行器处理添加",
+        "nl": "actuator handling toegevoegd",
+        "fr": "actionneur manipulation ajouté",
+        "ru": "добавлена ​​обработка привода",
+        "pt": "manuseio do atuador adicionado",
+        "it": "aggiunta della movimentazione dell'attuatore",
+        "es": "manejo del actuador agregado"
       }
     },
     "title": "HeatingControl",
     "desc": {
-      "en": "HeatingControl Adapter",
-      "de": "HeatingControl Adapter"
+      "en": "Heating Control ",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingsregeling",
+      "fr": "Contrôle de chauffage",
+      "pl": "Sterowanie ogrzewaniem",
+      "zh-cn": "加热控制",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calefacción"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
@@ -23,7 +49,7 @@
     "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
     "keywords": [ "heating" ],
     "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
-    "loglevel": "debug",
+    "loglevel": "info",
     "stopBeforeUpdate": true,
     "type": "climate-control",
     "license": "MIT",
@@ -50,7 +76,5 @@
     "deleteall": false,
     "UseActorsIfNotHeating": 1,
     "UseActorsIfNoThermostat": 1
-
-
   }
 }

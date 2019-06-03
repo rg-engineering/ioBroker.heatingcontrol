@@ -50,8 +50,11 @@ features:
 
 ## Changelog
 
-### 0.0.2 (2019-xx-xx)
-* (René) 
+### 0.0.3 (2019-06-02)
+* (René) ready to publish
+
+### 0.0.2 (2019-05-19)
+* (René) actuator handling added
 
 ### 0.0.1 (2019-04-27)
 * (René) initial release
