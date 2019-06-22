@@ -39,6 +39,7 @@ ThermostatTypeTab[6] = ['HmIP-STH',             'Wandthermostat(HMIP)',         
 ThermostatTypeTab[7] = ['HmIP-STHD',            'Wandthermostat(HMIP)',         '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
 ThermostatTypeTab[8] = ['HmIP-eTRV-2',          'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
 ThermostatTypeTab[9] = ['HmIP-eTRV-B',          'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.SET_POINT_MODE'  ];
+ThermostatTypeTab[10] = ['HmIP-eTRV',           'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.SET_POINT_MODE'  ];
 
 const ActorTypeTab = [];
 ActorTypeTab[0] = ['HM-LC-Sw4-PCB', 'Funk-Schaltaktor 4-fach, Platine',             '.STATE'    ];
@@ -127,7 +128,7 @@ function startAdapter(options) {
                         
                         break;
                     case 'Test':
-                        adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
+                        //adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
                         break;
                     default:
                         adapter.log.error('unknown message ' + obj.command);
@@ -146,6 +147,13 @@ function startAdapter(options) {
 //#######################################
 //
 async function main() {
+
+    //test only, remove later
+    const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+    const rooms = AllRoomsEnum.result;
+
+    adapter.log.debug("room enums: " + JSON.stringify(rooms));
+    //bis hier...
 
 
     try {
@@ -219,6 +227,8 @@ async function ListDevices(obj) {
     const AllRoomsEnum = await adapter.getEnumAsync('rooms');
     const rooms = AllRoomsEnum.result;
 
+    adapter.log.debug("room enums: " + JSON.stringify(rooms));
+
     const AllFunctionsEnum = await adapter.getEnumAsync('functions');
     //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
     const functions = AllFunctionsEnum.result;
@@ -236,7 +246,7 @@ async function ListDevices(obj) {
             }
         }
     }
-    //adapter.log.debug("function enums: " + JSON.stringify(HeatingMember));
+    adapter.log.debug("heating member: " + JSON.stringify(HeatingMember));
 
 
     //over all rooms
