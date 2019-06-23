@@ -153,6 +153,13 @@ async function main() {
     const rooms = AllRoomsEnum.result;
 
     adapter.log.debug("room enums: " + JSON.stringify(rooms));
+
+    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+    const functions = AllFunctionsEnum.result;
+
+    adapter.log.debug("function enums: " + JSON.stringify(functions));
+
+
     //bis hier...
 
 
