@@ -17,6 +17,15 @@
 const utils = require('@iobroker/adapter-core');
 const CronJob = require('cron').CronJob;
 
+
+//========================================================================
+//this must be false for production use! set it to true when you use static data for debuggung purpose only
+const bDebug = false;
+//========================================================================
+
+
+
+
 //structure for devices:
 //      room:               room name
 //      thermostat:         thermostat address without instance
@@ -39,7 +48,7 @@ ThermostatTypeTab[6] = ['HmIP-STH',             'Wandthermostat(HMIP)',         
 ThermostatTypeTab[7] = ['HmIP-STHD',            'Wandthermostat(HMIP)',         '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
 ThermostatTypeTab[8] = ['HmIP-eTRV-2',          'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.CONTROL_MODE'    ];
 ThermostatTypeTab[9] = ['HmIP-eTRV-B',          'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.SET_POINT_MODE'  ];
-ThermostatTypeTab[10] = ['HmIP-eTRV',           'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.SET_POINT_MODE'  ];
+ThermostatTypeTab[10] = ['HMIP-eTRV',           'Heizkoerperthermostat(HMIP)',  '.1.SET_POINT_TEMPERATURE',      '.1.ACTUAL_TEMPERATURE',     '1.SET_POINT_MODE'  ];
 
 const ActorTypeTab = [];
 ActorTypeTab[0] = ['HM-LC-Sw4-PCB', 'Funk-Schaltaktor 4-fach, Platine',             '.STATE'    ];
@@ -149,52 +158,19 @@ function startAdapter(options) {
 async function main() {
 
     //test only, remove later
-    const AllRoomsEnum = await adapter.getEnumAsync('rooms');
-    const rooms = AllRoomsEnum.result;
+    if (adapter.config.devices.length < 1) {
 
-    adapter.log.debug("room enums: " + JSON.stringify(rooms));
+        const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+        const rooms = AllRoomsEnum.result;
 
-    /*
-     room enums: { "enum.rooms.E1_Wohnzimmer": 
-        { "_id": "enum.rooms.E1_Wohnzimmer", "type": "enum", "common": { "name": "E1_Wohnzimmer", "desc": "", 
-        "members": ["hm-rpc.2.000393C99B32B3.1", "hue.0.Philips_hue.HUE_Wohnzimmer", "hue.0.Philips_hue.Wohnzimmer", "hm-rpc.2.000393C99BDC12.1"] }, "native": { "Name": "E1_Wohnzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917049, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, 
-        "enum.rooms.E3_Schlafzimmer": { "_id": "enum.rooms.E3_Schlafzimmer", "type": "enum", "common": { "name": "E3_Schlafzimmer", "desc": "", 
-        "members": ["hm-rpc.2.000393C99BE779.1"] }, "native": { "Name": "E3_Schlafzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917215, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Kinderzimmer": { "_id": "enum.rooms.E2_Kinderzimmer", "type": "enum", "common": { "name": "E2_Kinderzimmer", "desc": "", "members": ["hm-rpc.2.000393C99BC714.1"] }, "native": { "Name": "E2_Kinderzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916708, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Jugendzimmer": { "_id": "enum.rooms.E2_Jugendzimmer", "type": "enum", "common": { "name": "E2_Jugendzimmer", "desc": "", "members": ["hm-rpc.2.000393C99BDC09.1"] }, "native": { "Name": "E2_Jugendzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917372, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Bad": { "_id": "enum.rooms.E2_Bad", "type": "enum", "common": { "name": "E2_Bad", "desc": "", "members": ["hm-rpc.2.000393C99B3A35.1"] }, "native": { "Name": "E2_Bad", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917533, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Toilette": { "_id": "enum.rooms.E1_Toilette", "type": "enum", "common": { "name": "E1_Toilette", "desc": "", "members": ["hm-rpc.2.000393C99BC735.1"] }, "native": { "Name": "E1_Toilette", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917674, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Arbeitszimmer": { "_id": "enum.rooms.E0_Arbeitszimmer", "type": "enum", "common": { "name": "E0_Arbeitszimmer", "desc": "", "members": ["hm-rpc.2.000393C99BC72D.1"] }, "native": { "Name": "E0_Arbeitszimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916869, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Kueche": { "_id": "enum.rooms.E1_Kueche", "type": "enum", "common": { "name": "E1_Kueche", "desc": "", "members": ["hue.0.Philips_hue.HUE_Kueche", "hue.0.Philips_hue.Kueche"] }, "native": { "Name": "E1_Kueche", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1552691949080, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Flur": { "_id": "enum.rooms.E2_Flur", "type": "enum", "common": { "name": "E2_Flur", "desc": "", "members": ["hm-rpc.2.000393C99BB07E.1"] }, "native": { "Name": "E2_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916388, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Flur": { "_id": "enum.rooms.E0_Flur", "type": "enum", "common": { "name": "E0_Flur", "desc": "", "members": ["hm-rpc.2.000393C99BC873.1"] }, "native": { "Name": "E0_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916545, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Keller": { "_id": "enum.rooms.E0_Keller", "type": "enum", "common": { "name": "E0_Keller", "desc": "", "members": [] }, "native": { "Name": "E0_Keller", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1552694908351, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E3_Flur": { "_id": "enum.rooms.E3_Flur", "type": "enum", "common": { "name": "E3_Flur", "desc": "", "members": [] }, "native": { "Name": "E3_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685855, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E4_Dachboden": { "_id": "enum.rooms.E4_Dachboden", "type": "enum", "common": { "name": "E4_Dachboden", "desc": "", "members": [] }, "native": { "Name": "E4_Dachboden", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685856, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Terasse": { "_id": "enum.rooms.E1_Terasse", "type": "enum", "common": { "name": "E1_Terasse", "desc": "", "members": [] }, "native": { "Name": "E1_Terasse", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685857, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Garage": { "_id": "enum.rooms.E0_Garage", "type": "enum", "common": { "name": "E0_Garage", "desc": "", "members": [] }, "native": { "Name": "E0_Garage", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685858, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Garten": { "_id": "enum.rooms.E0_Garten", "type": "enum", "common": { "name": "E0_Garten", "desc": "", "members": [] }, "native": { "Name": "E0_Garten", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685858, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Garten": { "_id": "enum.rooms.E1_Garten", "type": "enum", "common": { "name": "E1_Garten", "desc": "", "members": [] }, "native": { "Name": "E1_Garten", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685859, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } } }
+        adapter.log.debug("room enums: " + JSON.stringify(rooms));
 
-*/
+        const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+        const functions = AllFunctionsEnum.result;
 
-/*
-    { "enum.functions.color": { 
-        "_id": "enum.functions.color", "common": { "name": "Color", "members": ["hue.0.Philips_hue.All.sat", "hue.0.Philips_hue.HUE_Wohnzimmer.sat", "hue.0.Philips_hue.HUE_Kueche.sat", "hue.0.Philips_hue.Wohnzimmer.sat", "hue.0.Philips_hue.Kueche.sat"] }, "type": "enum", "native": { }, "from": "system.host.ioBroker.cli", "ts": 1544555575102, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Licht": { "_id": "enum.functions.Licht", "desc": "", "type": "enum", "common": { "name": "Licht", "members": [] }, "native": { "Name": "Licht", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944729, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Heizung": 
-        
-        { "_id": "enum.functions.Heizung", "desc": "", "type": "enum", "common": 
-            { "name": "Heizung", 
-                "members": 
-                [
-                "hm-rpc.2.000393C99B32B3.1", 
-                "hm-rpc.2.000393C99B3A35.1", 
-                "hm-rpc.2.000393C99BB07E.1", 
-                "hm-rpc.2.000393C99BC714.1", 
-                "hm-rpc.2.000393C99BC72D.1", 
-                "hm-rpc.2.000393C99BC873.1", 
-                "hm-rpc.2.000393C99BDC09.1", 
-                "hm-rpc.2.000393C99BDC12.1", 
-                "hm-rpc.2.000393C99BE779.1", 
-                "hm-rpc.2.000393C99BC735.1"] }, "native": { "Name": "Heizung", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917665, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Klima": { "_id": "enum.functions.Klima", "desc": "", "type": "enum", "common": { "name": "Klima", "members": [] }, "native": { "Name": "Klima", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944733, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Wetter": { "_id": "enum.functions.Wetter", "desc": "", "type": "enum", "common": { "name": "Wetter", "members": [] }, "native": { "Name": "Wetter", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944736, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Umwelt": { "_id": "enum.functions.Umwelt", "desc": "", "type": "enum", "common": { "name": "Umwelt", "members": [] }, "native": { "Name": "Umwelt", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944739, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Sicherheit": { "_id": "enum.functions.Sicherheit", "desc": "", "type": "enum", "common": { "name": "Sicherheit", "members": [] }, "native": { "Name": "Sicherheit", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944740, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Verschluss": { "_id": "enum.functions.Verschluss", "desc": "", "type": "enum", "common": { "name": "Verschluss", "members": [] }, "native": { "Name": "Verschluss", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944740, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Taster": { "_id": "enum.functions.Taster", "desc": "", "type": "enum", "common": { "name": "Taster", "members": [] }, "native": { "Name": "Taster", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944741, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Zentrale": { "_id": "enum.functions.Zentrale", "desc": "", "type": "enum", "common": { "name": "Zentrale", "members": ["hm-rpc.1.BidCoS-RF.1", "hm-rpc.1.BidCoS-RF.10", "hm-rpc.1.BidCoS-RF.11", "hm-rpc.1.BidCoS-RF.12", "hm-rpc.1.BidCoS-RF.13", "hm-rpc.1.BidCoS-RF.14", "hm-rpc.1.BidCoS-RF.15", "hm-rpc.1.BidCoS-RF.16", "hm-rpc.1.BidCoS-RF.17", "hm-rpc.1.BidCoS-RF.18", "hm-rpc.1.BidCoS-RF.19", "hm-rpc.1.BidCoS-RF.2", "hm-rpc.1.BidCoS-RF.20", "hm-rpc.1.BidCoS-RF.21", "hm-rpc.1.BidCoS-RF.22", "hm-rpc.1.BidCoS-RF.23", "hm-rpc.1.BidCoS-RF.24", "hm-rpc.1.BidCoS-RF.25", "hm-rpc.1.BidCoS-RF.26", "hm-rpc.1.BidCoS-RF.27", "hm-rpc.1.BidCoS-RF.28", "hm-rpc.1.BidCoS-RF.29", "hm-rpc.1.BidCoS-RF.3", "hm-rpc.1.BidCoS-RF.30", "hm-rpc.1.BidCoS-RF.31", "hm-rpc.1.BidCoS-RF.32", "hm-rpc.1.BidCoS-RF.33", "hm-rpc.1.BidCoS-RF.34", "hm-rpc.1.BidCoS-RF.35", "hm-rpc.1.BidCoS-RF.36", "hm-rpc.1.BidCoS-RF.37", "hm-rpc.1.BidCoS-RF.38", "hm-rpc.1.BidCoS-RF.39", "hm-rpc.1.BidCoS-RF.4", "hm-rpc.1.BidCoS-RF.40", "hm-rpc.1.BidCoS-RF.41", "hm-rpc.1.BidCoS-RF.42", "hm-rpc.1.BidCoS-RF.43", "hm-rpc.1.BidCoS-RF.44", "hm-rpc.1.BidCoS-RF.45", "hm-rpc.1.BidCoS-RF.46", "hm-rpc.1.BidCoS-RF.47", "hm-rpc.1.BidCoS-RF.48", "hm-rpc.1.BidCoS-RF.49", "hm-rpc.1.BidCoS-RF.5", "hm-rpc.1.BidCoS-RF.50", "hm-rpc.1.BidCoS-RF.6", "hm-rpc.1.BidCoS-RF.7", "hm-rpc.1.BidCoS-RF.8", "hm-rpc.1.BidCoS-RF.9", "hm-rpc.2.001F58A9A7115D.1", "hm-rpc.2.001F58A9A7115D.10", "hm-rpc.2.001F58A9A7115D.11", "hm-rpc.2.001F58A9A7115D.12", "hm-rpc.2.001F58A9A7115D.13", "hm-rpc.2.001F58A9A7115D.14", "hm-rpc.2.001F58A9A7115D.15", "hm-rpc.2.001F58A9A7115D.16", "hm-rpc.2.001F58A9A7115D.17", "hm-rpc.2.001F58A9A7115D.18", "hm-rpc.2.001F58A9A7115D.19", "hm-rpc.2.001F58A9A7115D.2", "hm-rpc.2.001F58A9A7115D.20", "hm-rpc.2.001F58A9A7115D.21", "hm-rpc.2.001F58A9A7115D.22", "hm-rpc.2.001F58A9A7115D.23", "hm-rpc.2.001F58A9A7115D.24", "hm-rpc.2.001F58A9A7115D.25", "hm-rpc.2.001F58A9A7115D.26", "hm-rpc.2.001F58A9A7115D.27", "hm-rpc.2.001F58A9A7115D.28", "hm-rpc.2.001F58A9A7115D.29", "hm-rpc.2.001F58A9A7115D.3", "hm-rpc.2.001F58A9A7115D.30", "hm-rpc.2.001F58A9A7115D.31", "hm-rpc.2.001F58A9A7115D.32", "hm-rpc.2.001F58A9A7115D.33", "hm-rpc.2.001F58A9A7115D.34", "hm-rpc.2.001F58A9A7115D.35", "hm-rpc.2.001F58A9A7115D.36", "hm-rpc.2.001F58A9A7115D.37", "hm-rpc.2.001F58A9A7115D.38", "hm-rpc.2.001F58A9A7115D.39", "hm-rpc.2.001F58A9A7115D.4", "hm-rpc.2.001F58A9A7115D.40", "hm-rpc.2.001F58A9A7115D.41", "hm-rpc.2.001F58A9A7115D.42", "hm-rpc.2.001F58A9A7115D.43", "hm-rpc.2.001F58A9A7115D.44", "hm-rpc.2.001F58A9A7115D.45", "hm-rpc.2.001F58A9A7115D.46", "hm-rpc.2.001F58A9A7115D.47", "hm-rpc.2.001F58A9A7115D.48", "hm-rpc.2.001F58A9A7115D.49", "hm-rpc.2.001F58A9A7115D.5", "hm-rpc.2.001F58A9A7115D.50", "hm-rpc.2.001F58A9A7115D.6", "hm-rpc.2.001F58A9A7115D.7", "hm-rpc.2.001F58A9A7115D.8", "hm-rpc.2.001F58A9A7115D.9", "hm-rpc.2.001F58A9A7115D.0"] }, "native": { "Name": "Zentrale", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944742, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Energiemanagement": { "_id": "enum.functions.Energiemanagement", "desc": "", "type": "enum", "common": { "name": "Energiemanagement", "members": [] }, "native": { "Name": "Energiemanagement", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944743, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } } }
-
-*/
-
-
-
-
-    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
-    const functions = AllFunctionsEnum.result;
-
-    adapter.log.debug("function enums: " + JSON.stringify(functions));
-
-
-    //bis hier...
-
+        adapter.log.debug("function enums: " + JSON.stringify(functions));
+        //bis hier...
+    }
 
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
@@ -210,45 +186,7 @@ async function main() {
     }
 
 }
-/*
-[{
-        "room": "Wohnzimmer",
-        "thermostat": "IEQ0067957",
-        "thermostatType": "HM-CC-TC",
-        "thermostatTypeID": 1,
-        "actor1": "IEQ0383091:3",
-        "actor1Type": "HM-LC-Sw4-SM",
-        "actor1TypeID": 2,
-        "actor2": null,
-        "actor2Type": null,
-        "actor2TypeID": null,
-        "isActive": true
-    }, {
-        "room": "Küche", "thermostat": "IEQ0068237", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:4", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Schlafzimmer", "thermostat": "JEQ0035953", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "KiZi_Links", "thermostat": "JEQ0035713", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "KiZi_Rechts", "thermostat": "JEQ0035956", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Arbeitszimmer", "thermostat": "IEQ0067581", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:1", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Bad-OG", "thermostat": "JEQ0035545", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "HWR", "thermostat": "LEQ0900578", "thermostatType": null, "thermostatTypeID": null, "actor1": "LEQ0900578:1", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Mittelzimmer", "thermostat": "JEQ0036000", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": null, "actor1Type": null, "actor1TypeID": null, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Flur-EG", "thermostat": "IEQ0077386", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "IEQ0383091:2", "actor1Type": "HM-LC-Sw4-SM", "actor1TypeID": 2, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Sauna", "thermostat": "JEQ0081286", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "LEQ0900578:4", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Gästezimmer", "thermostat": "JEQ0080886", "thermostatType": "HM-CC-TC", "thermostatTypeID": 1, "actor1": "LEQ0900578:3", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }, {
-        "room": "Flur-KG", "thermostat": "LEQ0900578", "thermostatType": null, "thermostatTypeID": null, "actor1": "LEQ0900578:2", "actor1Type": "HM-LC-Sw4-DR", "actor1TypeID": 1, "actor2": null, "actor2Type": null, "actor2TypeID": null, "isActive": true
-    }]
-*/
+
 
 
 //#######################################
@@ -267,21 +205,32 @@ async function ListDevices(obj) {
         adapter.log.warn("after delete " + JSON.stringify(adapter.config.devices));
     }
 
-
-    //get room enums first; this includes members as well
-    const AllRoomsEnum = await adapter.getEnumAsync('rooms');
-    const rooms = AllRoomsEnum.result;
-
+    var rooms = {};
+    if (bDebug) {
+        rooms = { "enum.rooms.E1_Wohnzimmer": { "_id": "enum.rooms.E1_Wohnzimmer", "type": "enum", "common": { "name": "E1_Wohnzimmer", "desc": "", "members": ["hm-rpc.2.000393C99B32B3.1", "hue.0.Philips_hue.HUE_Wohnzimmer", "hue.0.Philips_hue.Wohnzimmer", "hm-rpc.2.000393C99BDC12.1"] }, "native": { "Name": "E1_Wohnzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917049, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.rooms.E3_Schlafzimmer": { "_id": "enum.rooms.E3_Schlafzimmer", "type": "enum", "common": { "name": "E3_Schlafzimmer", "desc": "", "members": ["hm-rpc.2.000393C99BE779.1"] }, "native": { "Name": "E3_Schlafzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917215, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Kinderzimmer": { "_id": "enum.rooms.E2_Kinderzimmer", "type": "enum", "common": { "name": "E2_Kinderzimmer", "desc": "", "members": ["hm-rpc.2.000393C99BC714.1"] }, "native": { "Name": "E2_Kinderzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916708, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Jugendzimmer": { "_id": "enum.rooms.E2_Jugendzimmer", "type": "enum", "common": { "name": "E2_Jugendzimmer", "desc": "", "members": ["hm-rpc.2.000393C99BDC09.1"] }, "native": { "Name": "E2_Jugendzimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917372, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Bad": { "_id": "enum.rooms.E2_Bad", "type": "enum", "common": { "name": "E2_Bad", "desc": "", "members": ["hm-rpc.2.000393C99B3A35.1"] }, "native": { "Name": "E2_Bad", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917533, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Toilette": { "_id": "enum.rooms.E1_Toilette", "type": "enum", "common": { "name": "E1_Toilette", "desc": "", "members": ["hm-rpc.2.000393C99BC735.1"] }, "native": { "Name": "E1_Toilette", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917674, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Arbeitszimmer": { "_id": "enum.rooms.E0_Arbeitszimmer", "type": "enum", "common": { "name": "E0_Arbeitszimmer", "desc": "", "members": ["hm-rpc.2.000393C99BC72D.1"] }, "native": { "Name": "E0_Arbeitszimmer", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916869, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Kueche": { "_id": "enum.rooms.E1_Kueche", "type": "enum", "common": { "name": "E1_Kueche", "desc": "", "members": ["hue.0.Philips_hue.HUE_Kueche", "hue.0.Philips_hue.Kueche"] }, "native": { "Name": "E1_Kueche", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1552691949080, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E2_Flur": { "_id": "enum.rooms.E2_Flur", "type": "enum", "common": { "name": "E2_Flur", "desc": "", "members": ["hm-rpc.2.000393C99BB07E.1"] }, "native": { "Name": "E2_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916388, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Flur": { "_id": "enum.rooms.E0_Flur", "type": "enum", "common": { "name": "E0_Flur", "desc": "", "members": ["hm-rpc.2.000393C99BC873.1"] }, "native": { "Name": "E0_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443916545, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Keller": { "_id": "enum.rooms.E0_Keller", "type": "enum", "common": { "name": "E0_Keller", "desc": "", "members": [] }, "native": { "Name": "E0_Keller", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1552694908351, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E3_Flur": { "_id": "enum.rooms.E3_Flur", "type": "enum", "common": { "name": "E3_Flur", "desc": "", "members": [] }, "native": { "Name": "E3_Flur", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685855, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E4_Dachboden": { "_id": "enum.rooms.E4_Dachboden", "type": "enum", "common": { "name": "E4_Dachboden", "desc": "", "members": [] }, "native": { "Name": "E4_Dachboden", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685856, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Terasse": { "_id": "enum.rooms.E1_Terasse", "type": "enum", "common": { "name": "E1_Terasse", "desc": "", "members": [] }, "native": { "Name": "E1_Terasse", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685857, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Garage": { "_id": "enum.rooms.E0_Garage", "type": "enum", "common": { "name": "E0_Garage", "desc": "", "members": [] }, "native": { "Name": "E0_Garage", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685858, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E0_Garten": { "_id": "enum.rooms.E0_Garten", "type": "enum", "common": { "name": "E0_Garten", "desc": "", "members": [] }, "native": { "Name": "E0_Garten", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685858, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.rooms.E1_Garten": { "_id": "enum.rooms.E1_Garten", "type": "enum", "common": { "name": "E1_Garten", "desc": "", "members": [] }, "native": { "Name": "E1_Garten", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1553513685859, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } } };
+    }
+    else {
+        //get room enums first; this includes members as well
+        const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+        rooms = AllRoomsEnum.result;
+    }
     if (initialDebug) {
         adapter.log.debug("room enums: " + JSON.stringify(rooms));
     }
-    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
-    //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
-    const functions = AllFunctionsEnum.result;
 
+    var functions = {};
+    if (bDebug) {
+        functions = { "enum.functions.color": { "_id": "enum.functions.color", "common": { "name": "Color", "members": ["hue.0.Philips_hue.All.sat", "hue.0.Philips_hue.HUE_Wohnzimmer.sat", "hue.0.Philips_hue.HUE_Kueche.sat", "hue.0.Philips_hue.Wohnzimmer.sat", "hue.0.Philips_hue.Kueche.sat"] }, "type": "enum", "native": {}, "from": "system.host.ioBroker.cli", "ts": 1544555575102, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Licht": { "_id": "enum.functions.Licht", "desc": "", "type": "enum", "common": { "name": "Licht", "members": [] }, "native": { "Name": "Licht", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944729, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Heizung": { "_id": "enum.functions.Heizung", "desc": "", "type": "enum", "common": { "name": "Heizung", "members": ["hm-rpc.2.000393C99B32B3.1", "hm-rpc.2.000393C99B3A35.1", "hm-rpc.2.000393C99BB07E.1", "hm-rpc.2.000393C99BC714.1", "hm-rpc.2.000393C99BC72D.1", "hm-rpc.2.000393C99BC873.1", "hm-rpc.2.000393C99BDC09.1", "hm-rpc.2.000393C99BDC12.1", "hm-rpc.2.000393C99BE779.1", "hm-rpc.2.000393C99BC735.1"] }, "native": { "Name": "Heizung", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rpc.2", "ts": 1555443917665, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Klima": { "_id": "enum.functions.Klima", "desc": "", "type": "enum", "common": { "name": "Klima", "members": [] }, "native": { "Name": "Klima", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944733, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Wetter": { "_id": "enum.functions.Wetter", "desc": "", "type": "enum", "common": { "name": "Wetter", "members": [] }, "native": { "Name": "Wetter", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944736, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Umwelt": { "_id": "enum.functions.Umwelt", "desc": "", "type": "enum", "common": { "name": "Umwelt", "members": [] }, "native": { "Name": "Umwelt", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944739, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Sicherheit": { "_id": "enum.functions.Sicherheit", "desc": "", "type": "enum", "common": { "name": "Sicherheit", "members": [] }, "native": { "Name": "Sicherheit", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944740, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Verschluss": { "_id": "enum.functions.Verschluss", "desc": "", "type": "enum", "common": { "name": "Verschluss", "members": [] }, "native": { "Name": "Verschluss", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944740, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Taster": { "_id": "enum.functions.Taster", "desc": "", "type": "enum", "common": { "name": "Taster", "members": [] }, "native": { "Name": "Taster", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944741, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } }, "enum.functions.Zentrale": { "_id": "enum.functions.Zentrale", "desc": "", "type": "enum", "common": { "name": "Zentrale", "members": ["hm-rpc.1.BidCoS-RF.1", "hm-rpc.1.BidCoS-RF.10", "hm-rpc.1.BidCoS-RF.11", "hm-rpc.1.BidCoS-RF.12", "hm-rpc.1.BidCoS-RF.13", "hm-rpc.1.BidCoS-RF.14", "hm-rpc.1.BidCoS-RF.15", "hm-rpc.1.BidCoS-RF.16", "hm-rpc.1.BidCoS-RF.17", "hm-rpc.1.BidCoS-RF.18", "hm-rpc.1.BidCoS-RF.19", "hm-rpc.1.BidCoS-RF.2", "hm-rpc.1.BidCoS-RF.20", "hm-rpc.1.BidCoS-RF.21", "hm-rpc.1.BidCoS-RF.22", "hm-rpc.1.BidCoS-RF.23", "hm-rpc.1.BidCoS-RF.24", "hm-rpc.1.BidCoS-RF.25", "hm-rpc.1.BidCoS-RF.26", "hm-rpc.1.BidCoS-RF.27", "hm-rpc.1.BidCoS-RF.28", "hm-rpc.1.BidCoS-RF.29", "hm-rpc.1.BidCoS-RF.3", "hm-rpc.1.BidCoS-RF.30", "hm-rpc.1.BidCoS-RF.31", "hm-rpc.1.BidCoS-RF.32", "hm-rpc.1.BidCoS-RF.33", "hm-rpc.1.BidCoS-RF.34", "hm-rpc.1.BidCoS-RF.35", "hm-rpc.1.BidCoS-RF.36", "hm-rpc.1.BidCoS-RF.37", "hm-rpc.1.BidCoS-RF.38", "hm-rpc.1.BidCoS-RF.39", "hm-rpc.1.BidCoS-RF.4", "hm-rpc.1.BidCoS-RF.40", "hm-rpc.1.BidCoS-RF.41", "hm-rpc.1.BidCoS-RF.42", "hm-rpc.1.BidCoS-RF.43", "hm-rpc.1.BidCoS-RF.44", "hm-rpc.1.BidCoS-RF.45", "hm-rpc.1.BidCoS-RF.46", "hm-rpc.1.BidCoS-RF.47", "hm-rpc.1.BidCoS-RF.48", "hm-rpc.1.BidCoS-RF.49", "hm-rpc.1.BidCoS-RF.5", "hm-rpc.1.BidCoS-RF.50", "hm-rpc.1.BidCoS-RF.6", "hm-rpc.1.BidCoS-RF.7", "hm-rpc.1.BidCoS-RF.8", "hm-rpc.1.BidCoS-RF.9", "hm-rpc.2.001F58A9A7115D.1", "hm-rpc.2.001F58A9A7115D.10", "hm-rpc.2.001F58A9A7115D.11", "hm-rpc.2.001F58A9A7115D.12", "hm-rpc.2.001F58A9A7115D.13", "hm-rpc.2.001F58A9A7115D.14", "hm-rpc.2.001F58A9A7115D.15", "hm-rpc.2.001F58A9A7115D.16", "hm-rpc.2.001F58A9A7115D.17", "hm-rpc.2.001F58A9A7115D.18", "hm-rpc.2.001F58A9A7115D.19", "hm-rpc.2.001F58A9A7115D.2", "hm-rpc.2.001F58A9A7115D.20", "hm-rpc.2.001F58A9A7115D.21", "hm-rpc.2.001F58A9A7115D.22", "hm-rpc.2.001F58A9A7115D.23", "hm-rpc.2.001F58A9A7115D.24", "hm-rpc.2.001F58A9A7115D.25", "hm-rpc.2.001F58A9A7115D.26", "hm-rpc.2.001F58A9A7115D.27", "hm-rpc.2.001F58A9A7115D.28", "hm-rpc.2.001F58A9A7115D.29", "hm-rpc.2.001F58A9A7115D.3", "hm-rpc.2.001F58A9A7115D.30", "hm-rpc.2.001F58A9A7115D.31", "hm-rpc.2.001F58A9A7115D.32", "hm-rpc.2.001F58A9A7115D.33", "hm-rpc.2.001F58A9A7115D.34", "hm-rpc.2.001F58A9A7115D.35", "hm-rpc.2.001F58A9A7115D.36", "hm-rpc.2.001F58A9A7115D.37", "hm-rpc.2.001F58A9A7115D.38", "hm-rpc.2.001F58A9A7115D.39", "hm-rpc.2.001F58A9A7115D.4", "hm-rpc.2.001F58A9A7115D.40", "hm-rpc.2.001F58A9A7115D.41", "hm-rpc.2.001F58A9A7115D.42", "hm-rpc.2.001F58A9A7115D.43", "hm-rpc.2.001F58A9A7115D.44", "hm-rpc.2.001F58A9A7115D.45", "hm-rpc.2.001F58A9A7115D.46", "hm-rpc.2.001F58A9A7115D.47", "hm-rpc.2.001F58A9A7115D.48", "hm-rpc.2.001F58A9A7115D.49", "hm-rpc.2.001F58A9A7115D.5", "hm-rpc.2.001F58A9A7115D.50", "hm-rpc.2.001F58A9A7115D.6", "hm-rpc.2.001F58A9A7115D.7", "hm-rpc.2.001F58A9A7115D.8", "hm-rpc.2.001F58A9A7115D.9", "hm-rpc.2.001F58A9A7115D.0"] }, "native": { "Name": "Zentrale", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944742, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" }, "user": "system.user.admin" }, "enum.functions.Energiemanagement": { "_id": "enum.functions.Energiemanagement", "desc": "", "type": "enum", "common": { "name": "Energiemanagement", "members": [] }, "native": { "Name": "Energiemanagement", "TypeName": "ENUM", "EnumInfo": "" }, "from": "system.adapter.hm-rega.0", "ts": 1548666944743, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } } };
+   }
+    else {
+        const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+        //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
+        functions = AllFunctionsEnum.result;
+    }
     if (initialDebug) {
         adapter.log.debug("function enums: " + JSON.stringify(functions));
     }
+
     const HeatingMember = [];
     for (var e1 in functions) {
 
@@ -312,8 +261,13 @@ async function ListDevices(obj) {
         var ids = rooms[e].common.members;
         for (var n in ids) {
 
-            var adapterObj = await adapter.getForeignObjectAsync(ids[n]);
-
+            var adapterObj;
+            if (bDebug) {
+                adapterObj = { "_id": "hm-rpc.2.000393C99BC873.1", "type": "channel", "common": { "name": "HMIP-eTRV 000393C99BC873:1" }, "native": { "TYPE": "HEATING_CLIMATECONTROL_TRANSCEIVER", "SUBTYPE": "", "ADDRESS": "000393C99BC873:1", "RF_ADDRESS": 0, "CHILDREN": [], "PARENT": "000393C99BC873", "PARENT_TYPE": "HMIP-eTRV", "INDEX": 1, "AES_ACTIVE": 1, "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"], "FIRMWARE": "", "AVAILABLE_FIRMWARE": "", "UPDATABLE": true, "FIRMWARE_UPDATE_STATE": "", "VERSION": 3, "FLAGS": 1, "LINK_SOURCE_ROLES": "CLIMATE_CONTROL", "LINK_TARGET_ROLES": "", "DIRECTION": 1, "GROUP": "", "TEAM": "", "TEAM_TAG": "", "TEAM_CHANNELS": [], "INTERFACE": "", "ROAMING": 0, "RX_MODE": 0 }, "from": "system.adapter.hm-rega.0", "user": "system.user.admin", "ts": 1560770787248, "acl": { "object": 1636, "owner": "system.user.admin", "ownerGroup": "system.group.administrator" } };
+            }
+            else {
+                adapterObj = await adapter.getForeignObjectAsync(ids[n]);
+            }
             if (adapterObj && adapterObj.native) {
 
                 if (initialDebug) {
@@ -330,6 +284,9 @@ async function ListDevices(obj) {
                     //check if member is a supported RT 
                     var supportedRT = -1;
                     for (var x1 = 0; x1 < ThermostatTypeTab.length; x1++) {
+                        if (bDebug) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
+                        }
                         if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
                             supportedRT = x1;
                         }
@@ -337,6 +294,9 @@ async function ListDevices(obj) {
 
                     var supportedActor = -1;
                     for (var x2 = 0; x2 < ActorTypeTab.length; x2++) {
+                        if (bDebug) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
+                        }
                         if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
                             supportedActor = x2;
                         }
