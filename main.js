@@ -256,9 +256,53 @@ async function ListDevices(obj) {
             adapter.log.debug("checking room " + rooms[e].common.name);
         }
 
+/*
+ * 
+ * todo:
+ * 
+ * 2019-06-30 20:02:27.330  - warn: heatingcontrol.0 not supported type {"type":"state","common":{"type":"number","unit":"°C","min":10,"max":35,"read":true,"write":true,"role":"level.temperature","name":"Cooling Threshold Temperature"},"native":{"UUID":"0000000D-0000-1000-8000-0026BB765291","displayName":"Cooling Threshold Temperature"},"from":"system.adapter.ham.0","user":"system.user.admin","ts":1561823566903,"_id":"ham.0.Büro.Büro-Thermo.Cooling-Threshold-Temperature","acl":{"object":1636,"state":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+
+ * 
+heatingcontrol.0	2019-07-03 19:44:05.475	debug	checking room [object Object]
+heatingcontrol.0	2019-07-03 19:44:05.475	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":5,"max":25,"read":true,"write":true,"role":"level.temperature","name":"Target Temperature"},"native":{"UUID":"00000035-00
+heatingcontrol.0	2019-07-03 19:44:05.474	debug	found as Heating Gewerk 4 ham.0.Bad.Bad-Thermo.Target-Temperature
+heatingcontrol.0	2019-07-03 19:44:05.474	debug	member{"type":"state","common":{"type":"number","unit":"°C","min":5,"max":25,"read":true,"write":true,"role":"level.temperature","name":"Target Temperature"},"native":{"UUID":"00000035-0000-1000-8000-
+heatingcontrol.0	2019-07-03 19:44:05.465	warn	not supported type {"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":true,"role":"level","name":"Target Heating Cooling State","unit":""},"native":{"UUID":"00000033-0000-10
+heatingcontrol.0	2019-07-03 19:44:05.465	debug	found as Heating Gewerk 3 ham.0.Bad.Bad-Thermo.Target-Heating-Cooling-State
+heatingcontrol.0	2019-07-03 19:44:05.464	debug	member{"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":true,"role":"level","name":"Target Heating Cooling State","unit":""},"native":{"UUID":"00000033-0000-1000-8000-0026B
+heatingcontrol.0	2019-07-03 19:44:05.464	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":-100,"max":100,"read":true,"write":false,"role":"value.temperature","name":"Current Temperature"},"native":{"UUID":"00000
+heatingcontrol.0	2019-07-03 19:44:05.464	debug	found as Heating Gewerk 2 ham.0.Bad.Bad-Thermo.Current-Temperature
+heatingcontrol.0	2019-07-03 19:44:05.463	debug	member{"type":"state","common":{"type":"number","unit":"°C","min":-100,"max":100,"read":true,"write":false,"role":"value.temperature","name":"Current Temperature"},"native":{"UUID":"00000011-0000-1000
+heatingcontrol.0	2019-07-03 19:44:05.452	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":10,"max":35,"read":true,"write":true,"role":"level.temperature","name":"Cooling Threshold Temperature"},"native":{"UUID":
+heatingcontrol.0	2019-07-03 19:44:05.452	debug	found as Heating Gewerk 1 ham.0.Bad.Bad-Thermo.Cooling-Threshold-Temperature
+heatingcontrol.0	2019-07-03 19:44:05.451	debug	member{"type":"state","common":{"type":"number","unit":"°C","min":10,"max":35,"read":true,"write":true,"role":"level.temperature","name":"Cooling Threshold Temperature"},"native":{"UUID":"0000000D-000
+heatingcontrol.0	2019-07-03 19:44:05.445	warn	not supported type {"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":false,"role":"value","name":"Current Heating Cooling State","unit":""},"native":{"UUID":"0000000F-0000-
+heatingcontrol.0	2019-07-03 19:44:05.445	debug	found as Heating Gewerk 0 ham.0.Bad.Bad-Thermo.Current-Heating-Cooling-State
+heatingcontrol.0	2019-07-03 19:44:05.444	debug	member{"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":false,"role":"value","name":"Current Heating Cooling State","unit":""},"native":{"UUID":"0000000F-0000-1000-8000-002
+heatingcontrol.0	2019-07-03 19:44:05.438	debug	member{"_id":"mihome.0.devices.sensor_ht_158d00023d23bb.temperature","common":{"name":"Temperature","role":"value.temperature","write":false,"read":true,"type":"number","unit":"°C","smartName":{"smart
+heatingcontrol.0	2019-07-03 19:44:05.434	debug	member{"_id":"mihome.0.devices.sensor_ht_158d00023d23bb.humidity","common":{"name":"Humidity","role":"value.humidity","write":false,"read":true,"type":"number","unit":"%","min":0,"max":100},"type":"st
+heatingcontrol.0	2019-07-03 19:44:05.417	debug	checking room Bad
+heatingcontrol.0	2019-07-03 19:44:05.417	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":5,"max":25,"read":true,"write":true,"role":"level.temperature","name":"Target Temperature"},"native":{"UUID":"00000035-00
+heatingcontrol.0	2019-07-03 19:44:05.416	debug	found as Heating Gewerk 5 ham.0.Büro.Büro-Thermo.Target-Temperature
+heatingcontrol.0	2019-07-03 19:44:05.415	debug	member{"type":"state","common":{"type":"number","unit":"°C","min":5,"max":25,"read":true,"write":true,"role":"level.temperature","name":"Target Temperature"},"native":{"UUID":"00000035-0000-1000-8000-
+heatingcontrol.0	2019-07-03 19:44:05.410	warn	not supported type {"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":true,"role":"level","name":"Target Heating Cooling State","unit":""},"native":{"UUID":"00000033-0000-10
+heatingcontrol.0	2019-07-03 19:44:05.410	debug	found as Heating Gewerk 6 ham.0.Büro.Büro-Thermo.Target-Heating-Cooling-State
+heatingcontrol.0	2019-07-03 19:44:05.410	debug	member{"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":true,"role":"level","name":"Target Heating Cooling State","unit":""},"native":{"UUID":"00000033-0000-1000-8000-0026B
+heatingcontrol.0	2019-07-03 19:44:05.405	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":-100,"max":100,"read":true,"write":false,"role":"value.temperature","name":"Current Temperature"},"native":{"UUID":"00000
+heatingcontrol.0	2019-07-03 19:44:05.405	debug	found as Heating Gewerk 9 ham.0.Büro.Büro-Thermo.Current-Temperature
+heatingcontrol.0	2019-07-03 19:44:05.404	debug	member{"type":"state","common":{"type":"number","unit":"°C","min":-100,"max":100,"read":true,"write":false,"role":"value.temperature","name":"Current Temperature"},"native":{"UUID":"00000011-0000-1000
+heatingcontrol.0	2019-07-03 19:44:05.396	warn	not supported type {"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":false,"role":"value","name":"Current Heating Cooling State","unit":""},"native":{"UUID":"0000000F-0000-
+heatingcontrol.0	2019-07-03 19:44:05.396	debug	found as Heating Gewerk 8 ham.0.Büro.Büro-Thermo.Current-Heating-Cooling-State
+heatingcontrol.0	2019-07-03 19:44:05.395	debug	member{"type":"state","common":{"type":"number","min":0,"max":3,"read":true,"write":false,"role":"value","name":"Current Heating Cooling State","unit":""},"native":{"UUID":"0000000F-0000-1000-8000-002
+heatingcontrol.0	2019-07-03 19:44:05.389	warn	not supported type {"type":"state","common":{"type":"number","unit":"°C","min":10,"max":35,"read":true,"write":true,"role":"level.temperature","name":"Cooling Threshold Temperature"},"native":{"UUID":
+*/
+
 
         var ids = rooms[e].common.members;
         for (var n in ids) {
+
+
+
 
             var adapterObj;
             if (bDebug) {

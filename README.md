@@ -42,7 +42,7 @@ features:
 * a list of all rooms with thermostats and actuators. You can disable a room here. You should not change settings for thermostats or actuators because this will be overwritten next time you start admin
 
 ## Notes
-* node with version higher then 8 is necessary!
+* node with version 8 or higher is necessary!
 
 ## known issues
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) if you find bugs or whish new features
