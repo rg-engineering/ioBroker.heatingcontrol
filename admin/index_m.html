@@ -47,6 +47,9 @@
 
             if ($useActors.prop('checked')) {
                 $('.col-pathactors').show();
+                $('.col-useactorifnoheating').show();
+                $('.col-useactorifnothermostat').show();
+
                 show_hide_column(4, true);
                 show_hide_column(5, true);
                 show_hide_column(6, true);
@@ -56,6 +59,9 @@
             }
             else {
                 $('.col-pathactors').hide();
+                $('.col-useactorifnoheating').hide();
+                $('.col-useactorifnothermostat').hide();
+
                 show_hide_column(4, false);
                 show_hide_column(5, false);
                 show_hide_column(6, false);
@@ -212,7 +218,7 @@
                         <input type="text" id="PathThermostats" class="value" />
                         <label for="PathThermostats" class="translate">PathThermostats</label>
                     </div>
-                    <div class="input-field col s6 col-pathactors" >
+                    <div class="input-field col s6 col-pathactors">
                         <input type="text" id="PathActors" class="value" />
                         <label for="PathActors" class="translate">PathActors</label>
                     </div>
@@ -238,7 +244,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 col-useactorifnoheating">
                         <select id="UseActorsIfNotHeating" class="value">
                             <option value="1" class="translate">nothing</option>
                             <option value="2" class="translate">off</option>
@@ -246,7 +252,7 @@
                         </select>
                         <label for="UseActorsIfNotHeating" class="translate">UseActorsIfNotHeating</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 col-useactorifnothermostat">
                         <select id="UseActorsIfNoThermostat" class="value">
                             <option value="1" class="translate">nothing</option>
                             <option value="2" class="translate">off</option>
