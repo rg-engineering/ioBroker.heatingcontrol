@@ -25,6 +25,47 @@
     <script type="text/javascript">
 
 
+
+        function show_hide_column(col_no, do_show) {
+            var tbl = document.getElementById('table_devices');
+            var rows = tbl.getElementsByTagName('tr');
+
+            for (var row = 0; row < rows.length; row++) {
+                var cols = rows[row].children;
+                if (col_no >= 0 && col_no < cols.length) {
+                    var cell = cols[col_no];
+                    if (cell.tagName == 'TD' || cell.tagName == 'TH') cell.style.display = do_show ? '' : 'none';
+                }
+            }
+        }
+        
+
+
+        function showHideSettings() {
+
+            var $useActors = $('#UseActors');
+
+            if ($useActors.prop('checked')) {
+                $('.col-pathactors').show();
+                show_hide_column(4, true);
+                show_hide_column(5, true);
+                show_hide_column(6, true);
+                show_hide_column(7, true);
+                show_hide_column(8, true);
+                show_hide_column(9, true);
+            }
+            else {
+                $('.col-pathactors').hide();
+                show_hide_column(4, false);
+                show_hide_column(5, false);
+                show_hide_column(6, false);
+                show_hide_column(7, false);
+                show_hide_column(8, false);
+                show_hide_column(9, false);
+            }
+        }
+
+
         var timeout;
         function getDevices(onChange, instance) {
             timeout = setTimeout(function () {
@@ -76,7 +117,7 @@
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
                     $value.prop('checked', settings[key]).on('change', function () {
-
+                        showHideSettings();
                         onChange();
                     });
                 } else {
@@ -93,7 +134,7 @@
 
             // Signal to admin, that no changes yet
             onChange(false);
-
+            showHideSettings();
             M.updateTextFields();
             getAdapterInstances('heatingcontrol', function (arr) {
                 for (var i = 0; i < arr.length; i++) {
@@ -167,11 +208,11 @@
 
                 </div>
                 <div class="row">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 col-paththemostats">
                         <input type="text" id="PathThermostats" class="value" />
                         <label for="PathThermostats" class="translate">PathThermostats</label>
                     </div>
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 col-pathactors" >
                         <input type="text" id="PathActors" class="value" />
                         <label for="PathActors" class="translate">PathActors</label>
                     </div>
@@ -214,7 +255,7 @@
                         <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
                     </div>
                 </div>
-
+                
             </div>
 
                 <!-- tab "profile - settings"  -->
@@ -255,19 +296,23 @@
                         <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                         <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
                         <div class="table-values-div">
-                            <table class="table-values" style="width: 100%;">
+                            <table id="table_devices" class="table-values" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th data-name="room" style="width: 20%" class="translate">room</th>
                                         <th data-name="thermostat" class="translate">thermostat</th>
                                         <th data-name="thermostatType" class="translate">type</th>
                                         <th data-name="thermostatTypeID" class="translate">typeID</th>
+                                        
+                                        <!-- show only if actors are used -->
                                         <th data-name="actor1" class="translate">actor1</th>
                                         <th data-name="actor1Type" class="translate">type</th>
-                                        <th data-name="actor1TypeID" class="translate">typeID</th>
+                                        <th data-name="actor1TypeID" class="translate"">typeID</th>
                                         <th data-name="actor2" class="translate">actor2</th>
                                         <th data-name="actor2Type" class="translate">type</th>
                                         <th data-name="actor2TypeID" class="translate">typeID</th>
+
+
                                         <th data-name="isActive" data-type="checkbox" class="translate">active</th>
                                         <th data-buttons="delete" style="width: 40px"></th>
                                     </tr>

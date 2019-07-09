@@ -4,16 +4,16 @@
     "version": "0.0.5",
     "news": {
       "0.0.5": {
-        "en": "support for max!cube thermostats",
-        "de": "Unterstützung für max! cube-Thermostate",
-        "ru": "поддержка термостатов max! cube",
-        "pt": "suporte para termostatos max! cube",
-        "nl": "ondersteuning voor max! cube-thermostaten",
-        "fr": "support pour les thermostats max! cube",
-        "it": "supporto per i termostati max! cube",
-        "es": "soporte para termostatos max! cube",
-        "pl": "obsługa termostatów max! cube",
-        "zh-cn": "支持max！cube恒温器"
+        "en": "support for max! thermostats",
+        "de": "Unterstützung für max!-Thermostate",
+        "ru": "поддержка термостатов max!",
+        "pt": "suporte para termostatos max!",
+        "nl": "ondersteuning voor max!-thermostaten",
+        "fr": "support pour les thermostats max!",
+        "it": "supporto per i termostati max!",
+        "es": "soporte para termostatos max!",
+        "pl": "obsługa termostatów max!",
+        "zh-cn": "支持max！恒温器"
       },
       "0.0.3": {
         "en": "ready for first publish",

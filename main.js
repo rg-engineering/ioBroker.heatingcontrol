@@ -52,7 +52,7 @@ ThermostatTypeTab[9] = ['HMIP-eTRV-B',          'Heizkoerperthermostat(HMIP)',  
 const MaxHomematicThermostatType = 9;
 //MaxCube
 const MinMaxcubeThermostatType = 10;
-ThermostatTypeTab[10] = ['max!', 'Thermostat', '.setpoint', '.temp', '.mode'];
+ThermostatTypeTab[10] = ['max! Thermostat', 'Thermostat', '.setpoint', '.temp', '.mode'];
 /*
 MAX! Heizkörperthermostat basic
 MAX! Heizkörperthermostat
