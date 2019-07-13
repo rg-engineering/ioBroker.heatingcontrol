@@ -26,7 +26,19 @@
 
 
 
-        function show_hide_column(col_no, do_show) {
+        function show_hide_column(col_name, col_no, do_show) {
+
+            //this is only for header
+            var element = document.getElementById(col_name);
+
+            if (do_show) {
+                element.classList.remove("hide");
+            }
+            else {
+                element.classList.add("hide");
+            }
+
+            //here we have all other rows
             var tbl = document.getElementById('table_devices');
             var rows = tbl.getElementsByTagName('tr');
 
@@ -34,7 +46,14 @@
                 var cols = rows[row].children;
                 if (col_no >= 0 && col_no < cols.length) {
                     var cell = cols[col_no];
-                    if (cell.tagName == 'TD' || cell.tagName == 'TH') cell.style.display = do_show ? '' : 'none';
+                    if (cell.tagName == 'TD' || cell.tagName == 'TH') {
+                        if (do_show) {
+                            cell.classList.remove("hide");
+                        }
+                        else {
+                            cell.classList.add("hide");
+                        }
+                    }
                 }
             }
         }
@@ -46,28 +65,34 @@
             var $useActors = $('#UseActors');
 
             if ($useActors.prop('checked')) {
+
+                console.log('show actor settings');
+
                 $('.col-pathactors').show();
                 $('.col-useactorifnoheating').show();
                 $('.col-useactorifnothermostat').show();
 
-                show_hide_column(4, true);
-                show_hide_column(5, true);
-                show_hide_column(6, true);
-                show_hide_column(7, true);
-                show_hide_column(8, true);
-                show_hide_column(9, true);
+                show_hide_column("col_5",4, true);
+                show_hide_column("col_6",5, true);
+                show_hide_column("col_7",6, true);
+                show_hide_column("col_8",7, true);
+                show_hide_column("col_9",8, true);
+                show_hide_column("col_10",9, true);
             }
             else {
+
+                console.log('hide actor settings');
+
                 $('.col-pathactors').hide();
                 $('.col-useactorifnoheating').hide();
                 $('.col-useactorifnothermostat').hide();
 
-                show_hide_column(4, false);
-                show_hide_column(5, false);
-                show_hide_column(6, false);
-                show_hide_column(7, false);
-                show_hide_column(8, false);
-                show_hide_column(9, false);
+                show_hide_column("col_5",4, false);
+                show_hide_column("col_6",5, false);
+                show_hide_column("col_7",6, false);
+                show_hide_column("col_8",7, false);
+                show_hide_column("col_9",8, false);
+                show_hide_column("col_10",9, false);
             }
         }
 
@@ -116,6 +141,8 @@
         function load(settings, onChange) {
 
             if (!settings) return;
+
+            console.log('##on change');
 
             // example: select elements with id=key and class=value and insert value
             for (var key in settings) {
@@ -299,10 +326,8 @@
                 <!-- tab "devices" -->
                 <div id="tab-devices" class="col s12 page">
                     <div class="col s12" id="values">
-                        <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                        <a id="table-button-search" class="btn-floating waves-effect waves-light blue disabled"><i class="material-icons">search</i><span class="translate">Search</span></a>
-                        <div class="table-values-div">
-                            <table id="table_devices" class="table-values" style="width: 100%;">
+                         <div class="table-values-div">
+                            <table id="table_devices" class="table-values" style="width: 100%;">                          
                                 <thead>
                                     <tr>
                                         <th data-name="room" style="width: 20%" class="translate">room</th>
@@ -311,13 +336,12 @@
                                         <th data-name="thermostatTypeID" class="translate">typeID</th>
                                         
                                         <!-- show only if actors are used -->
-                                        <th data-name="actor1" class="translate">actor1</th>
-                                        <th data-name="actor1Type" class="translate">type</th>
-                                        <th data-name="actor1TypeID" class="translate"">typeID</th>
-                                        <th data-name="actor2" class="translate">actor2</th>
-                                        <th data-name="actor2Type" class="translate">type</th>
-                                        <th data-name="actor2TypeID" class="translate">typeID</th>
-
+                                        <th id="col_5" data-name="actor1" class="translate">actor1</th>
+                                        <th id="col_6" data-name="actor1Type" class="translate">type</th>
+                                        <th id="col_7" data-name="actor1TypeID" class="translate">typeID</th>
+                                        <th id="col_8" data-name="actor2" class="translate">actor2</th>
+                                        <th id="col_9" data-name="actor2Type" class="translate">type</th>
+                                        <th id="col_10" data-name="actor2TypeID" class="translate">typeID</th>
 
                                         <th data-name="isActive" data-type="checkbox" class="translate">active</th>
                                         <th data-buttons="delete" style="width: 40px"></th>
