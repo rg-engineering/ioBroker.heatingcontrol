@@ -61,6 +61,14 @@ MAX! Wandthermostat +
 */
 const MaxMaxcubeThermostatType = 10;
 
+//tado with Homebridge accessories manager
+const MinTadoThermostatType = 20;
+ThermostatTypeTab[20] = ['tado Thermostat', 'Thermostat', '.Target-Temperature', '.Current-Temperature', '.mode'];
+//id ist ham.0.RaumName.ThermostatName.
+const MaxTadoThermostatType = 20;
+
+
+
 
 const ActorTypeTab = [];
 ActorTypeTab[0] = ['HM-LC-Sw4-PCB', 'Funk-Schaltaktor 4-fach, Platine',             '.STATE'    ];
@@ -170,19 +178,19 @@ function startAdapter(options) {
 async function main() {
 
     //test only, remove later
-    if (adapter.config.devices.length < 1) {
-
-        const AllRoomsEnum = await adapter.getEnumAsync('rooms');
-        const rooms = AllRoomsEnum.result;
-
-        adapter.log.debug("room enums: " + JSON.stringify(rooms));
-
-        const AllFunctionsEnum = await adapter.getEnumAsync('functions');
-        const functions = AllFunctionsEnum.result;
-
-        adapter.log.debug("function enums: " + JSON.stringify(functions));
-        //bis hier...
-    }
+    //if (adapter.config.devices.length < 1) {
+    //
+    //    const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+    //    const rooms = AllRoomsEnum.result;
+    //
+    //    adapter.log.debug("room enums: " + JSON.stringify(rooms));
+    //
+    //    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+    //    const functions = AllFunctionsEnum.result;
+    //
+    //    adapter.log.debug("function enums: " + JSON.stringify(functions));
+    //    //bis hier...
+    //}
 
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
@@ -309,7 +317,7 @@ async function ListDevices(obj) {
                     else if (adapter.config.PathThermostats.includes("maxcube")) {
                         adapter.log.debug("check thermostat for maxcube");
 
-                        /*
+                        /* max!
                          * not supported type {"_id":"maxcube.0.devices.thermostat_06aebc",
                          *      "common":{"name":"ThermostatSchlafzimmer","role":"thermostat"},
                          *      "type":"channel",
@@ -318,10 +326,86 @@ async function ListDevices(obj) {
 
                          */
 
+                       
+
                         if (adapterObj.common.role === "thermostat") {
                             supportedRT = MinMaxcubeThermostatType;
                             adapter.log.debug("maxcube thermostat found... " + supportedRT);
                         }
+                    }
+                    else if (adapter.config.PathThermostats.includes("ham")) {
+                        adapter.log.debug("check thermostat for todo");
+
+                    /* tado
+                     not supported type {
+                       "type":"state",
+                       "common":{
+                           "type":"number",
+                           "min":0,
+                           "max":3,
+                           "read":true,
+                           "write":false,
+                           "role":"value",
+                           "name":"Current Heating Cooling State",
+                           "unit":""
+                        },
+                        "native":{
+                           "UUID":"0000000F-0000-1000-8000-0026BB765291",
+                           "displayName":"Current Heating Cooling State"
+                        },
+                        "from":"system.adapter.ham.0",
+                        "user":"system.user.admin",
+                        "ts":1562351694616,
+                        "_id":"ham.0.Bad.Bad-Thermo.Current-Heating-Cooling-State",
+                        "acl":{
+                           "object":1636,
+                           "state":1636,
+                           "owner":"system.user.admin",
+                           "ownerGroup":"system.group.administrator"
+                         }
+                      }
+                       member{
+                           "type":"state",
+                           "common":{
+                               "type":"number",
+                               "unit":"Â°C","
+                               min":10,
+                               "max":35,
+                               "read":true,
+                               "write":true,
+                               "role":"level.temperature",
+                               "name":"Cooling Threshold Temperature"
+                            },
+                            "native":{
+                               "UUID":"0000000D-0000-1000-8000-0026BB765291",
+                               "displayName":"Cooling Threshold Temperature"
+                            },
+                            "from":"system.adapter.ham.0",
+                            "user":"system.user.admin",
+                            "ts":1562351694621,
+                            "_id":"ham.0.Bad.Bad-Thermo.Cooling-Threshold-Temperature",
+                            "acl":{
+                               "object":1636,
+                               "state":1636,
+                               "owner":"system.user.admin",
+                               "ownerGroup":"system.group.administrator"
+                            }
+                        }
+                        found as Heating Gewerk 1 ham.0.Bad.Bad-Thermo.Cooling-Threshold-Temperature
+                       not supported type {"type":"state","common":{"type":"number","unit":"Â°C","min":10,"max":35,"read":true,"write":true,"role":"level.temperature","name":"Cooling Threshold Temperature"},"native":{"UUID":"0000000D-0000-1000-8000-0026BB765291","displayName":"Cooling Threshold Temperature"},"from":"system.adapter.ham.0","user":"system.user.admin","ts":1562351694621,"_id":"ham.0.Bad.Bad-Thermo.Cooling-Threshold-Temperature","acl":{"object":1636,"state":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+
+                    
+                   
+                    * */
+                      
+                        if (adapterObj.common.role === "level.temperature") {
+                            supportedRT = MinTadoThermostatType;
+                            adapter.log.debug("tado thermostat found... " + supportedRT);
+                        }
+
+                    }
+                    else {
+                        adapter.log.warn("unknown path to thermostats " + adapter.config.PathThermostats);
                     }
 
                     var supportedActor = -1;
@@ -337,7 +421,10 @@ async function ListDevices(obj) {
                         }
                     }
                     else if (adapter.config.PathThermostats.includes("maxcube")) {
-                        adapter.log.debug("check actor for maxcube");
+                        adapter.log.warn("check actor for maxcube, not implemented yet");
+                    }
+                    else {
+                        adapter.log.warn("unknown path to actors " + adapter.config.PathActors);
                     }
 
 
@@ -1267,7 +1354,6 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                             const nextTemperature = await adapter.getStateAsync(id2);
                             //adapter.log.debug("*3 " + adapter.config.devices[rooms].room + " " + adapter.config.devices[rooms].thermostat + " TypeID " + adapter.config.devices[rooms].thermostatTypeID);
 
-
                             //oder alternativ priorisieren???
                             let nextSetTemperature = nextTemperature.val - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease;
 
@@ -1277,12 +1363,18 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                                 //Homematic
                                 state = adapter.config.PathThermostats + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2];
                             }
-                            if (adapter.config.devices[rooms].thermostatTypeID >= MinMaxcubeThermostatType && adapter.config.devices[rooms].thermostatTypeID <= MaxMaxcubeThermostatType) {
+                            else if (adapter.config.devices[rooms].thermostatTypeID >= MinMaxcubeThermostatType && adapter.config.devices[rooms].thermostatTypeID <= MaxMaxcubeThermostatType) {
                                 //max!Cube
                                 state = adapter.config.PathThermostats + "devices." + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2];
                             }
-                                //adapter.log.debug("*4 " + state);
-                            await adapter.setForeignStateAsync(state, nextSetTemperature );
+                            else {
+                                adapter.log.warn("ThermostatType not implemented yet");
+                            }
+                            //adapter.log.debug("*4 " + state);
+                            if (state !== 20) {
+                                await adapter.setForeignStateAsync(state, nextSetTemperature);
+                            }
+
                             adapter.log.debug('room ' + adapter.config.devices[rooms].room + " Thermostate " + state + " set to " + nextSetTemperature);
 
                             const timePeriod = "Period " + period + " : " + nextTime.val;
@@ -1293,6 +1385,12 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                 }
             }
         }
+        else {
+            adapter.log.warn("profile type != 1 not implemented yet");
+        }
+    }
+    else {
+        adapter.log.debug("nothing to do: no heating period"); 
     }
 
     await HandleActorsGeneral(HeatingPeriodActive);
