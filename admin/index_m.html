@@ -62,6 +62,12 @@
 
         function showHideSettings() {
 
+            //always hide
+            show_hide_column("col_4", 3, true);
+            show_hide_column("col_7", 6, true);
+            show_hide_column("col_10", 9, true);
+
+
             var $useActors = $('#UseActors');
 
             if ($useActors.prop('checked')) {
@@ -74,10 +80,9 @@
 
                 show_hide_column("col_5",4, true);
                 show_hide_column("col_6",5, true);
-                show_hide_column("col_7",6, true);
                 show_hide_column("col_8",7, true);
                 show_hide_column("col_9",8, true);
-                show_hide_column("col_10",9, true);
+                
             }
             else {
 
@@ -89,10 +94,9 @@
 
                 show_hide_column("col_5",4, false);
                 show_hide_column("col_6",5, false);
-                show_hide_column("col_7",6, false);
                 show_hide_column("col_8",7, false);
                 show_hide_column("col_9",8, false);
-                show_hide_column("col_10",9, false);
+               
             }
         }
 

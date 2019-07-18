@@ -441,11 +441,17 @@ async function ListDevices(obj) {
                             address = adapterObj.native.PARENT;
                         }
                         else if (supportedRT >= MinMaxcubeThermostatType && supportedRT <= MaxMaxcubeThermostatType) {
-                           // adapter.log.debug("###" + JSON.stringify( adapterObj));
+                            // adapter.log.debug("###" + JSON.stringify( adapterObj));
                             //"_id":"maxcube.0.devices.thermostat_06aebc"
                             var temp = adapterObj._id;
                             var _id = temp.split('.'); //
                             address = _id[3];
+                        }
+                        else if (supportedRT >= MinTadoThermostatType && supportedRT <= MaxTadoThermostatType) {
+                            adapter.log.warn("tado thermostat not implemented yet ");
+                        }
+                        else {
+                            adapter.log.warn("thermostat not implemented yet " + supportedRT);
                         }
                         adapter.log.debug("supported thermostat found " + address + " " + JSON.stringify(adapterObj));
                     }
@@ -467,7 +473,7 @@ async function ListDevices(obj) {
                             }
 
                             //hier nicht parent merken, sondern channel
-                            else if (supportedActor > -1) {
+                            else if (adapter.config.UseActors && supportedActor > -1 ) {
                                 if (adapter.config.devices[roomInList].actor1 !== ""
                                     && adapter.config.devices[roomInList].actor1 !== address) {
                                     adapter.config.devices[roomInList].actor2 = address;
@@ -486,17 +492,22 @@ async function ListDevices(obj) {
                                 adapter.log.debug("room not yet in list, push new room ");
                             }
 
+
+                            //aktors nur pushen, wenn aktiv
                             adapter.config.devices.push({
                                 room: rooms[e].common.name,
                                 thermostat: supportedRT > -1 ? address : null,
                                 thermostatType: supportedRT > -1 ? ThermostatTypeTab[supportedRT][0] : null,
                                 thermostatTypeID: supportedRT > -1 ? supportedRT : null,
-                                actor1: supportedActor > -1 ? address : null,
-                                actor1Type: supportedActor > -1 ? ActorTypeTab[supportedActor][0] : null,
-                                actor1TypeID: supportedActor > -1 ? supportedActor : null,
+
+                                actor1: (adapter.config.UseActors && supportedActor > -1) ? address : null,
+                                actor1Type: (adapter.config.UseActors && supportedActor > -1) ? ActorTypeTab[supportedActor][0] : null,
+                                actor1TypeID: (adapter.config.UseActors && supportedActor > -1) ? supportedActor : null,
                                 actor2: null,
                                 actor2Type: null,
                                 actor2TypeID: null,
+
+
                                 isActive: true
                             });
                         }
@@ -1295,12 +1306,15 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
         const PublicHolidyToday = await adapter.getStateAsync("PublicHolidyToday");
         const VacationAbsent = await adapter.getStateAsync("VacationAbsent");
 
+        adapter.log.debug("profile type " + adapter.config.ProfileType);
 
         if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
             const currentProfile = await GetCurrentProfile();
 
             for (var rooms = 0; rooms < adapter.config.devices.length; rooms++) {
+
+                adapter.log.debug("check room " + adapter.config.devices[rooms].room );
 
                 //and we need some information per room
                 let AbsentDecrease = 0;
@@ -1323,10 +1337,12 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                 //in dem Modus (Mo - So) nicht notwendig
                 //const HolidayPresentLikePublicHoliday = await adapter.getStateAsync("HolidayPresentLikePublicHoliday");
 
+                adapter.log.debug("number of periods  " + adapter.config.NumberOfPeriods);
+
                 for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                     const id = "Profiles." + currentProfile + "." + adapter.config.devices[rooms].room + ".Periods." + period + '.time';
 
-                    //adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
+                    adapter.log.debug("check time for " + adapter.config.devices[rooms].room + " " + id);
 
                     const nextTime = await adapter.getStateAsync(id);
                     //adapter.log.debug("##found time for " + adapter.config.devices[rooms].room + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
@@ -1340,6 +1356,8 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                     //to do
                     if ((CheckOurOnly === true && now.getHours() === parseInt(nextTimes[0]))
                         || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1]))) {
+
+                        adapter.log.debug("###111" );
 
                         if (adapter.config.devices[rooms].thermostat && adapter.config.devices[rooms].thermostat !== null) {
 
@@ -1366,6 +1384,10 @@ async function CheckTemperatureChange(CheckOurOnly=false) {
                             else if (adapter.config.devices[rooms].thermostatTypeID >= MinMaxcubeThermostatType && adapter.config.devices[rooms].thermostatTypeID <= MaxMaxcubeThermostatType) {
                                 //max!Cube
                                 state = adapter.config.PathThermostats + "devices." + adapter.config.devices[rooms].thermostat + ThermostatTypeTab[adapter.config.devices[rooms].thermostatTypeID][2];
+                            }
+                            else if (adapter.config.devices[rooms].thermostatTypeID >= MinTadoThermostatType && adapter.config.devices[rooms].thermostatTypeID <= MaxTadoThermostatType) {
+                                //tado
+                                adapter.log.warn("tado not implemented yet 111");
                             }
                             else {
                                 adapter.log.warn("ThermostatType not implemented yet");
