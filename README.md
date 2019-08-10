@@ -50,6 +50,9 @@ Features:
 
 ## Changelog
 
+### 0.1.0 (2019-08-05)
+* (René) redesign
+
 ### 0.0.5 (2019-07-08)
 * (René) support for max! thermostats
 

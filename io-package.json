@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "news": {
+      "0.1.0": {
+        "en": "redesign",
+        "de": "Unterstützung für max!-Thermostate",
+        "ru": "поддержка термостатов max!",
+        "pt": "suporte para termostatos max!",
+        "nl": "ondersteuning voor max!-thermostaten",
+        "fr": "support pour les thermostats max!",
+        "it": "supporto per i termostati max!",
+        "es": "soporte para termostatos max!",
+        "pl": "obsługa termostatów max!",
+        "zh-cn": "支持max！恒温器"
+      },
       "0.0.5": {
         "en": "support for max! thermostats",
         "de": "Unterstützung für max!-Thermostate",
@@ -76,6 +88,7 @@
   },
   "native": {
     "devices": [],
+    "rooms": [],
     "UseActors": false,
     "Gewerk": "Heizung",
     "UseHoliday": false,

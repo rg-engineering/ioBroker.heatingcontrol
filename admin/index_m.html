@@ -26,7 +26,7 @@
 
 
 
-        function show_hide_column(col_name, col_no, do_show) {
+        function show_hide_column(table_name, col_name, col_no, do_show) {
 
             //this is only for header
             var element = document.getElementById(col_name);
@@ -39,7 +39,7 @@
             }
 
             //here we have all other rows
-            var tbl = document.getElementById('table_devices');
+            var tbl = document.getElementById(table_name);
             var rows = tbl.getElementsByTagName('tr');
 
             for (var row = 0; row < rows.length; row++) {
@@ -63,9 +63,6 @@
         function showHideSettings() {
 
             //always hide
-            show_hide_column("col_4", 3, true);
-            show_hide_column("col_7", 6, true);
-            show_hide_column("col_10", 9, true);
 
 
             var $useActors = $('#UseActors');
@@ -74,52 +71,145 @@
 
                 console.log('show actor settings');
 
-                $('.col-pathactors').show();
-                $('.col-useactorifnoheating').show();
-                $('.col-useactorifnothermostat').show();
+              
 
-                show_hide_column("col_5",4, true);
-                show_hide_column("col_6",5, true);
-                show_hide_column("col_8",7, true);
-                show_hide_column("col_9",8, true);
-                
             }
             else {
 
                 console.log('hide actor settings');
 
-                $('.col-pathactors').hide();
-                $('.col-useactorifnoheating').hide();
-                $('.col-useactorifnothermostat').hide();
-
-                show_hide_column("col_5",4, false);
-                show_hide_column("col_6",5, false);
-                show_hide_column("col_8",7, false);
-                show_hide_column("col_9",8, false);
-               
+                
             }
+
+
+            var $useSensors = $('#UseSensors');
+
+            if ($useSensors.prop('checked')) {
+
+                console.log('show sensor settings');
+
+               
+
+            }
+            else {
+
+                console.log('hide sensors settings');
+
+               
+
+            }
+
+            //first col of device tables
+            show_hide_column("table_thermostats","thermostat_col_0", 0, false);
+            show_hide_column("table_actors", "actor_col_0", 0, false);
+            show_hide_column("table_sensors","sensor_col_0", 0, false);
         }
 
 
-        var timeout;
+        var timeout1;
+        var DeviceList;
         function getDevices(onChange, instance) {
-            timeout = setTimeout(function () {
+            timeout1 = setTimeout(function () {
                 getDevices();
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
             sendTo(instance, 'listDevices', null, function (list) {
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
+                if (timeout1) {
+                    clearTimeout(timeout1);
+                    timeout1 = null;
                 }
 
                 console.log('got devices ' + JSON.stringify(list));
 
-                values2table('values', list, onChange);
+                DeviceList = list;
 
 
             });
+        }
+
+        var timeout2;
+        function getRooms(onChange, instance) {
+            timeout2 = setTimeout(function () {
+                getRooms();
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listRooms', null, function (list) {
+                if (timeout2) {
+                    clearTimeout(timeout2);
+                    timeout2 = null;
+                }
+
+                console.log('got rooms ' + JSON.stringify(list));
+
+                values2table('rooms', list, onChange, tableRoomsOnReady);
+
+
+            });
+        }
+
+        function OnChange() {
+            //do nothing 
+        }
+        
+
+        function initDialogRoom(room, callback) {
+
+            console.log('initDialogRoom');
+
+            var $editDialog = $('#dialog-room-edit');
+            if (!$editDialog.data('inited')) {
+                $editDialog.data('inited', true);
+                $editDialog.modal({
+                    dismissible: false
+                });
+
+                $editDialog.find('.btn-set').on('click', function () {
+                    var $editDialog = $('#dialog-room-edit');
+                    var callback = $editDialog.data('callback');
+                    if (typeof callback === 'function') callback();
+                    $editDialog.data('callback', null);
+                });
+            }
+
+            //to do fill table
+            console.log('fill table for ' + room + " " + DeviceList.length);
+
+            var ThermostatList4Room = [];
+            var ActorList4Room = [];
+            var SensorList4Room = [];
+            for (let i = 0; i < DeviceList.length; i++) {
+                console.log('list entry ' + DeviceList[i].room);
+
+                if (DeviceList[i].room === room) {
+                    if (DeviceList[i].type === 1) {
+                        ThermostatList4Room.push(DeviceList[i]);
+                    }
+                    if (DeviceList[i].type === 2) {
+                        ActorList4Room.push(DeviceList[i]);
+                    }
+                    if (DeviceList[i].type === 3) {
+                        SensorList4Room.push(DeviceList[i]);
+                    }
+                }
+            }
+            console.log('Thermostatlist ' + JSON.stringify(ThermostatList4Room));
+            console.log('Actorlist ' + JSON.stringify(ActorList4Room));
+            console.log('Sensorlist ' + JSON.stringify(SensorList4Room));
+
+            values2table('thermostats', ThermostatList4Room, OnChange, tableDevicesOnReady);
+            values2table('actors', ActorList4Room, OnChange, tableDevicesOnReady);
+            values2table('sensors', SensorList4Room, OnChange, tableDevicesOnReady);
+
+            
+
+
+            $editDialog.data('callback', callback);
+            $editDialog.modal('open');
+
+            showHideSettings();
+         
         }
 
         /*
@@ -180,6 +270,7 @@
                     console.log('got instance ' + _id);
 
                     getDevices(onChange, _id);
+                    getRooms(onChange, _id);
 
                     //getTest(onChange, _id);
                 }
@@ -205,11 +296,198 @@
                 }
             });
 
-            obj.devices = table2values('values');
+            obj.rooms = table2values('rooms');
+
+            obj.devices = DeviceList;
 
             callback(obj);
         }
 
+        function tableRoomsOnReady() {
+
+            console.log('tableRoomsOnReady');
+
+            $('#rooms .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+                let id = $(this).data('index');
+                let room = $('#rooms .values-input[data-name="name"][data-index="' + id + '"]').val();
+                $('#dialogDeviceEditRoom').html(room);
+
+                setTimeout(function () {
+                    initDialogRoom(room, function () {
+
+                        //this is reached when dialog is closing
+                        console.log('closing for ');
+
+                        let thermostats = table2values('thermostats');
+                        let actors = table2values('actors');
+                        let sensors = table2values('sensors');
+
+                        console.log('Thermostatlist ' + JSON.stringify(thermostats));
+                        console.log('Actorlist ' + JSON.stringify(actors));
+                        console.log('Sensorlist ' + JSON.stringify(sensors));
+
+                        //now update DeviceList
+                        let room = $('#dialogDeviceEditRoom')[0].innerHTML;
+                        for (let i = 0; i < thermostats.length; i++) {
+                            //if exist, only update
+                            if (thermostats[i].id > 0) {
+                                console.log("update thermostats " + JSON.stringify(thermostats[i]));
+                                DeviceList[thermostats[i].id - 1].name = thermostats[i].name;
+                                DeviceList[thermostats[i].id - 1].isActive = thermostats[i].isActive;
+                                DeviceList[thermostats[i].id - 1].OID_Target = thermostats[i].OID_Target;
+                                DeviceList[thermostats[i].id - 1].OID_Current = thermostats[i].OID_Current;
+                            }
+                            else {
+                                //if not exist, add at the end of list
+                                thermostats[i].id = DeviceList.length + 1;
+                                thermostats[i].type = 1;
+                                thermostats[i].room = room;
+                                console.log("add thermostats " + JSON.stringify(thermostats[i]));
+                                DeviceList.push(thermostats[i]);
+                            }
+                        }
+
+                        for (let i = 0; i < actors.length; i++) {
+                            //if exist, only update
+                            if (actors[i].id > 0) {
+                                console.log("update actors " + JSON.stringify(actors[i]));
+                                DeviceList[actors[i].id - 1].name = actors[i].name;
+                                DeviceList[actors[i].id - 1].isActive = actors[i].isActive;
+                                DeviceList[actors[i].id - 1].OID_Target = actors[i].OID_Target;
+                            }
+                            else {
+                                //if not exist, add at the end of list
+                                actors[i].id = DeviceList.length + 1;
+                                actors[i].type = 2;
+                                actors[i].room = room;
+                                console.log("add actors " + JSON.stringify(actors[i]));
+                                DeviceList.push(actors[i]);
+                            }
+                        }
+
+                        for (let i = 0; i < sensors.length; i++) {
+                            //if exist, only update
+                            if (sensors[i].id > 0) {
+                                console.log("update sensors " + JSON.stringify(sensors[i]));
+                                DeviceList[sensors[i].id - 1].name = sensors[i].name;
+                                DeviceList[sensors[i].id - 1].isActive = sensors[i].isActive;
+                                DeviceList[sensors[i].id - 1].OID_Current = sensors[i].OID_Current;
+
+                            }
+                            else {
+                                //if not exist, add at the end of list
+                                sensors[i].id = DeviceList.length + 1;
+                                sensors[i].type = 3;
+                                sensors[i].room = room;
+                                console.log("add sensors " + JSON.stringify(sensors[i]));
+                                DeviceList.push(sensors[i]);
+                            }
+                        }
+
+                    });
+                }, 20)
+            });
+        }
+
+        function getName(obj) {
+            if (obj && obj.common && obj.common.name) {
+                var name = obj.common.name;
+                if (typeof name === 'object') {
+                    name = name[systemLang] || name.en;
+                }
+                return name;
+            } else if (obj && obj.name) {
+                var name = obj.name;
+                if (typeof name === 'object') {
+                    name = name[systemLang] || name.en;
+                }
+                return name;
+            } else {
+                var parts = obj.id.split('.');
+                var last = parts.pop();
+                return last[0].toUpperCase() + last.substring(1).toLowerCase();
+            }
+        }
+
+        function tableDevicesOnReady() {
+
+            console.log('tableDevicesOnReady');
+
+            $('#thermostats .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+
+                let id = $(this).data('index');
+
+                console.log('edit thermostats clicked ID=' + id);
+
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                var ID = getID(obj);
+                                var OID_Current = getOID(obj);
+                                $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
+                                $('#thermostats .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
+                                $('#thermostats .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
+                            });
+                        }
+                    });
+                });
+
+
+            });
+
+            $('#actors .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+
+                console.log('edit actors clicked');
+            });
+
+            $('#sensors .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+
+                console.log('edit sensors clicked');
+            });
+
+            showHideSettings();
+
+        }
+
+        var selectId;
+        function initSelectId(callback) {
+            if (selectId) {
+                return callback(selectId);
+            }
+            socket.emit('getObjects', function (err, objs) {
+                selectId = $('#dialog-select-member').selectId('init',  {
+                    noMultiselect: true,
+                    objects: objs,
+                    imgPath:       '../../lib/css/fancytree/',
+                    filter:        {type: 'state'},
+                    name:          'scenes-select-state',
+                    texts: {
+                        select:          _('Select'),
+                        cancel:          _('Cancel'),
+                        all:             _('All'),
+                        id:              _('ID'),
+                        name:            _('Name'),
+                        role:            _('Role'),
+                        room:            _('Room'),
+                        value:           _('Value'),
+                        selectid:        _('Select ID'),
+                        from:            _('From'),
+                        lc:              _('Last changed'),
+                        ts:              _('Time stamp'),
+                        wait:            _('Processing...'),
+                        ack:             _('Acknowledged'),
+                        selectAll:       _('Select all'),
+                        unselectAll:     _('Deselect all'),
+                        invertSelection: _('Invert selection')
+                    },
+                    columns: ['image', 'name', 'role', 'room']
+                });
+                callback(selectId);
+            });
+        }
 
 
     </script>
@@ -245,14 +523,20 @@
 
                 </div>
                 <div class="row">
-                    <div class="input-field col s6 col-paththemostats">
+                    <div class="input-field col s4 col-paththemostats">
                         <input type="text" id="PathThermostats" class="value" />
                         <label for="PathThermostats" class="translate">PathThermostats</label>
                     </div>
-                    <div class="input-field col s6 col-pathactors">
+                    <div class="input-field col s4 col-pathactors">
                         <input type="text" id="PathActors" class="value" />
                         <label for="PathActors" class="translate">PathActors</label>
                     </div>
+                    <div class="input-field col s4 col-pathsensors">
+                        <input type="text" id="PathSensors" class="value" />
+                        <label for="PathSensors" class="translate">PathSensors</label>
+                    </div>
+
+
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
@@ -271,6 +555,10 @@
                     <div class="input-field col s6">
                         <input type="checkbox" id="UseActors" class="value" />
                         <label for="UseActors" class="translate">use_actors</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="UseSensors" class="value" />
+                        <label for="UseSensors" class="translate">use_sensors</label>
                     </div>
                 </div>
 
@@ -292,70 +580,176 @@
                         <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
                     </div>
                 </div>
-                
+
             </div>
 
-                <!-- tab "profile - settings"  -->
-                <div id="tab-profiles" class="col s12 page">
+            <!-- tab "profile - settings"  -->
+            <div id="tab-profiles" class="col s12 page">
 
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <select id="ProfileType" class="value">
-                                <option value="1" class="translate">Mo-So</option>
-                                <option value="2" class="translate">Mo-Fr + Sa-So</option>
-                                <option value="3" class="translate">every Day</option>
-                            </select>
-                            <label for="ProfileType" class="translate">ProfileType</label>
-                        </div>
-
-                        <div class="input-field col s4">
-                            <input type="number" id="NumberOfProfiles" class="value" />
-                            <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
-                        </div>
-
-                        <div class="input-field col s4">
-                            <input type="number" id="NumberOfPeriods" class="value" />
-                            <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
-                        </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <select id="ProfileType" class="value">
+                            <option value="1" class="translate">Mo-So</option>
+                            <option value="2" class="translate">Mo-Fr + Sa-So</option>
+                            <option value="3" class="translate">every Day</option>
+                        </select>
+                        <label for="ProfileType" class="translate">ProfileType</label>
                     </div>
 
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <input type="checkbox" id="UseHoliday" class="value" />
-                            <label for="UseHoliday" class="translate">Feiertag</label>
-                        </div>
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfProfiles" class="value" />
+                        <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
+                    </div>
+
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfPeriods" class="value" />
+                        <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
                     </div>
                 </div>
 
-                <!-- tab "devices" -->
-                <div id="tab-devices" class="col s12 page">
-                    <div class="col s12" id="values">
-                         <div class="table-values-div">
-                            <table id="table_devices" class="table-values" style="width: 100%;">                          
-                                <thead>
-                                    <tr>
-                                        <th data-name="room" style="width: 20%" class="translate">room</th>
-                                        <th data-name="thermostat" class="translate">thermostat</th>
-                                        <th data-name="thermostatType" class="translate">type</th>
-                                        <th data-name="thermostatTypeID" class="translate">typeID</th>
-                                        
-                                        <!-- show only if actors are used -->
-                                        <th id="col_5" data-name="actor1" class="translate">actor1</th>
-                                        <th id="col_6" data-name="actor1Type" class="translate">type</th>
-                                        <th id="col_7" data-name="actor1TypeID" class="translate">typeID</th>
-                                        <th id="col_8" data-name="actor2" class="translate">actor2</th>
-                                        <th id="col_9" data-name="actor2Type" class="translate">type</th>
-                                        <th id="col_10" data-name="actor2TypeID" class="translate">typeID</th>
-
-                                        <th data-name="isActive" data-type="checkbox" class="translate">active</th>
-                                        <th data-buttons="delete" style="width: 40px"></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input type="checkbox" id="UseHoliday" class="value" />
+                        <label for="UseHoliday" class="translate">Feiertag</label>
                     </div>
                 </div>
             </div>
+
+            <!-- tab "devices" -->
+            <div id="tab-devices" class="col s12 page">
+                <div class="col s12" id="rooms">
+                    <div class="table-values-div">
+                        <table id="table_rooms" class="table-values" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th id="col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
+                                  
+
+                                    <th data-name="isActive" data-type="checkbox"  style="background: #64b5f6" class="translate">active</th>
+                                    <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m material-dialogs">
+            <div id="dialog-select-member" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col s12 title"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 dialog-content">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-action modal-close waves-effect waves-green btn btn-set"><i class="large material-icons left">check</i><span class="translate">Select</span></a>
+                    <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons left ">close</i><span class="translate">Cancel</span></a>
+                </div>
+            </div>
+            <div id="dialog-room-edit" class="modal modal-fixed-footer">
+                <div class="row">
+                    <div class="modal-content">
+
+                        <div class="row">
+                            <div class="col s12">
+                                <h6 class="title"><span class="translate">Edit Room:</span> <span id="dialogDeviceEditRoom"></span></h6>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <ul class="tabs">
+                                <li class="tab col s4"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
+                                <li class="tab col s4"><a href="#tab-popup_actors" class="translate">actors</a></li>
+                                <li class="tab col s4"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
+                            </ul>
+                        </div>
+                        <div id="tab-popup_thermostats" class="col s12 page">
+ 
+
+                            <div class="col s12" id="thermostats">
+                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                
+                                <div class="table-values-div">
+                                    <table id="table_thermostats" class="table-values" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th id="thermostat_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                               
+                                                <th id="thermostat_col_1" data-name="name" style="background: #64b5f6" class="translate">thermostat</th>
+                                                <th id="thermostat_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID current</th>
+                                                <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
+
+                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div id="tab-popup_actors" class="col s12 page">
+                            <div class="col s12" id="actors">
+                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                <div class="table-values-div">
+                                    <table id="table_actors" class="table-values" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th id="actor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                                <th id="actor_col_1" data-name="name" style="background: #64b5f6" class="translate">actors</th>
+                                                <th id="actor_col_2" data-name="OID_Target" style="background: #64b5f6" class="translate">OID</th>
+
+                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div id="tab-popup_sensors" class="col s12 page">
+                            <div class="col s12" id="sensors">
+                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                <div class="table-values-div">
+                                    <table id="table_sensors" class="table-values" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th id="sensor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                                <th id="sensor_col_1" data-name="name" style="background: #64b5f6" class="translate">sensors</th>
+                                                <th id="sensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
+
+                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="modal-action modal-close waves-effect waves-green btn btn-set"><i class="large material-icons left">check</i><span class="translate">Ok</span></a>
+                    <a class="modal-action modal-close waves-effect waves-green btn btn-close"><i class="large material-icons left">close</i><span class="translate">Cancel</span></a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
