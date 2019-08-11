@@ -390,24 +390,49 @@
         }
 
         function getName(obj) {
+
+            let name = "unknown";
             if (obj && obj.common && obj.common.name) {
-                var name = obj.common.name;
-                if (typeof name === 'object') {
-                    name = name[systemLang] || name.en;
+
+                if (typeof obj.common.name === 'object') {
+                    name = obj.common.name[systemLang] || obj.common.name.en;
                 }
-                return name;
+                else {
+                    name = obj.common.name;
+                }
             } else if (obj && obj.name) {
-                var name = obj.name;
-                if (typeof name === 'object') {
-                    name = name[systemLang] || name.en;
+
+                if (typeof obj.name === 'object') {
+                    name = obj.name[systemLang] || obj.name.en;
                 }
-                return name;
+                else {
+                    name = obj.name;
+                }
             } else {
                 var parts = obj.id.split('.');
                 var last = parts.pop();
-                return last[0].toUpperCase() + last.substring(1).toLowerCase();
+                name = last[0].toUpperCase() + last.substring(1).toLowerCase();
             }
+
+            if (name.includes(":")) {
+                var nameparts = name.split(':');
+                name = nameparts[0];
+            }
+
+            return name;
+
         }
+
+        function getOID(obj) {
+            let OID = "unknown";
+            if (obj && obj._id) {
+                OID = obj._id;
+            }
+
+            return OID;
+
+        }
+
 
         function tableDevicesOnReady() {
 
@@ -424,9 +449,11 @@
                         if (newId) {
                             $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
                             socket.emit('getObject', newId, function (err, obj) {
-                                var name = getName(obj);
-                                var ID = getID(obj);
-                                var OID_Current = getOID(obj);
+                                let name = getName(obj);
+                                
+                                let OID_Current = getOID(obj);
+                                let OID_Target = OID_Current.replace("TEMPERATURE","SETPOINT");
+
                                 $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
                                 $('#thermostats .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
                                 $('#thermostats .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
@@ -440,12 +467,45 @@
 
             $('#actors .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
 
-                console.log('edit actors clicked');
+                let id = $(this).data('index');
+
+                console.log('edit actors clicked ID=' + id);
+
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#actors .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#actors .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                
+                                var OID_Target = getOID(obj);
+                                $('#actors .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
+                                $('#actors .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
+                            });
+                        }
+                    });
+                });
             });
 
             $('#sensors .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
 
-                console.log('edit sensors clicked');
+                let id = $(this).data('index');
+
+                console.log('edit sensors clicked ID=' + id);
+
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#sensors .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#sensors .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                var OID_Current = getOID(obj);
+                                $('#sensors .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
+                                $('#sensors .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
+                            });
+                        }
+                    });
+                });
             });
 
             showHideSettings();
