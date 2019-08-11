@@ -231,79 +231,198 @@ async function ListDevices(obj) {
 
         adapter.config.devices.length = 0;
 
+        //use for test but comment it out for real life
+        //AddTestData();
 
-        //test data
-        adapter.config.devices.push({
-            id: 1,
-            name: "RT_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 1, //thermostats
-            OID_Target: "hm-rpc.0.IEQ0067957.2.SETPOINT",
-            OID_Current: "hm-rpc.0.IEQ0067957.1.TEMPERATURE"
-        });
+        let rooms = {};
+        //get room enums first; this includes members as well
+        const AllRoomsEnum = await adapter.getEnumAsync('rooms');
+        rooms = AllRoomsEnum.result;
 
-        adapter.config.devices.push({
-            id: 2,
-            name: "RT_WoZi2",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 1, //thermostats
-            OID_Target: "hm-rpc.0.IEQ0067958.2.SETPOINT",
-            OID_Current: "hm-rpc.0.IEQ0067958.1.TEMPERATURE"
-        });
+        let functions = {};
+        const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+        //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
+        functions = AllFunctionsEnum.result;
 
-        adapter.config.devices.push({
-            id: 3,
-            name: "HK_Aktor_EG_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 2, //heating actor
-            OID_Target: "hm-rpc.0.IEQ0383091.3.STATE"
-        });
+        let HeatingMember = [];
+        for (var e1 in functions) {
 
-        adapter.config.devices.push({
-            id: 4,
-            name: "Tuer1_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 3, //window sensor
-            OID_Current: "hm-rpc.0.LEQ1509665.1.STATE"
-        });
+            if (functions[e1].common.name === HeizungGewerk) {
+                var ids1 = functions[e1].common.members;
+                for (var n1 in ids1) {
 
-        adapter.config.devices.push({
-            id: 5,
-            name: "Tuer2_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 3, //window sensor
-            OID_Current: "hm-rpc.0.LEQ1509666.1.STATE"
-        });
+                    HeatingMember.push({
+                        id: ids1[n1]
+                    });
+                }
+            }
+        }
+        adapter.log.debug("heating member: " + JSON.stringify(HeatingMember));
 
-        adapter.config.devices.push({
-            id: 6,
-            name: "Tuer3_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 3, //window sensor
-            OID_Current: "hm-rpc.0.LEQ1509667.1.STATE"
-        });
+        for (let e in rooms) {
 
-        adapter.config.devices.push({
-            id: 7,
-            name: "Fenster_WoZi",
-            isActive: true,
-            room: "Wohnzimmer",
-            type: 3, //window sensor
-            OID_Current: "hm-rpc.0.LEQ1509668.1.STATE"
-        });
+            let ids = rooms[e].common.members;
+            for (let n in ids) {
+
+                let adapterObj;
+
+                adapterObj = await adapter.getForeignObjectAsync(ids[n]);
+
+                if (adapterObj && adapterObj.native) {
+
+                    //***********************************
+                    var IsInHeatingList = findObjectIdByKey(HeatingMember, 'id', adapterObj._id);
+
+                    if (IsInHeatingList > -1) {
+
+                        var supportedRT = -1;
+                        adapter.log.debug("check thermostat for homematic");
+                        for (var x1 = 0; x1 <= MaxHomematicThermostatType; x1++) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
+                            if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
+                                supportedRT = x1;
+
+                                adapter.config.devices.push({
+                                    id: adapter.config.devices.length + 1,
+                                    name: adapterObj.common.name,
+                                    isActive: true,
+                                    room: rooms[e].common.name,
+                                    type: 1, //thermostats
+                                    OID_Target: adapterObj.native.PARENT,
+                                    OID_Current: adapterObj.native.PARENT
+                                });
+
+
+                            }
+                        }
+
+                        var supportedActor = -1;
+                        adapter.log.debug("check actor for homematic");
+                        for (var x2 = 0; x2 <= MaxHomematicActorType; x2++) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
+                            if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
+                                supportedActor = x2;
+
+                                adapter.config.devices.push({
+                                    id: adapter.config.devices.length + 1,
+                                    name: adapterObj.common.name,
+                                    isActive: true,
+                                    room: rooms[e].common.name,
+                                    type: 2, //actors
+                                    OID_Target: adapterObj.native.PARENT,
+                                });
+
+                            }
+                        }
+
+                        var supportedSensor = -1;
+                        adapter.log.debug("check sensor for homematic");
+                        for (var x3 = 0; x3 <= MaxHomematicSensorType; x3++) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x3][0]);
+                            if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x3][0]) {
+                                supportedSensor = x3;
+
+                                adapter.config.devices.push({
+                                    id: adapter.config.devices.length + 1,
+                                    name: adapterObj.common.name,
+                                    isActive: true,
+                                    room: rooms[e].common.name,
+                                    type: 2, //actors
+                                    OID_Current: adapterObj.native.PARENT,
+                                });
+
+
+                            }
+                        }
+
+
+
+                    }
+
+                }
+
+
+            }
+        }
     }
-
 
     adapter.log.debug('all rooms done ' + JSON.stringify(adapter.config.devices));
 
     adapter.sendTo(obj.from, obj.command, adapter.config.devices, obj.callback);
 }
+
+
+//#######################################
+//
+// just for testing without real data
+function AddTestData() {
+    //test data
+    adapter.config.devices.push({
+        id: 1,
+        name: "RT_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 1, //thermostats
+        OID_Target: "hm-rpc.0.IEQ0067957.2.SETPOINT",
+        OID_Current: "hm-rpc.0.IEQ0067957.1.TEMPERATURE"
+    });
+
+    adapter.config.devices.push({
+        id: 2,
+        name: "RT_WoZi2",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 1, //thermostats
+        OID_Target: "hm-rpc.0.IEQ0067958.2.SETPOINT",
+        OID_Current: "hm-rpc.0.IEQ0067958.1.TEMPERATURE"
+    });
+
+    adapter.config.devices.push({
+        id: 3,
+        name: "HK_Aktor_EG_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 2, //heating actor
+        OID_Target: "hm-rpc.0.IEQ0383091.3.STATE"
+    });
+
+    adapter.config.devices.push({
+        id: 4,
+        name: "Tuer1_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 3, //window sensor
+        OID_Current: "hm-rpc.0.LEQ1509665.1.STATE"
+    });
+
+    adapter.config.devices.push({
+        id: 5,
+        name: "Tuer2_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 3, //window sensor
+        OID_Current: "hm-rpc.0.LEQ1509666.1.STATE"
+    });
+
+    adapter.config.devices.push({
+        id: 6,
+        name: "Tuer3_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 3, //window sensor
+        OID_Current: "hm-rpc.0.LEQ1509667.1.STATE"
+    });
+
+    adapter.config.devices.push({
+        id: 7,
+        name: "Fenster_WoZi",
+        isActive: true,
+        room: "Wohnzimmer",
+        type: 3, //window sensor
+        OID_Current: "hm-rpc.0.LEQ1509668.1.STATE"
+    });
+}
+
 
 //#######################################
 //
