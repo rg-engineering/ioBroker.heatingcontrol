@@ -83,7 +83,10 @@ const MaxHomematicActorType = 2;
 
 const SensorTypeTab = [];
 const MinHomematicSensorType = 0;
-const MaxHomematicSensorType = 0;
+SensorTypeTab[0] = ['HM-Sec-SC-2', 'Funk-Tür-/Fensterkontakt', '.STATE'];
+SensorTypeTab[1] = ['HM-Sec-SCo', 'Funk-Tür-/Fensterkontakt, optisch', '.STATE'];
+SensorTypeTab[2] = ['HM-Sec-RHS', 'Funk-Fenster-Drehgriffkontakt', '.STATE'];
+const MaxHomematicSensorType = 2;
 
 
 var HeizungGewerk = "Heizung";
@@ -279,7 +282,7 @@ async function ListDevices(obj) {
                         adapter.log.debug("check thermostat for homematic");
                         var IsInDeviceList = false;
                         for (var x1 = 0; x1 <= MaxHomematicThermostatType; x1++) {
-                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
                             if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
                                 supportedRT = x1;
 
@@ -313,8 +316,8 @@ async function ListDevices(obj) {
 
                         var supportedActor = -1;
                         adapter.log.debug("check actor for homematic");
-                        for (var x2 = 0; x2 <= MaxHomematicActorType; x2++) {
-                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
+                        for (var x2 = MinHomematicActorType; x2 <= MaxHomematicActorType; x2++) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
                             if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
                                 supportedActor = x2;
 
@@ -340,9 +343,9 @@ async function ListDevices(obj) {
 
                         var supportedSensor = -1;
                         adapter.log.debug("check sensor for homematic");
-                        for (var x3 = 0; x3 <= MaxHomematicSensorType; x3++) {
-                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x3][0]);
-                            if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x3][0]) {
+                        for (var x3 = MinHomematicSensorType; x3 <= MaxHomematicSensorType; x3++) {
+                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + SensorTypeTab[x3][0]);
+                            if (adapterObj.native.PARENT_TYPE === SensorTypeTab[x3][0]) {
                                 supportedSensor = x3;
 
                                 adapter.log.debug("Sensor found " + JSON.stringify(adapterObj));
@@ -354,7 +357,7 @@ async function ListDevices(obj) {
                                         name: adapterObj.common.name,
                                         isActive: true,
                                         room: rooms[e].common.name,
-                                        type: 2, //actors
+                                        type: 3, //sensors
                                         OID_Current: adapterObj._id + SensorTypeTab[supportedSensor][2]
                                     });
                                 }
@@ -363,6 +366,11 @@ async function ListDevices(obj) {
                             }
                         }
 
+                        if (supportedSensor === -1 && supportedActor === -1 && supportedRT === -1) {
+                            adapter.log.warn("device not found " + JSON.stringify(adapterObj));
+
+                        }
+                        
 
 
                     }
