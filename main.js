@@ -277,59 +277,87 @@ async function ListDevices(obj) {
 
                         var supportedRT = -1;
                         adapter.log.debug("check thermostat for homematic");
+                        var IsInDeviceList = false;
                         for (var x1 = 0; x1 <= MaxHomematicThermostatType; x1++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
                             if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
                                 supportedRT = x1;
 
-                                adapter.config.devices.push({
-                                    id: adapter.config.devices.length + 1,
-                                    name: adapterObj.common.name,
-                                    isActive: true,
-                                    room: rooms[e].common.name,
-                                    type: 1, //thermostats
-                                    OID_Target: adapterObj.native.PARENT,
-                                    OID_Current: adapterObj.native.PARENT
-                                });
+                                adapter.log.debug("Thermostat found " + JSON.stringify(adapterObj));
 
+                                /*
+                                 * heatingcontrol.0 Thermostat found {"_id":"hm-rpc.0.JEQ0080886.1","type":"channel","common":{"name":"RT_Gaeste:1"},"native":{"ADDRESS":"JEQ0080886:1","AES_ACTIVE":0,"DIRECTION":1,"FLAGS":1,"INDEX":1,"LINK_SOURCE_ROLES":"WEATHER_TH","LINK_TARGET_ROLES":"","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"JEQ0080886","PARENT_TYPE":"HM-CC-TC","TYPE":"WEATHER","VERSION":15},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456984587,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+                                 */
 
+                                let sName = adapterObj.common.name.split(':')[0];
+
+                                let oOID = adapterObj._id.split('.');
+                                let sOID = oOID[0] + "." + oOID[1] + "." + oOID[2];
+
+                                IsInDeviceList = findObjectIdByKey(adapter.config.devices, 'name', sName);
+                                if (IsInDeviceList === -1) {
+
+                                    adapter.config.devices.push({
+                                        id: adapter.config.devices.length + 1,
+                                        name: sName,
+                                        isActive: true,
+                                        room: rooms[e].common.name,
+                                        type: 1, //thermostats
+                                        OID_Target: sOID + ThermostatTypeTab[supportedRT][2],
+                                        OID_Current: sOID + ThermostatTypeTab[supportedRT][3]
+                                    });
+
+                                }
                             }
                         }
 
                         var supportedActor = -1;
                         adapter.log.debug("check actor for homematic");
                         for (var x2 = 0; x2 <= MaxHomematicActorType; x2++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
                             if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
                                 supportedActor = x2;
 
-                                adapter.config.devices.push({
-                                    id: adapter.config.devices.length + 1,
-                                    name: adapterObj.common.name,
-                                    isActive: true,
-                                    room: rooms[e].common.name,
-                                    type: 2, //actors
-                                    OID_Target: adapterObj.native.PARENT,
-                                });
+                                adapter.log.debug("Actor found " + JSON.stringify(adapterObj));
 
+                                /*
+                                 * Actor found {"_id":"hm-rpc.0.LEQ0900578.3","type":"channel","common":{"name":"HK_Aktor_KG_Gast","role":"switch"},"native":{"ADDRESS":"LEQ0900578:3","AES_ACTIVE":0,"DIRECTION":2,"FLAGS":1,"INDEX":3,"LINK_SOURCE_ROLES":"","LINK_TARGET_ROLES":"SWITCH WCS_TIPTRONIC_SENSOR WEATHER_CS","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"LEQ0900578","PARENT_TYPE":"HM-LC-Sw4-DR","TYPE":"SWITCH","VERSION":26},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456990633,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+                                 */
+                                let sName = adapterObj.common.name;
+                                IsInDeviceList = findObjectIdByKey(adapter.config.devices, 'name', sName);
+                                if (IsInDeviceList === -1) {
+                                    adapter.config.devices.push({
+                                        id: adapter.config.devices.length + 1,
+                                        name: sName,
+                                        isActive: true,
+                                        room: rooms[e].common.name,
+                                        type: 2, //actors
+                                        OID_Target: adapterObj._id + ActorTypeTab[supportedActor][2]
+                                    });
+                                }
                             }
                         }
 
                         var supportedSensor = -1;
                         adapter.log.debug("check sensor for homematic");
                         for (var x3 = 0; x3 <= MaxHomematicSensorType; x3++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x3][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x3][0]);
                             if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x3][0]) {
                                 supportedSensor = x3;
 
-                                adapter.config.devices.push({
-                                    id: adapter.config.devices.length + 1,
-                                    name: adapterObj.common.name,
-                                    isActive: true,
-                                    room: rooms[e].common.name,
-                                    type: 2, //actors
-                                    OID_Current: adapterObj.native.PARENT,
-                                });
+                                adapter.log.debug("Sensor found " + JSON.stringify(adapterObj));
+                                let sName = adapterObj.common.name;
+                                IsInDeviceList = findObjectIdByKey(adapter.config.devices, 'name', sName);
+                                if (IsInDeviceList === -1) {
+                                    adapter.config.devices.push({
+                                        id: adapter.config.devices.length + 1,
+                                        name: adapterObj.common.name,
+                                        isActive: true,
+                                        room: rooms[e].common.name,
+                                        type: 2, //actors
+                                        OID_Current: adapterObj._id + SensorTypeTab[supportedSensor][2]
+                                    });
+                                }
 
 
                             }
