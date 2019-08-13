@@ -64,39 +64,22 @@
 
             //always hide
 
-
             var $useActors = $('#UseActors');
-
             if ($useActors.prop('checked')) {
-
                 console.log('show actor settings');
-
-              
-
             }
             else {
-
                 console.log('hide actor settings');
-
-                
             }
 
 
             var $useSensors = $('#UseSensors');
 
             if ($useSensors.prop('checked')) {
-
                 console.log('show sensor settings');
-
-               
-
             }
             else {
-
                 console.log('hide sensors settings');
-
-               
-
             }
 
             //first col of device tables
@@ -110,7 +93,7 @@
         var DeviceList;
         function getDevices(onChange, instance) {
             timeout1 = setTimeout(function () {
-                getDevices();
+                getDevices(onChange, instance);
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
@@ -128,17 +111,43 @@
             });
         }
 
-        var timeout2;
-        function getRooms(onChange, instance) {
+         var timeout2;
+        function getFunctions(actualValue, onChange, instance) {
             timeout2 = setTimeout(function () {
-                getRooms();
+                getFunctions(actualValue, onChange, instance);
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listFunctions', null, function (list) {
+                if (timeout2) {
+                    clearTimeout(timeout2);
+                    timeout2 = null;
+                }
+
+                console.log('got functions ' + JSON.stringify(list));
+
+                var $sel = $('#Gewerk');
+                for (var i = 0; i < list.length; i++) {
+                    $sel.append('<option value="' + list[i].name + '" ' + ((actualValue == list[i].name) ? 'selected' : '') + '>' + list[i].name + '</option>');
+                }
+                $sel.select();
+
+
+            });
+        }
+
+
+        var timeout3;
+        function getRooms(onChange, instance) {
+            timeout3 = setTimeout(function () {
+                getRooms(onChange, instance);
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
             sendTo(instance, 'listRooms', null, function (list) {
-                if (timeout2) {
-                    clearTimeout(timeout2);
-                    timeout2 = null;
+                if (timeout3) {
+                    clearTimeout(timeout3);
+                    timeout3 = null;
                 }
 
                 console.log('got rooms ' + JSON.stringify(list));
@@ -202,9 +211,6 @@
             values2table('actors', ActorList4Room, OnChange, tableDevicesOnReady);
             values2table('sensors', SensorList4Room, OnChange, tableDevicesOnReady);
 
-            
-
-
             $editDialog.data('callback', callback);
             $editDialog.modal('open');
 
@@ -212,24 +218,7 @@
          
         }
 
-        /*
-        function getTest(onChange, instance) {
-            timeout = setTimeout(function () {
-                getDevices();
-            }, 2000);
-
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'Test', null, function (list) {
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-
-                console.log('got Test ' + JSON.stringify(list));
-
-            });
-        }
-        */
+       
 
         // the function loadSettings has to exist ...
         function load(settings, onChange) {
@@ -269,10 +258,11 @@
 
                     console.log('got instance ' + _id);
 
+                    getFunctions(settings.Gewerk,onChange, _id);
                     getDevices(onChange, _id);
                     getRooms(onChange, _id);
 
-                    //getTest(onChange, _id);
+                    
                 }
             });
 
@@ -575,11 +565,11 @@
                 <div class="row">
 
                     <div class="input-field col s6">
-                        <input type="text" id="Gewerk" class="value" />
+                        <select id="Gewerk" class="value">
+                            <option value="1" class="translate">nothing</option>
+                        </select>
                         <label for="Gewerk" class="translate">Gewerk</label>
                     </div>
-
-
 
                 </div>
 

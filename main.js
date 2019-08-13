@@ -164,6 +164,10 @@ function startAdapter(options) {
                         //adapter.log.debug('got list rooms');
                         await ListRooms(obj);
                         break;
+                    case 'listFunctions':
+                        //adapter.log.debug('got list rooms');
+                        await ListFunctions(obj);
+                        break;
                     case 'Test':
                         //adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
                         break;
@@ -222,6 +226,27 @@ async function ListRooms(obj) {
     adapter.sendTo(obj.from, obj.command, adapter.config.rooms, obj.callback);
 }
 
+async function ListFunctions(obj) {
+
+    let enumFunctions = [];
+    adapter.log.debug('### start ListFunctions');
+    const AllFunctionsEnum = await adapter.getEnumAsync('functions');
+    adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
+    let functions = AllFunctionsEnum.result;
+
+    for (let e1 in functions) {
+
+        enumFunctions.push({
+            name: functions[e1].common.name
+    });
+    }
+    adapter.log.debug('all functions done ' + JSON.stringify(enumFunctions));
+
+    adapter.sendTo(obj.from, obj.command, enumFunctions, obj.callback);
+}
+
+
+
 //#######################################
 //
 // used as interface to admin
@@ -276,14 +301,14 @@ async function ListDevices(obj) {
                     if (IsInHeatingList > -1) {
 
                         var supportedRT = -1;
-                        adapter.log.debug("check thermostat for homematic");
+                        //adapter.log.debug("check thermostat for homematic");
                         var IsInDeviceList = false;
                         for (let x1 = 0; x1 <= MaxHomematicThermostatType; x1++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ThermostatTypeTab[x1][0]);
                             if (adapterObj.native.PARENT_TYPE === ThermostatTypeTab[x1][0]) {
                                 supportedRT = x1;
 
-                                adapter.log.debug("Thermostat found " + JSON.stringify(adapterObj));
+                                //adapter.log.debug("Thermostat found " + JSON.stringify(adapterObj));
 
                                 /*
                                  * heatingcontrol.0 Thermostat found {"_id":"hm-rpc.0.JEQ0080886.1","type":"channel","common":{"name":"RT_Gaeste:1"},"native":{"ADDRESS":"JEQ0080886:1","AES_ACTIVE":0,"DIRECTION":1,"FLAGS":1,"INDEX":1,"LINK_SOURCE_ROLES":"WEATHER_TH","LINK_TARGET_ROLES":"","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"JEQ0080886","PARENT_TYPE":"HM-CC-TC","TYPE":"WEATHER","VERSION":15},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456984587,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
@@ -312,13 +337,13 @@ async function ListDevices(obj) {
                         }
 
                         var supportedActor = -1;
-                        adapter.log.debug("check actor for homematic");
+                        //adapter.log.debug("check actor for homematic");
                         for (let x2 = MinHomematicActorType; x2 <= MaxHomematicActorType; x2++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + ActorTypeTab[x2][0]);
                             if (adapterObj.native.PARENT_TYPE === ActorTypeTab[x2][0]) {
                                 supportedActor = x2;
 
-                                adapter.log.debug("Actor found " + JSON.stringify(adapterObj));
+                                //adapter.log.debug("Actor found " + JSON.stringify(adapterObj));
 
                                 /*
                                  * Actor found {"_id":"hm-rpc.0.LEQ0900578.3","type":"channel","common":{"name":"HK_Aktor_KG_Gast","role":"switch"},"native":{"ADDRESS":"LEQ0900578:3","AES_ACTIVE":0,"DIRECTION":2,"FLAGS":1,"INDEX":3,"LINK_SOURCE_ROLES":"","LINK_TARGET_ROLES":"SWITCH WCS_TIPTRONIC_SENSOR WEATHER_CS","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"LEQ0900578","PARENT_TYPE":"HM-LC-Sw4-DR","TYPE":"SWITCH","VERSION":26},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456990633,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
@@ -339,13 +364,13 @@ async function ListDevices(obj) {
                         }
 
                         var supportedSensor = -1;
-                        adapter.log.debug("check sensor for homematic");
+                        //adapter.log.debug("check sensor for homematic");
                         for (let x3 = MinHomematicSensorType; x3 <= MaxHomematicSensorType; x3++) {
-                            adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + SensorTypeTab[x3][0]);
+                            //adapter.log.debug("check " + adapterObj.native.PARENT_TYPE + " === " + SensorTypeTab[x3][0]);
                             if (adapterObj.native.PARENT_TYPE === SensorTypeTab[x3][0]) {
                                 supportedSensor = x3;
 
-                                adapter.log.debug("Sensor found " + JSON.stringify(adapterObj));
+                                //adapter.log.debug("Sensor found " + JSON.stringify(adapterObj));
                                 let sName = adapterObj.common.name;
                                 IsInDeviceList = findObjectIdByKey(adapter.config.devices, 'name', sName);
                                 if (IsInDeviceList === -1) {
