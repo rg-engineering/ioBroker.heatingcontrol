@@ -1194,42 +1194,45 @@ async function CalculateNextTime() {
         const currentProfile = await GetCurrentProfile();
 
         for (var room = 0; room < adapter.config.rooms.length; room++) {
-            for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
-                const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.time';
 
-                adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
+            if (adapter.config.rooms[room].isActive) {
 
-                /*
-                adapter.getState(id, function (err, states) {
-                    if (err) {
-                        adapter.log.error("error in  CalculateNextTime " + err);
-                    } else {
-                        adapter.log.debug("found time for  at " + JSON.stringify(states));
-                    }
-                });
-                */
+                for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                    const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.time';
 
-                const nextTime = await adapter.getStateAsync(id);
-                adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                    adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
-                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                //add to list if not already there
-                let bFound = false;
-                for (var i = 0; i < timerList.length; i++) {
-                    if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
-                        bFound = true;
-                        adapter.log.debug("already in list " + JSON.stringify(nextTime));
-                    }
-                }
-                if (!bFound) {
-                    adapter.log.debug("push to list " + " = " + nextTimes);
-                    timerList.push({
-                        hour: parseInt(nextTimes[0]),
-                        minute: parseInt(nextTimes[1])
+                    /*
+                    adapter.getState(id, function (err, states) {
+                        if (err) {
+                            adapter.log.error("error in  CalculateNextTime " + err);
+                        } else {
+                            adapter.log.debug("found time for  at " + JSON.stringify(states));
+                        }
                     });
-                }
+                    */
 
+                    const nextTime = await adapter.getStateAsync(id);
+                    adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                    //add to list if not already there
+                    let bFound = false;
+                    for (var i = 0; i < timerList.length; i++) {
+                        if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
+                            bFound = true;
+                            adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                        }
+                    }
+                    if (!bFound) {
+                        adapter.log.debug("push to list " + " = " + nextTimes);
+                        timerList.push({
+                            hour: parseInt(nextTimes[0]),
+                            minute: parseInt(nextTimes[1])
+                        });
+                    }
+                }
             }
         }
         
@@ -1296,75 +1299,76 @@ async function CheckTemperatureChange(CheckOurOnly = false) {
             const currentProfile = await GetCurrentProfile();
 
             for (var room = 0; room < adapter.config.rooms.length; room++) {
+                if (adapter.config.rooms[room].isActive) {
+                    adapter.log.debug("check room " + adapter.config.rooms[room].name);
 
-                adapter.log.debug("check room " + adapter.config.rooms[room].name);
+                    //and we need some information per room
+                    let AbsentDecrease = 0;
+                    if (!Present) {
+                        AbsentDecrease = await adapter.getStateAsync("AbsentDecrease");
+                    }
+                    let GuestIncrease = 0;
+                    if (GuestsPresent) {
+                        GuestIncrease = await adapter.getStateAsync("GuestIncrease");
+                    }
+                    let PartyDecrease = 0;
+                    if (PartyNow) {
+                        PartyDecrease = await adapter.getStateAsync("PartyDecrease");
+                    }
+                    let VacationAbsentDecrease = 0;
+                    if (VacationAbsent) {
+                        VacationAbsentDecrease = await adapter.getStateAsync("VacationAbsentDecrease");
+                    }
 
-                //and we need some information per room
-                let AbsentDecrease = 0;
-                if (!Present) {
-                    AbsentDecrease = await adapter.getStateAsync("AbsentDecrease");
-                }
-                let GuestIncrease = 0;
-                if (GuestsPresent) {
-                    GuestIncrease = await adapter.getStateAsync("GuestIncrease");
-                }
-                let PartyDecrease = 0;
-                if (PartyNow) {
-                    PartyDecrease = await adapter.getStateAsync("PartyDecrease");
-                }
-                let VacationAbsentDecrease = 0;
-                if (VacationAbsent) {
-                    VacationAbsentDecrease = await adapter.getStateAsync("VacationAbsentDecrease");
-                }
+                    //in dem Modus (Mo - So) nicht notwendig
+                    //const HolidayPresentLikePublicHoliday = await adapter.getStateAsync("HolidayPresentLikePublicHoliday");
 
-                //in dem Modus (Mo - So) nicht notwendig
-                //const HolidayPresentLikePublicHoliday = await adapter.getStateAsync("HolidayPresentLikePublicHoliday");
+                    adapter.log.debug("number of periods  " + adapter.config.NumberOfPeriods);
 
-                adapter.log.debug("number of periods  " + adapter.config.NumberOfPeriods);
+                    for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                        const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.time';
 
-                for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
-                    const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.time';
+                        adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
-                    adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
+                        const nextTime = await adapter.getStateAsync(id);
+                        //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
 
-                    const nextTime = await adapter.getStateAsync(id);
-                    //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                        let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                    let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                    //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
+                        //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
 
 
-                    //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
-                    //to do
-                    if ((CheckOurOnly === true && now.getHours() === parseInt(nextTimes[0]))
-                        || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1]))) {
+                        //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
+                        //to do
+                        if ((CheckOurOnly === true && now.getHours() === parseInt(nextTimes[0]))
+                            || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() === parseInt(nextTimes[1]))) {
 
-                        adapter.log.debug("###111");
+                            adapter.log.debug("###111");
 
-                        if (adapter.config.rooms[room].isActive) {
+                            if (adapter.config.rooms[room].isActive) {
 
-                            const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.Temperature';
+                                const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Periods." + period + '.Temperature';
 
-                            const nextTemperature = await adapter.getStateAsync(id2);
+                                const nextTemperature = await adapter.getStateAsync(id2);
 
-                            //oder alternativ priorisieren???
-                            let nextSetTemperature = nextTemperature.val - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease;
+                                //oder alternativ priorisieren???
+                                let nextSetTemperature = nextTemperature.val - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease;
 
-                            //find devices for rooms
-                            for (let ii = 0; ii < adapter.config.devices.length; i++) {
+                                //find devices for rooms
+                                for (let ii = 0; ii < adapter.config.devices.length; i++) {
 
-                                if (adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
+                                    if (adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
 
-                                    //adapter.log.debug("*4 " + state);
-                                    await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                                        //adapter.log.debug("*4 " + state);
+                                        await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
 
-                                    adapter.log.debug('room ' + adapter.config.rooms[room].name + " Thermostate " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+                                        adapter.log.debug('room ' + adapter.config.rooms[room].name + " Thermostate " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+                                    }
                                 }
+                                const timePeriod = "Period " + period + " : " + nextTime.val;
+                                const id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
+                                await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
                             }
-                            const timePeriod = "Period " + period + " : " + nextTime.val;
-                            const id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
-                            await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
                         }
                     }
                 }
