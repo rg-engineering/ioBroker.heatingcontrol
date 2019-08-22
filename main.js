@@ -963,22 +963,33 @@ function SubscribeStates(callback) {
         return;
     }
 
+    if (adapter.config.rooms === null || typeof adapter.config.rooms === 'undefined') {
+        adapter.log.warn("no rooms available for subscription");
+        return;
+    }
+
     for (let i = 0; i < adapter.config.devices.length; i++) {
+        //here we need to check whether room ist really active; we subscribe only for active rooms
+        let room = adapter.config.devices[i].room;
+        let roomdata = findObjectByKey(adapter.config.rooms, "name", room);
+        //adapter.log.debug('room ' + JSON.stringify(roomdata));
 
-        if (adapter.config.UseActors) {
-            if (adapter.config.devices[i].type === 1) { //thermostat
-                adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
-                adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+        if (roomdata.isActive) {
+            if (adapter.config.UseActors) {
+                if (adapter.config.devices[i].type === 1 && adapter.config.devices[i].isActive) { //thermostat
+                    adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
+                    adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
 
-                adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + '/' + adapter.config.devices[i].OID_Current);
+                    adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + '/' + adapter.config.devices[i].OID_Current);
+                }
             }
-        }
 
-        if (adapter.config.UseSensors) {
-            if (adapter.config.devices[i].type === 3) { //sensor
-                adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+            if (adapter.config.UseSensors) {
+                if (adapter.config.devices[i].type === 3 && adapter.config.devices[i].isActive) { //sensor
+                    adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
 
-                adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
+                    adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
+                }
             }
         }
     }
@@ -1005,12 +1016,10 @@ async function HandleStateChange(id, state) {
             bHandled = true;
         }
     }
-    if (!bHandled && HandleStateChangeActors(id, state)) {
+    if (!bHandled && HandleStateChangeDevices(id, state)) {
         bHandled = true;
     }
-    if (!bHandled && HandleStateChangeSensors(id, state)) {
-        bHandled = true;
-    }
+   
 
     if (!bHandled) {
         adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
@@ -1159,46 +1168,68 @@ async function HandleStateChangeGeneral(id, state) {
 // handles state changes of subscribed states
 // * find the room
 // * check if with actor handling; if so then check if target is different to current
-async function HandleStateChangeActors(id, state) {
+async function HandleStateChangeDevices(id, state) {
 
     let bRet = false;
 
-    if (adapter.config.UseActors) {
+    adapter.log.warn('handle actors ' + id + JSON.stringify(state)); 
 
-        //first we need some information
-        const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
+    let device = findObjectByKey(adapter.config.devices, 'OID_Target', id);
+    let devicetype = - 1;
 
-        if (HeatingPeriodActive) {
+    if (device !== null) {
+        devicetype = 1; //it was OID_Target
+    }
+    else {
+        device = findObjectByKey(adapter.config.devices, 'OID_Current', id);
+    }
 
-            //find whether a thermostat value has been changed and find the room
-            let deviceID = findObjectIdByKey(adapter.config.devices, 'OID_Target', id);
+    if (device !== null) {
 
+        if (devicetype === -1) devicetype = 2; //it was OID_Current
 
-            if (deviceID > -1) { //it was target of thermostat
-                bRet = true;
+        if (device.type === 1) {//thermostat
+            const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
-                const current = await adapter.getForeignStateAsync(adapter.config.devices[deviceID].OID_Current);
-                await HandleActors(deviceID, parseFloat(current.val), parseFloat(state.val));
-            }
-            else {
-                deviceID = findObjectIdByKey(adapter.config.devices, 'OID_Current', id);
-
-                if (deviceID > -1) { //it was current of thermostat
+            if (HeatingPeriodActive) {
+                if (devicetype === 1) { //it was target of thermostat
                     bRet = true;
 
-                    const target = await adapter.getForeignStateAsync(adapter.config.devices[deviceID].OID_Target);
-                    await HandleActors(deviceID, parseFloat(state.val), parseFloat(target.val));
-
+                    const current = await adapter.getForeignStateAsync(device.OID_Current);
+                    await HandleActors(device.ID, parseFloat(current.val), parseFloat(state.val));
                 }
-                else { //it was no thermostat value
+                else {
 
-                    //to do
+                    if (devicetype === 2) { //it was current of thermostat
+                        bRet = true;
+
+                        const target = await adapter.getForeignStateAsync(device.OID_Target);
+                        await HandleActors(device.ID, parseFloat(state.val), parseFloat(target.val));
+                    }
                 }
             }
+            else {
+                adapter.log.warn('handling actors out of heating period not implemented yet'); 
+            }
         }
-        else {
-            adapter.log.warn('handling actors out of heating period not implemented yet'); 
+        else if (device.type === 2) {//actor
+            //nothing to do
         }
+        else if (device.type === 3) {//sensor
+
+            const state = await adapter.getForeignStateAsync(device.OID_Current);
+
+            let roomID = findObjectIdByKey(adapter.config.rooms, 'name', device.room);
+
+            adapter.log.debug('set ' + adapter.config.rooms[roomID].name + " window open to " + JSON.stringify(state)); 
+
+            adapter.config.rooms[roomID].WindowIsOpen = state.val;
+            CheckTemperatureChange();
+
+        } 
+    }
+    else {
+        adapter.log.warn('device not found ' + id );
     }
 
     return bRet;
@@ -1242,13 +1273,6 @@ async function HandleActors(deviceID, current, target) {
     }
 }
 
-async function HandleStateChangeSensors(id, state) {
-
-    adapter.log.warn("HandleStateChangeSensors not implemented yet for " + id);
-
-    //adapter.config.rooms[room].WindowIsOpen must be set
-
-}
 
 
 

@@ -85,7 +85,11 @@
             //first col of device tables
             show_hide_column("table_thermostats","thermostat_col_0", 0, false);
             show_hide_column("table_actors", "actor_col_0", 0, false);
-            show_hide_column("table_sensors","sensor_col_0", 0, false);
+            show_hide_column("table_sensors", "sensor_col_0", 0, false);
+
+            //third col of rooms (=WindOwpen)
+            show_hide_column("table_rooms","rooms_col_3", 2, false);
+
         }
 
 
@@ -377,6 +381,8 @@
                     });
                 }, 20)
             });
+
+             showHideSettings();
         }
 
         function getName(obj) {
@@ -657,9 +663,9 @@
                         <table id="table_rooms" class="table-values" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th id="col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
-                                    <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                    <th data-name="WindowIsOpen" data-type="checkbox" style="background: #64b5f6" class="translate">WindowIsOpen</th>
+                                    <th id="rooms_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
+                                    <th id="rooms_col_2" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                    <th id="rooms_col_3" data-name="WindowIsOpen" data-type="checkbox" style="background: #64b5f6" class="translate">WindowIsOpen</th>
                                     <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
 
                                 </tr>
