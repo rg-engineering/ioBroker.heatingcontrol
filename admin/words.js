@@ -84,17 +84,31 @@ systemDictionary = {
     },
     "use_actors":
     {
-        "en": "use actuator",
-        "ru": "использовать привод",
-        "de": "Stellantrieb verwenden",
-        "es": "usar actuador",
-        "pl": "użyj siłownika",
-        "pt": "usar atuador",
-        "nl": "gebruik de actuator",
-        "fr": "utiliser actionneur",
-        "zh-cn": "使用执行器",
-        "it": "utilizzare l'attuatore"
+        "en": "actuators used",
+        "de": "Aktoren verwendet",
+        "ru": "используемые приводы",
+        "pt": "atuadores usados",
+        "nl": "gebruikte actuatoren",
+        "fr": "actionneurs utilisés",
+        "it": "attuatori utilizzati",
+        "es": "actuadores utilizados",
+        "pl": "używane siłowniki",
+        "zh-cn": "执行器使用"
     },
+    "use_sensors":
+    {
+        "en": "sensors used",
+        "de": "Sensoren verwendet",
+        "ru": "датчики используются",
+        "pt": "sensores usados",
+        "nl": "sensoren gebruikt",
+        "fr": "capteurs utilisés",
+        "it": "sensori utilizzati",
+        "es": "sensores utilizados",
+        "pl": "zastosowane czujniki",
+        "zh-cn": "传感器使用"
+    },
+
     "UseActorsIfNotHeating":
     {
         "en": "use actuators if no heating period",
@@ -199,19 +213,7 @@ systemDictionary = {
         "pl": "sala",
         "zh-cn": "房间"
     },
-    "thermostat":
-    {
-        "en": "thermostat",
-        "de": "Thermostat",
-        "zh-cn": "恒温器",
-        "it": "termostato",
-        "es": "termostato",
-        "ru": "термостат",
-        "pt": "termostato",
-        "nl": "thermostaat",
-        "fr": "thermostat",
-        "pl": "termostat"
-    },
+
    
     "active":
     {
@@ -303,7 +305,149 @@ systemDictionary = {
         "es": "todos los días por separado",
         "pl": "każdego dnia osobno",
         "zh-cn": "每天分开"
+    },
+    "Edit Room":
+    {
+        "en": "edit the room",
+        "de": "Bearbeiten Sie den Raum",
+        "ru": "редактировать комнату",
+        "pt": "editar o quarto",
+        "nl": "bewerk de kamer",
+        "fr": "éditer la salle",
+        "it": "modifica la stanza",
+        "es": "editar la sala",
+        "pl": "edytować pokój",
+        "zh-cn": "编辑房间"
+    },
+    "thermostats":
+    {
+        "en": "thermostats",
+        "de": "Thermostate",
+        "ru": "термостаты",
+        "pt": "termostatos",
+        "nl": "thermostaten",
+        "fr": "thermostats",
+        "it": "termostati",
+        "es": "termostatos",
+        "pl": "termostaty",
+        "zh-cn": "温控器"
+    },
+    "actors":
+    {
+        "en": "actuators",
+        "de": "Aktoren",
+        "ru": "приводы",
+        "pt": "atuadores",
+        "nl": "actuators",
+        "fr": "actionneurs",
+        "it": "attuatori",
+        "es": "actuadores",
+        "pl": "siłowniki",
+        "zh-cn": "执行器"
+    },
+    "sensors":
+    {
+        "en": "sensors",
+        "de": "Sensoren",
+        "ru": "датчиков",
+        "pt": "sensores",
+        "nl": "sensors",
+        "fr": "des capteurs",
+        "it": "sensori",
+        "es": "sensores",
+        "pl": "czujniki",
+        "zh-cn": "传感器"
+    },
+    "thermostat":
+    {
+        "en": "thermostat",
+        "de": "Thermostat",
+        "ru": "термостат",
+        "pt": "termostato",
+        "nl": "thermostaat",
+        "fr": "thermostat",
+        "it": "termostato",
+        "es": "termostato",
+        "pl": "termostat",
+        "zh-cn": "恒温器"
+    },
+    "OID current":
+    {
+        "en": "OID current value",
+        "de": "OID aktueller Wert",
+        "ru": "Текущее значение OID",
+        "pt": "Valor atual OID",
+        "nl": "OID huidige waarde",
+        "fr": "Valeur actuelle de l'OID",
+        "it": "Valore corrente OID",
+        "es": "OID valor actual",
+        "pl": "Aktualna wartość OID",
+        "zh-cn": "OID当前值"
+    },
+    "OID target":
+    {
+        "en": "OID target value",
+        "de": "OID Zielwert",
+        "ru": "Целевое значение OID",
+        "pt": "Valor alvo do OID",
+        "nl": "OID-streefwaarde",
+        "fr": "Valeur cible OID",
+        "it": "Valore target OID",
+        "es": "Valor objetivo de OID",
+        "pl": "Wartość docelowa OID",
+        "zh-cn": "OID目标值"
+    },
+    "actor":
+    {
+        "en": "actuator",
+        "de": "Aktuator",
+        "ru": "привод",
+        "pt": "atuador do",
+        "nl": "aandrijver",
+        "fr": "actuateur",
+        "it": "attuatore",
+        "es": "solenoide",
+        "pl": "aparat",
+        "zh-cn": "执行器"
+    },
+    "OID":
+    {
+        "en": "OID",
+        "de": "OID",
+        "ru": "OID",
+        "pt": "OID",
+        "nl": "OID",
+        "fr": "OID",
+        "it": "OID",
+        "es": "OID",
+        "pl": "OID",
+        "zh-cn": "OID"
+    },
+    "sensor":
+    {
+        "en": "sensor",
+        "de": "Sensor",
+        "ru": "датчик",
+        "pt": "sensor",
+        "nl": "sensor",
+        "fr": "capteur",
+        "it": "sensore",
+        "es": "sensor",
+        "pl": "czujnik",
+        "zh-cn": "传感器"
+    },
+    "Cancel":
+    {
+        "en": "cancel",
+        "de": "Abbruch",
+        "ru": "отменить",
+        "pt": "cancelar",
+        "nl": "annuleren",
+        "fr": "Annuler",
+        "it": "Annulla",
+        "es": "cancelar",
+        "pl": "Anuluj",
+        "zh-cn": "取消"
     }
-
     
 };
