@@ -448,6 +448,19 @@ systemDictionary = {
         "es": "cancelar",
         "pl": "Anuluj",
         "zh-cn": "取消"
+    },
+    "Path2FeiertagAdapter":
+    {
+        "en": "Path to Feiertag - Adapter",
+        "de": "Pfad zum Feiertag - Adapter",
+        "ru": "Путь к Фейертагу - Адаптер",
+        "pt": "Caminho para o Feiertag - Adaptador",
+        "nl": "Pad naar Feiertag - Adapter",
+        "fr": "Chemin vers Feiertag - Adaptateur",
+        "it": "Path to Feiertag - Adattatore",
+        "es": "Camino a Feiertag - Adaptador",
+        "pl": "Path to Feiertag - Adapter",
+        "zh-cn": "Feiertag的路径 - 适配器"
     }
     
 };
