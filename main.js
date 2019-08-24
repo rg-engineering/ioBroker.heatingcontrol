@@ -958,6 +958,14 @@ function SubscribeStates(callback) {
     //if we need to handle actors, then subscribe on current and target temperature
     adapter.log.debug('#start subscribtion ');
 
+    if (adapter.config.Path2FeiertagAdapter.length > 0) {
+
+        //feiertage.0.heute.boolean
+        adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter + ".heute.boolean");
+
+        adapter.log.debug('subscribe ' + adapter.config.Path2FeiertagAdapter + '.heute.boolean');
+    }
+
     if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
         adapter.log.warn("no devices available for subscription");
         return;
@@ -1007,6 +1015,17 @@ async function HandleStateChange(id, state) {
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
     let bHandled = false;
+
+
+    if (adapter.config.Path2FeiertagAdapter.length > 0) {
+        if (id.includes(adapter.config.Path2FeiertagAdapter)) {
+            const PublicHolday = await adapter.getStateAsync(id);
+
+            //heatingcontrol.0.PublicHolidyToday
+            await adapter.setStateAsync("PublicHolidyToday", { value: PublicHolday, ack: true });
+            bHandled = true;
+        }
+    }
 
     if (state && state.ack !== true) {
         //first set ack flag
@@ -1463,7 +1482,8 @@ async function CalculateNextTime() {
 
         }
         else if (parseInt(adapter.config.ProfileType, 10) === 2) {
-            for (var room = 0; room < adapter.config.rooms.length; room++) {
+
+              for (var room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
 
@@ -1624,6 +1644,9 @@ async function CheckTemperatureChange() {
         const now = new Date();
         adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
 
+        
+       
+
 
         //first we need some information
         const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
@@ -1635,7 +1658,15 @@ async function CheckTemperatureChange() {
             const HolidayPresent = await adapter.getStateAsync("HolidayPresent");
             const PartyNow = await adapter.getStateAsync("PartyNow");
             const Present = await adapter.getStateAsync("Present");
-            const PublicHolidyToday = await adapter.getStateAsync("PublicHolidyToday");
+            let PublicHolidyToday = false;
+
+            if (adapter.config.PublicHolidayLikeSunday === true) {
+
+                PublicHolidyToday = await adapter.getStateAsync("PublicHolidyToday");
+
+            }
+
+
             const VacationAbsent = await adapter.getStateAsync("VacationAbsent");
 
             adapter.log.debug("profile type " + adapter.config.ProfileType);
@@ -1756,6 +1787,11 @@ async function CheckTemperatureChange() {
                             daysname = "Su-So";
                         }
 
+                        if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
+                            daysname = "Su-So";
+                        }
+
+
                         for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
                             adapter.log.debug("check ID " + id);
@@ -1797,6 +1833,11 @@ async function CheckTemperatureChange() {
                             case 6: daysname = "Sat"; break;
                             case 0: daysname = "Sun"; break;
                         }
+
+                        if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
+                            daysname = "Sun";
+                        }
+
 
                         for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
 

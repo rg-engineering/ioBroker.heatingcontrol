@@ -91,13 +91,15 @@
     "rooms": [],
     "UseActors": false,
     "Gewerk": "Heizung",
-    "UseHoliday": false,
     "ProfileType": 1,
     "NumberOfProfiles": 1,
     "NumberOfPeriods": 5,
     "timezone": "Europe/Berlin",
     "deleteall": false,
     "UseActorsIfNotHeating": 1,
-    "UseActorsIfNoThermostat": 1
+    "UseActorsIfNoThermostat": 1,
+    "Path2FeiertagAdapter": "",
+    "PublicHolidayLikeSunday":  true
+
   }
 }

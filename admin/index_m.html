@@ -57,7 +57,7 @@
                 }
             }
         }
-        
+
 
 
         function showHideSettings() {
@@ -83,12 +83,12 @@
             }
 
             //first col of device tables
-            show_hide_column("table_thermostats","thermostat_col_0", 0, false);
+            show_hide_column("table_thermostats", "thermostat_col_0", 0, false);
             show_hide_column("table_actors", "actor_col_0", 0, false);
             show_hide_column("table_sensors", "sensor_col_0", 0, false);
 
             //third col of rooms (=WindOwpen)
-            show_hide_column("table_rooms","rooms_col_3", 2, false);
+            show_hide_column("table_rooms", "rooms_col_3", 2, false);
 
         }
 
@@ -115,7 +115,7 @@
             });
         }
 
-         var timeout2;
+        var timeout2;
         function getFunctions(actualValue, onChange, instance) {
             timeout2 = setTimeout(function () {
                 getFunctions(actualValue, onChange, instance);
@@ -163,9 +163,9 @@
         }
 
         function OnChange() {
-            //do nothing 
+            //do nothing
         }
-        
+
 
         function initDialogRoom(room, callback) {
 
@@ -219,10 +219,10 @@
             $editDialog.modal('open');
 
             showHideSettings();
-         
+
         }
 
-       
+
 
         // the function loadSettings has to exist ...
         function load(settings, onChange) {
@@ -262,11 +262,11 @@
 
                     console.log('got instance ' + _id);
 
-                    getFunctions(settings.Gewerk,onChange, _id);
+                    getFunctions(settings.Gewerk, onChange, _id);
                     getDevices(onChange, _id);
                     getRooms(onChange, _id);
 
-                    
+
                 }
             });
 
@@ -382,7 +382,7 @@
                 }, 20)
             });
 
-             showHideSettings();
+            showHideSettings();
         }
 
         function getName(obj) {
@@ -446,9 +446,9 @@
                             $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
                             socket.emit('getObject', newId, function (err, obj) {
                                 let name = getName(obj);
-                                
+
                                 let OID_Current = getOID(obj);
-                                let OID_Target = OID_Current.replace("TEMPERATURE","SETPOINT");
+                                let OID_Target = OID_Current.replace("TEMPERATURE", "SETPOINT");
 
                                 $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
                                 $('#thermostats .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
@@ -473,7 +473,7 @@
                             $('#actors .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
                             socket.emit('getObject', newId, function (err, obj) {
                                 var name = getName(obj);
-                                
+
                                 var OID_Target = getOID(obj);
                                 $('#actors .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
                                 $('#actors .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
@@ -514,29 +514,29 @@
                 return callback(selectId);
             }
             socket.emit('getObjects', function (err, objs) {
-                selectId = $('#dialog-select-member').selectId('init',  {
+                selectId = $('#dialog-select-member').selectId('init', {
                     noMultiselect: true,
                     objects: objs,
-                    imgPath:       '../../lib/css/fancytree/',
-                    filter:        {type: 'state'},
-                    name:          'scenes-select-state',
+                    imgPath: '../../lib/css/fancytree/',
+                    filter: { type: 'state' },
+                    name: 'scenes-select-state',
                     texts: {
-                        select:          _('Select'),
-                        cancel:          _('Cancel'),
-                        all:             _('All'),
-                        id:              _('ID'),
-                        name:            _('Name'),
-                        role:            _('Role'),
-                        room:            _('Room'),
-                        value:           _('Value'),
-                        selectid:        _('Select ID'),
-                        from:            _('From'),
-                        lc:              _('Last changed'),
-                        ts:              _('Time stamp'),
-                        wait:            _('Processing...'),
-                        ack:             _('Acknowledged'),
-                        selectAll:       _('Select all'),
-                        unselectAll:     _('Deselect all'),
+                        select: _('Select'),
+                        cancel: _('Cancel'),
+                        all: _('All'),
+                        id: _('ID'),
+                        name: _('Name'),
+                        role: _('Role'),
+                        room: _('Room'),
+                        value: _('Value'),
+                        selectid: _('Select ID'),
+                        from: _('From'),
+                        lc: _('Last changed'),
+                        ts: _('Time stamp'),
+                        wait: _('Processing...'),
+                        ack: _('Acknowledged'),
+                        selectAll: _('Select all'),
+                        unselectAll: _('Deselect all'),
                         invertSelection: _('Invert selection')
                     },
                     columns: ['image', 'name', 'role', 'room']
@@ -585,6 +585,15 @@
                         <label for="timezone" class="translate">timezone</label>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" id="Path2FeiertagAdapter" class="value" />
+                        <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="input-field col s6">
                         <input type="checkbox" id="deleteall" class="value" />
@@ -594,13 +603,16 @@
 
                 <div class="row">
                     <div class="input-field col s6">
-                        <input type="checkbox" id="UseActors" class="value" />
-                        <label for="UseActors" class="translate">use_actors</label>
-                    </div>
-                    <div class="input-field col s6">
                         <input type="checkbox" id="UseSensors" class="value" />
                         <label for="UseSensors" class="translate">use_sensors</label>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="checkbox" id="UseActors" class="value" />
+                        <label for="UseActors" class="translate">use_actors</label>
+                    </div>
+
                 </div>
 
                 <div class="row">
@@ -650,8 +662,8 @@
 
                 <div class="row">
                     <div class="input-field col s4">
-                        <input type="checkbox" id="UseHoliday" class="value" />
-                        <label for="UseHoliday" class="translate">Feiertag</label>
+                        <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
+                        <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
                     </div>
                 </div>
             </div>
@@ -708,17 +720,17 @@
                             </ul>
                         </div>
                         <div id="tab-popup_thermostats" class="col s12 page">
- 
+
 
                             <div class="col s12" id="thermostats">
                                 <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                                
+
                                 <div class="table-values-div">
                                     <table id="table_thermostats" class="table-values" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th id="thermostat_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
-                                               
+
                                                 <th id="thermostat_col_1" data-name="name" style="background: #64b5f6" class="translate">thermostat</th>
                                                 <th id="thermostat_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID current</th>
                                                 <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>

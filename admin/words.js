@@ -54,32 +54,7 @@ systemDictionary = {
         "es": "función",
         "pl": "funkcjonować"
     },
-    "PathThermostats":
-    {
-        "en": "Path to Thermostats",
-        "ru": "Путь к термостатам",
-        "de": "Pfad zu den Thermostaten",
-        "pt": "Caminho para termostatos",
-        "nl": "Pad naar thermostaten",
-        "fr": "Chemin des thermostats",
-        "es": "Camino a los termostatos",
-        "it": "Percorso per termostati",
-        "pl": "Ścieżka do termostatów",
-        "zh-cn": "恒温器之路"
-    },
-    "PathActors":
-    {
-        "en": "Path to actuators",
-        "de": "Pfad zu den Aktoren",
-        "ru": "Путь к приводам",
-        "pt": "Caminho para os atuadores",
-        "nl": "Pad naar actuatoren",
-        "pl": "Droga do siłowników",
-        "fr": "Chemin vers les actionneurs",
-        "it": "Percorso per attuatori",
-        "es": "Camino a los actuadores",
-        "zh-cn": "执行器的路径"
-    },
+    
     "timezone":
     {
         "en": "timezone",
@@ -95,16 +70,16 @@ systemDictionary = {
     },
     "deleteall":
     {
-        "en": "delete all",
-        "de": "alles löschen",
-        "ru": "удалить все",
-        "nl": "Verwijder alles",
-        "pt": "deletar tudo",
-        "fr": "effacer tout",
-        "it": "cancella tutto",
-        "es": "eliminar todos",
-        "pl": "Usuń wszystko",
-        "zh-cn": "删除所有"
+        "en": "delete all devices when admin opens",
+        "de": "Löschen Sie alle Geräte, wenn der Administrator geöffnet wird",
+        "ru": "удалить все устройства при открытии администратора",
+        "pt": "excluir todos os dispositivos quando o administrador for aberto",
+        "nl": "verwijder alle apparaten wanneer admin wordt geopend",
+        "fr": "supprimer tous les périphériques lorsque l'administrateur ouvre",
+        "it": "elimina tutti i dispositivi quando si apre admin",
+        "es": "eliminar todos los dispositivos cuando se abre el administrador",
+        "pl": "usuń wszystkie urządzenia, gdy otworzy się administrator",
+        "zh-cn": "管理员打开时删除所有设备"
 
     },
     "use_actors":
@@ -185,18 +160,18 @@ systemDictionary = {
         "pl": "Liczba okresów",
         "zh-cn": "期数"
     },
-    "Feiertag":
+    "PublicHolidayLikeSunday":
     {
-        "en": "public holiday",
-        "de": "Feiertag",
-        "ru": "праздник",
-        "pt": "feriado",
-        "it": "festa nazionale",
-        "es": "día festivo",
-        "pl": "święto państwowe",
-        "zh-cn": "公共假期",
-        "nl": "wettelijke feestdag",
-        "fr": "jour férié"
+        "en": "public holiday like sunday",
+        "de": "Feiertag wie Sonntag",
+        "ru": "государственный праздник как воскресенье",
+        "pt": "feriado como o domingo",
+        "nl": "feestdagen zoals zondag",
+        "fr": "jour férié comme dimanche",
+        "it": "festività come la domenica",
+        "es": "festivo como el domingo",
+        "pl": "święto państwowe jak niedziela",
+        "zh-cn": "像星期日这样的公众假期"
     },
     "Search":
     {
@@ -237,58 +212,7 @@ systemDictionary = {
         "fr": "thermostat",
         "pl": "termostat"
     },
-    "type":
-    {
-        "en": "type",
-        "de": "Type",
-        "ru": "тип",
-        "pt": "tipo",
-        "nl": "type",
-        "fr": "type",
-        "it": "genere",
-        "es": "tipo",
-        "pl": "rodzaj",
-        "zh-cn": "类型"
-    },
-    "typeID":
-    {
-        "en": "type ID",
-        "de": "Typ-ID",
-        "ru": "тип ID",
-        "nl": "type ID",
-        "pt": "ID do tipo",
-        "fr": "ID de type",
-        "it": "tipo ID",
-        "es": "ID de tipo",
-        "pl": "wpisz ID",
-        "zh-cn": "类型ID"
-    },
-    "actor1":
-    {
-        "en": "actuator 1",
-        "de": "Stellantrieb 1",
-        "ru": "привод 1",
-        "pt": "atuador 1",
-        "fr": "actionneur 1",
-        "nl": "actuator 1",
-        "it": "attuatore 1",
-        "es": "actuador 1",
-        "pl": "siłownik 1",
-        "zh-cn": "执行器1"
-    },
-    "actor2":
-    {
-        "en": "actuator 2",
-        "de": "Stellantrieb 2",
-        "ru": "привод 2",
-        "fr": "actionneur 2",
-        "it": "attuatore 2",
-        "es": "actuador 2",
-        "pl": "siłownik 2",
-        "zh-cn": "执行器2",
-        "pt": "atuador 2",
-        "nl": "actuator 2"
-    },
+   
     "active":
     {
         "en": "active",
@@ -369,16 +293,16 @@ systemDictionary = {
     },
     "every Day":
     {
-        "en": "every Day",
-        "de": "jeden Tag",
-        "ru": "каждый день",
-        "pt": "todo dia",
-        "nl": "elke dag",
-        "fr": "tous les jours",
-        "it": "ogni giorno",
-        "es": "todos los días",
-        "pl": "codzienny",
-        "zh-cn": "每天"
+        "en": "every Day separately",
+        "de": "jeden Tag getrennt",
+        "ru": "каждый день отдельно",
+        "pt": "todos os dias separadamente",
+        "nl": "elke dag afzonderlijk",
+        "fr": "chaque jour séparément",
+        "it": "ogni giorno separatamente",
+        "es": "todos los días por separado",
+        "pl": "każdego dnia osobno",
+        "zh-cn": "每天分开"
     }
 
     
