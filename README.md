@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
-Adapter for controlling thermostats.
+Adapter for controlling your heating system.
 
 Features:
 * Control the setpoint temperature levels of all thermostats per schedules
@@ -17,11 +17,11 @@ Features:
 * supports multiple profiles
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
 * Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
-* up to two actuators are supported
-* Thermostat and actuator are automatically detected per room. The function (eg "heating") is used for this.
+* unlimited thermostat, actuator and sonsor per room are supported
+* Thermostat, actuator and sensor are automatically detected per room. The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
-* per room we can use more then one themostat, actuator or sensor
 * sensor is used to reduce target temperature (e.g. if a window is open)
+* interface to Feiertag-Adapter. Public holiday can be a normal day or like sundays. (admin setting)
 * A visualization example will be provided later
 
 
@@ -70,7 +70,11 @@ Features:
 * (René) redesign of data structure
 	- more then one actuator, sensor and thermostat per room
 	- three different profile types
-	- manual configuration of devices (is device is not detected automatically)
+	- manual configuration of devices (if device is not detected automatically)
+	- interface to Feiertag-Adapter
+	- public holiday as normal day or like sunday (setting in admin)
+	- window sensor support. Reduce target temperature when window is open
+	- !!ATTENTION!! data structure/objects has been changed. You need to update your visualisation settings
 
 ### 0.0.5 (2019-07-08)
 * (René) support for max! thermostats
