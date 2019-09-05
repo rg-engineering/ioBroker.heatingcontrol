@@ -451,16 +451,16 @@ systemDictionary = {
     },
     "Path2FeiertagAdapter":
     {
-        "en": "Path to Feiertag - Adapter",
-        "de": "Pfad zum Feiertag - Adapter",
-        "ru": "Путь к Фейертагу - Адаптер",
-        "pt": "Caminho para o Feiertag - Adaptador",
-        "nl": "Pad naar Feiertag - Adapter",
-        "fr": "Chemin vers Feiertag - Adaptateur",
-        "it": "Path to Feiertag - Adattatore",
-        "es": "Camino a Feiertag - Adaptador",
-        "pl": "Path to Feiertag - Adapter",
-        "zh-cn": "Feiertag的路径 - 适配器"
+        "en": "Path to Feiertag - Adapter or any other datapoint",
+        "de": "Pfad zum Feiertag - Adapter oder einem anderen Datenpunkt",
+        "ru": "Путь к Feiertag - Адаптер или любой другой пункт данных",
+        "pt": "Caminho para Feiertag - Adaptador ou qualquer outro ponto de dados",
+        "nl": "Pad naar Feiertag - Adapter of een ander datapunt",
+        "fr": "Chemin vers Feiertag - Adaptateur ou tout autre point de données",
+        "it": "Percorso per Feiertag - Adattatore o qualsiasi altro punto dati",
+        "es": "Ruta de acceso a Feiertag: adaptador o cualquier otro punto de datos",
+        "pl": "Ścieżka do Feiertagu - adapter lub inny punkt danych",
+        "zh-cn": "Feiertag的路径 - 适配器或任何其他数据点"
     }
     
 };

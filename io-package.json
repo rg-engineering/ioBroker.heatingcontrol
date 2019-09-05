@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "path to Feiertag-Adapter can also include a complete datapoint path ",
+        "de": "Pfad zum Feiertag-Adapter kann auch einen vollständigen Datenpunktpfad enthalten",
+        "ru": "путь к Feiertag-Adapter может также включать полный путь к точке данных",
+        "pt": "O caminho para o Feiertag-Adapter também pode incluir um caminho completo do ponto de dados",
+        "nl": "pad naar Feiertag-Adapter kan ook een compleet datapuntpad bevatten",
+        "fr": "Le chemin vers Feiertag-Adapter peut également inclure un chemin complet de point de données.",
+        "it": "Il percorso di Feiertag-Adapter può anche includere un percorso completo di punti dati",
+        "es": "ruta a Feiertag-Adapter también puede incluir una ruta completa de punto de datos",
+        "pl": "ścieżka do Feiertag-Adapter może również zawierać pełną ścieżkę punktu danych",
+        "zh-cn": "Feiertag-Adapter的路径还可以包含完整的数据点路径"
+      },
       "0.1.0": {
         "en": "redesign data structure",
         "de": "Neugestaltung der Datenstruktur",

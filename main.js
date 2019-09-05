@@ -829,24 +829,7 @@ async function CreateDatepoints() {
                 await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
                 adapter.subscribeStates(id1 + '.VacationAbsentDecrease');
 
-                await adapter.setObjectNotExistsAsync(id1 + '.HolidayPresentLikePublicHoliday', {
-                    type: 'state',
-                    common: {
-                        name: 'HolidayPresentLikePublicHoliday',
-                        type: 'bool',
-                        role: 'history',
-                        unit: '',
-                        read: true,
-                        write: true
-                    },
-                    native: { id: 'HolidayPresentLikePublicHoliday' }
-                });
-                const holidaypresentlikepublicholiday = await adapter.getStateAsync(id1 + '.HolidayPresentLikePublicHoliday');
-                //set default only if nothing was set before
-                if (holidaypresentlikepublicholiday === null) {
-                    await adapter.setStateAsync(id1 + '.HolidayPresentLikePublicHoliday', { ack: true, val: true });
-                }
-                adapter.subscribeStates(id1 + '.HolidayPresentLikePublicHoliday');
+                
 
                 await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriod', {
                     type: 'state',
@@ -960,10 +943,21 @@ function SubscribeStates(callback) {
 
     if (adapter.config.Path2FeiertagAdapter.length > 0) {
 
-        //feiertage.0.heute.boolean
-        adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter + ".heute.boolean");
 
-        adapter.log.debug('subscribe ' + adapter.config.Path2FeiertagAdapter + '.heute.boolean');
+        var names = adapter.config.Path2FeiertagAdapter.split('.');
+
+        if (names.length === 2) {
+            //feiertage.0.heute.boolean
+            adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter + ".heute.boolean");
+
+            adapter.log.info('subscribe ' + adapter.config.Path2FeiertagAdapter + '.heute.boolean');
+        }
+        else {
+            adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter);
+
+            adapter.log.info('subscribe ' + adapter.config.Path2FeiertagAdapter);
+
+        }
     }
 
     if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
@@ -1148,11 +1142,7 @@ async function HandleStateChangeGeneral(id, state) {
         CheckTemperatureChange();
         bRet = true;
     }
-    if (ids[5] === "HolidayPresentLikePublicHoliday") {
-         //ßßß
-        CheckTemperatureChange();
-        bRet = true;
-    }
+    
     if (ids[5] === "PartyDecrease") {
          //ßßß
         CheckTemperatureChange();
@@ -1736,7 +1726,7 @@ async function CheckTemperatureChange() {
                         }
                     }
 
-                    const HolidayPresentLikePublicHoliday = await adapter.getStateAsync("HolidayPresentLikePublicHoliday");
+
 
                     let currentPeriod = -1;
                     let nextTemperature = -99;

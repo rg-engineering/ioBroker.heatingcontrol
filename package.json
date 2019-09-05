@@ -1,6 +1,6 @@
 {
   "name": "iobroker.heatingcontrol",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "HeatingControl Adapter",
   "author": {
     "name": "René G.",
@@ -17,7 +17,7 @@
     "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
   },
   "dependencies": {
-    "cron": "^1.7.0",
+    "cron": "^1.7.1",
     "@iobroker/adapter-core": "^1.0.3"
   },
   "devDependencies": {
