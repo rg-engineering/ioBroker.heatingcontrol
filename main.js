@@ -1181,7 +1181,7 @@ async function HandleStateChangeDevices(id, state) {
 
     let bRet = false;
 
-    adapter.log.warn('handle actors ' + id + JSON.stringify(state)); 
+    adapter.log.debug('handle actors ' + id + JSON.stringify(state)); 
 
     let device = findObjectByKey(adapter.config.devices, 'OID_Target', id);
     let devicetype = - 1;
@@ -1194,6 +1194,8 @@ async function HandleStateChangeDevices(id, state) {
     }
 
     if (device !== null) {
+
+        adapter.log.debug("### " + JSON.stringify(device));
 
         if (devicetype === -1) devicetype = 2; //it was OID_Current
 
@@ -1215,7 +1217,8 @@ async function HandleStateChangeDevices(id, state) {
                     //adapter.log.debug("ask  " + device.OID_Current);
                     const current = await adapter.getForeignStateAsync(device.OID_Current);
                     //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(device));
-                    await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
+                    //await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
+                    await HandleActors(device.room, parseFloat(current.val), parseFloat(state.val));
                 }
                 else {
 
@@ -1224,7 +1227,8 @@ async function HandleStateChangeDevices(id, state) {
                         //adapter.log.debug("ask  " + device.OID_Target);
                         const target = await adapter.getForeignStateAsync(device.OID_Target);
                         //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(device));
-                        await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
+                        //await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
+                        await HandleActors(device.room, parseFloat(state.val), parseFloat(target.val));
                     }
                     else {
                         adapter.log.warn('wrong device type ');
@@ -1263,12 +1267,12 @@ async function HandleStateChangeDevices(id, state) {
 //
 //handles actors based on current and target temperature
 //to do: better control; right now it's just on / off without hystheresis or similar
-async function HandleActors(deviceID, current, target) {
+async function HandleActors(room, current, target) {
 
     //adapter.log.debug('#### ' + deviceID + ' ' + current + ' ' + target);
-    let room = adapter.config.devices[deviceID].room;
+    //let room = adapter.config.devices[deviceID].room;
 
-    adapter.log.debug('handle actors ' + room + " current " + current + " target " + target);
+    adapter.log.info('handle actors ' + room + " current " + current + " target " + target);
 
     //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
     if (current > target) {
