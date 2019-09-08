@@ -1016,7 +1016,7 @@ async function HandleStateChange(id, state) {
             const PublicHolday = await adapter.getStateAsync(id);
 
             //heatingcontrol.0.PublicHolidyToday
-            await adapter.setStateAsync("PublicHolidyToday", { value: PublicHolday, ack: true });
+            await adapter.setStateAsync("PublicHolidyToday", { value: PublicHolday.val, ack: true });
             bHandled = true;
         }
     }
@@ -1618,7 +1618,9 @@ async function GetCurrentProfile() {
     adapter.log.debug('get profile');
 
     const id = 'CurrentProfile';
-    let currentProfile = await adapter.getStateAsync(id);
+    let curProfile = await adapter.getStateAsync(id);
+    let currentProfile = curProfile.val;
+
     if (currentProfile > 0 && currentProfile <= parseInt(adapter.config.NumberOfProfiles,10)) {
         currentProfile--; //zero based!!
     }
@@ -1658,21 +1660,30 @@ async function CheckTemperatureChange() {
 
         if (HeatingPeriodActive.val) {
 
-            const GuestsPresent = await adapter.getStateAsync("GuestsPresent");
+            let temp = await adapter.getStateAsync("GuestsPresent");
+            const GuestsPresent = temp.val;
 
-            const HolidayPresent = await adapter.getStateAsync("HolidayPresent");
-            const PartyNow = await adapter.getStateAsync("PartyNow");
-            const Present = await adapter.getStateAsync("Present");
+            temp  = await adapter.getStateAsync("HolidayPresent");
+            const HolidayPresent = temp.val;
+
+            temp = await adapter.getStateAsync("PartyNow");
+            const PartyNow = temp.val;
+
+            temp = await adapter.getStateAsync("Present");
+            const Present = temp.val;
+
             let PublicHolidyToday = false;
 
             if (adapter.config.PublicHolidayLikeSunday === true) {
 
-                PublicHolidyToday = await adapter.getStateAsync("PublicHolidyToday");
+                temp = await adapter.getStateAsync("PublicHolidyToday");
+                PublicHolidyToday = temp.val;
 
             }
 
 
-            const VacationAbsent = await adapter.getStateAsync("VacationAbsent");
+            temp = await adapter.getStateAsync("VacationAbsent");
+            const VacationAbsent = temp.val;
 
             adapter.log.debug("profile type " + adapter.config.ProfileType);
 
