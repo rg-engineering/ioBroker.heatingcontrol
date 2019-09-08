@@ -68,8 +68,9 @@ Features:
 
 ## Changelog
 
+### 0.2.1 (2019-09-xx)
 
-### 0.2.0 (2019-09-xx)
+### 0.2.0 (2019-09-05)
 * (René) path to Feiertag-Adapter can also include a complete datapoint path 
 
 

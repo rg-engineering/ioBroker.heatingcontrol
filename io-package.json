@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "news": {
       "0.2.0": {
         "en": "path to Feiertag-Adapter can also include a complete datapoint path ",

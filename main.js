@@ -1197,23 +1197,37 @@ async function HandleStateChangeDevices(id, state) {
 
         if (devicetype === -1) devicetype = 2; //it was OID_Current
 
-        if (device.type === 1) {//thermostat
-            const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
-            if (HeatingPeriodActive) {
+        //adapter.log.debug("device type " + devicetype);
+
+        if (device.type === 1) {//thermostat
+
+            //adapter.log.debug("thermostat got ");
+            const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
+            
+            //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
+
+            if (HeatingPeriodActive.val) {
+
+                //adapter.log.debug("we are in heating period");
                 if (devicetype === 1) { //it was target of thermostat
                     bRet = true;
-
+                    //adapter.log.debug("ask  " + device.OID_Current);
                     const current = await adapter.getForeignStateAsync(device.OID_Current);
-                    await HandleActors(device.ID, parseFloat(current.val), parseFloat(state.val));
+                    //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(device));
+                    await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
                 }
                 else {
 
                     if (devicetype === 2) { //it was current of thermostat
                         bRet = true;
-
+                        //adapter.log.debug("ask  " + device.OID_Target);
                         const target = await adapter.getForeignStateAsync(device.OID_Target);
-                        await HandleActors(device.ID, parseFloat(state.val), parseFloat(target.val));
+                        //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(device));
+                        await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
+                    }
+                    else {
+                        adapter.log.warn('wrong device type ');
                     }
                 }
             }
@@ -1251,6 +1265,7 @@ async function HandleStateChangeDevices(id, state) {
 //to do: better control; right now it's just on / off without hystheresis or similar
 async function HandleActors(deviceID, current, target) {
 
+    //adapter.log.debug('#### ' + deviceID + ' ' + current + ' ' + target);
     let room = adapter.config.devices[deviceID].room;
 
     adapter.log.debug('handle actors ' + room + " current " + current + " target " + target);
@@ -1641,7 +1656,7 @@ async function CheckTemperatureChange() {
         //first we need some information
         const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
-        if (HeatingPeriodActive) {
+        if (HeatingPeriodActive.val) {
 
             const GuestsPresent = await adapter.getStateAsync("GuestsPresent");
 
