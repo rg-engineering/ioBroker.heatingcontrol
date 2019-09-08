@@ -3,6 +3,18 @@
     "name": "heatingcontrol",
     "version": "0.2.1",
     "news": {
+      "0.2.1": {
+        "en": "bug fixes in actuator handling",
+        "de": "Fehlerbehebungen im Umgang mit Aktuatoren",
+        "ru": "исправлены ошибки в работе привода",
+        "pt": "correções de erros no manuseio do atuador",
+        "nl": "bugfixes bij bediening van de actuator",
+        "fr": "corrections de bugs dans la manipulation des actionneurs",
+        "it": "correzioni di errori nella gestione dell'attuatore",
+        "es": "correcciones de errores en el manejo del actuador",
+        "pl": "poprawki błędów w obsłudze siłowników",
+        "zh-cn": "执行器处理中的错误修复"
+      },
       "0.2.0": {
         "en": "path to Feiertag-Adapter can also include a complete datapoint path ",
         "de": "Pfad zum Feiertag-Adapter kann auch einen vollständigen Datenpunktpfad enthalten",

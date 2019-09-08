@@ -1,13 +1,19 @@
 ![Logo](admin/heatingcontrol.png)
 # ioBroker.HeatingControl
+
+
+
 ![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) 
 ![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg) 
-[![NPM version](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
+[![NPM version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
-[![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
+[![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
+
+
+
 
 
 Adapter for controlling your heating system.
@@ -68,7 +74,8 @@ Features:
 
 ## Changelog
 
-### 0.2.1 (2019-09-xx)
+### 0.2.1 (2019-09-08)
+* (René) bug fixes in actuator handling
 
 ### 0.2.0 (2019-09-05)
 * (René) path to Feiertag-Adapter can also include a complete datapoint path 
