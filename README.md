@@ -74,6 +74,9 @@ Features:
 
 ## Changelog
 
+### 0.2.2 (2019-09-08)
+* (René) bug fixe: avoid unnessary warning when paramters changed
+
 ### 0.2.1 (2019-09-08)
 * (René) bug fixes in actuator handling
 
