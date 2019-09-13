@@ -74,15 +74,18 @@ Features:
 
 ## Changelog
 
-### 0.2.2 (2019-09-08)
-* (René) bug fixe: avoid unnessary warning when paramters changed
+### 0.2.2 (2019-09-13)
+* (René) see issue #14: description of datapoint time changed ('from' instead 'until')
+* (René) see issue #12: unnecessary warnings removed
+* (René) see issue #17: seconds removed from time list
+* (René) datepoint change handling reworked
+* (René) see issue #18: take over values from external PublicHoliday-datapoint
 
 ### 0.2.1 (2019-09-08)
 * (René) bug fixes in actuator handling
 
 ### 0.2.0 (2019-09-05)
 * (René) path to Feiertag-Adapter can also include a complete datapoint path 
-
 
 ### 0.1.0 (2019-08-25)
 * (René) redesign of data structure

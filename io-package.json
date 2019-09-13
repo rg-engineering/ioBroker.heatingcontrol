@@ -3,6 +3,18 @@
     "name": "heatingcontrol",
     "version": "0.2.2",
     "news": {
+      "0.2.2": {
+        "en": "some bug fixes",
+        "de": "einige Bugfixes",
+        "ru": "некоторые исправления ошибок",
+        "pt": "algumas correções de bugs",
+        "nl": "enkele bugfixes",
+        "fr": "quelques corrections de bugs",
+        "it": "alcune correzioni di bug",
+        "es": "algunas correcciones de errores",
+        "pl": "niektóre poprawki błędów",
+        "zh-cn": "一些错误修复"
+      },
       "0.2.1": {
         "en": "bug fixes in actuator handling",
         "de": "Fehlerbehebungen im Umgang mit Aktuatoren",
