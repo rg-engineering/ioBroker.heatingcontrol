@@ -501,7 +501,7 @@ async function CreateStates4Period(id, period) {
     await adapter.setObjectNotExistsAsync(id + '.time', {
         type: 'state',
         common: {
-            name: 'period until',
+            name: 'period from',
             type: 'date',
             role: 'profile',
             unit: '',
@@ -619,10 +619,34 @@ async function CreateDatepoints() {
         },
         native: { id: 'PublicHolidyToday' }
     });
-    const publicholidaytoday = await adapter.getStateAsync('PublicHolidyToday');
-    //set default only if nothing was set before
-    if (publicholidaytoday === null) {
-        await adapter.setStateAsync('PublicHolidyToday', { ack: true, val: false });
+
+    //get value from other adapter if configured
+    if (adapter.config.Path2FeiertagAdapter.length > 0) {
+
+        var names = adapter.config.Path2FeiertagAdapter.split('.');
+
+        let PublicHolidayId = "";
+        if (names.length === 2) {
+            //feiertage.0.heute.boolean
+            PublicHolidayId = adapter.config.Path2FeiertagAdapter + ".heute.boolean";
+        }
+        else {
+            PublicHolidayId = adapter.config.Path2FeiertagAdapter;
+        }
+
+        const PublicHoliday = await adapter.getForeignStateAsync(PublicHolidayId);
+
+        adapter.log.debug("### 4444 " + PublicHoliday.val);
+
+        //heatingcontrol.0.PublicHolidyToday
+        await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
+    }
+    else {
+        const publicholidaytoday = await adapter.getStateAsync('PublicHolidyToday');
+        //set default only if nothing was set before
+        if (publicholidaytoday === null) {
+            await adapter.setStateAsync('PublicHolidyToday', { ack: true, val: false });
+        }
     }
         adapter.subscribeStates('PublicHolidyToday');
 
@@ -1004,41 +1028,77 @@ function SubscribeStates(callback) {
 //*******************************************************************
 //
 // handles state changes of subscribed states
+
+let LastStateChangeID = "";
+let LastStateVal = 1;
+
 async function HandleStateChange(id, state) {
 
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
-    let bHandled = false;
+    if (id !== LastStateChangeID || state.val !== LastStateVal) {
 
+        let bHandled = false;
+        LastStateChangeID = id;
+        LastStateVal = state.val;
 
-    if (adapter.config.Path2FeiertagAdapter.length > 0) {
-        if (id.includes(adapter.config.Path2FeiertagAdapter)) {
-            const PublicHolday = await adapter.getStateAsync(id);
+        if (adapter.config.Path2FeiertagAdapter.length > 0) {
 
-            //heatingcontrol.0.PublicHolidyToday
-            await adapter.setStateAsync("PublicHolidyToday", { value: PublicHolday.val, ack: true });
-            bHandled = true;
+            adapter.log.debug("### 3333 ");
+
+            if (id.includes(adapter.config.Path2FeiertagAdapter)) {
+
+                adapter.log.debug("### 3344 " + id);
+
+                const PublicHoliday = await adapter.getForeignStateAsync(id);
+
+                adapter.log.debug("### 4444 " + PublicHoliday.val);
+
+                //heatingcontrol.0.PublicHolidyToday
+                await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
+                bHandled = true;
+            }
         }
-    }
+        let ret = false;
 
-    if (state && state.ack !== true) {
-        //first set ack flag
-        await adapter.setStateAsync(id, { ack: true });
-
-        if (HandleStateChangeGeneral(id, state)) {
-            bHandled = true;
+        //## handle state change heatingcontrol.0.GuestsPresent {"val":false,"ack":false,"ts":1568137512204,"q":0,"from":"system.adapter.admin.0","user":"system.user.admin","lc":1568137512204}
+        if (!bHandled) {
+            ret = await HandleStateChangeGeneral(id, state);
+            if (ret) {
+                bHandled = true;
+                adapter.log.debug("### 111 handled");
+            }
+            else {
+                adapter.log.debug("### 111 not handled");
+            }
         }
-    }
-    if (!bHandled && HandleStateChangeDevices(id, state)) {
-        bHandled = true;
-    }
-   
+        if (!bHandled) {
+            //## handle state change hm - rpc.0.IEQ0067581.1.TEMPERATURE { "val": 23.4, "ack": true, "ts": 1568137725283, "q": 0, "from": "system.adapter.hm-rpc.0", "user": "system.user.admin", "lc": 1568137443749 }
+            ret = await HandleStateChangeDevices(id, state);
+            if (ret) {
+                bHandled = true;
+                adapter.log.debug("### 222 handled");
+            }
+            else {
+                adapter.log.debug("### 222 not handled");
+            }
+        }
 
-    if (!bHandled) {
-        adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
+        if (state && state.ack !== true) {
+            //last set ack flag
+            await adapter.setStateAsync(id, { ack: true });
+        }
+
+        if (!bHandled) {
+            adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
+        }
+        else {
+            adapter.log.debug("### all StateChange handled ");
+        }
+
     }
     else {
-        adapter.log.debug("### all StateChange handled ");
+        adapter.log.debug("### already done " + LastStateVal + " / " + state.val + " /// " + id + " / "+ LastStateChangeID );
     }
 }
 
@@ -1061,12 +1121,13 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
-    if (ids[7] === "time") {
+    //not handled heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
+    if (ids[8] === "time") {
         let values = state.val.split(':');
 
         let hour = 0;
         let minute = 0;
-        let second = 0;
+        //let second = 0;
 
         if (values[0] && values[0] >= 0 && values[0] < 24) {
             hour = parseInt(values[0]);
@@ -1076,86 +1137,89 @@ async function HandleStateChangeGeneral(id, state) {
             minute = parseInt(values[1]);
             
         }
-        if (values[2] && values[2] >= 0 && values[2] < 60) {
-            second = parseInt(values[2]);
+        //if (values[2] && values[2] >= 0 && values[2] < 60) {
+        //    second = parseInt(values[2]);
             
-        }
+        //}
         if (hour < 10) {
             hour = "0" + hour;
         }
         if (minute < 10) {
             minute = "0" + minute;
         }
-        if (second < 10) {
-            second = "0" + second;
-        }
-        let sTime = hour + ":" + minute + ":" + second;
+        //if (second < 10) {
+        //    second = "0" + second;
+        //}
+        //let sTime = hour + ":" + minute + ":" + second;
+        let sTime = hour + ":" + minute;
 
         await adapter.setStateAsync(id, { ack: true, val: sTime });
         bRet = true;
+
+        await CalculateNextTime();
     }
 
     if (ids[2] === "GuestsPresent") {
         //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "HeatingPeriodActive") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "HolidayPresent") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "PartyNow") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "Present") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "PublicHolidyToday") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "VacationAbsent") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
 
     
     if (ids[5] === "AbsentDecrease") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "GuestIncrease") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     
     if (ids[5] === "PartyDecrease") {
          //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "WindowOpenDecrease") {
         //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "VacationAbsentDecrease") {
         //ßßß
-        CheckTemperatureChange();
+        await CheckTemperatureChange();
         bRet = true;
     }
 
@@ -1650,7 +1714,7 @@ async function CheckTemperatureChange() {
 
 
     try {
-        adapter.log.debug('CheckTemperatureChange is called');
+        adapter.log.info('calculating new target temperatures');
 
         const now = new Date();
         adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
