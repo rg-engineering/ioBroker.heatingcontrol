@@ -211,10 +211,32 @@ async function ListRooms(obj) {
         rooms = AllRoomsEnum.result;
         adapter.log.debug("rooms " + JSON.stringify(rooms));
 
+        let language = "de";
+        let ret = await adapter.getForeignObjectAsync('system.config');
+
+        language = ret.common.language;
+        //adapter.log.warn("system language " + language);
+
         for (let e in rooms) {
 
+            let name = "undefined";
+
+            if (typeof rooms[e].common.name === 'string') {
+                name = rooms[e].common.name;
+            }
+            else if (typeof rooms[e].common.name === 'object') {
+                name = rooms[e].common.name.de;
+
+                name = rooms[e].common.name[language];
+                //adapter.log.warn("room name " + name + " " + JSON.stringify(rooms[e].common.name));
+            }
+            else {
+                adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
+            }
+
+
             adapter.config.rooms.push({
-                name: rooms[e].common.name,
+                name: name,
                 isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
                 WindowIsOpen: false
             });
@@ -235,11 +257,30 @@ async function ListFunctions(obj) {
     adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
     let functions = AllFunctionsEnum.result;
 
+    let language = "de";
+    let ret = await adapter.getForeignObjectAsync('system.config');
+
+    language = ret.common.language;
+
     for (let e1 in functions) {
 
+        let name = "undefined";
+
+        if (typeof functions[e1].common.name === 'string') {
+            name = functions[e1].common.name;
+        }
+        else if (typeof functions[e1].common.name === 'object') {
+            name = functions[e1].common.name[language];
+        }
+        else {
+            adapter.log.warn("unknown type " + typeof functions[e1].common.name + " " + JSON.stringify(functions[e1].common.name));
+        }
+
         enumFunctions.push({
-            name: functions[e1].common.name
-    });
+            name: name
+        }
+        );
+
     }
     adapter.log.debug('all functions done ' + JSON.stringify(enumFunctions));
 
@@ -360,12 +401,12 @@ async function ListDevices(obj) {
                                  * Actor found {"_id":"hm-rpc.0.LEQ0900578.3","type":"channel","common":{"name":"HK_Aktor_KG_Gast","role":"switch"},"native":{"ADDRESS":"LEQ0900578:3","AES_ACTIVE":0,"DIRECTION":2,"FLAGS":1,"INDEX":3,"LINK_SOURCE_ROLES":"","LINK_TARGET_ROLES":"SWITCH WCS_TIPTRONIC_SENSOR WEATHER_CS","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"LEQ0900578","PARENT_TYPE":"HM-LC-Sw4-DR","TYPE":"SWITCH","VERSION":26},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456990633,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
                                  */
                                 let sName = adapterObj.common.name;
-                                adapter.log.debug("#111");
+                                //adapter.log.debug("#111");
                                 IsInDeviceList = findObjectIdByKey(adapter.config.devices, 'name', sName);
-                                adapter.log.debug("#222");
+                                //adapter.log.debug("#222");
 
                                 if (IsInDeviceList === -1) {
-                                    adapter.log.debug("#333 " + NextID);
+                                    //adapter.log.debug("#333 " + NextID);
                                     adapter.config.devices.push({
                                         id: NextID++,
                                         name: sName,
@@ -374,7 +415,7 @@ async function ListDevices(obj) {
                                         type: 2, //actors
                                         OID_Target: adapterObj._id + ActorTypeTab[supportedActor][2]
                                     });
-                                    adapter.log.debug("#444");
+                                    //adapter.log.debug("#444");
                                 }
                             }
                         }
