@@ -200,6 +200,16 @@ async function main() {
     }
 }
 
+
+async function GetSystemLanguage() {
+    let language = "de";
+    let ret = await adapter.getForeignObjectAsync('system.config');
+
+    language = ret.common.language;
+
+    return language;
+}
+
 async function ListRooms(obj) {
 
     if (adapter.config.rooms.length === 0 || adapter.config.deleteall) {
@@ -211,11 +221,7 @@ async function ListRooms(obj) {
         rooms = AllRoomsEnum.result;
         adapter.log.debug("rooms " + JSON.stringify(rooms));
 
-        let language = "de";
-        let ret = await adapter.getForeignObjectAsync('system.config');
-
-        language = ret.common.language;
-        //adapter.log.warn("system language " + language);
+        let language = await GetSystemLanguage();
 
         for (let e in rooms) {
 
@@ -249,6 +255,9 @@ async function ListRooms(obj) {
     adapter.sendTo(obj.from, obj.command, adapter.config.rooms, obj.callback);
 }
 
+
+
+
 async function ListFunctions(obj) {
 
     let enumFunctions = [];
@@ -257,10 +266,7 @@ async function ListFunctions(obj) {
     adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
     let functions = AllFunctionsEnum.result;
 
-    let language = "de";
-    let ret = await adapter.getForeignObjectAsync('system.config');
-
-    language = ret.common.language;
+    let language = await GetSystemLanguage();
 
     for (let e1 in functions) {
 
@@ -1198,6 +1204,9 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
 
         await CalculateNextTime();
+
+        //see issue 21: need to check temperature aswell
+        await CheckTemperatureChange();
     }
 
     if (ids[2] === "GuestsPresent") {
