@@ -1565,6 +1565,11 @@ async function CalculateNextTime() {
 
         let currentProfile = await GetCurrentProfile();
 
+        let LastTimeSetHour = -1;
+        let LastTimeSetMinute = -1;
+
+
+
         if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
             for (var room = 0; room < adapter.config.rooms.length; room++) {
@@ -1590,12 +1595,26 @@ async function CalculateNextTime() {
                             }
                         }
                         if (!bFound) {
-                            adapter.log.debug("push to list " + " = " + nextTimes);
-                            timerList.push({
-                                hour: parseInt(nextTimes[0]),
-                                minute: parseInt(nextTimes[1]),
-                                day: 0
-                            });
+
+                            let TimeSetHour = parseInt(nextTimes[0]);
+                            let TimeSetMinute = parseInt(nextTimes[1]);
+
+                            //see issue 13
+                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+
+                                LastTimeSetHour = TimeSetHour;
+                                LastTimeSetMinute = TimeSetMinute;
+
+                                adapter.log.debug("push to list " + " = " + nextTimes);
+                                timerList.push({
+                                    hour: TimeSetHour,
+                                    minute: TimeSetMinute,
+                                    day: 0
+                                });
+                            }
+                            else {
+                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                            }
                         }
                     }
                 }
@@ -1606,7 +1625,7 @@ async function CalculateNextTime() {
         }
         else if (parseInt(adapter.config.ProfileType, 10) === 2) {
 
-              for (var room = 0; room < adapter.config.rooms.length; room++) {
+            for (var room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
 
@@ -1629,12 +1648,23 @@ async function CalculateNextTime() {
                             }
                         }
                         if (!bFound) {
-                            adapter.log.debug("push to list " + " = " + nextTimes);
-                            timerList.push({
-                                hour: parseInt(nextTimes[0]),
-                                minute: parseInt(nextTimes[1]),
-                                day: -1
-                            });
+
+                            let TimeSetHour = parseInt(nextTimes[0]);
+                            let TimeSetMinute = parseInt(nextTimes[1]);
+
+                            //see issue 13
+                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+
+                                adapter.log.debug("push to list " + " = " + nextTimes);
+                                timerList.push({
+                                    hour: parseInt(nextTimes[0]),
+                                    minute: parseInt(nextTimes[1]),
+                                    day: -1
+                                });
+                            }
+                            else {
+                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                            }
                         }
                     }
 
@@ -1657,12 +1687,21 @@ async function CalculateNextTime() {
                             }
                         }
                         if (!bFound) {
-                            adapter.log.debug("push to list " + " = " + nextTimes);
-                            timerList.push({
-                                hour: parseInt(nextTimes[0]),
-                                minute: parseInt(nextTimes[1]),
-                                day: -2
-                            });
+                            let TimeSetHour = parseInt(nextTimes[0]);
+                            let TimeSetMinute = parseInt(nextTimes[1]);
+
+                            //see issue 13
+                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                adapter.log.debug("push to list " + " = " + nextTimes);
+                                timerList.push({
+                                    hour: parseInt(nextTimes[0]),
+                                    minute: parseInt(nextTimes[1]),
+                                    day: -2
+                                });
+                            }
+                            else {
+                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                            }
                         }
                     }
                 }
@@ -1704,12 +1743,21 @@ async function CalculateNextTime() {
                             }
                         }
                         if (!bFound) {
-                            adapter.log.debug("push to list " + " = " + nextTimes);
-                            timerList.push({
-                                hour: parseInt(nextTimes[0]),
-                                minute: parseInt(nextTimes[1]),
-                                day: day
-                            });
+                            let TimeSetHour = parseInt(nextTimes[0]);
+                            let TimeSetMinute = parseInt(nextTimes[1]);
+
+                            //see issue 13
+                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                adapter.log.debug("push to list " + " = " + nextTimes);
+                                timerList.push({
+                                    hour: parseInt(nextTimes[0]),
+                                    minute: parseInt(nextTimes[1]),
+                                    day: day
+                                });
+                            }
+                            else {
+                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                            }
                         }
                     }
                 }
@@ -2042,7 +2090,7 @@ async function CheckTemperatureChange() {
         getCronStat();
     }
     catch (e) {
-        adapter.log.error('exception in CheckTemperatureChange[' + e + ']');
+        adapter.log.error('exception in CheckTemperatureChange [' + e + ']');
     }
 }
 

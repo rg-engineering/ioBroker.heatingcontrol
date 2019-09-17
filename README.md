@@ -76,6 +76,9 @@ Features:
 
 ### 0.2.3 (2019-09-16)
 * (René) see issue #19: handling of enums created in iobroker admin fixed
+* (René) see issue #13: check order of periods; if order is wrong (next time is smaller than previous) then time si not used for cron and a warning appears in log
+* (René) see issue #21: check temperatures after changing of period settings (e.g. time)
+
 
 ### 0.2.2 (2019-09-13)
 * (René) see issue #14: description of datapoint time changed ('from' instead 'until')
