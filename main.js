@@ -1569,12 +1569,14 @@ async function CalculateNextTime() {
         let LastTimeSetMinute = -1;
 
 
-
+        let ActiveRomms = 0;
         if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
             for (var room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
+
+                    ActiveRomms++;
 
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.time';
@@ -1628,6 +1630,8 @@ async function CalculateNextTime() {
             for (var room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
+
+                    ActiveRomms++;
 
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Fr.Periods." + period + '.time';
@@ -1712,6 +1716,8 @@ async function CalculateNextTime() {
                 var sday;
                 if (adapter.config.rooms[room].isActive) {
 
+                    ActiveRomms++;
+
                     for (var day = 1; day <= 7; day++)
 
                         switch (day) {
@@ -1765,6 +1771,11 @@ async function CalculateNextTime() {
         }
         else {
             adapter.log.warn('CalculateNextTime: not implemented yet, profile type is ' + adapter.config.ProfileType);
+        }
+
+
+        if (ActiveRomms === 0) {
+            adapter.log.warn('CalculateNextTime: no active rooms found. Please activate at least one room!');
         }
 
         //and now start all cron jobs
@@ -2065,7 +2076,7 @@ async function CheckTemperatureChange() {
 
                             if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
 
-                                adapter.log.info('room ' + adapter.config.rooms[room].name + " Thermostate " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+                                adapter.log.info('room ' + adapter.config.rooms[room].name + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
 
                                 //adapter.log.debug("*4 " + state);
                                 await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);

@@ -456,7 +456,7 @@
 
             console.log('tableDevicesOnReady');
 
-            $('#thermostats .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+            $('#thermostats .table-values-div .table-values .values-buttons[data-command="edit1"]').on('click', function () {
 
                 let id = $(this).data('index');
 
@@ -470,11 +470,35 @@
                                 let name = getName(obj);
 
                                 let OID_Current = getOID(obj);
-                                let OID_Target = OID_Current.replace("TEMPERATURE", "SETPOINT");
+
+                                $('#thermostats .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
+                                 
+                            });
+                        }
+                    });
+                });
+
+
+            });
+
+            $('#thermostats .table-values-div .table-values .values-buttons[data-command="edit2"]').on('click', function () {
+
+                let id = $(this).data('index');
+
+                console.log('edit thermostats clicked ID=' + id);
+
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                let name = getName(obj);
+
+                                let OID_Target = getOID(obj);
 
                                 $('#thermostats .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
                                 $('#thermostats .values-input[data-name="OID_Target"][data-index="' + id + '"]').val(OID_Target).trigger('change');
-                                $('#thermostats .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
+
                             });
                         }
                     });
@@ -755,10 +779,12 @@
 
                                                 <th id="thermostat_col_1" data-name="name" style="background: #64b5f6" class="translate">thermostat</th>
                                                 <th id="thermostat_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID current</th>
+                                                <th id="thermostat_edit1" data-buttons="edit1" style="width: 100px; background: #64b5f6"></th>
                                                 <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
+                                                <th id="thermostat_edit2" data-buttons="edit2" style="width: 100px; background: #64b5f6"></th>
 
                                                 <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
                                             </tr>
                                         </thead>
@@ -778,9 +804,9 @@
                                                 <th id="actor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
                                                 <th id="actor_col_1" data-name="name" style="background: #64b5f6" class="translate">actor</th>
                                                 <th id="actor_col_2" data-name="OID_Target" style="background: #64b5f6" class="translate">OID</th>
-
+                                                <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
                                                 <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
                                             </tr>
                                         </thead>
@@ -802,9 +828,9 @@
                                                 <th id="sensor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
                                                 <th id="sensor_col_1" data-name="name" style="background: #64b5f6" class="translate">sensor</th>
                                                 <th id="sensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
-
+                                                <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
                                                 <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
                                             </tr>
                                         </thead>
