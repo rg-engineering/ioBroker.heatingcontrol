@@ -639,7 +639,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'HeatingPeriodActive',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -658,7 +658,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'PublicHolidyToday',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -701,7 +701,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'Present',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -721,7 +721,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'PartyNow',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -740,7 +740,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'GuestsPresent',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -759,7 +759,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'HolidayPresent',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
@@ -778,7 +778,7 @@ async function CreateDatepoints() {
         type: 'state',
         common: {
             name: 'VacationAbsent',
-            type: 'bool',
+            type: 'boolean',
             role: 'history',
             unit: '',
             read: true,
