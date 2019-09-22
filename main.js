@@ -1031,6 +1031,11 @@ function SubscribeStates(callback) {
         }
     }
 
+    if (adapter.config.Path2PresentDP.length > 0) {
+        adapter.subscribeForeignStates(adapter.config.Path2PresentDP);
+        adapter.log.info('subscribe ' + adapter.config.Path2PresentDP);
+    }
+
     if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
         adapter.log.warn("no devices available for subscription");
         return;
@@ -1089,17 +1094,23 @@ async function HandleStateChange(id, state) {
         LastStateChangeID = id;
         LastStateVal = state.val;
 
-        if (adapter.config.Path2FeiertagAdapter.length > 0) {
+        if (adapter.config.Path2PresentDP.length > 0) {
 
-            adapter.log.debug("### 3333 ");
+            if (id.includes(adapter.config.Path2PresentDP)) {
+                const present = await adapter.getForeignStateAsync(id);
+
+                //heatingcontrol.0.Present
+                await adapter.setStateAsync("Present", { val: present.val, ack: true });
+                bHandled = true;
+            }
+        }
+
+
+        if (adapter.config.Path2FeiertagAdapter.length > 0) {
 
             if (id.includes(adapter.config.Path2FeiertagAdapter)) {
 
-                adapter.log.debug("### 3344 " + id);
-
                 const PublicHoliday = await adapter.getForeignStateAsync(id);
-
-                adapter.log.debug("### 4444 " + PublicHoliday.val);
 
                 //heatingcontrol.0.PublicHolidyToday
                 await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
@@ -1808,6 +1819,29 @@ async function GetCurrentProfile() {
     return currentProfile;
 }
 
+async function CheckForHeatingPeriod() {
+    if (adapter.config.UseFixHeatingPeriod) {
+        adapter.log.warn("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
+
+        //oder anders: cron job setzen??
+
+        // wei verallgemeinern? ohne Jahresangabe??
+        const HeatingPeriodStart = new Date(adapter.config.FixHeatingPeriodStart);
+        const HeatingPeriodEnd = new Date(adapter.config.FixHeatingPeriodEnd);
+        let isHeatingPeriod = false;
+
+        const today = new Date();
+
+        if (today >= HeatingPeriodStart && today <= HeatingPeriodEnd) {
+            isHeatingPeriod = true;
+        }
+
+
+        await adapter.setStateAsync('HeatingPeriodActive', { ack: true, val: isHeatingPeriod });        
+
+    }
+}
+
 
 //#######################################
 //
@@ -1828,7 +1862,7 @@ async function CheckTemperatureChange() {
         const now = new Date();
         adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
 
-        
+        await CheckForHeatingPeriod();
        
 
 
@@ -2093,7 +2127,7 @@ async function CheckTemperatureChange() {
             }
         }
         else {
-            adapter.log.debug("nothing to do: no heating period");
+            adapter.log.debug("nothing to do: no heating period (certain temp todo)");
         }
 
         await HandleActorsGeneral(HeatingPeriodActive);

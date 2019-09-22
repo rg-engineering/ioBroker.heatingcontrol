@@ -1,8 +1,11 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.2.3",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+
+      },
       "0.2.3": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
@@ -135,7 +138,11 @@
     "UseActorsIfNotHeating": 1,
     "UseActorsIfNoThermostat": 1,
     "Path2FeiertagAdapter": "",
-    "PublicHolidayLikeSunday":  true
+    "Path2PresentDP": "",
+    "PublicHolidayLikeSunday": true,
+    "UseFixHeatingPeriod": false,
+    "FixHeatingPeriodStart": "",
+    "FixHeatingPeriodEnd": ""
 
   }
 }
