@@ -683,7 +683,7 @@ async function CreateDatepoints() {
 
         const PublicHoliday = await adapter.getForeignStateAsync(PublicHolidayId);
 
-        adapter.log.debug("### 4444 " + PublicHoliday.val);
+        //adapter.log.debug("### 4444 " + PublicHoliday.val);
 
         //heatingcontrol.0.PublicHolidyToday
         await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
