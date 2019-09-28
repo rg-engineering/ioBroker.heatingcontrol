@@ -141,8 +141,8 @@
     "Path2PresentDP": "",
     "PublicHolidayLikeSunday": true,
     "UseFixHeatingPeriod": false,
-    "FixHeatingPeriodStart": "",
-    "FixHeatingPeriodEnd": ""
+    "FixHeatingPeriodStart": "01.10.",
+    "FixHeatingPeriodEnd": "31.03."
 
   }
 }

@@ -1483,9 +1483,63 @@ function CronStop() {
     }
 }
 
+function CreateCron4HeatingPeriod() {
+
+    if (adapter.config.UseFixHeatingPeriod) {
+        const timezone = adapter.config.timezone || 'Europe/Berlin';
+        adapter.log.info("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
+
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+
+
+        try {
+            //0 0 day month *
+            const StartMonth = HeatingPeriodStart[1] - 1;
+            let cronString = "5 0 " + HeatingPeriodStart[0] + " " + StartMonth + " *";
+
+            let nextCron = cronJobs.length;
+
+            adapter.log.debug("HeatingPeriod: create cron job #" + nextCron + " at " + HeatingPeriodStart[0] + "." + HeatingPeriodStart[1] + " string: " + cronString + " " + timezone);
+
+            //details see https://www.npmjs.com/package/cron
+            cronJobs[nextCron] = new CronJob(cronString,
+                () => StartHeatingPeriod(),
+                () => adapter.log.debug('cron job stopped'), // This function is executed when the job stops
+                true,
+                timezone
+            );
+
+            const EndMonth = HeatingPeriodEnd[1] - 1;
+            cronString = "55 23 " + HeatingPeriodEnd[0] + " " + EndMonth + " *";
+
+            nextCron = cronJobs.length;
+
+            adapter.log.debug("HeatingPeriod: create cron job #" + nextCron + " at " + HeatingPeriodEnd[0] + "." + HeatingPeriodEnd[1] + " string: " + cronString + " " + timezone);
+
+            //details see https://www.npmjs.com/package/cron
+            cronJobs[nextCron] = new CronJob(cronString,
+                () => StopHeatingPeriod(),
+                () => adapter.log.debug('cron job stopped'), // This function is executed when the job stops
+                true,
+                timezone
+            );
+        }
+        catch (e) {
+            adapter.log.error('exception in CreateCron4HeatingPeriod [' + e + ']');
+        }
+    }
+
+}
 
 
 
+function StartHeatingPeriod() {
+    adapter.setState('HeatingPeriodActive', { ack: true, val: true });    
+}
+function StopHeatingPeriod() {
+    adapter.setState('HeatingPeriodActive', { ack: true, val: false });
+}
 let cronJobs = [];
 
 function CronCreate(Hour, Minute, day) {
@@ -1576,16 +1630,16 @@ async function CalculateNextTime() {
 
         let currentProfile = await GetCurrentProfile();
 
-        let LastTimeSetHour = -1;
-        let LastTimeSetMinute = -1;
-
-
         let ActiveRomms = 0;
         if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
             for (var room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
+
+                    //only per room, not global
+                    let LastTimeSetHour = -1;
+                    let LastTimeSetMinute = -1;
 
                     ActiveRomms++;
 
@@ -1789,6 +1843,9 @@ async function CalculateNextTime() {
             adapter.log.warn('CalculateNextTime: no active rooms found. Please activate at least one room!');
         }
 
+
+        CreateCron4HeatingPeriod();
+
         //and now start all cron jobs
         for (var m = 0; m < timerList.length; m++) {
             CronCreate(timerList[m].hour, timerList[m].minute, timerList[m].day);
@@ -1819,6 +1876,7 @@ async function GetCurrentProfile() {
     return currentProfile;
 }
 
+/*
 async function CheckForHeatingPeriod() {
     if (adapter.config.UseFixHeatingPeriod) {
         adapter.log.warn("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
@@ -1841,7 +1899,7 @@ async function CheckForHeatingPeriod() {
 
     }
 }
-
+*/
 
 //#######################################
 //
@@ -1862,7 +1920,7 @@ async function CheckTemperatureChange() {
         const now = new Date();
         adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
 
-        await CheckForHeatingPeriod();
+        //await CheckForHeatingPeriod();
        
 
 

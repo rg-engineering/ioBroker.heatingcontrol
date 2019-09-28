@@ -258,6 +258,10 @@
                 if (!settings.hasOwnProperty(key)) continue;
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
+                    if ($(this).attr('id') === 'deleteall') {
+                        $value.prop('checked', settings[key]) = false;
+                    }
+
                     $value.prop('checked', settings[key]).on('change', function () {
                         showHideSettings();
                         onChange();
@@ -291,6 +295,8 @@
 
                 }
             });
+
+
 
         }
 
@@ -727,12 +733,12 @@
                     </div>
 
                     <div class="input-field col s4">
-                        <input type="date" id="FixHeatingPeriodStart" class="value" />
+                        <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
                         <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
                     </div>
 
                     <div class="input-field col s4">
-                        <input type="date" id="FixHeatingPeriodEnd" class="value" />
+                        <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
                         <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
                     </div>
 
