@@ -258,10 +258,7 @@
                 if (!settings.hasOwnProperty(key)) continue;
                 var $value = $('#' + key + '.value');
                 if ($value.attr('type') === 'checkbox') {
-                    if ($(this).attr('id') === 'deleteall') {
-                        $value.prop('checked', settings[key]) = false;
-                    }
-
+                    
                     $value.prop('checked', settings[key]).on('change', function () {
                         showHideSettings();
                         onChange();

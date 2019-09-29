@@ -1055,18 +1055,21 @@ function SubscribeStates(callback) {
         if (roomdata.isActive) {
             if (adapter.config.UseActors) {
                 if (adapter.config.devices[i].type === 1 && adapter.config.devices[i].isActive) { //thermostat
+                    adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + ' / ' + adapter.config.devices[i].OID_Current);
+
                     adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
                     adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
 
-                    adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + '/' + adapter.config.devices[i].OID_Current);
+                    if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
+                        adapter.log.warn('configuration error thermostat for ' + adapter.config.devices[i].room + ': OID target should be different to OID current!');
+                    }
                 }
             }
 
             if (adapter.config.UseSensors) {
                 if (adapter.config.devices[i].type === 3 && adapter.config.devices[i].isActive) { //sensor
+                    adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
                     adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
-
-                    adapter.log.debug('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
                 }
             }
         }
