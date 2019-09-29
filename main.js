@@ -1555,7 +1555,7 @@ function CronCreate(Hour, Minute, day) {
         cronString += ' 1-5';
     }
     else if (day === -2) {//Sa-So
-        cronString += ' 6-7';
+        cronString += ' 0,6';
     }
     else if (day > 0 && day < 8) {
         cronString += day;
@@ -1696,6 +1696,10 @@ async function CalculateNextTime() {
 
                 if (adapter.config.rooms[room].isActive) {
 
+                    //only per room, not global
+                    let LastTimeSetHour = -1;
+                    let LastTimeSetMinute = -1;
+
                     ActiveRomms++;
 
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
@@ -1736,6 +1740,10 @@ async function CalculateNextTime() {
                             }
                         }
                     }
+
+                    //only per room, not global
+                    LastTimeSetHour = -1;
+                    LastTimeSetMinute = -1;
 
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Su-So.Periods." + period + '.time';
@@ -1794,6 +1802,10 @@ async function CalculateNextTime() {
                             case 6: sday = "Sat"; break;
                             case 7: sday = "Sun"; break;
                         }
+
+                    //only per room, not global
+                    let LastTimeSetHour = -1;
+                    let LastTimeSetMinute = -1;
 
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + sday + ".Periods." + period + '.time';
@@ -1876,31 +1888,6 @@ async function GetCurrentProfile() {
     return currentProfile;
 }
 
-/*
-async function CheckForHeatingPeriod() {
-    if (adapter.config.UseFixHeatingPeriod) {
-        adapter.log.warn("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
-
-        //oder anders: cron job setzen??
-
-        // wei verallgemeinern? ohne Jahresangabe??
-        const HeatingPeriodStart = new Date(adapter.config.FixHeatingPeriodStart);
-        const HeatingPeriodEnd = new Date(adapter.config.FixHeatingPeriodEnd);
-        let isHeatingPeriod = false;
-
-        const today = new Date();
-
-        if (today >= HeatingPeriodStart && today <= HeatingPeriodEnd) {
-            isHeatingPeriod = true;
-        }
-
-
-        await adapter.setStateAsync('HeatingPeriodActive', { ack: true, val: isHeatingPeriod });        
-
-    }
-}
-*/
-
 //#######################################
 //
 // this is called by cron
@@ -1919,10 +1906,6 @@ async function CheckTemperatureChange() {
 
         const now = new Date();
         adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
-
-        //await CheckForHeatingPeriod();
-       
-
 
         //first we need some information
         const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
