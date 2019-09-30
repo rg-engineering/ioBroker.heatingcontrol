@@ -180,6 +180,14 @@
 
                 values2table('rooms', list, onChange, tableRoomsOnReady);
 
+                //and reset deleteall
+
+                var $deleteAll = $('#deleteall');
+
+                if ($deleteAll.prop('checked')) {
+                    console.log('### reset deleteAll');
+                    $deleteAll.prop('checked', false);
+                }
 
             });
         }
