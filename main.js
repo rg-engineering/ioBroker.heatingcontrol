@@ -244,7 +244,9 @@ async function ListRooms(obj) {
             adapter.config.rooms.push({
                 name: name,
                 isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
-                WindowIsOpen: false
+                WindowIsOpen: false,
+                TempOverride: false,
+                TempOverrideDue: ''
             });
 
 
@@ -897,7 +899,12 @@ async function CreateDatepoints() {
                     },
                     native: { id: 'VacationAbsentDecrease' }
                 });
-                await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
+
+                const vacationabsentdecrease = await adapter.getStateAsync(id1 + '.VacationAbsentDecrease');
+                //set default only if nothing was set before
+                if (vacationabsentdecrease === null) {
+                    await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
+                }
                 adapter.subscribeStates(id1 + '.VacationAbsentDecrease');
 
                 
@@ -914,6 +921,51 @@ async function CreateDatepoints() {
                     },
                     native: { id: 'CurrentTimePeriod' }
                 });
+
+
+                //manuell temperature setting
+
+                await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverride', {
+                    type: 'state',
+                    common: {
+                        name: 'TemperaturOverride',
+                        type: 'float',
+                        role: 'history',
+                        unit: '°C',
+                        read: true,
+                        write: true
+                    },
+                    native: { id: 'TemperaturOverride' }
+                });
+                //const temperaturoverride = await adapter.getStateAsync(id1 + '.TemperaturOverride');
+                //set default only if nothing was set before
+                //if (temperaturoverride === null) {
+
+                //set always to 0
+                await adapter.setStateAsync(id1 + '.TemperaturOverride', { ack: true, val: 0 });
+                //}
+                adapter.subscribeStates(id1 + '.TemperaturOverride');
+
+
+                await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverrideTime', {
+                    type: 'state',
+                    common: {
+                        name: 'TemperaturOverrideTime',
+                        type: 'string',
+                        role: 'history',
+                        unit: 'hh:mm',
+                        read: true,
+                        write: true
+                    },
+                    native: { id: 'TemperaturOverrideTime' }
+                });
+                const temperaturoverridetime = await adapter.getStateAsync(id1 + '.TemperaturOverrideTime');
+                //set default only if nothing was set before
+                if (temperaturoverridetime === null) {
+                    await adapter.setStateAsync(id1 + '.TemperaturOverrideTime', { ack: true, val: "00:00" });
+                }
+                adapter.subscribeStates(id1 + '.TemperaturOverrideTime');
+
                 adapter.log.debug('room ' + adapter.config.rooms[room].name + ' with ' + parseInt(adapter.config.NumberOfPeriods, 10) + " periods");
 
 
@@ -1091,7 +1143,15 @@ async function HandleStateChange(id, state) {
 
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
+    if (state && state.ack !== true) {
+        //first set ack flag
+        await adapter.setStateAsync(id, { ack: true });
+    }
+
     if (id !== LastStateChangeID || state.val !== LastStateVal) {
+
+        adapter.log.debug("### " + id + " " + LastStateChangeID + " " + state.val + " " + LastStateVal);
+
 
         let bHandled = false;
         LastStateChangeID = id;
@@ -1145,10 +1205,7 @@ async function HandleStateChange(id, state) {
             }
         }
 
-        if (state && state.ack !== true) {
-            //last set ack flag
-            await adapter.setStateAsync(id, { ack: true });
-        }
+        
 
         if (!bHandled) {
             adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
@@ -1159,7 +1216,7 @@ async function HandleStateChange(id, state) {
 
     }
     else {
-        adapter.log.debug("### already done " + LastStateVal + " / " + state.val + " /// " + id + " / "+ LastStateChangeID );
+        adapter.log.debug("### state change already handled: " + LastStateVal + " / " + state.val + " /// " + id + " / "+ LastStateChangeID );
     }
 }
 
@@ -1222,71 +1279,62 @@ async function HandleStateChangeGeneral(id, state) {
         //see issue 21: need to check temperature aswell
         await CheckTemperatureChange();
     }
-
     if (ids[2] === "GuestsPresent") {
-        //ßßß
-        await CheckTemperatureChange();
+         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "HeatingPeriodActive") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "HolidayPresent") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "PartyNow") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "Present") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "PublicHolidyToday") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[2] === "VacationAbsent") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
-
-    
     if (ids[5] === "AbsentDecrease") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "GuestIncrease") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
-    
     if (ids[5] === "PartyDecrease") {
-         //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "WindowOpenDecrease") {
-        //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
     if (ids[5] === "VacationAbsentDecrease") {
-        //ßßß
         await CheckTemperatureChange();
         bRet = true;
     }
-
+    if (ids[5] === "TemperaturOverride") {
+        await StartTemperaturOverride(ids[4] );
+        bRet = true;
+    }
+    if (ids[5] === "TemperaturOverrideTime") {
+        await StartTemperaturOverride(ids[4]);
+        bRet = true;
+    }
 
     if (ids[7] === "time" || ids[2] ==="CurrentProfile") {
         await CalculateNextTime();
@@ -1535,7 +1583,63 @@ function CreateCron4HeatingPeriod() {
 
 }
 
+function CreateCron4ResetTempOverride(due, roomID) {
+    const timezone = adapter.config.timezone || 'Europe/Berlin';
 
+    try {
+
+        //46 18 5 9 Europe / Berlin 
+
+        let cronString = due.getMinutes() + " " + due.getHours() + " " + due.getDate() + " " + due.getMonth() + " *";
+
+        let nextCron = cronJobs.length;
+
+        adapter.log.debug("CreateCron4ResetTempOverride: create cron job #" + nextCron + " at " + due + " string: " + cronString + " " + timezone);
+
+        //details see https://www.npmjs.com/package/cron
+        cronJobs[nextCron] = new CronJob(cronString,
+            () => StopTempOverride(roomID, nextCron),
+            () => adapter.log.debug('cron job stopped'), // This function is executed when the job stops
+            true,
+            timezone
+        );
+        //adapter.log.debug("CreateCron4ResetTempOverride " + due);
+
+        getCronStat();
+    }
+    catch (e) {
+        adapter.log.error('exception in CreateCron4ResetTempOverride [' + e + ']');
+    }
+
+}
+
+
+function StopTempOverride(roomID, cronjobID) {
+    adapter.log.info("Stop Temperatur Override " + adapter.config.rooms[roomID].name);
+
+    //cron job beenden
+    deleteCronJob(cronjobID);
+
+    const id = 'CurrentProfile';
+
+    adapter.getState(id, function (err, obj) {
+        if (err) {
+            adapter.log.error(err);
+        } else {
+            const currentProfile = obj.val-1;
+
+            const idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[roomID].name + ".TemperaturOverride";
+
+            adapter.log.info("### " + idPreset);
+
+            adapter.setState(idPreset, { ack: true, val: 0 });
+
+            adapter.config.rooms[roomID].TempOverride = false;
+
+            CheckTemperatureChange();
+        }
+    });
+}
 
 function StartHeatingPeriod() {
     adapter.setState('HeatingPeriodActive', { ack: true, val: true });    
@@ -1580,13 +1684,30 @@ function CronCreate(Hour, Minute, day) {
 
 function getCronStat() {
 
-    adapter.log.debug("cron jobs");
+    //adapter.log.debug("cron jobs");
     for (let n = 0; n < cronJobs.length; n++) {
 
-        adapter.log.debug('[INFO] ' + '      status = ' + cronJobs[n].running + ' next event: ' + timeConverter(cronJobs[n].nextDates()));
-
+        if (typeof cronJobs[n] !== 'undefined') {
+            adapter.log.debug('[INFO] ' + '      status = ' + cronJobs[n].running + ' next event: ' + timeConverter(cronJobs[n].nextDates()));
+        }
     }
 }
+
+function deleteCronJob(id) {
+
+    cronJobs[id].stop();
+
+    if (id === cronJobs.length-1) {
+        cronJobs.pop(); //remove last
+    }
+    else {
+        delete cronJobs[id];
+    }
+    getCronStat();
+
+
+}
+
 
 function timeConverter(time) {
 
@@ -1947,6 +2068,14 @@ async function CheckTemperatureChange() {
                 if (adapter.config.rooms[room].isActive) {
                     adapter.log.debug("check room " + adapter.config.rooms[room].name);
 
+
+                    //reset in separate cron job!!
+                    if (adapter.config.rooms[room].TempOverride) {
+                        adapter.log.debug("room " + adapter.config.rooms[room].name + " still in override until " + adapter.config.rooms[room].TempOverrideDue);
+                        break;
+                    }
+
+
                     //and we need some information per room
                     let idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "."; 
                     let AbsentDecrease = 0;
@@ -2182,6 +2311,78 @@ async function CheckTemperatureChange() {
         adapter.log.error('exception in CheckTemperatureChange [' + e + ']');
     }
 }
+
+async function StartTemperaturOverride(room) {
+
+    adapter.log.info("start temperature override for room " + room);
+
+    try {
+        let roomID = findObjectIdByKey(adapter.config.rooms, 'name', room);
+
+        let currentProfile = await GetCurrentProfile();
+
+        let idPreset = "Profiles." + currentProfile + "." + room + ".";
+        let nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
+        let nextSetTemperature = nextSetTemperatureVal.val;
+
+
+
+        let OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
+        let OverrideTime = OverrideTimeVal.val.split(":");
+
+        if (nextSetTemperature > 0) {
+            if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
+
+                let now = new Date();
+                //adapter.log.debug("### " + OverrideTimeVal.val + " " + JSON.stringify(OverrideTime) + " " + JSON.stringify(now));
+                if (OverrideTime[0] > 0) {
+                    now.setHours(now.getHours() + parseInt(OverrideTime[0]));
+                    //adapter.log.debug("---1 " + JSON.stringify(now));
+                }
+                if (OverrideTime[1] > 0) {
+                    now.setMinutes(now.getMinutes() + parseInt(OverrideTime[1]));
+                    //adapter.log.debug("---2 " + JSON.stringify(now));
+                }
+
+                adapter.config.rooms[roomID].TempOverrideDue = now;
+                //adapter.log.debug("override " + nextSetTemperature + " due " + JSON.stringify(now));
+
+
+                if (adapter.config.rooms[roomID].TempOverride) {
+                    adapter.log.warn("already in override " + room);
+                }
+
+                adapter.config.rooms[roomID].TempOverride = true;
+
+
+                //create cron to reset
+                CreateCron4ResetTempOverride(now, roomID);
+
+                for (let ii = 0; ii < adapter.config.devices.length; ii++) {
+
+                    if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === room && adapter.config.devices[ii].isActive) {
+
+                        adapter.log.info('room ' + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+
+                        //adapter.log.debug("*4 " + state);
+                        await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                    }
+                }
+            }
+            else {
+                adapter.log.warn("override time not valid: " + OverrideTimeVal.val);
+            }
+        }
+        else {
+            adapter.log.warn("override temperature not valid: " + nextSetTemperature);
+        }
+    }
+    catch (e) {
+        adapter.log.error('exception in StartTemperaturOverride [' + e + ']');
+    }
+
+}
+
 
 
 async function HandleActorsGeneral(HeatingPeriodActive) {

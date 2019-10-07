@@ -4,7 +4,16 @@
     "version": "0.3.0",
     "news": {
       "0.3.0": {
-
+        "en": "manuel temperature setting, configurable heating period and more",
+        "de": "Manuelle Temperatureinstellung, konfigurierbare Heizperiode und mehr",
+        "ru": "настройка температуры в мануале, настраиваемый период нагрева и многое другое",
+        "pt": "ajuste da temperatura de manuel, período de aquecimento configurável e muito mais",
+        "nl": "handmatige temperatuurinstelling, configureerbare verwarmingsperiode en meer",
+        "fr": "réglage manuel de la température, période de chauffage configurable et plus",
+        "it": "impostazione della temperatura manuale, periodo di riscaldamento configurabile e altro",
+        "es": "ajuste de temperatura manual, período de calentamiento configurable y más",
+        "pl": "ustawienie temperatury manuel, konfigurowalny okres ogrzewania i więcej",
+        "zh-cn": "手动设定温度，可设定的加热时间等"
       },
       "0.2.3": {
         "en": "some bug fixes",
