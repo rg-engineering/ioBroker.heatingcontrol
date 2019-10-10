@@ -192,8 +192,15 @@
             });
         }
 
+
+        var myOnChange = null;
         function OnChange() {
             //do nothing
+            console.log('on change called');
+
+            if (myOnChange != null) {
+                myOnChange();
+            }
         }
 
 
@@ -282,7 +289,7 @@
                 }
             }
 
-
+            myOnChange = onChange;
             // Signal to admin, that no changes yet
             onChange(false);
             showHideSettings();
