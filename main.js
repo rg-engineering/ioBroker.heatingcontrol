@@ -1457,8 +1457,14 @@ async function HandleActors(room, current, target) {
 
             if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
 
-                await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, false);
-                adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " off");
+                let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+                if (currentState.val !== false) {
+                    await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, false);
+                    adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " off");
+                }
+                else {
+                    adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
+                }
             }
         }
 
@@ -1470,15 +1476,32 @@ async function HandleActors(room, current, target) {
 
             if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
 
-                await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, true);
-                adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " on");
+                let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+                if (currentState.val !== true) {
+                    await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, true);
+                    adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " on");
+                }
+                else {
+                    adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
+                }
             }
         }
     }
 }
 
 
+async function HandleThermostat(oid, temperature) {
 
+    let currentTarget = await adapter.getForeignStateAsync(oid);
+
+    if (currentTarget.val !== temperature) {
+        await adapter.setForeignStateAsync(oid, temperature);
+        adapter.log.debug("thermostat " + oid + " to " + temperature);
+    }
+    else {
+        adapter.log.debug("thermostat " + oid + " nothing to do, already " + currentTarget.val );
+    }
+}
 
 
 //*******************************************************************
@@ -2286,7 +2309,9 @@ async function CheckTemperatureChange() {
                                 adapter.log.info('room ' + adapter.config.rooms[room].name + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
 
                                 //adapter.log.debug("*4 " + state);
-                                await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                                //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                                await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+
                             }
                         }
                         const timePeriod = "Period " + currentPeriod + " : " + sNextTime[0] + ":" + sNextTime[1];
@@ -2365,7 +2390,8 @@ async function StartTemperaturOverride(room) {
                         adapter.log.info('room ' + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
 
                         //adapter.log.debug("*4 " + state);
-                        await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                        //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                        await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
                     }
                 }
             }
