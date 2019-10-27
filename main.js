@@ -1159,80 +1159,86 @@ async function HandleStateChange(id, state) {
 
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
-    if (state && state.ack !== true) {
-        //first set ack flag
-        await adapter.setStateAsync(id, { ack: true });
-    }
+    try {
 
-    if (id !== LastStateChangeID || state.val !== LastStateVal) {
-
-        adapter.log.debug("### " + id + " " + LastStateChangeID + " " + state.val + " " + LastStateVal);
-
-
-        let bHandled = false;
-        LastStateChangeID = id;
-        LastStateVal = state.val;
-
-        if (adapter.config.Path2PresentDP.length > 0) {
-
-            if (id.includes(adapter.config.Path2PresentDP)) {
-                const present = await adapter.getForeignStateAsync(id);
-
-                //heatingcontrol.0.Present
-                await adapter.setStateAsync("Present", { val: present.val, ack: true });
-                bHandled = true;
-            }
+        if (state && state.ack !== true) {
+            //first set ack flag
+            await adapter.setStateAsync(id, { ack: true });
         }
 
+        if (id !== LastStateChangeID || state.val !== LastStateVal) {
 
-        if (adapter.config.Path2FeiertagAdapter.length > 0) {
+            adapter.log.debug("### " + id + " " + LastStateChangeID + " " + state.val + " " + LastStateVal);
 
-            if (id.includes(adapter.config.Path2FeiertagAdapter)) {
 
-                const PublicHoliday = await adapter.getForeignStateAsync(id);
+            let bHandled = false;
+            LastStateChangeID = id;
+            LastStateVal = state.val;
 
-                //heatingcontrol.0.PublicHolidyToday
-                await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
-                bHandled = true;
+            if (adapter.config.Path2PresentDP.length > 0) {
+
+                if (id.includes(adapter.config.Path2PresentDP)) {
+                    const present = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.Present
+                    await adapter.setStateAsync("Present", { val: present.val, ack: true });
+                    bHandled = true;
+                }
             }
-        }
-        let ret = false;
 
-        //## handle state change heatingcontrol.0.GuestsPresent {"val":false,"ack":false,"ts":1568137512204,"q":0,"from":"system.adapter.admin.0","user":"system.user.admin","lc":1568137512204}
-        if (!bHandled) {
-            ret = await HandleStateChangeGeneral(id, state);
-            if (ret) {
-                bHandled = true;
-                adapter.log.debug("### 111 handled");
+
+            if (adapter.config.Path2FeiertagAdapter.length > 0) {
+
+                if (id.includes(adapter.config.Path2FeiertagAdapter)) {
+
+                    const PublicHoliday = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.PublicHolidyToday
+                    await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
+                    bHandled = true;
+                }
+            }
+            let ret = false;
+
+            //## handle state change heatingcontrol.0.GuestsPresent {"val":false,"ack":false,"ts":1568137512204,"q":0,"from":"system.adapter.admin.0","user":"system.user.admin","lc":1568137512204}
+            if (!bHandled) {
+                ret = await HandleStateChangeGeneral(id, state);
+                if (ret) {
+                    bHandled = true;
+                    adapter.log.debug("### 111 handled");
+                }
+                else {
+                    adapter.log.debug("### 111 not handled");
+                }
+            }
+            if (!bHandled) {
+                //## handle state change hm - rpc.0.IEQ0067581.1.TEMPERATURE { "val": 23.4, "ack": true, "ts": 1568137725283, "q": 0, "from": "system.adapter.hm-rpc.0", "user": "system.user.admin", "lc": 1568137443749 }
+                ret = await HandleStateChangeDevices(id, state);
+                if (ret) {
+                    bHandled = true;
+                    adapter.log.debug("### 222 handled");
+                }
+                else {
+                    adapter.log.debug("### 222 not handled");
+                }
+            }
+
+
+
+            if (!bHandled) {
+                adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
             }
             else {
-                adapter.log.debug("### 111 not handled");
+                adapter.log.debug("### all StateChange handled ");
             }
-        }
-        if (!bHandled) {
-            //## handle state change hm - rpc.0.IEQ0067581.1.TEMPERATURE { "val": 23.4, "ack": true, "ts": 1568137725283, "q": 0, "from": "system.adapter.hm-rpc.0", "user": "system.user.admin", "lc": 1568137443749 }
-            ret = await HandleStateChangeDevices(id, state);
-            if (ret) {
-                bHandled = true;
-                adapter.log.debug("### 222 handled");
-            }
-            else {
-                adapter.log.debug("### 222 not handled");
-            }
-        }
 
-        
-
-        if (!bHandled) {
-            adapter.log.debug("### not handled " + id + " " + JSON.stringify(state));
         }
         else {
-            adapter.log.debug("### all StateChange handled ");
+            adapter.log.debug("### state change already handled: " + LastStateVal + " / " + state.val + " /// " + id + " / " + LastStateChangeID);
         }
-
     }
-    else {
-        adapter.log.debug("### state change already handled: " + LastStateVal + " / " + state.val + " /// " + id + " / "+ LastStateChangeID );
+    catch (e) {
+        adapter.log.error('exception in HandleStateChange [' + e + ']');
     }
 }
 
@@ -1256,44 +1262,48 @@ async function HandleStateChangeGeneral(id, state) {
     }
 
     //not handled heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
-    if (ids[8] === "time") {
-        let values = state.val.split(':');
+    if (ids[8] === "time") { 
 
-        let hour = 0;
-        let minute = 0;
-        //let second = 0;
+        if (CheckValidTime(id, state)) {
 
-        if (values[0] && values[0] >= 0 && values[0] < 24) {
-            hour = parseInt(values[0]);
-            
+            let values = state.val.split(':');
+
+            let hour = 0;
+            let minute = 0;
+            //let second = 0;
+
+            if (values[0] && values[0] >= 0 && values[0] < 24) {
+                hour = parseInt(values[0]);
+
+            }
+            if (values[1] && values[1] >= 0 && values[1] < 60) {
+                minute = parseInt(values[1]);
+
+            }
+            //if (values[2] && values[2] >= 0 && values[2] < 60) {
+            //    second = parseInt(values[2]);
+
+            //}
+            if (hour < 10) {
+                hour = "0" + hour;
+            }
+            if (minute < 10) {
+                minute = "0" + minute;
+            }
+            //if (second < 10) {
+            //    second = "0" + second;
+            //}
+            //let sTime = hour + ":" + minute + ":" + second;
+            let sTime = hour + ":" + minute;
+
+            await adapter.setStateAsync(id, { ack: true, val: sTime });
+            bRet = true;
+
+            await CalculateNextTime();
+
+            //see issue 21: need to check temperature aswell
+            await CheckTemperatureChange();
         }
-        if (values[1] && values[1] >= 0 && values[1] < 60) {
-            minute = parseInt(values[1]);
-            
-        }
-        //if (values[2] && values[2] >= 0 && values[2] < 60) {
-        //    second = parseInt(values[2]);
-            
-        //}
-        if (hour < 10) {
-            hour = "0" + hour;
-        }
-        if (minute < 10) {
-            minute = "0" + minute;
-        }
-        //if (second < 10) {
-        //    second = "0" + second;
-        //}
-        //let sTime = hour + ":" + minute + ":" + second;
-        let sTime = hour + ":" + minute;
-
-        await adapter.setStateAsync(id, { ack: true, val: sTime });
-        bRet = true;
-
-        await CalculateNextTime();
-
-        //see issue 21: need to check temperature aswell
-        await CheckTemperatureChange();
     }
     if (ids[2] === "GuestsPresent") {
          await CheckTemperatureChange();
@@ -1813,38 +1823,42 @@ async function CalculateNextTime() {
                         //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
                         const nextTime = await adapter.getStateAsync(id);
-                        adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                        
 
-                        let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (CheckValidTime(id,nextTime)) {
+                            adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                        //add to list if not already there
-                        let bFound = false;
-                        for (var i = 0; i < timerList.length; i++) {
-                            if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
-                                bFound = true;
-                                //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                            //add to list if not already there
+                            let bFound = false;
+                            for (var i = 0; i < timerList.length; i++) {
+                                if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1])) {
+                                    bFound = true;
+                                    //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                                }
                             }
-                        }
-                        if (!bFound) {
+                            if (!bFound) {
 
-                            let TimeSetHour = parseInt(nextTimes[0]);
-                            let TimeSetMinute = parseInt(nextTimes[1]);
+                                let TimeSetHour = parseInt(nextTimes[0]);
+                                let TimeSetMinute = parseInt(nextTimes[1]);
 
-                            //see issue 13
-                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                //see issue 13
+                                if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
 
-                                LastTimeSetHour = TimeSetHour;
-                                LastTimeSetMinute = TimeSetMinute;
+                                    LastTimeSetHour = TimeSetHour;
+                                    LastTimeSetMinute = TimeSetMinute;
 
-                                adapter.log.debug("push to list " + " = " + nextTimes);
-                                timerList.push({
-                                    hour: TimeSetHour,
-                                    minute: TimeSetMinute,
-                                    day: 0
-                                });
-                            }
-                            else {
-                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                    adapter.log.debug("push to list " + " = " + nextTimes);
+                                    timerList.push({
+                                        hour: TimeSetHour,
+                                        minute: TimeSetMinute,
+                                        day: 0
+                                    });
+                                }
+                                else {
+                                    adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                }
                             }
                         }
                     }
@@ -1866,41 +1880,46 @@ async function CalculateNextTime() {
 
                     ActiveRomms++;
 
+                    adapter.log.debug("setting Mo - Fr");
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Fr.Periods." + period + '.time';
 
                         //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
                         const nextTime = await adapter.getStateAsync(id);
-                        adapter.log.debug("---1 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
 
-                        let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+                        
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (CheckValidTime(id,nextTime)) {
+                            adapter.log.debug("---1 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                        //add to list if not already there
-                        let bFound = false;
-                        for (var i = 0; i < timerList.length; i++) {
-                            if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === -1) {
-                                bFound = true;
-                                //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                            //add to list if not already there
+                            let bFound = false;
+                            for (var i = 0; i < timerList.length; i++) {
+                                if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === -1) {
+                                    bFound = true;
+                                    //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                                }
                             }
-                        }
-                        if (!bFound) {
+                            if (!bFound) {
 
-                            let TimeSetHour = parseInt(nextTimes[0]);
-                            let TimeSetMinute = parseInt(nextTimes[1]);
+                                let TimeSetHour = parseInt(nextTimes[0]);
+                                let TimeSetMinute = parseInt(nextTimes[1]);
 
-                            //see issue 13
-                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                //see issue 13
+                                if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
 
-                                adapter.log.debug("push to list " + " = " + nextTimes);
-                                timerList.push({
-                                    hour: parseInt(nextTimes[0]),
-                                    minute: parseInt(nextTimes[1]),
-                                    day: -1
-                                });
-                            }
-                            else {
-                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                    adapter.log.debug("push to list " + " = " + nextTimes);
+                                    timerList.push({
+                                        hour: parseInt(nextTimes[0]),
+                                        minute: parseInt(nextTimes[1]),
+                                        day: -1
+                                    });
+                                }
+                                else {
+                                    adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                }
                             }
                         }
                     }
@@ -1909,39 +1928,45 @@ async function CalculateNextTime() {
                     LastTimeSetHour = -1;
                     LastTimeSetMinute = -1;
 
+                    adapter.log.debug("setting Sa - Su");
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Su-So.Periods." + period + '.time';
 
                         //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
                         const nextTime = await adapter.getStateAsync(id);
-                        adapter.log.debug("---2 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                        
 
-                        let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                        //add to list if not already there
-                        let bFound = false;
-                        for (var i = 0; i < timerList.length; i++) {
-                            if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === -2) {
-                                bFound = true;
-                                //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (CheckValidTime(id,nextTime)) {
+                            adapter.log.debug("---2 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                            //add to list if not already there
+                            let bFound = false;
+                            for (var i = 0; i < timerList.length; i++) {
+                                if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === -2) {
+                                    bFound = true;
+                                    //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                                }
                             }
-                        }
-                        if (!bFound) {
-                            let TimeSetHour = parseInt(nextTimes[0]);
-                            let TimeSetMinute = parseInt(nextTimes[1]);
+                            if (!bFound) {
+                                let TimeSetHour = parseInt(nextTimes[0]);
+                                let TimeSetMinute = parseInt(nextTimes[1]);
 
-                            //see issue 13
-                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
-                                adapter.log.debug("push to list " + " = " + nextTimes);
-                                timerList.push({
-                                    hour: parseInt(nextTimes[0]),
-                                    minute: parseInt(nextTimes[1]),
-                                    day: -2
-                                });
-                            }
-                            else {
-                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                //see issue 13
+                                if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                    adapter.log.debug("push to list " + " = " + nextTimes);
+                                    timerList.push({
+                                        hour: parseInt(nextTimes[0]),
+                                        minute: parseInt(nextTimes[1]),
+                                        day: -2
+                                    });
+                                }
+                                else {
+                                    adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                }
                             }
                         }
                     }
@@ -1971,39 +1996,45 @@ async function CalculateNextTime() {
                     let LastTimeSetHour = -1;
                     let LastTimeSetMinute = -1;
 
+                    adapter.log.debug("setting " + sday);
+
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
                         const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + sday + ".Periods." + period + '.time';
 
                         //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
                         const nextTime = await adapter.getStateAsync(id);
-                        adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                        
 
-                        let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if (CheckValidTime(id,nextTime)) {
+                            adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                        //add to list if not already there
-                        let bFound = false;
-                        for (var i = 0; i < timerList.length; i++) {
-                            if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === day) {
-                                bFound = true;
-                                //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                            //add to list if not already there
+                            let bFound = false;
+                            for (var i = 0; i < timerList.length; i++) {
+                                if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === day) {
+                                    bFound = true;
+                                    //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                                }
                             }
-                        }
-                        if (!bFound) {
-                            let TimeSetHour = parseInt(nextTimes[0]);
-                            let TimeSetMinute = parseInt(nextTimes[1]);
+                            if (!bFound) {
+                                let TimeSetHour = parseInt(nextTimes[0]);
+                                let TimeSetMinute = parseInt(nextTimes[1]);
 
-                            //see issue 13
-                            if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
-                                adapter.log.debug("push to list " + " = " + nextTimes);
-                                timerList.push({
-                                    hour: parseInt(nextTimes[0]),
-                                    minute: parseInt(nextTimes[1]),
-                                    day: day
-                                });
-                            }
-                            else {
-                                adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                //see issue 13
+                                if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                    adapter.log.debug("push to list " + " = " + nextTimes);
+                                    timerList.push({
+                                        hour: parseInt(nextTimes[0]),
+                                        minute: parseInt(nextTimes[1]),
+                                        day: day
+                                    });
+                                }
+                                else {
+                                    adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                }
                             }
                         }
                     }
@@ -2033,6 +2064,42 @@ async function CalculateNextTime() {
         adapter.log.error('exception in CalculateNextTime[' + e + ']');
     }
 }
+
+function CheckValidTime(id, nextTime) {
+
+    let bRet = true;
+    try {
+        if (nextTime === 'null' || typeof nextTime === 'undefined') {
+            adapter.log.error("nextTime not found for " + id);
+            bRet = false;
+        }
+        else if (typeof nextTime !== 'object') {
+            adapter.log.error("nextTime  should be a object but is " + typeof nextTime + " for " + id);
+            bRet = false;
+        }
+        else if (typeof nextTime.val !== 'string') {
+            adapter.log.error("nextTime.val  should be a string but is " + typeof nextTime.val + " for " + id);
+            bRet = false;
+        }
+        else if (nextTime.val.length < 3) {
+            adapter.log.error("nextTime not long enough for " + id);
+            bRet = false;
+        }
+        else if (!nextTime.val.includes(':')) {
+            adapter.log.error("nextTime ':' missing for " + id);
+            bRet = false;
+        }
+
+
+    }
+    catch (e) {
+        adapter.log.error('exception in CheckValidTime [' + e + '] for ' + id + " " + JSON.stringify(nextTime));
+        bRet = false;
+    }
+    return bRet;
+
+}
+
 
 async function GetCurrentProfile() {
 
