@@ -46,6 +46,32 @@
 
     <script type="text/javascript">
 
+        function findObjectIdByKey(array, key, value) {
+
+            //Achtung: key wird auf int geparsed!!
+
+            if (array !== null && typeof array !== 'undefined') {
+
+                for (let i = 0; i < array.length; i++) {
+
+                    let val1 = array[i][key];
+                    if (typeof array[i][key] !== 'number') {
+                        val1 = parseInt(array[i][key]);
+                    }
+
+                    let val2 = value;
+
+                    console.log('check for ' + val1 + ' (' + typeof val1 + ') and ' + val2 + ' (' + typeof val2 + ')');
+                    if (val1 === val2) {
+                        console.log('found');
+                        return i;
+                    }
+                }
+            }
+
+            console.log('not found');
+            return -1;
+        }
 
 
         function show_hide_column(table_name, col_name, col_no, do_show) {
@@ -230,7 +256,7 @@
             var ActorList4Room = [];
             var SensorList4Room = [];
             for (let i = 0; i < DeviceList.length; i++) {
-                console.log('list entry ' + DeviceList[i].room);
+                //console.log('list entry ' + DeviceList[i].room);
 
                 if (DeviceList[i].room === room) {
                     if (DeviceList[i].type === 1) {
@@ -350,7 +376,9 @@
                     initDialogRoom(room, function () {
 
                         //this is reached when dialog is closing
-                        console.log('closing for ');
+                        let room = $('#dialogDeviceEditRoom')[0].innerHTML;
+
+                        console.log('closing for ' + room);
 
                         let thermostats = table2values('thermostats');
                         let actors = table2values('actors');
@@ -360,8 +388,14 @@
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
 
+
+
+
+
+
+
                         //now update DeviceList
-                        let room = $('#dialogDeviceEditRoom')[0].innerHTML;
+
                         for (let i = 0; i < thermostats.length; i++) {
                             //if exist, only update
                             if (thermostats[i].id > 0) {
@@ -418,6 +452,83 @@
                             }
                         }
 
+
+                        //find out if deleted
+
+                        //create org list
+                        var ThermostatList4Room = [];
+                        var ActorList4Room = [];
+                        var SensorList4Room = [];
+                        for (let i = 0; i < DeviceList.length; i++) {
+
+                            if (DeviceList[i].room === room) {
+                                if (DeviceList[i].type === 1) {
+                                    ThermostatList4Room.push(DeviceList[i]);
+                                }
+                                if (DeviceList[i].type === 2) {
+                                    ActorList4Room.push(DeviceList[i]);
+                                }
+                                if (DeviceList[i].type === 3) {
+                                    SensorList4Room.push(DeviceList[i]);
+                                }
+                            }
+                        }
+                        //check if something deleted
+                        if (ThermostatList4Room.length > thermostats.length) {
+                            let deletedThermostats = ThermostatList4Room.length - thermostats.length;
+                            console.log("something deleted in thermostats " + deletedThermostats);
+
+                            for (let t = 0; t < ThermostatList4Room.length; t++) {
+
+                                let id2find = findObjectIdByKey(thermostats, 'id', ThermostatList4Room[t].id);
+
+                                if (id2find == -1) { //not found
+                                    console.log("deleted " + JSON.stringify(ThermostatList4Room[t]));
+                                    let id2delete = findObjectIdByKey(DeviceList, 'id', ThermostatList4Room[t].id);
+                                    DeviceList.splice(id2delete, 1);
+                                }
+                            }
+                        }
+
+                        if (ActorList4Room.length > actors.length) {
+                            let deletedActors = ActorList4Room.length - actors.length;
+                            console.log("something deleted in actors " + deletedActors);
+
+                            for (let a = 0; a < ActorList4Room.length; a++) {
+
+                                let id2find = findObjectIdByKey(actors, 'id', ActorList4Room[a].id);
+
+                                if (id2find == -1) { //not found
+                                    console.log("deleted " + JSON.stringify(ActorList4Room[a]));
+                                    let id2delete = findObjectIdByKey(DeviceList, 'id', ActorList4Room[a].id);
+                                    DeviceList.splice(id2delete, 1);
+                                }
+                            }
+                        }
+                        if (SensorList4Room.length > sensors.length) {
+                            let deletedSensors = SensorList4Room.length - sensors.length;
+                            console.log("something deleted in sensors " + deletedSensors);
+
+                            for (let s = 0; s < SensorList4Room.length; s++) {
+
+                                let id2find = findObjectIdByKey(sensors, 'id', SensorList4Room[s].id);
+
+                                  if (id2find == -1) { //not found
+                                    console.log("deleted " + JSON.stringify(SensorList4Room[s]));
+                                    let id2delete = findObjectIdByKey(DeviceList, 'id', SensorList4Room[s].id);
+                                    DeviceList.splice(id2delete, 1);
+                                }
+                            }
+                        }
+
+                        //and finally rearrange id's
+                        for (let i = 0; i < DeviceList.length; i++) {
+                            //console.log("### " + i + " " + JSON.stringify(DeviceList[i]));
+                            DeviceList[i].id = i + 1;
+                            //console.log("+++ " + i + " " + JSON.stringify(DeviceList[i]));
+                        }
+
+                        console.log("new device list " + JSON.stringify(DeviceList));
                     });
                 }, 20)
             });
