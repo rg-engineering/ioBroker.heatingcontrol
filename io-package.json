@@ -3,19 +3,7 @@
     "name": "heatingcontrol",
     "version": "0.3.0",
     "news": {
-      "0.3.0": {
-        "en": "manuel temperature setting, configurable heating period and more",
-        "de": "Manuelle Temperatureinstellung, konfigurierbare Heizperiode und mehr",
-        "ru": "настройка температуры в мануале, настраиваемый период нагрева и многое другое",
-        "pt": "ajuste da temperatura de manuel, período de aquecimento configurável e muito mais",
-        "nl": "handmatige temperatuurinstelling, configureerbare verwarmingsperiode en meer",
-        "fr": "réglage manuel de la température, période de chauffage configurable et plus",
-        "it": "impostazione della temperatura manuale, periodo di riscaldamento configurabile e altro",
-        "es": "ajuste de temperatura manual, período de calentamiento configurable y más",
-        "pl": "ustawienie temperatury manuel, konfigurowalny okres ogrzewania i więcej",
-        "zh-cn": "手动设定温度，可设定的加热时间等"
-      },
-      "0.2.3": {
+      "0.3.1": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -27,113 +15,137 @@
         "pl": "niektóre poprawki błędów",
         "zh-cn": "一些错误修复"
       },
-      "0.2.1": {
-        "en": "bug fixes in actuator handling",
-        "de": "Fehlerbehebungen im Umgang mit Aktuatoren",
-        "ru": "исправлены ошибки в работе привода",
-        "pt": "correções de erros no manuseio do atuador",
-        "nl": "bugfixes bij bediening van de actuator",
-        "fr": "corrections de bugs dans la manipulation des actionneurs",
-        "it": "correzioni di errori nella gestione dell'attuatore",
-        "es": "correcciones de errores en el manejo del actuador",
-        "pl": "poprawki błędów w obsłudze siłowników",
-        "zh-cn": "执行器处理中的错误修复"
+        "0.3.0": {
+          "en": "manuel temperature setting, configurable heating period and more",
+          "de": "Manuelle Temperatureinstellung, konfigurierbare Heizperiode und mehr",
+          "ru": "настройка температуры в мануале, настраиваемый период нагрева и многое другое",
+          "pt": "ajuste da temperatura de manuel, período de aquecimento configurável e muito mais",
+          "nl": "handmatige temperatuurinstelling, configureerbare verwarmingsperiode en meer",
+          "fr": "réglage manuel de la température, période de chauffage configurable et plus",
+          "it": "impostazione della temperatura manuale, periodo di riscaldamento configurabile e altro",
+          "es": "ajuste de temperatura manual, período de calentamiento configurable y más",
+          "pl": "ustawienie temperatury manuel, konfigurowalny okres ogrzewania i więcej",
+          "zh-cn": "手动设定温度，可设定的加热时间等"
+        },
+        "0.2.3": {
+          "en": "some bug fixes",
+          "de": "einige Bugfixes",
+          "ru": "некоторые исправления ошибок",
+          "pt": "algumas correções de bugs",
+          "nl": "enkele bugfixes",
+          "fr": "quelques corrections de bugs",
+          "it": "alcune correzioni di bug",
+          "es": "algunas correcciones de errores",
+          "pl": "niektóre poprawki błędów",
+          "zh-cn": "一些错误修复"
+        },
+        "0.2.1": {
+          "en": "bug fixes in actuator handling",
+          "de": "Fehlerbehebungen im Umgang mit Aktuatoren",
+          "ru": "исправлены ошибки в работе привода",
+          "pt": "correções de erros no manuseio do atuador",
+          "nl": "bugfixes bij bediening van de actuator",
+          "fr": "corrections de bugs dans la manipulation des actionneurs",
+          "it": "correzioni di errori nella gestione dell'attuatore",
+          "es": "correcciones de errores en el manejo del actuador",
+          "pl": "poprawki błędów w obsłudze siłowników",
+          "zh-cn": "执行器处理中的错误修复"
+        },
+        "0.2.0": {
+          "en": "path to Feiertag-Adapter can also include a complete datapoint path ",
+          "de": "Pfad zum Feiertag-Adapter kann auch einen vollständigen Datenpunktpfad enthalten",
+          "ru": "путь к Feiertag-Adapter может также включать полный путь к точке данных",
+          "pt": "O caminho para o Feiertag-Adapter também pode incluir um caminho completo do ponto de dados",
+          "nl": "pad naar Feiertag-Adapter kan ook een compleet datapuntpad bevatten",
+          "fr": "Le chemin vers Feiertag-Adapter peut également inclure un chemin complet de point de données.",
+          "it": "Il percorso di Feiertag-Adapter può anche includere un percorso completo di punti dati",
+          "es": "ruta a Feiertag-Adapter también puede incluir una ruta completa de punto de datos",
+          "pl": "ścieżka do Feiertag-Adapter może również zawierać pełną ścieżkę punktu danych",
+          "zh-cn": "Feiertag-Adapter的路径还可以包含完整的数据点路径"
+        },
+        "0.1.0": {
+          "en": "redesign data structure",
+          "de": "Neugestaltung der Datenstruktur",
+          "ru": "перепроектировать структуру данных",
+          "pt": "redesenhar estrutura de dados",
+          "nl": "gegevensstructuur opnieuw ontwerpen",
+          "fr": "refonte de la structure de données",
+          "it": "riprogettare la struttura dei dati",
+          "es": "rediseño de estructura de datos",
+          "pl": "przeprojektowanie struktury danych",
+          "zh-cn": "重新设计数据结构"
+        },
+        "0.0.5": {
+          "en": "support for max! thermostats",
+          "de": "Unterstützung für max!-Thermostate",
+          "ru": "поддержка термостатов max!",
+          "pt": "suporte para termostatos max!",
+          "nl": "ondersteuning voor max!-thermostaten",
+          "fr": "support pour les thermostats max!",
+          "it": "supporto per i termostati max!",
+          "es": "soporte para termostatos max!",
+          "pl": "obsługa termostatów max!",
+          "zh-cn": "支持max！恒温器"
+        },
+        "0.0.3": {
+          "en": "ready for first publish",
+          "pt": "pronto para primeiro publicar",
+          "de": "bereit für die erste Veröffentlichung",
+          "nl": "klaar voor de eerste publicatie",
+          "it": "pronto per la prima pubblicazione",
+          "es": "listo para primera publicacion",
+          "pl": "gotowy do pierwszego opublikowania",
+          "zh-cn": "准备好首次发布",
+          "fr": "prêt pour la première publication",
+          "ru": "готов к первой публикации"
+        },
+        "0.0.2": {
+          "en": "actuator handling added",
+          "de": "Aktuatorhandling hinzugefügt",
+          "pl": "dodano obsługę siłownika",
+          "zh-cn": "执行器处理添加",
+          "nl": "actuator handling toegevoegd",
+          "fr": "actionneur manipulation ajouté",
+          "ru": "добавлена ​​обработка привода",
+          "pt": "manuseio do atuador adicionado",
+          "it": "aggiunta della movimentazione dell'attuatore",
+          "es": "manejo del actuador agregado"
+        }
       },
-      "0.2.0": {
-        "en": "path to Feiertag-Adapter can also include a complete datapoint path ",
-        "de": "Pfad zum Feiertag-Adapter kann auch einen vollständigen Datenpunktpfad enthalten",
-        "ru": "путь к Feiertag-Adapter может также включать полный путь к точке данных",
-        "pt": "O caminho para o Feiertag-Adapter também pode incluir um caminho completo do ponto de dados",
-        "nl": "pad naar Feiertag-Adapter kan ook een compleet datapuntpad bevatten",
-        "fr": "Le chemin vers Feiertag-Adapter peut également inclure un chemin complet de point de données.",
-        "it": "Il percorso di Feiertag-Adapter può anche includere un percorso completo di punti dati",
-        "es": "ruta a Feiertag-Adapter también puede incluir una ruta completa de punto de datos",
-        "pl": "ścieżka do Feiertag-Adapter może również zawierać pełną ścieżkę punktu danych",
-        "zh-cn": "Feiertag-Adapter的路径还可以包含完整的数据点路径"
+      "title": "HeatingControl",
+      "desc": {
+        "en": "Heating Control ",
+        "de": "Heizungsregelung",
+        "ru": "Управление отоплением",
+        "pt": "Controle de aquecimento",
+        "nl": "Verwarmingsregeling",
+        "fr": "Contrôle de chauffage",
+        "pl": "Sterowanie ogrzewaniem",
+        "zh-cn": "加热控制",
+        "it": "Controllo del riscaldamento",
+        "es": "Control de calefacción"
       },
-      "0.1.0": {
-        "en": "redesign data structure",
-        "de": "Neugestaltung der Datenstruktur",
-        "ru": "перепроектировать структуру данных",
-        "pt": "redesenhar estrutura de dados",
-        "nl": "gegevensstructuur opnieuw ontwerpen",
-        "fr": "refonte de la structure de données",
-        "it": "riprogettare la struttura dei dati",
-        "es": "rediseño de estructura de datos",
-        "pl": "przeprojektowanie struktury danych",
-        "zh-cn": "重新设计数据结构"
-      },
-      "0.0.5": {
-        "en": "support for max! thermostats",
-        "de": "Unterstützung für max!-Thermostate",
-        "ru": "поддержка термостатов max!",
-        "pt": "suporte para termostatos max!",
-        "nl": "ondersteuning voor max!-thermostaten",
-        "fr": "support pour les thermostats max!",
-        "it": "supporto per i termostati max!",
-        "es": "soporte para termostatos max!",
-        "pl": "obsługa termostatów max!",
-        "zh-cn": "支持max！恒温器"
-      },
-      "0.0.3": {
-        "en": "ready for first publish",
-        "pt": "pronto para primeiro publicar",
-        "de": "bereit für die erste Veröffentlichung",
-        "nl": "klaar voor de eerste publicatie",
-        "it": "pronto per la prima pubblicazione",
-        "es": "listo para primera publicacion",
-        "pl": "gotowy do pierwszego opublikowania",
-        "zh-cn": "准备好首次发布",
-        "fr": "prêt pour la première publication",
-        "ru": "готов к первой публикации"
-      },
-      "0.0.2": {
-        "en": "actuator handling added",
-        "de": "Aktuatorhandling hinzugefügt",
-        "pl": "dodano obsługę siłownika",
-        "zh-cn": "执行器处理添加",
-        "nl": "actuator handling toegevoegd",
-        "fr": "actionneur manipulation ajouté",
-        "ru": "добавлена ​​обработка привода",
-        "pt": "manuseio do atuador adicionado",
-        "it": "aggiunta della movimentazione dell'attuatore",
-        "es": "manejo del actuador agregado"
-      }
+      "platform": "Javascript/Node.js",
+      "mode": "daemon",
+      "icon": "heatingcontrol.png",
+      "enabled": true,
+      "messagebox": true,
+      "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
+      "keywords": [ "heating" ],
+      "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
+      "loglevel": "info",
+      "stopBeforeUpdate": true,
+      "type": "climate-control",
+      "license": "MIT",
+      "materialize": true,
+      "compact": true,
+      "authors": [
+        {
+          "name": "René G.",
+          "email": "info@rg-engineering.eu"
+        }
+      ]
     },
-    "title": "HeatingControl",
-    "desc": {
-      "en": "Heating Control ",
-      "de": "Heizungsregelung",
-      "ru": "Управление отоплением",
-      "pt": "Controle de aquecimento",
-      "nl": "Verwarmingsregeling",
-      "fr": "Contrôle de chauffage",
-      "pl": "Sterowanie ogrzewaniem",
-      "zh-cn": "加热控制",
-      "it": "Controllo del riscaldamento",
-      "es": "Control de calefacción"
-    },
-    "platform": "Javascript/Node.js",
-    "mode": "daemon",
-    "icon": "heatingcontrol.png",
-    "enabled": true,
-    "messagebox": true,
-    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
-    "keywords": [ "heating" ],
-    "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
-    "loglevel": "info",
-    "stopBeforeUpdate": true,
-    "type": "climate-control",
-    "license": "MIT",
-    "materialize": true,
-    "compact": true,
-    "authors": [
-      {
-        "name": "René G.",
-        "email": "info@rg-engineering.eu"
-      }
-    ]
-  },
   "native": {
     "devices": [],
     "rooms": [],

@@ -193,6 +193,10 @@ async function main() {
         await CreateDatepoints();
         await SubscribeStates();
         await CalculateNextTime();
+
+        //need to check all WindowSensors per Room
+        await CheckAllWindowSensors();
+
         await CheckTemperatureChange();
     }
     catch (e) {
@@ -1446,15 +1450,12 @@ async function HandleStateChangeDevices(id, state) {
         }
         else if (device.type === 3) {//sensor
 
-            const state = await adapter.getForeignStateAsync(device.OID_Current);
-
             let roomID = findObjectIdByKey(adapter.config.rooms, 'name', device.room);
 
-            adapter.log.debug('set ' + adapter.config.rooms[roomID].name + " window open to " + JSON.stringify(state)); 
-
-            adapter.config.rooms[roomID].WindowIsOpen = state.val;
+            //need to check all WindowSensors per Room
+            await CheckWindowSensors(roomID);
+           
             CheckTemperatureChange();
-
         } 
     }
     else {
@@ -2136,7 +2137,7 @@ async function CheckTemperatureChange() {
         adapter.log.info('calculating new target temperatures');
 
         const now = new Date();
-        adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toLocaleString() });
+        adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toString() });
 
         //first we need some information
         const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
@@ -2521,6 +2522,66 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
         }
     }
 }
+
+async function CheckAllWindowSensors() {
+
+    if (adapter.config.UseSensors) {
+        //adapter.log.debug("Check all sensors in " + JSON.stringify(adapter.config.devices));
+        for (let i = 0; i < adapter.config.rooms.length; i++) {
+
+            if (adapter.config.rooms[i].isActive) {
+                await CheckWindowSensors(i);
+            }
+        }
+    }
+}
+
+async function CheckWindowSensors(roomID) {
+
+    try {
+        if (adapter.config.UseSensors) {
+            let roomName = adapter.config.rooms[roomID].name;
+
+            adapter.log.debug("Check sensors for " + roomName);
+
+            let state2Set = false;
+            for (let i = 0; i < adapter.config.devices.length; i++) {
+
+                //adapter.log.debug("---check sensor with OID " + adapter.config.devices[i].OID_Current);
+
+                if (adapter.config.devices[i].isActive && adapter.config.devices[i].type === 3) {
+
+                    if (adapter.config.devices[i].room === roomName) {
+
+                        //adapter.log.debug("found sensor with OID " + adapter.config.devices[i].OID_Current);
+
+                        const state = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Current);
+
+                        adapter.log.debug("got sensor state " + JSON.stringify(state) + " from " + adapter.config.devices[i].OID_Current);
+
+                        if (state !== null && typeof state !== 'undefined') {
+                            if (state.val) {
+                                adapter.log.info(roomName + " window open on " + adapter.config.devices[i].name);
+                                state2Set = true;
+                            }
+                        }
+                        else {
+                            adapter.log.warn(roomName + " no valid result from " + adapter.config.devices[i].OID_Current);
+
+                        }
+                    }
+                }
+            }
+
+            adapter.config.rooms[roomID].WindowIsOpen = state2Set;
+
+        }
+    }
+    catch (e) {
+        adapter.log.error('exception in CheckWindowSensors [' + e + ']');
+    }
+}
+
 
 
 // If started as allInOne/compact mode => return function to create instance
