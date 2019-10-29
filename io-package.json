@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
       "0.3.1": {
         "en": "some bug fixes",
