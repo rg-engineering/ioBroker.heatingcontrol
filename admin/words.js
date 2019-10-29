@@ -54,7 +54,7 @@ systemDictionary = {
         "es": "función",
         "pl": "funkcjonować"
     },
-    
+
     "timezone":
     {
         "en": "timezone",
@@ -214,7 +214,7 @@ systemDictionary = {
         "zh-cn": "房间"
     },
 
-   
+
     "active":
     {
         "en": "active",
@@ -461,6 +461,70 @@ systemDictionary = {
         "es": "Ruta de acceso a Feiertag: adaptador o cualquier otro punto de datos",
         "pl": "Ścieżka do Feiertagu - adapter lub inny punkt danych",
         "zh-cn": "Feiertag的路径 - 适配器或任何其他数据点"
+    },
+    "Path2PresentDP":
+    {
+        "en": "Path to data point \"currently present\"",
+        "de": "Pfad zum Datenpunkt \"derzeit anwesend\"",
+        "ru": "Путь к точке данных \"в настоящее время присутствует\"",
+        "pt": "Caminho para o ponto de dados \"atualmente presente\"",
+        "nl": "Pad naar gegevenspunt \"momenteel aanwezig\"",
+        "fr": "Chemin d'accès au point de données \"actuellement présent\"",
+        "it": "Percorso del punto dati \"attualmente presente\"",
+        "es": "Ruta al punto de datos \"actualmente presente\"",
+        "pl": "Ścieżka do punktu danych „obecnie obecny”",
+        "zh-cn": "数据点“当前存在”的路径"
+    },
+    "UseFixHeatingPeriod":
+    {
+        "en": "Use predefined Heating Period",
+        "de": "Vordefinierte Heizperiode verwenden",
+        "ru": "Использовать предопределенный период нагрева",
+        "pt": "Use período de aquecimento predefinido",
+        "nl": "Gebruik een vooraf gedefinieerde verwarmingsperiode",
+        "fr": "Utiliser une période de chauffage prédéfinie",
+        "it": "Usa periodo di riscaldamento predefinito",
+        "es": "Utilice el período de calentamiento predefinido",
+        "pl": "Użyj wstępnie zdefiniowanego okresu ogrzewania",
+        "zh-cn": "使用预定义的加热时间"
+    },
+    "FixHeatingPeriodStart":
+    {
+        "en": "begin of Heating Period",
+        "de": "Beginn der Heizperiode",
+        "ru": "начало отопительного периода",
+        "pt": "início do período de aquecimento",
+        "nl": "begin van de verwarmingsperiode",
+        "fr": "début de la période de chauffage",
+        "it": "inizio del periodo di riscaldamento",
+        "es": "comienzo del período de calentamiento",
+        "pl": "początek okresu ogrzewania",
+        "zh-cn": "加热期开始"
+    },
+    "FixHeatingPeriodEnd":
+    {
+        "en": "end of Heating Period",
+        "de": "Ende der Heizperiode",
+        "ru": "конец периода отопления",
+        "pt": "fim do período de aquecimento",
+        "nl": "einde verwarmingsperiode",
+        "fr": "fin de la période de chauffage",
+        "it": "fine del periodo di riscaldamento",
+        "es": "fin del período de calentamiento",
+        "pl": "koniec okresu ogrzewania",
+        "zh-cn": "加热期结束"
+    },
+    "AdapterNotOnline":
+    {
+        "en": "Adapter Not Online. Please make sure it is running!",
+        "de": "Adapter nicht online. Bitte stellen Sie sicher, dass es läuft!",
+        "ru": "Адаптер не в сети. Пожалуйста, убедитесь, что он работает!",
+        "pt": "Adaptador não online. Por favor, verifique se está funcionando!",
+        "nl": "Adapter niet online. Zorg ervoor dat deze actief is!",
+        "fr": "Adaptateur non en ligne. S'il vous plaît assurez-vous qu'il fonctionne!",
+        "it": "Adattatore non in linea. Assicurati che sia in esecuzione!",
+        "es": "Adaptador no en línea. ¡Asegúrate de que se esté ejecutando!",
+        "pl": "Adapter nie jest online. Upewnij się, że działa!",
+        "zh-cn": "适配器不在线。请确保它正在运行！"
     }
-    
 };
