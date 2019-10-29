@@ -42,6 +42,11 @@
             overflow: visible !important;
             top: 10px !important;
         }
+
+        redlabel { 
+            color: red; 
+        }
+
     </style>
 
     <script type="text/javascript">
@@ -107,10 +112,18 @@
         }
 
 
-
+        var AdapterIsOnline = false;
         function showHideSettings() {
 
             //always hide
+
+
+            if (!AdapterIsOnline) {
+                $('.col-adapternotonline').show();
+            }
+            else {
+                $('.col-adapternotonline').hide();;
+            }
 
             var $useActors = $('#UseActors');
             if ($useActors.prop('checked')) {
@@ -142,7 +155,7 @@
 
 
         var timeout1;
-        var DeviceList;
+        var DeviceList =[];
         function getDevices(onChange, instance) {
             timeout1 = setTimeout(function () {
                 getDevices(onChange, instance);
@@ -155,10 +168,11 @@
                     timeout1 = null;
                 }
 
-                console.log('got devices ' + JSON.stringify(list));
+                AdapterIsOnline = true;
 
                 DeviceList = list;
 
+                console.log('got devices ' + JSON.stringify(DeviceList));
 
             });
         }
@@ -325,6 +339,8 @@
                     var _id = arr[i]._id.replace('system.adapter.', '');
 
                     console.log('got instance ' + _id);
+
+
 
                     getFunctions(settings.Gewerk, onChange, _id);
                     getDevices(onChange, _id);
@@ -751,6 +767,11 @@
                         </select>
                         <label for="Gewerk" class="translate">Gewerk</label>
                     </div>
+
+                    <div class="col s6 col-adapternotonline">
+                        <span class="translate">AdapterNotOnline</span>
+                    </div>
+
 
                 </div>
 

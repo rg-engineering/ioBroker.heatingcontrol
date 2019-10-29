@@ -467,7 +467,27 @@ async function ListDevices(obj) {
         }
     }
 
-    adapter.log.debug('all rooms done ' + JSON.stringify(adapter.config.devices));
+    
+
+    if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined' || adapter.config.devices.length === 0) {
+
+        adapter.config.devices.push({
+            id: 0,
+            name: "TestThermostat",
+            isActive: true,
+            room: "Office",
+            type: 1, 
+            OID_Current: "Test_OID"
+        });
+
+
+        adapter.log.warn(' device list is empty, add dummy device ' + JSON.stringify(adapter.config.devices));
+
+    }
+    else {
+        adapter.log.debug('all rooms done ' + JSON.stringify(adapter.config.devices));
+
+    }
 
     adapter.sendTo(obj.from, obj.command, adapter.config.devices, obj.callback);
 }
