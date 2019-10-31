@@ -192,6 +192,9 @@ async function main() {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
         await CreateDatepoints();
         await SubscribeStates();
+
+        await checkHeatingPeriod();
+
         await CalculateNextTime();
 
         //need to check all WindowSensors per Room
@@ -2568,6 +2571,42 @@ function Check4ValidTemmperature(temperature) {
 
 }
 
+async function checkHeatingPeriod() {
+
+    if (adapter.config.UseFixHeatingPeriod) {
+        adapter.log.info("initial check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
+
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+
+        const StartMonth = HeatingPeriodStart[1] - 1;
+        const StartDay = HeatingPeriodStart[0];
+        const EndMonth = HeatingPeriodEnd[1] - 1;
+        const EndDay = HeatingPeriodEnd[0];
+
+        let Today = new Date();
+
+        let isHeatingPeriod = false;
+
+        //somewhere in spring 
+        if (Today.getMonth() > EndMonth || (Today.getMonth() === EndMonth && Today.getDate() > EndDay)) {
+            isHeatingPeriod = false;
+        }
+        else {
+            isHeatingPeriod = true;
+        }
+
+        if (isHeatingPeriod === false) {
+            //somewhere in autumn
+            if (Today.getMonth() > StartMonth || (Today.getMonth() === StartMonth && Today.getDate() > StartDay)) {
+                isHeatingPeriod = true;
+            }
+        }
+        adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
+
+        await adapter.setStateAsync('HeatingPeriodActive', { ack: true, val: isHeatingPeriod });  
+    }
+}
 
 async function CheckAllWindowSensors() {
 
