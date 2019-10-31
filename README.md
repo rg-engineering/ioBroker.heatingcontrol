@@ -79,7 +79,7 @@ Features:
 
 ## Changelog
 
-### 0.3.1 (2019-10-xx)
+### 0.3.1 (2019-10-31)
 * (René) see issue #42 and #44: check all sensors per room and set state when adapter starts
 * (René) show message in admin when adapter is not online
 * (René) pre-define devicelist; add dummy thermostat, if list is empty
