@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
-      "0.3.1": {
+      "0.3.2": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -62,55 +62,8 @@
           "es": "ruta a Feiertag-Adapter también puede incluir una ruta completa de punto de datos",
           "pl": "ścieżka do Feiertag-Adapter może również zawierać pełną ścieżkę punktu danych",
           "zh-cn": "Feiertag-Adapter的路径还可以包含完整的数据点路径"
-        },
-        "0.1.0": {
-          "en": "redesign data structure",
-          "de": "Neugestaltung der Datenstruktur",
-          "ru": "перепроектировать структуру данных",
-          "pt": "redesenhar estrutura de dados",
-          "nl": "gegevensstructuur opnieuw ontwerpen",
-          "fr": "refonte de la structure de données",
-          "it": "riprogettare la struttura dei dati",
-          "es": "rediseño de estructura de datos",
-          "pl": "przeprojektowanie struktury danych",
-          "zh-cn": "重新设计数据结构"
-        },
-        "0.0.5": {
-          "en": "support for max! thermostats",
-          "de": "Unterstützung für max!-Thermostate",
-          "ru": "поддержка термостатов max!",
-          "pt": "suporte para termostatos max!",
-          "nl": "ondersteuning voor max!-thermostaten",
-          "fr": "support pour les thermostats max!",
-          "it": "supporto per i termostati max!",
-          "es": "soporte para termostatos max!",
-          "pl": "obsługa termostatów max!",
-          "zh-cn": "支持max！恒温器"
-        },
-        "0.0.3": {
-          "en": "ready for first publish",
-          "pt": "pronto para primeiro publicar",
-          "de": "bereit für die erste Veröffentlichung",
-          "nl": "klaar voor de eerste publicatie",
-          "it": "pronto per la prima pubblicazione",
-          "es": "listo para primera publicacion",
-          "pl": "gotowy do pierwszego opublikowania",
-          "zh-cn": "准备好首次发布",
-          "fr": "prêt pour la première publication",
-          "ru": "готов к первой публикации"
-        },
-        "0.0.2": {
-          "en": "actuator handling added",
-          "de": "Aktuatorhandling hinzugefügt",
-          "pl": "dodano obsługę siłownika",
-          "zh-cn": "执行器处理添加",
-          "nl": "actuator handling toegevoegd",
-          "fr": "actionneur manipulation ajouté",
-          "ru": "добавлена ​​обработка привода",
-          "pt": "manuseio do atuador adicionado",
-          "it": "aggiunta della movimentazione dell'attuatore",
-          "es": "manejo del actuador agregado"
         }
+       
       },
       "title": "HeatingControl",
       "desc": {

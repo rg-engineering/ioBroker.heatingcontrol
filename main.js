@@ -1232,7 +1232,7 @@ async function HandleStateChange(id, state) {
                     adapter.log.debug("### 111 handled");
                 }
                 else {
-                    adapter.log.debug("### 111 not handled");
+                    adapter.log.debug("### 111 not handled yet");
                 }
             }
             if (!bHandled) {
@@ -1243,7 +1243,7 @@ async function HandleStateChange(id, state) {
                     adapter.log.debug("### 222 handled");
                 }
                 else {
-                    adapter.log.debug("### 222 not handled");
+                    adapter.log.debug("### 222 not handled yet");
                 }
             }
 
@@ -1282,6 +1282,18 @@ async function HandleStateChangeGeneral(id, state) {
         if (state.val < 1 ) {
             await adapter.setStateAsync(id, { ack: true, val: 1 });
         }
+        bRet = true;
+    }
+
+
+    //heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Su.Periods.0.Temperature
+    if (ids[8] === "Temperature") {
+
+        xxx
+
+        await CheckTemperatureChange();
+
+
         bRet = true;
     }
 
@@ -1391,9 +1403,7 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
-    if (ids[7] === "temperature") {
-        bRet = true;
-    }
+    
 
     return bRet;
 }
@@ -2295,7 +2305,8 @@ async function CheckTemperatureChange() {
                                 const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.Temperature';
 
                                 let temp6 = await adapter.getStateAsync(id2);
-                                nextTemperature = temp6.val;
+
+                                nextTemperature = Check4ValidTemmperature (temp6.val);
 
                                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                                 currentPeriod = period;
@@ -2339,7 +2350,7 @@ async function CheckTemperatureChange() {
                                 const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
 
                                 let temp6 = await adapter.getStateAsync(id2);
-                                nextTemperature = temp6.val;
+                                nextTemperature = Check4ValidTemmperature(temp6.val);
 
                                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                                 currentPeriod = period;
@@ -2388,7 +2399,7 @@ async function CheckTemperatureChange() {
                                 const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
 
                                 let temp6 = await adapter.getStateAsync(id2);
-                                nextTemperature = temp6.val;
+                                nextTemperature = Check4ValidTemmperature(temp6.val);
 
                                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                                 currentPeriod = period;
@@ -2542,6 +2553,21 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
         }
     }
 }
+
+function Check4ValidTemmperature(temperature) {
+
+    if (isNaN(temperature)) {
+
+        adapter.log.warn("try to convert " + temperature + " to a number");
+
+        return parseInt(temperature);
+    }
+    else {
+        return temperature;
+    }
+
+}
+
 
 async function CheckAllWindowSensors() {
 
