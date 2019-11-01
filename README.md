@@ -79,8 +79,10 @@ Features:
 
 ## Changelog
 
-### 0.3.2 (2019-11-xx)
-
+### 0.3.2 (2019-11-01)
+* (René) try to convert temperature to number if NaN
+* (René) see issue #33: check for heating period when adapter starts
+* (René) fix a problem in subscription function when room can not be found 
 
 ### 0.3.1 (2019-10-31)
 * (René) see issue #42 and #44: check all sensors per room and set state when adapter starts

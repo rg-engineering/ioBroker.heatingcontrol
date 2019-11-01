@@ -474,11 +474,17 @@ async function ListDevices(obj) {
 
     if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined' || adapter.config.devices.length === 0) {
 
+        let room = "Office";
+
+        if (adapter.config.rooms !== null && typeof adapter.config.rooms !== 'undefined' && adapter.config.rooms.length > 0) {
+            room = adapter.config.rooms[0].name;
+        }
+
         adapter.config.devices.push({
             id: 0,
             name: "TestThermostat",
-            isActive: true,
-            room: "Office",
+            isActive: false,
+            room: room,
             type: 1, 
             OID_Current: "Test_OID"
         });
@@ -1141,29 +1147,39 @@ function SubscribeStates(callback) {
         for (let i = 0; i < adapter.config.devices.length; i++) {
             //here we need to check whether room ist really active; we subscribe only for active rooms
             let room = adapter.config.devices[i].room;
-            let roomdata = findObjectByKey(adapter.config.rooms, "name", room);
-            //adapter.log.debug('room ' + JSON.stringify(roomdata));
+           
+            if (adapter.config.devices[i].isActive) { //check only active devices
 
-            if (roomdata.isActive) {
-                if (adapter.config.UseActors) {
-                    if (adapter.config.devices[i].type === 1 && adapter.config.devices[i].isActive) { //thermostat
-                        adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + ' / ' + adapter.config.devices[i].OID_Current);
+                let roomdata = findObjectByKey(adapter.config.rooms, "name", room);
+                //adapter.log.debug('room ' + JSON.stringify(roomdata));
 
-                        adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
-                        adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+                if (roomdata !== null && roomdata.isActive) {
+                    if (adapter.config.UseActors) {
+                        if (adapter.config.devices[i].type === 1) { //thermostat
+                            adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + ' / ' + adapter.config.devices[i].OID_Current);
 
-                        if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
-                            adapter.log.warn('configuration error thermostat for ' + adapter.config.devices[i].room + ': OID target should be different to OID current!');
+                            adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
+                            adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+
+                            if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
+                                adapter.log.warn('configuration error thermostat for ' + adapter.config.devices[i].room + ': OID target should be different to OID current!');
+                            }
+                        }
+                    }
+
+                    if (adapter.config.UseSensors) {
+                        if (adapter.config.devices[i].type === 3) { //sensor
+                            adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
+                            adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
                         }
                     }
                 }
-
-                if (adapter.config.UseSensors) {
-                    if (adapter.config.devices[i].type === 3 && adapter.config.devices[i].isActive) { //sensor
-                        adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
-                        adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
-                    }
+                else {
+                    adapter.log.debug('room not active or not available ' + JSON.stringify(roomdata));
                 }
+            }
+            else {
+                adapter.log.debug('device not active ');
             }
         }
 
@@ -1291,12 +1307,7 @@ async function HandleStateChangeGeneral(id, state) {
 
     //heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Su.Periods.0.Temperature
     if (ids[8] === "Temperature") {
-
-        xxx
-
         await CheckTemperatureChange();
-
-
         bRet = true;
     }
 

@@ -517,7 +517,7 @@ systemDictionary = {
     "AdapterNotOnline":
     {
         "en": "Adapter Not Online. Please make sure it is running!",
-        "de": "Adapter nicht online. Bitte stellen Sie sicher, dass es läuft!",
+        "de": "Adapter nicht online. Bitte stellen Sie sicher, dass er läuft!",
         "ru": "Адаптер не в сети. Пожалуйста, убедитесь, что он работает!",
         "pt": "Adaptador não online. Por favor, verifique se está funcionando!",
         "nl": "Adapter niet online. Zorg ervoor dat deze actief is!",
