@@ -80,8 +80,16 @@ Features:
 ## Changelog
 
 ### 0.3.3 (2019-11-xx)
+Attention: some changes in datapoints!!
 * (René) in admin: new buttons to add search new rooms
 * (René) bug fix: in profil type Mo-Fr / Sa- So period order check failed  
+* (René) see issue #38: new datapoint for WindowIsOpen
+* (René) change datapoint "CurrentTimePeriod" to "CurrentTimePeriodFull", "CurrentTimePeriod" and "CurrentTimePeriodTime"
+* (René) bugfix datapoint name "Sa-Su"
+* (René) new datapoint "state" per room to show reason for temperatur change 
+
+
+
 
 ### 0.3.2 (2019-11-01)
 * (René) try to convert temperature to number if NaN

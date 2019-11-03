@@ -1039,7 +1039,20 @@ async function CreateDatepoints() {
                             read: true,
                             write: false
                         },
-                        native: { id: 'CurrentTimePeriodTime' }
+                        native: { id: 'WindowIsOpen' }
+                    });
+
+                    await adapter.setObjectNotExistsAsync(id1 + '.State', {
+                        type: 'state',
+                        common: {
+                            name: 'State',
+                            type: 'string',
+                            role: 'history',
+                            unit: '',
+                            read: true,
+                            write: false
+                        },
+                        native: { id: 'State' }
                     });
 
                     //manuell temperature setting
@@ -2310,10 +2323,16 @@ async function CheckTemperatureChange() {
                 if (adapter.config.rooms[room].isActive) {
                     adapter.log.debug("check room " + adapter.config.rooms[room].name);
 
+                    let RoomState = "";
 
                     //reset in separate cron job!!
                     if (adapter.config.rooms[room].TempOverride) {
                         adapter.log.debug("room " + adapter.config.rooms[room].name + " still in override until " + adapter.config.rooms[room].TempOverrideDue);
+
+                        RoomState = "override"; 
+                        let id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".State";
+                        await adapter.setStateAsync(id, { ack: true, val: RoomState });
+
                         break;
                     }
 
@@ -2322,6 +2341,7 @@ async function CheckTemperatureChange() {
                     let idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "."; 
                     let AbsentDecrease = 0;
                     if (!Present) {
+                        RoomState += "not present / "; 
                         let temp1 = await adapter.getStateAsync(idPreset + "AbsentDecrease");
 
                         adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
@@ -2334,6 +2354,9 @@ async function CheckTemperatureChange() {
                     }
                     let GuestIncrease = 0;
                     if (GuestsPresent) {
+
+                        RoomState += "guests present / ";
+
                         let temp2 = await adapter.getStateAsync(idPreset + "GuestIncrease");
                         adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
                         if (temp2 !== null) {
@@ -2345,6 +2368,9 @@ async function CheckTemperatureChange() {
                     }
                     let PartyDecrease = 0;
                     if (PartyNow) {
+
+                        RoomState += "party / ";
+
                         let temp3 = await adapter.getStateAsync(idPreset + "PartyDecrease");
                         adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
                         if (temp3 !== null) {
@@ -2357,6 +2383,9 @@ async function CheckTemperatureChange() {
                     let WindowOpen = adapter.config.rooms[room].WindowIsOpen;
                     let WindowOpenDecrease = 0;
                     if (WindowOpen) {
+
+                        RoomState += "window open / ";
+
                         let temp4 = await adapter.getStateAsync(idPreset + "WindowOpenDecrease");
                         adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp4));
                         if (temp4 !== null) {
@@ -2368,6 +2397,9 @@ async function CheckTemperatureChange() {
                     }
                     let VacationAbsentDecrease = 0;
                     if (VacationAbsent) {
+
+                        RoomState += "vacation absent / ";
+
                         let temp5 = await adapter.getStateAsync(idPreset + "VacationAbsentDecrease");
                         adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp5));
                         if (temp5 !== null) {
@@ -2548,7 +2580,13 @@ async function CheckTemperatureChange() {
 
                     }
 
+                    if (RoomState == "") {
+                        RoomState = "normal"; 
+                    }
 
+
+                    let id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".State";
+                    await adapter.setStateAsync(id, { ack: true, val: RoomState });
 
                 }
             }
