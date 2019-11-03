@@ -989,6 +989,19 @@ async function CreateDatepoints() {
 
 
 
+                    await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
+                        type: 'state',
+                        common: {
+                            name: 'CurrentTimePeriodFull',
+                            type: 'string',
+                            role: 'history',
+                            unit: '',
+                            read: true,
+                            write: false
+                        },
+                        native: { id: 'CurrentTimePeriod' }
+                    });
+
                     await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriod', {
                         type: 'state',
                         common: {
@@ -1002,6 +1015,18 @@ async function CreateDatepoints() {
                         native: { id: 'CurrentTimePeriod' }
                     });
 
+                    await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodTime', {
+                        type: 'state',
+                        common: {
+                            name: 'CurrentTimePeriodTime',
+                            type: 'string',
+                            role: 'history',
+                            unit: '',
+                            read: true,
+                            write: false
+                        },
+                        native: { id: 'CurrentTimePeriodTime' }
+                    });
 
                     //manuell temperature setting
 
@@ -2495,9 +2520,18 @@ async function CheckTemperatureChange() {
 
                             }
                         }
-                        const timePeriod = "Period " + currentPeriod + " : " + sNextTime[0] + ":" + sNextTime[1];
-                        const id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
+
+                        const currenttime = sNextTime[0] + ":" + sNextTime[1];
+                        const timePeriod = "Period " + currentPeriod + " : " + currenttime;
+                        let id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
                         await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
+
+                        id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
+                        await adapter.setStateAsync(id3, { ack: true, val: currentPeriod });
+
+                        id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
+                        await adapter.setStateAsync(id3, { ack: true, val: currenttime });
+
                     }
 
 
