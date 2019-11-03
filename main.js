@@ -219,9 +219,26 @@ async function GetSystemLanguage() {
 
 async function ListRooms(obj) {
 
-    if (adapter.config.rooms.length === 0 || adapter.config.deleteall) {
+    adapter.log.debug("ListRooms " + JSON.stringify(obj));
 
+    if (adapter.config.deleteall) {
+        adapter.log.info("ListRooms: delete all rooms and start new search");
         adapter.config.rooms.length = 0;
+    }
+
+    let search4new = false;
+
+    if (obj.message) { //search4new
+        adapter.log.info("ListRooms: search for new rooms");
+        search4new = true;
+    }
+
+
+    let newRooms = 0;
+
+    if (adapter.config.rooms.length === 0 || search4new) {
+
+
         var rooms = {};
         //get room enums first; this includes members as well
         const AllRoomsEnum = await adapter.getEnumAsync('rooms');
@@ -247,21 +264,44 @@ async function ListRooms(obj) {
                 adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
             }
 
+            let AlreadyExist = false;
 
-            adapter.config.rooms.push({
-                name: name,
-                isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
-                WindowIsOpen: false,
-                TempOverride: false,
-                TempOverrideDue: ''
-            });
+            if (search4new) { //check already exist
 
+                let roomdata = findObjectByKey(adapter.config.rooms, "name", name);
+
+                if (roomdata !== null) {
+                    AlreadyExist = true;
+                    adapter.log.debug('Listrooms room ' + name + " already exist");
+                }
+                else {
+
+                    adapter.log.debug('Listrooms found new room ' + name);
+                }
+            }
+
+            if (!AlreadyExist) {
+                newRooms++;
+                adapter.config.rooms.push({
+                    name: name,
+                    isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
+                    WindowIsOpen: false,
+                    TempOverride: false,
+                    TempOverrideDue: ''
+                });
+            }
 
         }
     }
-    adapter.log.debug('all rooms done ' + JSON.stringify(adapter.config.devices));
+    adapter.log.debug('all rooms done with ' + newRooms + " new rooms :" + JSON.stringify(adapter.config.rooms));
 
-    adapter.sendTo(obj.from, obj.command, adapter.config.rooms, obj.callback);
+    var returnObject = {
+        list: adapter.config.rooms,
+        newRooms: newRooms
+    };
+
+
+    adapter.sendTo(obj.from, obj.command, returnObject , obj.callback);
 }
 
 
@@ -1955,6 +1995,9 @@ async function CalculateNextTime() {
                                 //see issue 13
                                 if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
 
+                                    LastTimeSetHour = TimeSetHour;
+                                    LastTimeSetMinute = TimeSetMinute;
+
                                     adapter.log.debug("push to list " + " = " + nextTimes);
                                     timerList.push({
                                         hour: parseInt(nextTimes[0]),
@@ -2003,6 +2046,10 @@ async function CalculateNextTime() {
                                 //see issue 13
                                 if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
                                     adapter.log.debug("push to list " + " = " + nextTimes);
+
+                                    LastTimeSetHour = TimeSetHour;
+                                    LastTimeSetMinute = TimeSetMinute;
+
                                     timerList.push({
                                         hour: parseInt(nextTimes[0]),
                                         minute: parseInt(nextTimes[1]),
@@ -2071,6 +2118,10 @@ async function CalculateNextTime() {
                                 //see issue 13
                                 if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
                                     adapter.log.debug("push to list " + " = " + nextTimes);
+
+                                    LastTimeSetHour = TimeSetHour;
+                                    LastTimeSetMinute = TimeSetMinute;
+
                                     timerList.push({
                                         hour: parseInt(nextTimes[0]),
                                         minute: parseInt(nextTimes[1]),

@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "news": {
-      "0.3.2": {
+      "0.3.3": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -26,43 +26,9 @@
           "es": "ajuste de temperatura manual, período de calentamiento configurable y más",
           "pl": "ustawienie temperatury manuel, konfigurowalny okres ogrzewania i więcej",
           "zh-cn": "手动设定温度，可设定的加热时间等"
-        },
-        "0.2.3": {
-          "en": "some bug fixes",
-          "de": "einige Bugfixes",
-          "ru": "некоторые исправления ошибок",
-          "pt": "algumas correções de bugs",
-          "nl": "enkele bugfixes",
-          "fr": "quelques corrections de bugs",
-          "it": "alcune correzioni di bug",
-          "es": "algunas correcciones de errores",
-          "pl": "niektóre poprawki błędów",
-          "zh-cn": "一些错误修复"
-        },
-        "0.2.1": {
-          "en": "bug fixes in actuator handling",
-          "de": "Fehlerbehebungen im Umgang mit Aktuatoren",
-          "ru": "исправлены ошибки в работе привода",
-          "pt": "correções de erros no manuseio do atuador",
-          "nl": "bugfixes bij bediening van de actuator",
-          "fr": "corrections de bugs dans la manipulation des actionneurs",
-          "it": "correzioni di errori nella gestione dell'attuatore",
-          "es": "correcciones de errores en el manejo del actuador",
-          "pl": "poprawki błędów w obsłudze siłowników",
-          "zh-cn": "执行器处理中的错误修复"
-        },
-        "0.2.0": {
-          "en": "path to Feiertag-Adapter can also include a complete datapoint path ",
-          "de": "Pfad zum Feiertag-Adapter kann auch einen vollständigen Datenpunktpfad enthalten",
-          "ru": "путь к Feiertag-Adapter может также включать полный путь к точке данных",
-          "pt": "O caminho para o Feiertag-Adapter também pode incluir um caminho completo do ponto de dados",
-          "nl": "pad naar Feiertag-Adapter kan ook een compleet datapuntpad bevatten",
-          "fr": "Le chemin vers Feiertag-Adapter peut également inclure un chemin complet de point de données.",
-          "it": "Il percorso di Feiertag-Adapter può anche includere un percorso completo di punti dati",
-          "es": "ruta a Feiertag-Adapter también puede incluir una ruta completa de punto de datos",
-          "pl": "ścieżka do Feiertag-Adapter może również zawierać pełną ścieżkę punktu danych",
-          "zh-cn": "Feiertag-Adapter的路径还可以包含完整的数据点路径"
         }
+
+
        
       },
       "title": "HeatingControl",

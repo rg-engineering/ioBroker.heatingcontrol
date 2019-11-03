@@ -79,6 +79,10 @@ Features:
 
 ## Changelog
 
+### 0.3.3 (2019-11-xx)
+* (René) in admin: new buttons to add search new rooms
+* (René) bug fix: in profil type Mo-Fr / Sa- So period order check failed  
+
 ### 0.3.2 (2019-11-01)
 * (René) try to convert temperature to number if NaN
 * (René) see issue #33: check for heating period when adapter starts

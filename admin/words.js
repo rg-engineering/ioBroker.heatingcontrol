@@ -526,5 +526,18 @@ systemDictionary = {
         "es": "Adaptador no en línea. ¡Asegúrate de que se esté ejecutando!",
         "pl": "Adapter nie jest online. Upewnij się, że działa!",
         "zh-cn": "适配器不在线。请确保它正在运行！"
+    },
+    "Check4NewRooms":
+    {
+        "en": "check for new rooms",
+        "de": "auf neue Zimmer prüfen",
+        "ru": "проверить наличие новых номеров",
+        "pt": "verifique se há novos quartos",
+        "nl": "controleer op nieuwe kamers",
+        "fr": "vérifier les nouvelles chambres",
+        "it": "verifica la presenza di nuove camere",
+        "es": "verificar nuevas habitaciones",
+        "pl": "sprawdź nowe pokoje",
+        "zh-cn": "检查新房间"
     }
 };
