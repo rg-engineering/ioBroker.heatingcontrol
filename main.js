@@ -98,6 +98,9 @@ DefaultTargets[2] = ['12:00', 21];
 DefaultTargets[3] = ['16:00', 19];
 DefaultTargets[4] = ['21:00', 21];
 
+
+let SystemDateFormat = "DD.MM.YYYY";
+
 let adapter;
 function startAdapter(options) {
     options = options || {};
@@ -193,6 +196,8 @@ async function main() {
         await CreateDatepoints();
         await SubscribeStates();
 
+        SystemDateFormat = await GetSystemDateformat();
+
         await checkHeatingPeriod();
 
         await CalculateNextTime();
@@ -215,6 +220,17 @@ async function GetSystemLanguage() {
     language = ret.common.language;
 
     return language;
+}
+
+async function GetSystemDateformat() {
+    let dateformat = "DD.MM.YYYY";
+    let ret = await adapter.getForeignObjectAsync('system.config');
+
+    dateformat = ret.common.dateFormat;
+
+    adapter.log.debug('system date format ' + dateformat);
+
+    return dateformat;
 }
 
 async function ListRooms(obj) {
@@ -2284,7 +2300,12 @@ async function CheckTemperatureChange() {
         adapter.log.info('calculating new target temperatures');
 
         const now = new Date();
-        adapter.setStateAsync('LastProgramRun', { ack: true, val: now.toString() });
+
+        var datestring = ("0" + now.getDate()).slice(-2) + "." + ("0" + (now.getMonth() + 1)).slice(-2) + "." +
+            now.getFullYear() + " " + ("0" + now.getHours()).slice(-2) + ":" + ("0" + now.getMinutes()).slice(-2) + ":" + ("0" + now.getSeconds()).slice(-2);
+
+
+        adapter.setStateAsync('LastProgramRun', { ack: true, val: datestring });
 
         //first we need some information
         const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");

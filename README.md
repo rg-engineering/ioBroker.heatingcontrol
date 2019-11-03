@@ -86,8 +86,8 @@ Attention: some changes in datapoints!!
 * (René) see issue #38: new datapoint for WindowIsOpen
 * (René) change datapoint "CurrentTimePeriod" to "CurrentTimePeriodFull", "CurrentTimePeriod" and "CurrentTimePeriodTime"
 * (René) bugfix datapoint name "Sa-Su"
-* (René) new datapoint "state" per room to show reason for temperatur change 
-
+* (René) see issue #16: new datapoint "state" per room to show reason for temperatur change 
+* (René) change format of LastProgramRun date / time
 
 
 
