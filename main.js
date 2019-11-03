@@ -1006,7 +1006,7 @@ async function CreateDatepoints() {
                         type: 'state',
                         common: {
                             name: 'CurrentTimePeriod',
-                            type: 'string',
+                            type: 'number',
                             role: 'history',
                             unit: '',
                             read: true,
@@ -1020,6 +1020,20 @@ async function CreateDatepoints() {
                         common: {
                             name: 'CurrentTimePeriodTime',
                             type: 'string',
+                            role: 'history',
+                            unit: '',
+                            read: true,
+                            write: false
+                        },
+                        native: { id: 'CurrentTimePeriodTime' }
+                    });
+
+
+                    await adapter.setObjectNotExistsAsync(id1 + '.WindowIsOpen', {
+                        type: 'state',
+                        common: {
+                            name: 'WindowIsOpen',
+                            type: 'boolean',
                             role: 'history',
                             unit: '',
                             read: true,
@@ -2755,6 +2769,11 @@ async function CheckWindowSensors(roomID) {
             }
 
             adapter.config.rooms[roomID].WindowIsOpen = state2Set;
+
+            let currentProfile = await GetCurrentProfile();
+
+            let id = "Profiles." + currentProfile + "." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
+            await adapter.setStateAsync(id, { ack: true, val: state2Set });
 
         }
     }
