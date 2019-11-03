@@ -1079,7 +1079,7 @@ async function CreateDatepoints() {
                         }
                         for (let period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
 
-                            let id = id1 + ".Su-So.Periods." + period;
+                            let id = id1 + ".Sa-So.Periods." + period;
 
                             adapter.log.debug('add state ' + id + " max " + DefaultTargets.length);
                             CreateStates4Period(id, period);
@@ -2018,7 +2018,7 @@ async function CalculateNextTime() {
 
                     adapter.log.debug("setting Sa - Su");
                     for (var period = 0; period < adapter.config.NumberOfPeriods; period++) {
-                        const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Su-So.Periods." + period + '.time';
+                        const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Sa-So.Periods." + period + '.time';
 
                         //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
