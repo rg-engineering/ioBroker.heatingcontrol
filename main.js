@@ -2480,11 +2480,11 @@ async function CheckTemperatureChange() {
                             daysname = "Mo-Fr";
                         }
                         else {
-                            daysname = "Su-So";
+                            daysname = "Sa-So";
                         }
 
                         if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
-                            daysname = "Su-So";
+                            daysname = "Sa-So";
                         }
 
 

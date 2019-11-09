@@ -79,7 +79,10 @@ Features:
 
 ## Changelog
 
-### 0.3.3 (2019-11-xx)
+### 0.3.4 (2019-11-09)
+* (René) bug fix in data point name
+
+### 0.3.3 (2019-11-08)
 Attention: some changes in datapoints!!
 * (René) in admin: new buttons to add search new rooms
 * (René) bug fix: in profil type Mo-Fr / Sa- So period order check failed  
