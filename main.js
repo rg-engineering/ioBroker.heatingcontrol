@@ -892,7 +892,135 @@ async function CreateDatepoints() {
         adapter.subscribeStates('VacationAbsent');
 
 
+        //all room related
+        for (let room = 0; room < adapter.config.rooms.length; room++) {
 
+            if (adapter.config.rooms[room].isActive) {
+
+                let id1 = "Rooms." + adapter.config.rooms[room].name;
+
+                adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
+
+
+                 
+                //===============================================================================
+                //ab hier verschoben
+                await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
+                    type: 'state',
+                    common: {
+                        name: 'CurrentTimePeriodFull',
+                        type: 'string',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'CurrentTimePeriod' }
+                });
+
+                await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriod', {
+                    type: 'state',
+                    common: {
+                        name: 'CurrentTimePeriod',
+                        type: 'number',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'CurrentTimePeriod' }
+                });
+
+                await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodTime', {
+                    type: 'state',
+                    common: {
+                        name: 'CurrentTimePeriodTime',
+                        type: 'string',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'CurrentTimePeriodTime' }
+                });
+
+
+                await adapter.setObjectNotExistsAsync(id1 + '.WindowIsOpen', {
+                    type: 'state',
+                    common: {
+                        name: 'WindowIsOpen',
+                        type: 'boolean',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'WindowIsOpen' }
+                });
+
+                await adapter.setObjectNotExistsAsync(id1 + '.State', {
+                    type: 'state',
+                    common: {
+                        name: 'State',
+                        type: 'string',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'State' }
+                });
+
+                //manuell temperature setting
+
+                await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverride', {
+                    type: 'state',
+                    common: {
+                        name: 'TemperaturOverride',
+                        type: 'float',
+                        role: 'history',
+                        unit: '°C',
+                        read: true,
+                        write: true
+                    },
+                    native: { id: 'TemperaturOverride' }
+                });
+                //const temperaturoverride = await adapter.getStateAsync(id1 + '.TemperaturOverride');
+                //set default only if nothing was set before
+                //if (temperaturoverride === null) {
+
+                //set always to 0
+                await adapter.setStateAsync(id1 + '.TemperaturOverride', { ack: true, val: 0 });
+                //}
+                adapter.subscribeStates(id1 + '.TemperaturOverride');
+
+
+                await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverrideTime', {
+                    type: 'state',
+                    common: {
+                        name: 'TemperaturOverrideTime',
+                        type: 'string',
+                        role: 'history',
+                        unit: 'hh:mm',
+                        read: true,
+                        write: true
+                    },
+                    native: { id: 'TemperaturOverrideTime' }
+                });
+                const temperaturoverridetime = await adapter.getStateAsync(id1 + '.TemperaturOverrideTime');
+                //set default only if nothing was set before
+                if (temperaturoverridetime === null) {
+                    await adapter.setStateAsync(id1 + '.TemperaturOverrideTime', { ack: true, val: "00:00" });
+                }
+                adapter.subscribeStates(id1 + '.TemperaturOverrideTime');
+
+            }
+        }
+        //bis hierhin verschoben
+        //===============================================================================
+
+
+        // all profile related 
         for (let profile = 0; profile < parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
             adapter.log.debug('rooms ' + adapter.config.rooms.length);
 
@@ -902,7 +1030,7 @@ async function CreateDatepoints() {
 
                     let id1 = "Profiles." + profile + "." + adapter.config.rooms[room].name;
 
-                    adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
+                    adapter.log.debug("create data profile points for " + adapter.config.rooms[room].name);
 
                     await adapter.setObjectNotExistsAsync(id1 + '.GuestIncrease', {
                         type: 'state',
@@ -1005,114 +1133,7 @@ async function CreateDatepoints() {
 
 
 
-                    await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
-                        type: 'state',
-                        common: {
-                            name: 'CurrentTimePeriodFull',
-                            type: 'string',
-                            role: 'history',
-                            unit: '',
-                            read: true,
-                            write: false
-                        },
-                        native: { id: 'CurrentTimePeriod' }
-                    });
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriod', {
-                        type: 'state',
-                        common: {
-                            name: 'CurrentTimePeriod',
-                            type: 'number',
-                            role: 'history',
-                            unit: '',
-                            read: true,
-                            write: false
-                        },
-                        native: { id: 'CurrentTimePeriod' }
-                    });
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodTime', {
-                        type: 'state',
-                        common: {
-                            name: 'CurrentTimePeriodTime',
-                            type: 'string',
-                            role: 'history',
-                            unit: '',
-                            read: true,
-                            write: false
-                        },
-                        native: { id: 'CurrentTimePeriodTime' }
-                    });
-
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.WindowIsOpen', {
-                        type: 'state',
-                        common: {
-                            name: 'WindowIsOpen',
-                            type: 'boolean',
-                            role: 'history',
-                            unit: '',
-                            read: true,
-                            write: false
-                        },
-                        native: { id: 'WindowIsOpen' }
-                    });
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.State', {
-                        type: 'state',
-                        common: {
-                            name: 'State',
-                            type: 'string',
-                            role: 'history',
-                            unit: '',
-                            read: true,
-                            write: false
-                        },
-                        native: { id: 'State' }
-                    });
-
-                    //manuell temperature setting
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverride', {
-                        type: 'state',
-                        common: {
-                            name: 'TemperaturOverride',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'TemperaturOverride' }
-                    });
-                    //const temperaturoverride = await adapter.getStateAsync(id1 + '.TemperaturOverride');
-                    //set default only if nothing was set before
-                    //if (temperaturoverride === null) {
-
-                    //set always to 0
-                    await adapter.setStateAsync(id1 + '.TemperaturOverride', { ack: true, val: 0 });
-                    //}
-                    adapter.subscribeStates(id1 + '.TemperaturOverride');
-
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.TemperaturOverrideTime', {
-                        type: 'state',
-                        common: {
-                            name: 'TemperaturOverrideTime',
-                            type: 'string',
-                            role: 'history',
-                            unit: 'hh:mm',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'TemperaturOverrideTime' }
-                    });
-                    const temperaturoverridetime = await adapter.getStateAsync(id1 + '.TemperaturOverrideTime');
-                    //set default only if nothing was set before
-                    if (temperaturoverridetime === null) {
-                        await adapter.setStateAsync(id1 + '.TemperaturOverrideTime', { ack: true, val: "00:00" });
-                    }
-                    adapter.subscribeStates(id1 + '.TemperaturOverrideTime');
+                    
 
                     adapter.log.debug('room ' + adapter.config.rooms[room].name + ' with ' + parseInt(adapter.config.NumberOfPeriods, 10) + " periods");
 
@@ -1511,11 +1532,11 @@ async function HandleStateChangeGeneral(id, state) {
         await CheckTemperatureChange();
         bRet = true;
     }
-    if (ids[5] === "TemperaturOverride") {
+    if (ids[4] === "TemperaturOverride") {
         await StartTemperaturOverride(ids[4] );
         bRet = true;
     }
-    if (ids[5] === "TemperaturOverrideTime") {
+    if (ids[4] === "TemperaturOverrideTime") {
         await StartTemperaturOverride(ids[4]);
         bRet = true;
     }
@@ -1829,9 +1850,9 @@ function StopTempOverride(roomID, cronjobID) {
         if (err) {
             adapter.log.error(err);
         } else {
-            const currentProfile = obj.val-1;
+            
 
-            const idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[roomID].name + ".TemperaturOverride";
+            const idPreset = "Rooms."  + adapter.config.rooms[roomID].name + ".TemperaturOverride";
 
             adapter.log.info("### " + idPreset);
 
@@ -2351,7 +2372,7 @@ async function CheckTemperatureChange() {
                         adapter.log.debug("room " + adapter.config.rooms[room].name + " still in override until " + adapter.config.rooms[room].TempOverrideDue);
 
                         RoomState = "override"; 
-                        let id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".State";
+                        let id = "Rooms."  + adapter.config.rooms[room].name + ".State";
                         await adapter.setStateAsync(id, { ack: true, val: RoomState });
 
                         break;
@@ -2590,13 +2611,13 @@ async function CheckTemperatureChange() {
 
                         const currenttime = sNextTime[0] + ":" + sNextTime[1];
                         const timePeriod = "Period " + currentPeriod + " : " + currenttime;
-                        let id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
+                        let id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
                         await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
 
-                        id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
+                        id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
                         await adapter.setStateAsync(id3, { ack: true, val: currentPeriod });
 
-                        id3 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
+                        id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
                         await adapter.setStateAsync(id3, { ack: true, val: currenttime });
 
                     }
@@ -2606,7 +2627,7 @@ async function CheckTemperatureChange() {
                     }
 
 
-                    let id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".State";
+                    let id = "Rooms."  + adapter.config.rooms[room].name + ".State";
                     await adapter.setStateAsync(id, { ack: true, val: RoomState });
 
                 }
@@ -2632,9 +2653,8 @@ async function StartTemperaturOverride(room) {
     try {
         let roomID = findObjectIdByKey(adapter.config.rooms, 'name', room);
 
-        let currentProfile = await GetCurrentProfile();
-
-        let idPreset = "Profiles." + currentProfile + "." + room + ".";
+   
+        let idPreset = "Rooms."  + room + ".";
         let nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
         let nextSetTemperature = nextSetTemperatureVal.val;
 
@@ -2829,9 +2849,7 @@ async function CheckWindowSensors(roomID) {
 
             adapter.config.rooms[roomID].WindowIsOpen = state2Set;
 
-            let currentProfile = await GetCurrentProfile();
-
-            let id = "Profiles." + currentProfile + "." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
+            let id = "Rooms."  + adapter.config.rooms[roomID].name + ".WindowIsOpen";
             await adapter.setStateAsync(id, { ack: true, val: state2Set });
 
         }

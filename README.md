@@ -79,6 +79,10 @@ Features:
 
 ## Changelog
 
+### 0.3.5 (2019-11-xx)
+Attention: some changes in datapoints!!
+* (René) moved some datapoints from "profile" to "rooms"
+
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name
 
