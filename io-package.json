@@ -82,7 +82,8 @@
     "PublicHolidayLikeSunday": true,
     "UseFixHeatingPeriod": false,
     "FixHeatingPeriodStart": "01.10.",
-    "FixHeatingPeriodEnd": "31.03."
+    "FixHeatingPeriodEnd": "31.03.",
+    "TemperatureDecrease": 3
 
   }
 }

@@ -872,57 +872,68 @@
                 </div>
 
                 <!-- tab "profile - settings"  -->
-                <div id="tab-profiles" class="col s12 page">
+            <div id="tab-profiles" class="col s12 page">
 
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <select id="ProfileType" class="value">
-                                <option value="1" class="translate">Mo-So</option>
-                                <option value="2" class="translate">Mo-Fr + Sa-So</option>
-                                <option value="3" class="translate">every Day</option>
-                            </select>
-                            <label for="ProfileType" class="translate">ProfileType</label>
-                        </div>
-
-                        <div class="input-field col s4">
-                            <input type="number" id="NumberOfProfiles" class="value" />
-                            <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
-                        </div>
-
-                        <div class="input-field col s4">
-                            <input type="number" id="NumberOfPeriods" class="value" />
-                            <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
-                        </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <select id="ProfileType" class="value">
+                            <option value="1" class="translate">Mo-So</option>
+                            <option value="2" class="translate">Mo-Fr + Sa-So</option>
+                            <option value="3" class="translate">every Day</option>
+                        </select>
+                        <label for="ProfileType" class="translate">ProfileType</label>
                     </div>
 
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
-                            <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
-                        </div>
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfProfiles" class="value" />
+                        <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
                     </div>
 
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <input type="checkbox" id="UseFixHeatingPeriod" class="value" />
-                            <label for="UseFixHeatingPeriod" class="translate">UseFixHeatingPeriod</label>
-                        </div>
+                    <div class="input-field col s4">
+                        <input type="number" id="NumberOfPeriods" class="value" />
+                        <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
+                    </div>
+                </div>
 
-                        <div class="input-field col s4">
-                            <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
-                            <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
-                        </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
+                        <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
+                    </div>
+                </div>
 
-                        <div class="input-field col s4">
-                            <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
-                            <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
-                        </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <select id="TemperatureDecrease" class="value">
+                            <option value="1" class="translate">relative</option>
+                            <option value="2" class="translate">absolute</option>
+                            <option value="3" class="translate">none</option>
+                        </select>
+                        <label for="TemperatureDecrease" class="translate">TemperatureDecrease</label>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input type="checkbox" id="UseFixHeatingPeriod" class="value" />
+                        <label for="UseFixHeatingPeriod" class="translate">UseFixHeatingPeriod</label>
                     </div>
 
+                    <div class="input-field col s4">
+                        <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
+                        <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
+                    </div>
 
+                    <div class="input-field col s4">
+                        <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
+                        <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
+                    </div>
 
                 </div>
+
+
+
+            </div>
 
                 <!-- tab "devices" -->
                 <div id="tab-devices" class="col s12 page">

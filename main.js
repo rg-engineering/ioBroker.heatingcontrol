@@ -1030,109 +1030,137 @@ async function CreateDatepoints() {
 
                     let id1 = "Profiles." + profile + "." + adapter.config.rooms[room].name;
 
-                    adapter.log.debug("create data profile points for " + adapter.config.rooms[room].name);
+                    if (parseInt(adapter.config.TemperatureDecrease) === 1) {// relative
 
-                    await adapter.setObjectNotExistsAsync(id1 + '.GuestIncrease', {
-                        type: 'state',
-                        common: {
-                            name: 'GuestIncrease',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'GuestIncrease' }
-                    });
+                        adapter.log.debug("create data profile points for " + adapter.config.rooms[room].name);
 
-                    const guestincrease = await adapter.getStateAsync(id1 + '.GuestIncrease');
-                    //set default only if nothing was set before
-                    if (guestincrease === null) {
-                        await adapter.setStateAsync(id1 + '.GuestIncrease', { ack: true, val: 0 });
+                        await adapter.setObjectNotExistsAsync(id1 + '.GuestIncrease', {
+                            type: 'state',
+                            common: {
+                                name: 'GuestIncrease',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'GuestIncrease' }
+                        });
+
+                        const guestincrease = await adapter.getStateAsync(id1 + '.GuestIncrease');
+                        //set default only if nothing was set before
+                        if (guestincrease === null) {
+                            await adapter.setStateAsync(id1 + '.GuestIncrease', { ack: true, val: 0 });
+                        }
+                        adapter.subscribeStates(id1 + '.GuestIncrease');
+
+
+                        await adapter.setObjectNotExistsAsync(id1 + '.PartyDecrease', {
+                            type: 'state',
+                            common: {
+                                name: 'PartyDecrease',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'PartyDecrease' }
+                        });
+                        const partydecrease = await adapter.getStateAsync(id1 + '.PartyDecrease');
+                        //set default only if nothing was set before
+                        if (partydecrease === null) {
+                            await adapter.setStateAsync(id1 + '.PartyDecrease', { ack: true, val: 0 });
+                        }
+                        adapter.subscribeStates(id1 + '.PartyDecrease');
+
+                        await adapter.setObjectNotExistsAsync(id1 + '.WindowOpenDecrease', {
+                            type: 'state',
+                            common: {
+                                name: 'WindowOpenDecrease',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'WindowOpenDecrease' }
+                        });
+                        const windowopendecrease = await adapter.getStateAsync(id1 + '.WindowOpenDecrease');
+                        //set default only if nothing was set before
+                        if (windowopendecrease === null) {
+                            await adapter.setStateAsync(id1 + '.WindowOpenDecrease', { ack: true, val: 0 });
+                        }
+                        adapter.subscribeStates(id1 + '.WindowOpenDecrease');
+
+
+                        await adapter.setObjectNotExistsAsync(id1 + '.AbsentDecrease', {
+                            type: 'state',
+                            common: {
+                                name: 'AbsentDecrease',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'AbsentDecrease' }
+                        });
+                        const absentdecrease = await adapter.getStateAsync(id1 + '.AbsentDecrease');
+                        //set default only if nothing was set before
+                        if (absentdecrease === null) {
+                            await adapter.setStateAsync(id1 + '.AbsentDecrease', { ack: true, val: 0 });
+                        }
+                        adapter.subscribeStates(id1 + '.AbsentDecrease');
+
+                        await adapter.setObjectNotExistsAsync(id1 + '.VacationAbsentDecrease', {
+                            type: 'state',
+                            common: {
+                                name: 'VacationAbsentDecrease',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'VacationAbsentDecrease' }
+                        });
+
+                        const vacationabsentdecrease = await adapter.getStateAsync(id1 + '.VacationAbsentDecrease');
+                        //set default only if nothing was set before
+                        if (vacationabsentdecrease === null) {
+                            await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
+                        }
+                        adapter.subscribeStates(id1 + '.VacationAbsentDecrease');
+
                     }
-                    adapter.subscribeStates(id1 + '.GuestIncrease');
+                    else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
 
+                        adapter.log.debug("create data profile points (absolute) for " + adapter.config.rooms[room].name);
 
-                    await adapter.setObjectNotExistsAsync(id1 + '.PartyDecrease', {
-                        type: 'state',
-                        common: {
-                            name: 'PartyDecrease',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'PartyDecrease' }
-                    });
-                    const partydecrease = await adapter.getStateAsync(id1 + '.PartyDecrease');
-                    //set default only if nothing was set before
-                    if (partydecrease === null) {
-                        await adapter.setStateAsync(id1 + '.PartyDecrease', { ack: true, val: 0 });
+                        await adapter.setObjectNotExistsAsync(id1 + '.ReducedTemperature', {
+                            type: 'state',
+                            common: {
+                                name: 'ReducedTemperature',
+                                type: 'float',
+                                role: 'history',
+                                unit: '°C',
+                                read: true,
+                                write: true
+                            },
+                            native: { id: 'ReducedTemperature' }
+                        });
+
+                        const reducedtemperature = await adapter.getStateAsync(id1 + '.ReducedTemperature');
+                        //set default only if nothing was set before
+                        if (reducedtemperature === null) {
+                            await adapter.setStateAsync(id1 + '.ReducedTemperature', { ack: true, val: 17 });
+                        }
+                        adapter.subscribeStates(id1 + '.ReducedTemperature');
                     }
-                    adapter.subscribeStates(id1 + '.PartyDecrease');
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.WindowOpenDecrease', {
-                        type: 'state',
-                        common: {
-                            name: 'WindowOpenDecrease',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'WindowOpenDecrease' }
-                    });
-                    const windowopendecrease = await adapter.getStateAsync(id1 + '.WindowOpenDecrease');
-                    //set default only if nothing was set before
-                    if (windowopendecrease === null) {
-                        await adapter.setStateAsync(id1 + '.WindowOpenDecrease', { ack: true, val: 0 });
+                    else {
+                        adapter.log.info("no temperature degrease configured " + adapter.config.TemperatureDecrease);
                     }
-                    adapter.subscribeStates(id1 + '.WindowOpenDecrease');
-
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.AbsentDecrease', {
-                        type: 'state',
-                        common: {
-                            name: 'AbsentDecrease',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'AbsentDecrease' }
-                    });
-                    const absentdecrease = await adapter.getStateAsync(id1 + '.AbsentDecrease');
-                    //set default only if nothing was set before
-                    if (absentdecrease === null) {
-                        await adapter.setStateAsync(id1 + '.AbsentDecrease', { ack: true, val: 0 });
-                    }
-                    adapter.subscribeStates(id1 + '.AbsentDecrease');
-
-                    await adapter.setObjectNotExistsAsync(id1 + '.VacationAbsentDecrease', {
-                        type: 'state',
-                        common: {
-                            name: 'VacationAbsentDecrease',
-                            type: 'float',
-                            role: 'history',
-                            unit: '°C',
-                            read: true,
-                            write: true
-                        },
-                        native: { id: 'VacationAbsentDecrease' }
-                    });
-
-                    const vacationabsentdecrease = await adapter.getStateAsync(id1 + '.VacationAbsentDecrease');
-                    //set default only if nothing was set before
-                    if (vacationabsentdecrease === null) {
-                        await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
-                    }
-                    adapter.subscribeStates(id1 + '.VacationAbsentDecrease');
-
-
-
                     
 
                     adapter.log.debug('room ' + adapter.config.rooms[room].name + ' with ' + parseInt(adapter.config.NumberOfPeriods, 10) + " periods");
@@ -1366,6 +1394,8 @@ async function HandleStateChange(id, state) {
                     const PublicHoliday = await adapter.getForeignStateAsync(id);
 
                     //heatingcontrol.0.PublicHolidyToday
+                    adapter.log.info("public holiday today is " + PublicHoliday.val);
+
                     await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
                     bHandled = true;
                 }
@@ -2309,7 +2339,7 @@ async function GetCurrentProfile() {
 // this is called by cron
 // so we need to find out what needs to be changed and change it
 //normally it's a temperature target value
-async function CheckTemperatureChange() {
+async function CheckTemperatureChange(room2check) {
 
     if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
         adapter.log.warn("no devices available for checkTempChange");
@@ -2378,80 +2408,106 @@ async function CheckTemperatureChange() {
                         break;
                     }
 
-
-                    //and we need some information per room
-                    let idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "."; 
                     let AbsentDecrease = 0;
-                    if (!Present) {
-                        RoomState += "not present / "; 
-                        let temp1 = await adapter.getStateAsync(idPreset + "AbsentDecrease");
-
-                        adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
-                        if (temp1 !== null) {
-                            AbsentDecrease = temp1.val;
-                        }
-                        else {
-                            adapter.log.warn("AbsentDecrease not defined");
-                        }
-                    }
                     let GuestIncrease = 0;
-                    if (GuestsPresent) {
-
-                        RoomState += "guests present / ";
-
-                        let temp2 = await adapter.getStateAsync(idPreset + "GuestIncrease");
-                        adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
-                        if (temp2 !== null) {
-                            GuestIncrease = temp2.val;
-                        }
-                        else {
-                            adapter.log.warn("GuestIncrease not defined");
-                        }
-                    }
                     let PartyDecrease = 0;
-                    if (PartyNow) {
-
-                        RoomState += "party / ";
-
-                        let temp3 = await adapter.getStateAsync(idPreset + "PartyDecrease");
-                        adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
-                        if (temp3 !== null) {
-                            PartyDecrease = temp3.val;
-                        }
-                        else {
-                            adapter.log.warn("PartyDecrease not defined");
-                        }
-                    }
-                    let WindowOpen = adapter.config.rooms[room].WindowIsOpen;
                     let WindowOpenDecrease = 0;
-                    if (WindowOpen) {
-
-                        RoomState += "window open / ";
-
-                        let temp4 = await adapter.getStateAsync(idPreset + "WindowOpenDecrease");
-                        adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp4));
-                        if (temp4 !== null) {
-                            WindowOpenDecrease = temp4.val;
-                        }
-                        else {
-                            adapter.log.warn("WindowOpenDecrease not defined");
-                        }
-                    }
                     let VacationAbsentDecrease = 0;
-                    if (VacationAbsent) {
 
-                        RoomState += "vacation absent / ";
+                    let ReducedTemperature = 0;
 
-                        let temp5 = await adapter.getStateAsync(idPreset + "VacationAbsentDecrease");
-                        adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp5));
-                        if (temp5 !== null) {
-                            VacationAbsentDecrease = temp5.val;
+                    let WindowOpen = adapter.config.rooms[room].WindowIsOpen;
+
+                    let idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".";
+
+                    if (parseInt(adapter.config.TemperatureDecrease) === 1) {
+
+                        //and we need some information per room
+                        
+                        
+                        if (!Present) {
+                            RoomState += "not present / ";
+                            let temp1 = await adapter.getStateAsync(idPreset + "AbsentDecrease");
+
+                            adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
+                            if (temp1 !== null) {
+                                AbsentDecrease = temp1.val;
+                            }
+                            else {
+                                adapter.log.warn("AbsentDecrease not defined");
+                            }
                         }
-                        else {
-                            adapter.log.warn("VacationAbsentDecrease not defined");
+                        
+                        if (GuestsPresent) {
+
+                            RoomState += "guests present / ";
+
+                            let temp2 = await adapter.getStateAsync(idPreset + "GuestIncrease");
+                            adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
+                            if (temp2 !== null) {
+                                GuestIncrease = temp2.val;
+                            }
+                            else {
+                                adapter.log.warn("GuestIncrease not defined");
+                            }
+                        }
+                        
+                        if (PartyNow) {
+
+                            RoomState += "party / ";
+
+                            let temp3 = await adapter.getStateAsync(idPreset + "PartyDecrease");
+                            adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
+                            if (temp3 !== null) {
+                                PartyDecrease = temp3.val;
+                            }
+                            else {
+                                adapter.log.warn("PartyDecrease not defined");
+                            }
+                        }
+                        
+                       
+                        if (WindowOpen) {
+
+                            RoomState += "window open / ";
+
+                            let temp4 = await adapter.getStateAsync(idPreset + "WindowOpenDecrease");
+                            adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp4));
+                            if (temp4 !== null) {
+                                WindowOpenDecrease = temp4.val;
+                            }
+                            else {
+                                adapter.log.warn("WindowOpenDecrease not defined");
+                            }
+                        }
+                        
+                        if (VacationAbsent) {
+
+                            RoomState += "vacation absent / ";
+
+                            let temp5 = await adapter.getStateAsync(idPreset + "VacationAbsentDecrease");
+                            adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp5));
+                            if (temp5 !== null) {
+                                VacationAbsentDecrease = temp5.val;
+                            }
+                            else {
+                                adapter.log.warn("VacationAbsentDecrease not defined");
+                            }
                         }
                     }
+                    else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
 
+                        if (VacationAbsent || WindowOpen || PartyNow || !Present) {
+                            let temp6 = await adapter.getStateAsync(idPreset + "ReducedTemperature");
+                            adapter.log.debug("ReducedTemperature " + JSON.stringify(temp6));
+                            if (temp6 !== null) {
+                                ReducedTemperature = temp6.val;
+                            }
+                            else {
+                                adapter.log.warn("ReducedTemperature not defined");
+                            }
+                        }
+                    }
 
 
                     let currentPeriod = -1;
@@ -2461,8 +2517,6 @@ async function CheckTemperatureChange() {
                     adapter.log.debug("number of periods  " + adapter.config.NumberOfPeriods);
 
                     if (parseInt(adapter.config.ProfileType, 10) === 1) {
-
-
 
                         for (var period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.time';
@@ -2592,9 +2646,29 @@ async function CheckTemperatureChange() {
 
                     if (currentPeriod > -1) {
                         //find devices for rooms
-                        let nextSetTemperature = nextTemperature - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
 
-                        adapter.log.debug("### " + nextTemperature + " " + AbsentDecrease + " " + GuestIncrease + " " + PartyDecrease + " " + VacationAbsentDecrease + " " + WindowOpenDecrease);
+                        adapter.log.debug("### current > 1 " + currentPeriod + " " + parseInt(adapter.config.TemperatureDecrease));
+
+                        let nextSetTemperature = nextTemperature;
+
+                        if (parseInt(adapter.config.TemperatureDecrease) === 1) {
+                            nextSetTemperature = nextTemperature - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
+                            adapter.log.debug("### new target temp " + nextTemperature + " " + AbsentDecrease + " " + GuestIncrease + " " + PartyDecrease + " " + VacationAbsentDecrease + " " + WindowOpenDecrease);
+                        }
+                        else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
+
+                            if (ReducedTemperature > 0) {
+                                nextSetTemperature = ReducedTemperature;
+                                adapter.log.info("setting to reduced temperature in " + adapter.config.rooms[room].name + " to " + nextSetTemperature);
+                                RoomState += " reduced";
+                            }
+                            else {
+                                adapter.log.debug("### new target temp" + nextTemperature);
+                            }
+                        }
+                        else {
+                            adapter.log.debug("### without decrease; new target temp " + nextSetTemperature);
+                        }
 
                         for (let ii = 0; ii < adapter.config.devices.length; ii++) {
 
@@ -2620,6 +2694,9 @@ async function CheckTemperatureChange() {
                         id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
                         await adapter.setStateAsync(id3, { ack: true, val: currenttime });
 
+                    }
+                    else {
+                        dapter.log.debug("### current period not found ");
                     }
 
                     if (RoomState == "") {
