@@ -2706,7 +2706,8 @@ async function CheckTemperatureChange(room2check) {
 
                         }
                         else {
-                            dapter.log.debug("### current period not found ");
+                            adapter.log.debug("### current period not found ");
+                            RoomState = "error: current period not found";
                         }
 
                         if (RoomState == "") {
