@@ -539,5 +539,17 @@ systemDictionary = {
         "es": "verificar nuevas habitaciones",
         "pl": "sprawdź nowe pokoje",
         "zh-cn": "检查新房间"
+    },
+    "TemperatureDecrease": {
+        "en": " temperature lowering",
+        "de": " Temperaturabsenkung",
+        "ru": " понижение температуры",
+        "pt": " abaixamento da temperatura",
+        "nl": " temperatuur verlaging",
+        "fr": " abaissement de la température",
+        "it": " abbassamento della temperatura",
+        "es": " disminución de la temperatura",
+        "pl": " obniżenie temperatury",
+        "zh-cn": " 温度降低"
     }
 };
