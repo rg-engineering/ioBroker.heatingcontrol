@@ -902,9 +902,23 @@ async function CreateDatepoints() {
                 adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
 
 
+                await adapter.setObjectNotExistsAsync(id1 + '.HeatingConstant', {
+                    type: 'state',
+                    common: {
+                        name: 'HeatingConstant',
+                        type: 'number',
+                        role: 'history',
+                        unit: '',
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'HeatingConstant' }
+                });
                  
                 //===============================================================================
                 //ab hier verschoben
+
+
                 await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
                     type: 'state',
                     common: {
