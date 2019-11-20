@@ -71,19 +71,23 @@ Features:
 ** name and OID for current state should be set
 
 ## datapoints
-| DP name | description | 
-| HeatingPeriodActive | if off, the profiles will not be used  | 
-| CurrentProfile | select current profile (1 based, means profile 1 use datapoints under heatingcontrol.0.Profiles.0 ) | 
-| LastProgramRun | shows last time when adapter run | 
+
+| DP name             | description                                                                                         |
+|---------------------|-----------------------------------------------------------------------------------------------------|
+| HeatingPeriodActive | if off, the profiles will not be used                                                               | 
+| CurrentProfile      | select current profile (1 based, means profile 1 use datapoints under heatingcontrol.0.Profiles.0 ) | 
+| LastProgramRun      | shows last time when adapter run                                                                    | 
 
 ### temperature descrease / increase
-| DP name | description | target temperature for relative decrease  | target temperature for absolute decrease | comments
-| GuestsPresent | increase temperature because guests wants it warmer |  increase current profile temperature by Profiles.0.room.GuestIncrease | not used | 
-| HolidayPresent | use weekend profile because we are at home | 
-| PartyNow | decrease temperature because it's becoming hot' | decrease current profile temperature by Profiles.0.room.PartyDecrease | set target to Profiles.0.room.ReducedTemperature | 
-| Present | we are present, if we are not present decrease temperature | decrease current profile temperature by Profiles.0.room.AbsentDecrease | set target to Profiles.0.room.ReducedTemperature | 
-| PublicHolidyToday | today is holiday so probably use sunday profile | use sunday profile is configured
-| VacationAbsent | we are absent, so decrease also on weekend | decrease current profile temperature by Profiles.0.room.VacationAbsentDecrease | set target to Profiles.0.room.ReducedTemperature | 
+
+| DP name           | description                                                | target temperature for relative decrease                                       | target temperature for absolute decrease         |
+|-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|--------------------------------------------------|
+| GuestsPresent     | increase temperature because guests wants it warmer        |  increase current profile temperature by Profiles.0.room.GuestIncrease         | not used                                         | 
+| HolidayPresent    | use weekend profile because we are at home                 |                                                                                |                                                  |
+| PartyNow          | decrease temperature because it's becoming hot'            | decrease current profile temperature by Profiles.0.room.PartyDecrease          | set target to Profiles.0.room.ReducedTemperature | 
+| Present           | we are present, if we are not present decrease temperature | decrease current profile temperature by Profiles.0.room.AbsentDecrease         | set target to Profiles.0.room.ReducedTemperature | 
+| PublicHolidyToday | today is holiday so probably use sunday profile            | use sunday profile is configured                                               |                                                  |
+| VacationAbsent    | we are absent, so decrease also on weekend                 | decrease current profile temperature by Profiles.0.room.VacationAbsentDecrease | set target to Profiles.0.room.ReducedTemperature | 
 
 
 ### window open
