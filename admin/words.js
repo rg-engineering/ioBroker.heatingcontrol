@@ -551,5 +551,29 @@ systemDictionary = {
         "es": " disminución de la temperatura",
         "pl": " obniżenie temperatury",
         "zh-cn": " 温度降低"
+    },
+    "Path2VacationDP": {
+        "en": "\"Path to data point \\\"vacation\\\"",
+        "de": "Pfad zum Datenpunkt \"Urlaub\"",
+        "ru": "\"Путь к точке данных \\\" отпуск \\ \"",
+        "pt": "\"Caminho para o ponto de dados \\\" férias \\ \"",
+        "nl": "\"Pad naar gegevenspunt \\\" vakantie \\ \"",
+        "fr": "\"Chemin d'accès au point de données \\\" vacances \\ \"",
+        "it": "\"Percorso del punto dati \\\" vacanza \\ \"",
+        "es": "\"Ruta al punto de datos \\\" vacaciones \\ \"",
+        "pl": "„Ścieżka do punktu danych \\” wakacje \\ ”",
+        "zh-cn": "“到数据点的路径\\“休假\\”"
+    },
+    "Path2HolidayPresentDP": {
+        "en": "\"Path to data point \\\"holiday at home\\\"",
+        "de": "\"Pfad zum Datenpunkt\" Urlaub zu Hause \"",
+        "ru": "\"Путь к точке данных \\\" дом отдыха \\ \"",
+        "pt": "\"Caminho para o ponto de dados \\\" feriado em casa \\ \"",
+        "nl": "\"Pad naar datapunt \\\" vakantie thuis \\ \"",
+        "fr": "\"Chemin d'accès au point de données \\\" vacances à la maison \\ \"",
+        "it": "\"Percorso del punto dati \\\" vacanza a casa \\ \"",
+        "es": "\"Ruta al punto de datos \\\" vacaciones en casa \\ \"",
+        "pl": "„Ścieżka do punktu danych \\” wakacje w domu \\ ”",
+        "zh-cn": "“指向数据点的路径“在家度假”"
     }
 };
