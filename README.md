@@ -84,6 +84,7 @@ Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
+* (René) add interface to ical (path to vacation and path to holiday present)
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name
