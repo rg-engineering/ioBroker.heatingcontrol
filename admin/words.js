@@ -551,5 +551,42 @@ systemDictionary = {
         "es": " disminución de la temperatura",
         "pl": " obniżenie temperatury",
         "zh-cn": " 温度降低"
+    },
+    "relative": {
+        "en": "relative",
+        "de": "relativ",
+        "ru": "относительный",
+        "pt": "relativo",
+        "nl": "familielid",
+        "fr": "relatif",
+        "it": "parente",
+        "es": "relativo",
+        "pl": "krewny",
+        "zh-cn": "相对的"
+    },
+    "absolute": {
+        "en": "absolute",
+        "de": "absolut",
+        "ru": "абсолютный",
+        "pt": "absoluto",
+        "nl": "absoluut",
+        "fr": "absolu",
+        "it": "assoluto",
+        "es": "absoluto",
+        "pl": "absolutny",
+        "zh-cn": "绝对"
+    },
+    "no lowering": {
+        "en": "no lowering",
+        "de": "kein Absenken",
+        "ru": "нет понижения",
+        "pt": "sem baixar",
+        "nl": "niet verlagen",
+        "fr": "pas de descente",
+        "it": "nessun abbassamento",
+        "es": "sin bajar",
+        "pl": "bez obniżania",
+        "zh-cn": "不降低"
     }
+
 };
