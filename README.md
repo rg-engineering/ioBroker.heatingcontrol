@@ -105,6 +105,13 @@ if "use sensors" is active and sensor(s) for a room is / are configured then
 a) decrease current profile temperature when window is open (true) by Profiles.0.room.WindowOpenDecrease if relative decrease is configured
 b) set target to Profiles.0.room.absolute.WindowOpenDecrease when window is open (true) if  absolute decrease is configured
 
+## ical support
+you can use your calendar to change datapoints in adapter.
+Just configure events from ical in admin. Supported are
+
+* heatingcontrol.0.Present
+* heatingcontrol.0.HolidayPresent
+* heatingcontrol.0.VacationAbsent
 
 ## Requirements
 * Node version 8 or higher is required
@@ -121,7 +128,7 @@ Attention: some changes in datapoints!!
 * (René) see issue #50: support absolute and relative decrease of target temperature
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
 * (René) only one event is used to lower temperature
-* (René) add interface to ical (path to vacation and path to holiday present)
+* (René) add interface to ical (path to vacation and path to holiday present datapoints)
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name
