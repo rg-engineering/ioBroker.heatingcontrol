@@ -115,7 +115,7 @@ b) set target to Profiles.0.room.absolute.WindowOpenDecrease when window is open
 
 ## Changelog
 
-### 0.3.5 (2019-11-xx)
+### 0.3.6 (2019-11-xx)
 Attention: some changes in datapoints!!
 * (René) moved some datapoints from "profile" to "rooms"
 * (René) see issue #50: support absolute and relative decrease of target temperature
