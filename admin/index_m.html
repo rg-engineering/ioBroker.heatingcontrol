@@ -343,20 +343,11 @@
             $check4newrooms.click(function () {
                 console.log('check 4 new rooms');
 
-                getAdapterInstances('heatingcontrol', function (arr) {
-                for (var i = 0; i < arr.length; i++) {
-                    var _id = arr[i]._id.replace('system.adapter.', '');
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
 
-                    console.log('got instance ' + _id);
+                getRooms(onChange, _id, true);
 
-                    getRooms(onChange, _id, true);
-
-                    
-
-                    
-
-                }
-            });
 
             });
 
@@ -365,17 +356,14 @@
             onChange(false);
             showHideSettings();
             M.updateTextFields();
-            getAdapterInstances('heatingcontrol', function (arr) {
-                for (var i = 0; i < arr.length; i++) {
-                    var _id = arr[i]._id.replace('system.adapter.', '');
 
-                    console.log('got instance ' + _id);
 
-                    getFunctions(settings.Gewerk, onChange, _id);
-                    getDevices(onChange, _id);
-                    getRooms(onChange, _id, false);
-                }
-            });
+            var _id = 'heatingcontrol.' + instance;
+            console.log('my instance ' + _id);
+            getFunctions(settings.Gewerk, onChange, _id);
+            getDevices(onChange, _id);
+            getRooms(onChange, _id, false);
+
         }
 
 
