@@ -1683,12 +1683,14 @@ async function HandleStateChangeGeneral(id, state) {
         await CheckTemperatureChange();
         bRet = true;
     }
+
+    //heatingcontrol.0.Rooms.Arbeitszimmer.TemperaturOverride
     if (ids[4] === "TemperaturOverride") {
-        await StartTemperaturOverride(ids[4] );
+        await StartTemperaturOverride(ids[3] );
         bRet = true;
     }
     if (ids[4] === "TemperaturOverrideTime") {
-        await StartTemperaturOverride(ids[4]);
+        await StartTemperaturOverride(ids[3]);
         bRet = true;
     }
 
@@ -2925,62 +2927,70 @@ async function StartTemperaturOverride(room) {
     try {
         let roomID = findObjectIdByKey(adapter.config.rooms, 'name', room);
 
-   
-        let idPreset = "Rooms."  + room + ".";
-        let nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
-        let nextSetTemperature = nextSetTemperatureVal.val;
+        
+        if (roomID > -1) {
+            let idPreset = "Rooms." + room + ".";
+            let nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
+            let nextSetTemperature = nextSetTemperatureVal.val;
 
 
 
-        let OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
-        let OverrideTime = OverrideTimeVal.val.split(":");
+            let OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
+            let OverrideTime = OverrideTimeVal.val.split(":");
 
-        if (nextSetTemperature > 0) {
-            if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
+            if (nextSetTemperature > 0) {
+                if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
 
-                let now = new Date();
-                //adapter.log.debug("### " + OverrideTimeVal.val + " " + JSON.stringify(OverrideTime) + " " + JSON.stringify(now));
-                if (OverrideTime[0] > 0) {
-                    now.setHours(now.getHours() + parseInt(OverrideTime[0]));
-                    //adapter.log.debug("---1 " + JSON.stringify(now));
-                }
-                if (OverrideTime[1] > 0) {
-                    now.setMinutes(now.getMinutes() + parseInt(OverrideTime[1]));
-                    //adapter.log.debug("---2 " + JSON.stringify(now));
-                }
-
-                adapter.config.rooms[roomID].TempOverrideDue = now;
-                //adapter.log.debug("override " + nextSetTemperature + " due " + JSON.stringify(now));
-
-
-                if (adapter.config.rooms[roomID].TempOverride) {
-                    adapter.log.warn("already in override " + room);
-                }
-
-                adapter.config.rooms[roomID].TempOverride = true;
-
-
-                //create cron to reset
-                CreateCron4ResetTempOverride(now, roomID);
-
-                for (let ii = 0; ii < adapter.config.devices.length; ii++) {
-
-                    if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === room && adapter.config.devices[ii].isActive) {
-
-                        adapter.log.info('room ' + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
-
-                        //adapter.log.debug("*4 " + state);
-                        //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
-                        await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                    let now = new Date();
+                    //adapter.log.debug("### " + OverrideTimeVal.val + " " + JSON.stringify(OverrideTime) + " " + JSON.stringify(now));
+                    if (OverrideTime[0] > 0) {
+                        now.setHours(now.getHours() + parseInt(OverrideTime[0]));
+                        //adapter.log.debug("---1 " + JSON.stringify(now));
                     }
+                    if (OverrideTime[1] > 0) {
+                        now.setMinutes(now.getMinutes() + parseInt(OverrideTime[1]));
+                        //adapter.log.debug("---2 " + JSON.stringify(now));
+                    }
+
+                    adapter.config.rooms[roomID].TempOverrideDue = now;
+                    //adapter.log.debug("override " + nextSetTemperature + " due " + JSON.stringify(now));
+
+
+                    if (adapter.config.rooms[roomID].TempOverride) {
+                        adapter.log.warn("already in override " + room);
+                    }
+
+                    adapter.config.rooms[roomID].TempOverride = true;
+
+                    let id = "Rooms." + adapter.config.rooms[roomID].name + ".State";
+                    await adapter.setStateAsync(id, { ack: true, val: "override" });
+
+
+                    //create cron to reset
+                    CreateCron4ResetTempOverride(now, roomID);
+
+                    for (let ii = 0; ii < adapter.config.devices.length; ii++) {
+
+                        if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === room && adapter.config.devices[ii].isActive) {
+
+                            adapter.log.info('room ' + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+
+                            //adapter.log.debug("*4 " + state);
+                            //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                            await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                        }
+                    }
+                }
+                else {
+                    adapter.log.warn("override time not valid: " + OverrideTimeVal.val);
                 }
             }
             else {
-                adapter.log.warn("override time not valid: " + OverrideTimeVal.val);
+                adapter.log.warn("override temperature not valid: " + nextSetTemperature);
             }
         }
         else {
-            adapter.log.warn("override temperature not valid: " + nextSetTemperature);
+            adapter.log.warn("room not valid: " + room);
         }
     }
     catch (e) {
