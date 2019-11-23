@@ -1373,6 +1373,23 @@ function SubscribeStates(callback) {
             adapter.log.debug('no subscribe Path2PresentDP ');
         }
 
+        if (adapter.config.Path2VacationDP !== null && typeof adapter.config.Path2VacationDP !== 'undefined' && adapter.config.Path2VacationDP.length > 0) {
+            adapter.subscribeForeignStates(adapter.config.Path2VacationDP);
+            adapter.log.info('subscribe ' + adapter.config.Path2VacationDP);
+        }
+        else {
+            adapter.log.debug('no subscribe Path2VacationDP ');
+        }
+
+        if (adapter.config.Path2HolidayPresentDP !== null && typeof adapter.config.Path2HolidayPresentDP !== 'undefined' && adapter.config.Path2HolidayPresentDP.length > 0) {
+            adapter.subscribeForeignStates(adapter.config.Path2HolidayPresentDP);
+            adapter.log.info('subscribe ' + adapter.config.Path2HolidayPresentDP);
+        }
+        else {
+            adapter.log.debug('no subscribe Path2HolidayPresentDP ');
+        }
+
+
         if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
             adapter.log.warn("no devices available for subscription");
             return;
@@ -1468,6 +1485,27 @@ async function HandleStateChange(id, state) {
                 }
             }
 
+            if (adapter.config.Path2VacationDP.length > 0) {
+
+                if (id.includes(adapter.config.Path2VacationDP)) {
+                    const present = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.VacationAbsent
+                    await adapter.setStateAsync("VacationAbsent", { val: present.val, ack: true });
+                    bHandled = true;
+                }
+            }
+
+            if (adapter.config.Path2HolidayPresentDP.length > 0) {
+
+                if (id.includes(adapter.config.Path2HolidayPresentDP)) {
+                    const present = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.HolidayPresent
+                    await adapter.setStateAsync("HolidayPresent", { val: present.val, ack: true });
+                    bHandled = true;
+                }
+            }
 
             if (adapter.config.Path2FeiertagAdapter.length > 0) {
 

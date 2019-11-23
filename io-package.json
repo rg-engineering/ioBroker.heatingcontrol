@@ -83,7 +83,10 @@
     "UseFixHeatingPeriod": false,
     "FixHeatingPeriodStart": "01.10.",
     "FixHeatingPeriodEnd": "31.03.",
-    "TemperatureDecrease": 3
+    "TemperatureDecrease": 3,
+    "Path2VacationDP": "",
+    "Path2HolidayPresentDP": ""
+
 
   }
 }
