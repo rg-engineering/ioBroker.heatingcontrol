@@ -2747,6 +2747,9 @@ async function CheckTemperatureChange(room2check) {
                                 daysname = "Sa-So";
                             }
 
+                            if (HolidayPresent) {
+                                daysname = "Sa-So";
+                            }
 
                             for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                                 const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
@@ -2794,6 +2797,9 @@ async function CheckTemperatureChange(room2check) {
                                 daysname = "Sun";
                             }
 
+                            if (HolidayPresent) {
+                                daysname = "Sun";
+                            }
 
                             for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
 

@@ -93,7 +93,7 @@ Features:
 ## others
 
 * HolidayPresent
-not implemented yet
+if HolidayPresent is set to true then profile for Sunday is used in any case. We assume you are at home like on Sunday.
 
 * PublicHolidyToday
 There is a option to handle PublicHoliday like Sunday. This option can be enabled in admin.
