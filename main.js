@@ -727,6 +727,40 @@ async function CreateDatepoints() {
         }
         adapter.subscribeStates('CurrentProfile');
 
+        let mode = "";
+        await adapter.setObjectNotExistsAsync('TemperatureDecreaseMode', {
+            type: 'state',
+            common: {
+                name: 'TemperatureDecreaseMode',
+                type: 'string',
+                role: 'history',
+                unit: '',
+                read: true,
+                write: false
+            },
+            native: { id: 'TemperatureDecreaseMode' }
+        });
+
+
+        switch (parseInt(adapter.config.TemperatureDecrease)) {
+            case 1:
+                mode = "relative";
+                break;
+            case 2:
+                mode = "absolute";
+                break;
+            case 3:
+                mode = "none";
+                break;
+            default:
+                mode = "unknown";
+                break;
+        }
+
+        await adapter.setStateAsync('TemperatureDecreaseMode', { ack: true, val: mode});
+
+
+
         await adapter.setObjectNotExistsAsync('HeatingPeriodActive', {
             type: 'state',
             common: {
@@ -1034,7 +1068,7 @@ async function CreateDatepoints() {
 
                         adapter.log.debug("create data profile points for " + adapter.config.rooms[room].name);
 
-                        await adapter.setObjectNotExistsAsync(id1 + '.GuestIncrease', {
+                        await adapter.setObjectNotExistsAsync(id1 + '.relative.GuestIncrease', {
                             type: 'state',
                             common: {
                                 name: 'GuestIncrease',
@@ -1047,15 +1081,15 @@ async function CreateDatepoints() {
                             native: { id: 'GuestIncrease' }
                         });
 
-                        const guestincrease = await adapter.getStateAsync(id1 + '.GuestIncrease');
+                        const guestincrease = await adapter.getStateAsync(id1 + '.relative.GuestIncrease');
                         //set default only if nothing was set before
                         if (guestincrease === null) {
-                            await adapter.setStateAsync(id1 + '.GuestIncrease', { ack: true, val: 0 });
+                            await adapter.setStateAsync(id1 + '.relative.GuestIncrease', { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + '.GuestIncrease');
+                        adapter.subscribeStates(id1 + '.relative.GuestIncrease');
 
 
-                        await adapter.setObjectNotExistsAsync(id1 + '.PartyDecrease', {
+                        await adapter.setObjectNotExistsAsync(id1 + '.relative.PartyDecrease', {
                             type: 'state',
                             common: {
                                 name: 'PartyDecrease',
@@ -1067,14 +1101,14 @@ async function CreateDatepoints() {
                             },
                             native: { id: 'PartyDecrease' }
                         });
-                        const partydecrease = await adapter.getStateAsync(id1 + '.PartyDecrease');
+                        const partydecrease = await adapter.getStateAsync(id1 + '.relative.PartyDecrease');
                         //set default only if nothing was set before
                         if (partydecrease === null) {
-                            await adapter.setStateAsync(id1 + '.PartyDecrease', { ack: true, val: 0 });
+                            await adapter.setStateAsync(id1 + '.relative.PartyDecrease', { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + '.PartyDecrease');
+                        adapter.subscribeStates(id1 + '.relative.PartyDecrease');
 
-                        await adapter.setObjectNotExistsAsync(id1 + '.WindowOpenDecrease', {
+                        await adapter.setObjectNotExistsAsync(id1 + '.relative.WindowOpenDecrease', {
                             type: 'state',
                             common: {
                                 name: 'WindowOpenDecrease',
@@ -1086,15 +1120,15 @@ async function CreateDatepoints() {
                             },
                             native: { id: 'WindowOpenDecrease' }
                         });
-                        const windowopendecrease = await adapter.getStateAsync(id1 + '.WindowOpenDecrease');
+                        const windowopendecrease = await adapter.getStateAsync(id1 + '.relative.WindowOpenDecrease');
                         //set default only if nothing was set before
                         if (windowopendecrease === null) {
-                            await adapter.setStateAsync(id1 + '.WindowOpenDecrease', { ack: true, val: 0 });
+                            await adapter.setStateAsync(id1 + '.relative.WindowOpenDecrease', { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + '.WindowOpenDecrease');
+                        adapter.subscribeStates(id1 + '.relative.WindowOpenDecrease');
 
 
-                        await adapter.setObjectNotExistsAsync(id1 + '.AbsentDecrease', {
+                        await adapter.setObjectNotExistsAsync(id1 + '.relative.AbsentDecrease', {
                             type: 'state',
                             common: {
                                 name: 'AbsentDecrease',
@@ -1106,14 +1140,14 @@ async function CreateDatepoints() {
                             },
                             native: { id: 'AbsentDecrease' }
                         });
-                        const absentdecrease = await adapter.getStateAsync(id1 + '.AbsentDecrease');
+                        const absentdecrease = await adapter.getStateAsync(id1 + '.relative.AbsentDecrease');
                         //set default only if nothing was set before
                         if (absentdecrease === null) {
-                            await adapter.setStateAsync(id1 + '.AbsentDecrease', { ack: true, val: 0 });
+                            await adapter.setStateAsync(id1 + '.relative.AbsentDecrease', { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + '.AbsentDecrease');
+                        adapter.subscribeStates(id1 + '.relative.AbsentDecrease');
 
-                        await adapter.setObjectNotExistsAsync(id1 + '.VacationAbsentDecrease', {
+                        await adapter.setObjectNotExistsAsync(id1 + '.relative.VacationAbsentDecrease', {
                             type: 'state',
                             common: {
                                 name: 'VacationAbsentDecrease',
@@ -1126,12 +1160,12 @@ async function CreateDatepoints() {
                             native: { id: 'VacationAbsentDecrease' }
                         });
 
-                        const vacationabsentdecrease = await adapter.getStateAsync(id1 + '.VacationAbsentDecrease');
+                        const vacationabsentdecrease = await adapter.getStateAsync(id1 + '.relative.VacationAbsentDecrease');
                         //set default only if nothing was set before
                         if (vacationabsentdecrease === null) {
-                            await adapter.setStateAsync(id1 + '.VacationAbsentDecrease', { ack: true, val: 0 });
+                            await adapter.setStateAsync(id1 + '.relative.VacationAbsentDecrease', { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + '.VacationAbsentDecrease');
+                        adapter.subscribeStates(id1 + '.relative.VacationAbsentDecrease');
                         
 
                     }
@@ -1389,6 +1423,13 @@ function SubscribeStates(callback) {
             adapter.log.debug('no subscribe Path2HolidayPresentDP ');
         }
 
+        if (adapter.config.Path2GuestsPresentDP !== null && typeof adapter.config.Path2GuestsPresentDP !== 'undefined' && adapter.config.Path2GuestsPresentDP.length > 0) {
+            adapter.subscribeForeignStates(adapter.config.Path2GuestsPresentDP);
+            adapter.log.info('subscribe ' + adapter.config.Path2GuestsPresentDP);
+        }
+        else {
+            adapter.log.debug('no subscribe Path2GuestsPresentDP ');
+        }
 
         if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
             adapter.log.warn("no devices available for subscription");
@@ -1503,6 +1544,17 @@ async function HandleStateChange(id, state) {
 
                     //heatingcontrol.0.HolidayPresent
                     await adapter.setStateAsync("HolidayPresent", { val: present.val, ack: true });
+                    bHandled = true;
+                }
+            }
+
+            if (adapter.config.Path2GuestsPresentDP.length > 0) {
+
+                if (id.includes(adapter.config.Path2GuestsPresentDP)) {
+                    const guestpresent = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.GuestsPresent
+                    await adapter.setStateAsync("GuestsPresent", { val: guestpresent.val, ack: true });
                     bHandled = true;
                 }
             }
@@ -1667,6 +1719,8 @@ async function HandleStateChangeGeneral(id, state) {
         await CheckTemperatureChange();
         bRet = true;
     }
+
+    //heatingcontrol.0.Profiles.0.Arbeitszimmer.relative.GuestIncrease
     if (ids[5] === "GuestIncrease" || ids[6] === "GuestIncrease") {
         await CheckTemperatureChange();
         bRet = true;
@@ -2578,7 +2632,7 @@ async function CheckTemperatureChange(room2check) {
 
                                 RoomState += "guests present / ";
 
-                                let temp2 = await adapter.getStateAsync(idPreset + "GuestIncrease");
+                                let temp2 = await adapter.getStateAsync(idPreset + "relative.GuestIncrease");
                                 adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
                                 if (temp2 !== null) {
                                     GuestIncrease = temp2.val;
@@ -2592,7 +2646,7 @@ async function CheckTemperatureChange(room2check) {
 
                                 RoomState += "party / ";
 
-                                let temp3 = await adapter.getStateAsync(idPreset + "PartyDecrease");
+                                let temp3 = await adapter.getStateAsync(idPreset + "relative.PartyDecrease");
                                 adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
                                 if (temp3 !== null) {
                                     PartyDecrease = temp3.val;
@@ -2607,7 +2661,7 @@ async function CheckTemperatureChange(room2check) {
 
                                 RoomState += "window open / ";
 
-                                let temp4 = await adapter.getStateAsync(idPreset + "WindowOpenDecrease");
+                                let temp4 = await adapter.getStateAsync(idPreset + "relative.WindowOpenDecrease");
                                 adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp4));
                                 if (temp4 !== null) {
                                     WindowOpenDecrease = temp4.val;
@@ -2621,7 +2675,7 @@ async function CheckTemperatureChange(room2check) {
 
                                 RoomState += "vacation absent / ";
 
-                                let temp5 = await adapter.getStateAsync(idPreset + "VacationAbsentDecrease");
+                                let temp5 = await adapter.getStateAsync(idPreset + "relative.VacationAbsentDecrease");
                                 adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp5));
                                 if (temp5 !== null ) {
                                     VacationAbsentDecrease = temp5.val;
@@ -2641,7 +2695,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "vacation absent / ";
                                 }
                                 else {
-                                    adapter.log.warn("VacationAbsentDecrease not defined");
+                                    //adapter.log.warn("VacationAbsentDecrease not defined");
                                 }
                             }
                             else if (WindowOpen) {
@@ -2652,7 +2706,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "window open / ";
                                 }
                                 else {
-                                    adapter.log.warn("WindowOpenDecrease not defined");
+                                    //adapter.log.warn("WindowOpenDecrease not defined");
                                 }
                             }
 
@@ -2664,7 +2718,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "party / ";
                                 }
                                 else {
-                                    adapter.log.warn("PartyDecrease not defined");
+                                    //adapter.log.warn("PartyDecrease not defined");
                                 }
                             }
 
@@ -2676,7 +2730,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "not present / ";
                                 }
                                 else {
-                                    adapter.log.warn("AbsentDecrease not defined");
+                                    //adapter.log.warn("AbsentDecrease not defined");
                                 }
                             }
 
@@ -2688,7 +2742,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "guests / ";
                                 }
                                 else {
-                                    adapter.log.warn("GuestIncrease not defined");
+                                    //adapter.log.warn("GuestIncrease not defined");
                                 }
                             }
                         }

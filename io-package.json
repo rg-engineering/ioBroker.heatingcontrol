@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.6",
+    "version": "0.3.7",
     "news": {
       "0.3.6": {
         "en": "some bug fixes",
@@ -85,7 +85,8 @@
     "FixHeatingPeriodEnd": "31.03.",
     "TemperatureDecrease": 3,
     "Path2VacationDP": "",
-    "Path2HolidayPresentDP": ""
+    "Path2HolidayPresentDP": "",
+    "Path2GuestsPresentDP": ""
 
 
   }
