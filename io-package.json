@@ -86,7 +86,8 @@
     "TemperatureDecrease": 3,
     "Path2VacationDP": "",
     "Path2HolidayPresentDP": "",
-    "Path2GuestsPresentDP": ""
+    "Path2GuestsPresentDP": "",
+    "Path2PresentDPType":  1
 
 
   }

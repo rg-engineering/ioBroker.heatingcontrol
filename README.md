@@ -127,9 +127,7 @@ Attention: some changes in datapoints!!
 * (René) see issue  #53: moved datapoints for relative lowering into "relative"
 * (René) new datapoint to show lowering decrease mode (heatingcontrol.0.TemperatureDecreaseMode)
 * (René) guest present as interface to ical
-
-
-
+* (René) see issue #52: support radar adapter
 
 ### 0.3.6 (2019-11-23)
 Attention: some changes in datapoints!!

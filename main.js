@@ -1518,10 +1518,29 @@ async function HandleStateChange(id, state) {
             if (adapter.config.Path2PresentDP.length > 0) {
 
                 if (id.includes(adapter.config.Path2PresentDP)) {
-                    const present = await adapter.getForeignStateAsync(id);
 
+                    let present = false;
+                    if (parseInt(adapter.config.Path2PresentDPType) === 1) {
+                        
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        //adapter.log.debug("ZZZ check bool " + JSON.stringify(nTemp));
+
+                        present = nTemp.val;
+                    }
+                    else {
+                        
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        //adapter.log.debug("ZZZ check number " + JSON.stringify(nTemp));
+
+                        if (nTemp.val > 0) {
+                            present = true;
+                        }
+                        
+                    }
                     //heatingcontrol.0.Present
-                    await adapter.setStateAsync("Present", { val: present.val, ack: true });
+                    await adapter.setStateAsync("Present", { val: present, ack: true });
                     bHandled = true;
                 }
             }
