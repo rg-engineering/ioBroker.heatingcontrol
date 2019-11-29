@@ -194,8 +194,7 @@ async function main() {
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
         await CreateDatepoints();
-        await SubscribeStates();
-
+        
         SystemDateFormat = await GetSystemDateformat();
 
         await checkHeatingPeriod();
@@ -205,7 +204,11 @@ async function main() {
         //need to check all WindowSensors per Room
         await CheckAllWindowSensors();
 
+        await CheckAllExternalStates();
+
         await CheckTemperatureChange();
+
+        await SubscribeStates();
     }
     catch (e) {
         adapter.log.error('exception in  main [' + e + ']');
@@ -691,7 +694,7 @@ async function CreateStates4Period(id, period) {
 // will be called at ecery start of adapter
 async function CreateDatepoints() {
 
-    adapter.log.debug('CreateDatepoints');
+    adapter.log.debug('start CreateDatepoints');
 
     try {
         await adapter.setObjectNotExistsAsync('LastProgramRun', {
@@ -725,7 +728,7 @@ async function CreateDatepoints() {
         if (currentprofile === null) {
             await adapter.setStateAsync('CurrentProfile', { ack: true, val: 1 });
         }
-        adapter.subscribeStates('CurrentProfile');
+        
 
         let mode = "";
         await adapter.setObjectNotExistsAsync('TemperatureDecreaseMode', {
@@ -778,7 +781,6 @@ async function CreateDatepoints() {
         if (heatingperidactive === null) {
             await adapter.setStateAsync('HeatingPeriodActive', { ack: true, val: true });
         }
-        adapter.subscribeStates('HeatingPeriodActive');
 
         await adapter.setObjectNotExistsAsync('PublicHolidyToday', {
             type: 'state',
@@ -793,41 +795,6 @@ async function CreateDatepoints() {
             native: { id: 'PublicHolidyToday' }
         });
 
-        //get value from other adapter if configured
-        if (adapter.config.Path2FeiertagAdapter.length > 0) {
-
-            var names = adapter.config.Path2FeiertagAdapter.split('.');
-
-            let PublicHolidayId = "";
-            if (names.length === 2) {
-                //feiertage.0.heute.boolean
-                PublicHolidayId = adapter.config.Path2FeiertagAdapter + ".heute.boolean";
-            }
-            else {
-                PublicHolidayId = adapter.config.Path2FeiertagAdapter;
-            }
-
-            const PublicHoliday = await adapter.getForeignStateAsync(PublicHolidayId);
-
-            //adapter.log.debug("### 4444 " + PublicHoliday.val);
-
-            if (PublicHoliday !== null && typeof PublicHoliday !== 'undefined') {
-                //heatingcontrol.0.PublicHolidyToday
-                await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
-            }
-            else {
-                adapter.log.warn('CreateDatepoints (set default): ' + PublicHolidayId + ' not found');
-                await adapter.setStateAsync("PublicHolidyToday", { val: false, ack: true });
-            }
-        }
-        else {
-            const publicholidaytoday = await adapter.getStateAsync('PublicHolidyToday');
-            //set default only if nothing was set before
-            if (publicholidaytoday === null) {
-                await adapter.setStateAsync('PublicHolidyToday', { ack: true, val: false });
-            }
-        }
-        adapter.subscribeStates('PublicHolidyToday');
 
         await adapter.setObjectNotExistsAsync('Present', {
             type: 'state',
@@ -841,13 +808,7 @@ async function CreateDatepoints() {
             },
             native: { id: 'Present' }
         });
-        const present = await adapter.getStateAsync('Present');
-        //set default only if nothing was set before
-        if (present === null) {
-
-            await adapter.setStateAsync('Present', { ack: true, val: true });
-        }
-        adapter.subscribeStates('Present');
+        
 
         await adapter.setObjectNotExistsAsync('PartyNow', {
             type: 'state',
@@ -861,12 +822,7 @@ async function CreateDatepoints() {
             },
             native: { id: 'PartyNow' }
         });
-        const partynow = await adapter.getStateAsync('PartyNow');
-        //set default only if nothing was set before
-        if (partynow === null) {
-            await adapter.setStateAsync('PartyNow', { ack: true, val: false });
-        }
-        adapter.subscribeStates('PartyNow');
+        
 
         await adapter.setObjectNotExistsAsync('GuestsPresent', {
             type: 'state',
@@ -880,12 +836,7 @@ async function CreateDatepoints() {
             },
             native: { id: 'GuestsPresent' }
         });
-        const guestspresent = await adapter.getStateAsync('GuestsPresent');
-        //set default only if nothing was set before
-        if (guestspresent === null) {
-            await adapter.setStateAsync('GuestsPresent', { ack: true, val: false });
-        }
-        adapter.subscribeStates('GuestsPresent');
+        
 
         await adapter.setObjectNotExistsAsync('HolidayPresent', {
             type: 'state',
@@ -899,12 +850,7 @@ async function CreateDatepoints() {
             },
             native: { id: 'HolidayPresent' }
         });
-        const holidaypresent = await adapter.getStateAsync('HolidayPresent');
-        //set default only if nothing was set before
-        if (holidaypresent === null) {
-            await adapter.setStateAsync('HolidayPresent', { ack: true, val: false });
-        }
-        adapter.subscribeStates('HolidayPresent');
+        
 
         await adapter.setObjectNotExistsAsync('VacationAbsent', {
             type: 'state',
@@ -918,12 +864,7 @@ async function CreateDatepoints() {
             },
             native: { id: 'VacationAbsent' }
         });
-        const vacationabsent = await adapter.getStateAsync('VacationAbsent');
-        //set default only if nothing was set before
-        if (vacationabsent === null) {
-            await adapter.setStateAsync('VacationAbsent', { ack: true, val: false });
-        }
-        adapter.subscribeStates('VacationAbsent');
+        
 
 
         //all room related
@@ -1370,6 +1311,8 @@ async function CreateDatepoints() {
     catch (e) {
         adapter.log.error('exception in CreateDatapoints [' + e + ']');
     }
+
+    adapter.log.debug('CreateDatepoints done');
 }
 
 //#######################################
@@ -1381,6 +1324,18 @@ function SubscribeStates(callback) {
     adapter.log.debug('#start subscribtion ');
 
     try {
+
+        adapter.subscribeStates('CurrentProfile');
+        adapter.subscribeStates('HeatingPeriodActive');
+        adapter.subscribeStates('PublicHolidyToday');
+        adapter.subscribeStates('Present');
+        adapter.subscribeStates('PartyNow');
+        adapter.subscribeStates('GuestsPresent');
+        adapter.subscribeStates('HolidayPresent');
+        adapter.subscribeStates('VacationAbsent');
+
+
+
         if (adapter.config.Path2FeiertagAdapter !== null && typeof adapter.config.Path2FeiertagAdapter !== 'undefined' && adapter.config.Path2FeiertagAdapter.length > 0) {
             var names = adapter.config.Path2FeiertagAdapter.split('.');
 
@@ -2818,10 +2773,12 @@ async function CheckTemperatureChange(room2check) {
 
                             if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
                                 daysname = "Sa-So";
+                                RoomState += "public holiday / ";
                             }
 
                             if (HolidayPresent) {
                                 daysname = "Sa-So";
+                                RoomState += "holiday present / ";
                             }
 
                             for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
@@ -2868,10 +2825,12 @@ async function CheckTemperatureChange(room2check) {
 
                             if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
                                 daysname = "Sun";
+                                RoomState += "public holiday / ";
                             }
 
                             if (HolidayPresent) {
                                 daysname = "Sun";
+                                RoomState += "holiday present / ";
                             }
 
                             for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
@@ -3169,6 +3128,172 @@ async function CheckAllWindowSensors() {
             }
         }
     }
+}
+
+
+async function CheckAllExternalStates() {
+
+    adapter.log.info("checking all external states");
+    //get value from other adapter if configured
+    //"Path2FeiertagAdapter": "",
+    if (adapter.config.Path2FeiertagAdapter.length > 0) {
+
+        var names = adapter.config.Path2FeiertagAdapter.split('.');
+
+        let PublicHolidayId = "";
+        if (names.length === 2) {
+            //feiertage.0.heute.boolean
+            PublicHolidayId = adapter.config.Path2FeiertagAdapter + ".heute.boolean";
+        }
+        else {
+            PublicHolidayId = adapter.config.Path2FeiertagAdapter;
+        }
+
+        const PublicHoliday = await adapter.getForeignStateAsync(PublicHolidayId);
+
+        //adapter.log.debug("### 4444 " + PublicHoliday.val);
+
+        if (PublicHoliday !== null && typeof PublicHoliday !== 'undefined') {
+            //heatingcontrol.0.PublicHolidyToday
+            adapter.log.info("setting PublicHolidyToday to " + PublicHoliday.val);
+            await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + PublicHolidayId + ' not found');
+            await adapter.setStateAsync("PublicHolidyToday", { val: false, ack: true });
+        }
+    }
+    else {
+        const publicholidaytoday = await adapter.getStateAsync('PublicHolidyToday');
+        //set default only if nothing was set before
+        if (publicholidaytoday === null) {
+            await adapter.setStateAsync('PublicHolidyToday', { ack: true, val: false });
+        }
+    }
+
+    //"Path2PresentDP": "",
+    //"Path2PresentDPType": 1
+    if (adapter.config.Path2PresentDP.length > 0) {
+
+        let present = null;
+        if (parseInt(adapter.config.Path2PresentDPType) === 1) {
+
+            const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2PresentDP);
+
+            adapter.log.debug("got Present (1) " + JSON.stringify(nTemp));
+
+            if (nTemp !== null && typeof nTemp !== 'undefined') {
+                present = nTemp.val;
+            }
+        }
+        else {
+
+            const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2PresentDP);
+
+            adapter.log.debug("got Present (2) " + JSON.stringify(nTemp));
+
+            if (nTemp !== null && typeof nTemp !== 'undefined') {
+                if (nTemp.val > 0) {
+                    present = true;
+                }
+            }
+        }
+
+        if (present !== null && typeof present !== 'undefined') {
+            //heatingcontrol.0.Present
+            adapter.log.info("setting Present to " + present);
+            await adapter.setStateAsync("Present", { val: present, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + adapter.config.Path2PresentDP + ' not found');
+            await adapter.setStateAsync("Present", { val: false, ack: true });
+        }
+    }
+    else {
+        const present = await adapter.getStateAsync('Present');
+        //set default only if nothing was set before
+        if (present === null) {
+            await adapter.setStateAsync('Present', { ack: true, val: false });
+        }
+    }
+
+    //"Path2VacationDP": "",
+    if (adapter.config.Path2VacationDP.length > 0) {
+
+        const vacation = await adapter.getForeignStateAsync(adapter.config.Path2VacationDP);
+
+        if (vacation !== null && typeof vacation !== 'undefined') {
+            //heatingcontrol.0.VacationAbsent
+            adapter.log.info("setting VacationAbsent to " + vacation.val);
+            await adapter.setStateAsync("VacationAbsent", { val: vacation.val, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + adapter.config.Path2VacationDP + ' not found');
+            await adapter.setStateAsync("VacationAbsent", { val: false, ack: true });
+        }
+    }
+    else {
+        const vacation = await adapter.getStateAsync('VacationAbsent');
+        //set default only if nothing was set before
+        if (vacation === null) {
+            await adapter.setStateAsync('VacationAbsent', { ack: true, val: false });
+        }
+    }
+
+    //"Path2GuestsPresentDP": "",
+
+    if (adapter.config.Path2GuestsPresentDP.length > 0) {
+
+        const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
+
+        if (guestspresent !== null && typeof guestspresent !== 'undefined') {
+            //heatingcontrol.0.GuestsPresent
+            adapter.log.info("setting GuestsPresent to " + guestspresent.val);
+            await adapter.setStateAsync("GuestsPresent", { val: guestspresent.val, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + adapter.config.Path2GuestsPresentDP + ' not found');
+            await adapter.setStateAsync("GuestsPresent", { val: false, ack: true });
+        }
+    }
+    else {
+        const guestspresent = await adapter.getStateAsync('GuestsPresent');
+        //set default only if nothing was set before
+        if (guestspresent === null) {
+            await adapter.setStateAsync('GuestsPresent', { ack: true, val: false });
+        }
+    }
+
+    //"Path2HolidayPresentDP": "",
+    if (adapter.config.Path2HolidayPresentDP.length > 0) {
+
+        const holidaypresent = await adapter.getForeignStateAsync(adapter.config.Path2HolidayPresentDP);
+
+        if (holidaypresent !== null && typeof holidaypresent !== 'undefined') {
+            //heatingcontrol.0.HolidayPresent
+            adapter.log.info("setting HolidayPresent to " + holidaypresent.val);
+            await adapter.setStateAsync("HolidayPresent", { val: holidaypresent.val, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + adapter.config.Path2HolidayPresentDP + ' not found');
+            await adapter.setStateAsync("HolidayPresent", { val: false, ack: true });
+        }
+    }
+    else {
+        const holidaypresent = await adapter.getStateAsync('HolidayPresent');
+        //set default only if nothing was set before
+        if (holidaypresent === null) {
+            await adapter.setStateAsync('HolidayPresent', { ack: true, val: false });
+        }
+    }
+
+    const partynow = await adapter.getStateAsync('PartyNow');
+    //set default only if nothing was set before
+    if (partynow === null) {
+        await adapter.setStateAsync('PartyNow', { ack: true, val: false });
+    }
+
+    adapter.log.info("external states checked, done");
 }
 
 async function CheckWindowSensors(roomID) {
