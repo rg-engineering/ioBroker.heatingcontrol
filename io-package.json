@@ -87,8 +87,7 @@
     "Path2VacationDP": "",
     "Path2HolidayPresentDP": "",
     "Path2GuestsPresentDP": "",
-    "Path2PresentDPType":  1
-
-
+    "Path2PresentDPType": 1,
+    "Path2PartyNowDP": ""
   }
 }

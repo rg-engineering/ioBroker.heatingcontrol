@@ -1386,6 +1386,14 @@ function SubscribeStates(callback) {
             adapter.log.debug('no subscribe Path2GuestsPresentDP ');
         }
 
+        if (adapter.config.Path2PartyNowDP !== null && typeof adapter.config.Path2PartyNowDP !== 'undefined' && adapter.config.Path2PartyNowDP.length > 0) {
+            adapter.subscribeForeignStates(adapter.config.Path2PartyNowDP);
+            adapter.log.info('subscribe ' + adapter.config.Path2PartyNowDP);
+        }
+        else {
+            adapter.log.debug('no subscribe Path2PartyNowDP ');
+        }
+
         if (adapter.config.devices === null || typeof adapter.config.devices === 'undefined') {
             adapter.log.warn("no devices available for subscription");
             return;
@@ -1529,6 +1537,17 @@ async function HandleStateChange(id, state) {
 
                     //heatingcontrol.0.GuestsPresent
                     await adapter.setStateAsync("GuestsPresent", { val: guestpresent.val, ack: true });
+                    bHandled = true;
+                }
+            }
+
+            if (adapter.config.Path2PartyNowDP.length > 0) {
+
+                if (id.includes(adapter.config.Path2PartyNowDP)) {
+                    const partynow = await adapter.getForeignStateAsync(id);
+
+                    //heatingcontrol.0.PartyNow
+                    await adapter.setStateAsync("PartyNow", { val: partynow.val, ack: true });
                     bHandled = true;
                 }
             }
@@ -3302,6 +3321,31 @@ async function CheckAllExternalStates() {
             await adapter.setStateAsync('GuestsPresent', { ack: true, val: false });
         }
     }
+
+    //"Path2PartyNowDP": "",
+
+    if (adapter.config.Path2PartyNowDP.length > 0) {
+
+        const partynow = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
+
+        if (partynow !== null && typeof partynow !== 'undefined') {
+            //heatingcontrol.0.PartyNow
+            adapter.log.info("setting PartyNow to " + partynow.val);
+            await adapter.setStateAsync("PartyNow", { val: partynow.val, ack: true });
+        }
+        else {
+            adapter.log.warn('CheckAllExternalStates (set default): ' + adapter.config.Path2PartyNowDP + ' not found');
+            await adapter.setStateAsync("PartyNow", { val: false, ack: true });
+        }
+    }
+    else {
+        const partynow = await adapter.getStateAsync('PartyNow');
+        //set default only if nothing was set before
+        if (partynow === null) {
+            await adapter.setStateAsync('PartyNow', { ack: true, val: false });
+        }
+    }
+
 
     //"Path2HolidayPresentDP": "",
     if (adapter.config.Path2HolidayPresentDP.length > 0) {
