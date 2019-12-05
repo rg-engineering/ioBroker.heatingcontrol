@@ -138,9 +138,9 @@ function startAdapter(options) {
         },
         //#######################################
         //  is called if a subscribed object changes
-        objectChange: function (id, obj) {
-            adapter.log.debug('[OBJECT CHANGE] ==== ' + id + ' === ' + JSON.stringify(obj));
-        },
+        //objectChange: function (id, obj) {
+        //    adapter.log.debug('[OBJECT CHANGE] ==== ' + id + ' === ' + JSON.stringify(obj));
+        //},
         //#######################################
         // is called if a subscribed state changes
         stateChange: function (id, state) {

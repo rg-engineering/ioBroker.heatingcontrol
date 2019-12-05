@@ -611,6 +611,10 @@ systemDictionary = {
         "es": "Ruta al punto de datos \\\"vacaciones en casa \\ \"",
         "pl": "Ścieżka do punktu danych \\”wakacje w domu \\ ”",
         "zh-cn": "“指向数据点的路径“在家度假”"
+    },
+    "Path2GuestsPresentDP": {
+    },
+    "Path2PresentDPType": {
     }
 
 };
