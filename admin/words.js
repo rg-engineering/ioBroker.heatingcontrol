@@ -613,8 +613,40 @@ systemDictionary = {
         "zh-cn": "“指向数据点的路径“在家度假”"
     },
     "Path2GuestsPresentDP": {
+        "en": "Path to data point \\\"guests present\\\"",
+        "de": "Pfad zum Datenpunkt \"Gäste anwesend\"",
+        "ru": "Путь к точке данных \\ \"гости присутствуют \\\"",
+        "pt": "Caminho para o ponto de dados \\ \"convidados presentes \\\"",
+        "nl": "Pad naar gegevenspunt \\ \"gasten aanwezig \\\"",
+        "fr": "Chemin d'accès au point de données \\ \"invités présents \\\"",
+        "it": "Percorso del punto dati \\ \"ospiti presenti \\\"",
+        "es": "Ruta al punto de datos \\ \"invitados presentes \\\"",
+        "pl": "Ścieżka do punktu danych \\ „obecni goście”",
+        "zh-cn": "数据点\\“来宾存在”的路径"
     },
     "Path2PresentDPType": {
+        "en": "Path to data point \\\"present\\\"",
+        "de": "Pfad zum Datenpunkt \"anwesend\"",
+        "ru": "Путь к точке данных \\ \"настоящее время \\\"",
+        "pt": "Caminho para o ponto de dados \\ \"presente \\\"",
+        "nl": "Pad naar gegevenspunt \\ \"aanwezig \\\"",
+        "fr": "Chemin du point de données \\ \"présent \\\"",
+        "it": "Percorso del punto dati \\ \"presente \\\"",
+        "es": "Ruta al punto de datos \\ \"presente \\\"",
+        "pl": "Ścieżka do punktu danych \\ „obecny \\”",
+        "zh-cn": "数据点\\“ present \\”的路径"
+    },
+    "Path2PartyNowDP": {
+        "en": "Path to data point \\\"party now\\\"",
+        "de": "Pfad zum Datenpunkt \"Party jetzt\"",
+        "ru": "Путь к точке данных \\ \"партия сейчас \\\"",
+        "pt": "Caminho para o ponto de dados \\ \"party now \\\"",
+        "nl": "Pad naar gegevenspunt \\ \"feest nu \\\"",
+        "fr": "Chemin d'accès au point de données \\ \"party now \\\"",
+        "it": "Percorso del punto dati \\ \"party now \\\"",
+        "es": "Ruta al punto de datos \\ \"party now \\\"",
+        "pl": "Ścieżka do punktu danych \\ „imprezuj teraz \\”",
+        "zh-cn": "数据点“立即参加聚会”的路径"
     }
 
 };
