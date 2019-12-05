@@ -122,6 +122,10 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
+### 0.3.8 (2019-12-xx)
+* (René) see issue  #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
+
+
 ### 0.3.7 (2019-11-29)
 Attention: some changes in datapoints!!
 * (René) see issue  #53: moved datapoints for relative lowering into "relative"
@@ -137,6 +141,7 @@ Attention: some changes in datapoints!!
 * (René) do not check all rooms everytime: when data only for one room changed then check only one room
 * (René) only one event is used to lower temperature
 * (René) add interface to ical (path to vacation and path to holiday present datapoints)
+* (René) support of more then one instance
 
 ### 0.3.4 (2019-11-09)
 * (René) bug fix in data point name
