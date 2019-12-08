@@ -128,6 +128,7 @@ function startAdapter(options) {
                 callback();
             }
 
+            
 
         },
         //#######################################
@@ -865,6 +866,22 @@ async function CreateDatepoints() {
             native: { id: 'VacationAbsent' }
         });
         
+
+        if (adapter.config.UseActors) {
+            await adapter.setObjectNotExistsAsync('ActorsOn', {
+                type: 'state',
+                common: {
+                    name: 'HowManyActorsOn',
+                    type: 'number',
+                    role: 'history',
+                    unit: '',
+                    read: true,
+                    write: false
+                },
+                native: { id: 'ActorsOn' }
+            });
+
+        }
 
 
         //all room related
@@ -1888,7 +1905,7 @@ async function HandleActors(room, current, target) {
     //let room = adapter.config.devices[deviceID].room;
 
     adapter.log.info('handle actors ' + room + " current " + current + " target " + target);
-
+    var actorsOn = await adapter.getStateAsync("ActorsOn");
     //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
     if (current > target) {
         //find all actors for that room and set them
@@ -1898,6 +1915,7 @@ async function HandleActors(room, current, target) {
 
                 let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
                 if (currentState.val !== false) {
+                    actorsOn++;
                     await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, false);
                     adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " off");
                 }
@@ -1917,6 +1935,7 @@ async function HandleActors(room, current, target) {
 
                 let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
                 if (currentState.val !== true) {
+                    actorsOn--;
                     await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, true);
                     adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " on");
                 }
@@ -1926,6 +1945,8 @@ async function HandleActors(room, current, target) {
             }
         }
     }
+
+    await adapter.setStateAsync("ActorsOn", actorsOn);
 }
 
 
