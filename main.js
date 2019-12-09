@@ -205,6 +205,8 @@ async function main() {
         //need to check all WindowSensors per Room
         await CheckAllWindowSensors();
 
+        await CheckAllActors();
+
         await CheckAllExternalStates();
 
         await CheckTemperatureChange();
@@ -1905,7 +1907,9 @@ async function HandleActors(room, current, target) {
     //let room = adapter.config.devices[deviceID].room;
 
     adapter.log.info('handle actors ' + room + " current " + current + " target " + target);
-    var actorsOn = await adapter.getStateAsync("ActorsOn");
+    var oactorsOn = await adapter.getStateAsync("ActorsOn");
+
+    var actorsOn = oactorsOn.val;
     //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
     if (current > target) {
         //find all actors for that room and set them
@@ -1946,7 +1950,10 @@ async function HandleActors(room, current, target) {
         }
     }
 
-    await adapter.setStateAsync("ActorsOn", actorsOn);
+    if (actorsOn < 0) {
+        actorsOn = 0;
+    }
+    await adapter.setStateAsync("ActorsOn", { val: actorsOn, ack: true });
 }
 
 
@@ -3209,12 +3216,41 @@ async function CheckAllWindowSensors() {
     }
 }
 
+async function CheckAllActors() {
+
+    if (adapter.config.UseActors) {
+        adapter.log.info("checking all actors");
+        //adapter.log.debug("Check all actors in " + JSON.stringify(adapter.config.devices));
+        let actorsOn = 0;
+        let noOfActors = 0;
+        for (let i = 0; i < adapter.config.devices.length; i++) {
+
+            if (adapter.config.devices[i].isActive && adapter.config.devices[i].type === 2) {
+
+                noOfActors++;
+                let current = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+
+                if (current !== null && typeof current !== 'undefined') {
+                    if (current.val) {
+                        actorsOn++;
+                    }
+                }
+            }
+        }
+
+        adapter.log.info(actorsOn + " actors are on of " + noOfActors);
+        await adapter.setStateAsync("ActorsOn", { val: actorsOn, ack: true } );
+    }
+}
+
+
 
 async function CheckAllExternalStates() {
 
     adapter.log.info("checking all external states");
     //get value from other adapter if configured
     //"Path2FeiertagAdapter": "",
+    adapter.log.debug("checking Path2FeiertagAdapter");
     if (adapter.config.Path2FeiertagAdapter.length > 0) {
 
         var names = adapter.config.Path2FeiertagAdapter.split('.');
@@ -3238,7 +3274,7 @@ async function CheckAllExternalStates() {
             await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
         }
         else {
-            adapter.log.warn('CheckAllExternalStates (set default): ' + PublicHolidayId + ' not found');
+            adapter.log.debug('CheckAllExternalStates (set default): ' + PublicHolidayId + ' not found');
             await adapter.setStateAsync("PublicHolidyToday", { val: false, ack: true });
         }
     }
@@ -3252,6 +3288,7 @@ async function CheckAllExternalStates() {
 
     //"Path2PresentDP": "",
     //"Path2PresentDPType": 1
+    adapter.log.debug("checking Path2PresentDP");
     if (adapter.config.Path2PresentDP.length > 0) {
 
         let present = null;
@@ -3297,6 +3334,7 @@ async function CheckAllExternalStates() {
     }
 
     //"Path2VacationDP": "",
+    adapter.log.debug("checking Path2VacationDP");
     if (adapter.config.Path2VacationDP.length > 0) {
 
         const vacation = await adapter.getForeignStateAsync(adapter.config.Path2VacationDP);
@@ -3320,7 +3358,7 @@ async function CheckAllExternalStates() {
     }
 
     //"Path2GuestsPresentDP": "",
-
+    adapter.log.debug("checking Path2GuestsPresentDP");
     if (adapter.config.Path2GuestsPresentDP.length > 0) {
 
         const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
@@ -3344,7 +3382,7 @@ async function CheckAllExternalStates() {
     }
 
     //"Path2PartyNowDP": "",
-
+    adapter.log.debug("checking Path2PartyNowDP");
     if (adapter.config.Path2PartyNowDP.length > 0) {
 
         const partynow = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
@@ -3369,6 +3407,7 @@ async function CheckAllExternalStates() {
 
 
     //"Path2HolidayPresentDP": "",
+    adapter.log.debug("checking Path2HolidayPresentDP");
     if (adapter.config.Path2HolidayPresentDP.length > 0) {
 
         const holidaypresent = await adapter.getForeignStateAsync(adapter.config.Path2HolidayPresentDP);
@@ -3389,12 +3428,6 @@ async function CheckAllExternalStates() {
         if (holidaypresent === null) {
             await adapter.setStateAsync('HolidayPresent', { ack: true, val: false });
         }
-    }
-
-    const partynow = await adapter.getStateAsync('PartyNow');
-    //set default only if nothing was set before
-    if (partynow === null) {
-        await adapter.setStateAsync('PartyNow', { ack: true, val: false });
     }
 
     adapter.log.info("external states checked, done");
