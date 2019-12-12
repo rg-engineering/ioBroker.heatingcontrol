@@ -124,7 +124,7 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.8 (2019-12-xx)
+### 0.3.8 (2019-12-12)
 * (René) see issue #59: TemperaturOverride: acceppt hh:mm and hh:mm:ss
 * (René) PartyNow support by iCal 
 * (René) if useActuators: show how many actors are active (as a datapoint)
