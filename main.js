@@ -1950,10 +1950,14 @@ async function HandleActors(room, current, target) {
         }
     }
 
+
+    await CheckAllActors();
+    /*
     if (actorsOn < 0) {
         actorsOn = 0;
     }
     await adapter.setStateAsync("ActorsOn", { val: actorsOn, ack: true });
+    */
 }
 
 
