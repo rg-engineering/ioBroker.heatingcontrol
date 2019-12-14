@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.8",
+    "version": "0.3.9",
     "news": {
-      "0.3.8": {
+      "0.3.9": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -14,57 +14,42 @@
         "es": "algunas correcciones de errores",
         "pl": "niektóre poprawki błędów",
         "zh-cn": "一些错误修复"
-      },
-        "0.3.0": {
-          "en": "manuel temperature setting, configurable heating period and more",
-          "de": "Manuelle Temperatureinstellung, konfigurierbare Heizperiode und mehr",
-          "ru": "настройка температуры в мануале, настраиваемый период нагрева и многое другое",
-          "pt": "ajuste da temperatura de manuel, período de aquecimento configurável e muito mais",
-          "nl": "handmatige temperatuurinstelling, configureerbare verwarmingsperiode en meer",
-          "fr": "réglage manuel de la température, période de chauffage configurable et plus",
-          "it": "impostazione della temperatura manuale, periodo di riscaldamento configurabile e altro",
-          "es": "ajuste de temperatura manual, período de calentamiento configurable y más",
-          "pl": "ustawienie temperatury manuel, konfigurowalny okres ogrzewania i więcej",
-          "zh-cn": "手动设定温度，可设定的加热时间等"
-        }
-
-
-       
-      },
-      "title": "HeatingControl",
-      "desc": {
-        "en": "Heating Control ",
-        "de": "Heizungsregelung",
-        "ru": "Управление отоплением",
-        "pt": "Controle de aquecimento",
-        "nl": "Verwarmingsregeling",
-        "fr": "Contrôle de chauffage",
-        "pl": "Sterowanie ogrzewaniem",
-        "zh-cn": "加热控制",
-        "it": "Controllo del riscaldamento",
-        "es": "Control de calefacción"
-      },
-      "platform": "Javascript/Node.js",
-      "mode": "daemon",
-      "icon": "heatingcontrol.png",
-      "enabled": true,
-      "messagebox": true,
-      "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
-      "keywords": [ "heating" ],
-      "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
-      "loglevel": "info",
-      "stopBeforeUpdate": true,
-      "type": "climate-control",
-      "license": "MIT",
-      "materialize": true,
-      "compact": true,
-      "authors": [
-        {
-          "name": "René G.",
-          "email": "info@rg-engineering.eu"
-        }
-      ]
+      }
     },
+    "title": "HeatingControl",
+    "desc": {
+      "en": "Heating Control ",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingsregeling",
+      "fr": "Contrôle de chauffage",
+      "pl": "Sterowanie ogrzewaniem",
+      "zh-cn": "加热控制",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calefacción"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "heatingcontrol.png",
+    "enabled": true,
+    "messagebox": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
+    "keywords": [ "heating" ],
+    "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
+    "loglevel": "info",
+    "stopBeforeUpdate": true,
+    "type": "climate-control",
+    "license": "MIT",
+    "materialize": true,
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ]
+  },
   "native": {
     "devices": [],
     "rooms": [],
@@ -88,6 +73,7 @@
     "Path2HolidayPresentDP": "",
     "Path2GuestsPresentDP": "",
     "Path2PresentDPType": 1,
-    "Path2PartyNowDP": ""
+    "Path2PartyNowDP": "",
+    "SensorDelay":  0
   }
 }

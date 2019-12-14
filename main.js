@@ -1818,83 +1818,116 @@ async function HandleStateChangeDevices(id, state) {
 
     let bRet = false;
 
-    adapter.log.debug('handle actors ' + id + JSON.stringify(state)); 
+    adapter.log.debug('handle id ' + id + " state " + JSON.stringify(state));
 
-    let device = findObjectByKey(adapter.config.devices, 'OID_Target', id);
     let devicetype = - 1;
 
-    if (device !== null) {
+     //hier könnten mehrere devices kommen
+    let devices = findObjectsByKey(adapter.config.devices, 'OID_Target', id);
+    if (devices.length > 0) {
         devicetype = 1; //it was OID_Target
     }
     else {
-        device = findObjectByKey(adapter.config.devices, 'OID_Current', id);
+        devices = findObjectsByKey(adapter.config.devices, 'OID_Current', id);
+        if (devices.length > 0) {
+            devicetype = 2; //it was OID_Current
+        }
     }
 
-    if (device !== null) {
+    if (devices.length > 0) {
 
-        adapter.log.debug("### " + JSON.stringify(device));
+        adapter.log.debug("### handle devices  " + JSON.stringify(devices));
 
-        if (devicetype === -1) devicetype = 2; //it was OID_Current
+        for (var d = 0; d < devices.length; d++) {
 
+            //adapter.log.debug("device type " + devicetype);
 
-        //adapter.log.debug("device type " + devicetype);
+            if (devices[d].type === 1) {//thermostat
 
-        if (device.type === 1) {//thermostat
+                //adapter.log.debug("thermostat got ");
+                const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
-            //adapter.log.debug("thermostat got ");
-            const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
-            
-            //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
+                //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
 
-            if (HeatingPeriodActive.val) {
+                if (HeatingPeriodActive.val) {
 
-                //adapter.log.debug("we are in heating period");
-                if (devicetype === 1) { //it was target of thermostat
-                    bRet = true;
-                    //adapter.log.debug("ask  " + device.OID_Current);
-                    const current = await adapter.getForeignStateAsync(device.OID_Current);
-                    //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(device));
-                    //await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
-                    await HandleActors(device.room, parseFloat(current.val), parseFloat(state.val));
-                }
-                else {
-
-                    if (devicetype === 2) { //it was current of thermostat
+                    //adapter.log.debug("we are in heating period");
+                    if (devicetype === 1) { //it was target of thermostat
                         bRet = true;
-                        //adapter.log.debug("ask  " + device.OID_Target);
-                        const target = await adapter.getForeignStateAsync(device.OID_Target);
-                        //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(device));
-                        //await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
-                        await HandleActors(device.room, parseFloat(state.val), parseFloat(target.val));
+                        //adapter.log.debug("ask  " + devices[d].OID_Current);
+                        const current = await adapter.getForeignStateAsync(devices[d].OID_Current);
+                        //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(devices[d]));
+                        //await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
+                        await HandleActors(devices[d].room, parseFloat(current.val), parseFloat(state.val));
                     }
                     else {
-                        adapter.log.warn('wrong device type ');
+
+                        if (devicetype === 2) { //it was current of thermostat
+                            bRet = true;
+                            //adapter.log.debug("ask  " + devices[d].OID_Target);
+                            const target = await adapter.getForeignStateAsync(devices[d].OID_Target);
+                            //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
+                            //await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
+                            await HandleActors(devices[d].room, parseFloat(state.val), parseFloat(target.val));
+                        }
+                        else {
+                            adapter.log.warn('wrong device type ');
+                        }
                     }
                 }
+                else {
+                    adapter.log.warn('handling actors out of heating period not implemented yet');
+                }
             }
-            else {
-                adapter.log.warn('handling actors out of heating period not implemented yet'); 
+            else if (devices[d].type === 2) {//actor
+                //nothing to do
+            }
+            else if (devices[d].type === 3) {//sensor
+
+                let roomID = findObjectIdByKey(adapter.config.rooms, 'name', devices[d].room);
+
+                const windowIsOpen = await CheckWindowSensors(roomID);
+
+                if (adapter.config.SensorDelay > 0) {
+                    //nur wenn offen, verzögern
+                    if (windowIsOpen) {
+                        adapter.log.debug('sensor delay ' + adapter.config.SensorDelay * 1000);
+                        let timerId = setTimeout(function (room) {
+                            adapter.log.debug('fired');
+
+                            CheckTemperatureChange(room);
+
+                        }, adapter.config.SensorDelay * 1000, devices[d].room);
+
+                    }
+                    else {
+                        //wenn zu, dann sofort 
+                        CheckTemperatureChange(devices[d].room);
+
+                        //und falls timer noch rennt; abbrechen
+
+                    }
+                }
+                //version ohne delay
+                else {
+                    CheckTemperatureChange(devices[d].room);
+                }
+
             }
         }
-        else if (device.type === 2) {//actor
-            //nothing to do
-        }
-        else if (device.type === 3) {//sensor
-
-            let roomID = findObjectIdByKey(adapter.config.rooms, 'name', device.room);
-
-            //need to check all WindowSensors per Room
-            await CheckWindowSensors(roomID);
-           
-            CheckTemperatureChange(device.room);
-        } 
     }
     else {
-        adapter.log.warn('device not found ' + id );
+        adapter.log.warn('device not found ' + id);
     }
 
     return bRet;
 
+}
+
+async function wait(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
 }
 
 //*******************************************************************
@@ -1907,9 +1940,11 @@ async function HandleActors(room, current, target) {
     //let room = adapter.config.devices[deviceID].room;
 
     adapter.log.info('handle actors ' + room + " current " + current + " target " + target);
-    var oactorsOn = await adapter.getStateAsync("ActorsOn");
+    //var oactorsOn = await adapter.getStateAsync("ActorsOn");
 
-    var actorsOn = oactorsOn.val;
+    //var actorsOn = oactorsOn.val;
+
+    var toUpdate = false;
     //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
     if (current > target) {
         //find all actors for that room and set them
@@ -1919,7 +1954,8 @@ async function HandleActors(room, current, target) {
 
                 let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
                 if (currentState.val !== false) {
-                    actorsOn++;
+                    //actorsOn++;
+                    toUpdate = true;
                     await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, false);
                     adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " off");
                 }
@@ -1939,7 +1975,8 @@ async function HandleActors(room, current, target) {
 
                 let currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
                 if (currentState.val !== true) {
-                    actorsOn--;
+                    //actorsOn--;
+                    toUpdate = true;
                     await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, true);
                     adapter.log.debug('room ' + room + " actor " + adapter.config.devices[i].OID_Target + " on");
                 }
@@ -1950,8 +1987,9 @@ async function HandleActors(room, current, target) {
         }
     }
 
-
-    await CheckAllActors();
+    if (toUpdate) {
+        await CheckAllActors();
+    }
     /*
     if (actorsOn < 0) {
         actorsOn = 0;
@@ -1990,25 +2028,61 @@ function findObjectByKey(array, key, value) {
     return null;
 }
 
+    //*******************************************************************
+    //
+    // find a object in array by key and value
+    // returns the object
+    function findObjectsByKey(array, key, value) {
+
+        let ret = [];
+
+        if (array !== null && typeof array !== 'undefined') {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i][key] === value) {
+                    ret.push(array[i]);
+                }
+            }
+        }
+        return ret;
+    }
+
+
 //*******************************************************************
 //
 // find a object in array by key and value
 // returns index number
-function findObjectIdByKey(array, key, value) {
+    function findObjectIdByKey(array, key, value) {
+
+        if (array !== null && typeof array !== 'undefined') {
+
+            for (let i = 0; i < array.length; i++) {
+                if (array[i][key] === value) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+
+//*******************************************************************
+//
+// find all objects in array by key and value
+// returns index number array
+function findObjectsIdByKey(array, key, value) {
+
+    let ret = [];
 
     if (array !== null && typeof array !== 'undefined') {
 
         for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
-                return i;
+                ret.push(i);  
             }
         }
     }
-    return -1;
+    return ret;
 }
-
-
-
 
 
 
@@ -2681,7 +2755,7 @@ async function CheckTemperatureChange(room2check) {
 
                             if (!Present) {
                                 RoomState += "not present / ";
-                                let temp1 = await adapter.getStateAsync(idPreset + "AbsentDecrease");
+                                let temp1 = await adapter.getStateAsync(idPreset + "relative.AbsentDecrease");
 
                                 adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
                                 if (temp1 !== null) {
@@ -3437,7 +3511,12 @@ async function CheckAllExternalStates() {
     adapter.log.info("external states checked, done");
 }
 
+
+
+
 async function CheckWindowSensors(roomID) {
+
+    let state2Set = false;
 
     try {
         if (adapter.config.UseSensors) {
@@ -3445,7 +3524,7 @@ async function CheckWindowSensors(roomID) {
 
             adapter.log.debug("Check sensors for " + roomName);
 
-            let state2Set = false;
+            
             for (let i = 0; i < adapter.config.devices.length; i++) {
 
                 //adapter.log.debug("---check sensor with OID " + adapter.config.devices[i].OID_Current);
@@ -3484,6 +3563,8 @@ async function CheckWindowSensors(roomID) {
     catch (e) {
         adapter.log.error('exception in CheckWindowSensors [' + e + ']');
     }
+
+    return state2Set;
 }
 
 

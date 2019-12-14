@@ -647,6 +647,17 @@ systemDictionary = {
         "es": "Ruta al punto de datos \\ \"party now \\\"",
         "pl": "Ścieżka do punktu danych \\ „imprezuj teraz \\”",
         "zh-cn": "数据点“立即参加聚会”的路径"
+    },
+    "SensorDelay": {
+        "en": "Sensor Delay [sec]",
+        "de": "Sensor Verzögerung [Sek]",
+        "ru": "Задержка датчика [сек]",
+        "pt": "Atraso do sensor [seg]",
+        "nl": "Sensorvertraging [sec]",
+        "fr": "Délai du capteur [sec]",
+        "it": "Ritardo sensore [sec]",
+        "es": "Retraso del sensor [seg.]",
+        "pl": "Opóźnienie czujnika [s]",
+        "zh-cn": "传感器延迟[秒]"
     }
-
 };
