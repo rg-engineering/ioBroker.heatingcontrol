@@ -2187,8 +2187,9 @@ function StopTempOverride(roomID, cronjobID) {
     adapter.log.info("Stop Temperatur Override " + adapter.config.rooms[roomID].name);
 
     //cron job beenden
-    deleteCronJob(cronjobID);
-
+    if (cronjobID >= 0) {
+        deleteCronJob(cronjobID);
+    }
     const id = 'CurrentProfile';
 
     adapter.getState(id, function (err, obj) {
@@ -2752,102 +2753,87 @@ async function CheckTemperatureChange(room2check) {
 
                             //and we need some information per room
 
-
-                            if (!Present) {
-                                RoomState += "not present / ";
-                                let temp1 = await adapter.getStateAsync(idPreset + "relative.AbsentDecrease");
-
-                                adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
-                                if (temp1 !== null) {
-                                    AbsentDecrease = temp1.val;
-                                }
-                                else {
-                                    adapter.log.warn("AbsentDecrease not defined");
-                                }
-                            }
-
-                            else if (GuestsPresent) {
-
-                                RoomState += "guests present / ";
-
-                                let temp2 = await adapter.getStateAsync(idPreset + "relative.GuestIncrease");
-                                adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
-                                if (temp2 !== null) {
-                                    GuestIncrease = temp2.val;
-                                }
-                                else {
-                                    adapter.log.warn("GuestIncrease not defined");
-                                }
-                            }
-
-                            else if (PartyNow) {
-
-                                RoomState += "party / ";
-
-                                let temp3 = await adapter.getStateAsync(idPreset + "relative.PartyDecrease");
-                                adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
-                                if (temp3 !== null) {
-                                    PartyDecrease = temp3.val;
-                                }
-                                else {
-                                    adapter.log.warn("PartyDecrease not defined");
-                                }
-                            }
-
-
-                            else if (WindowOpen) {
-
-                                RoomState += "window open / ";
-
+                            if (WindowOpen) {
                                 let temp4 = await adapter.getStateAsync(idPreset + "relative.WindowOpenDecrease");
                                 adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp4));
-                                if (temp4 !== null) {
+                                if (temp4 !== null && temp4.val !== 0) {
+                                    RoomState += "window open / ";
                                     WindowOpenDecrease = temp4.val;
                                 }
-                                else {
-                                    adapter.log.warn("WindowOpenDecrease not defined");
-                                }
+                                //else {
+                                //    adapter.log.warn("WindowOpenDecrease not defined");
+                                //}
                             }
-
                             else if (VacationAbsent) {
-
-                                RoomState += "vacation absent / ";
-
                                 let temp5 = await adapter.getStateAsync(idPreset + "relative.VacationAbsentDecrease");
                                 adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp5));
-                                if (temp5 !== null ) {
+                                if (temp5 !== null && temp5.val !== 0) {
+                                    RoomState += "vacation absent / ";
                                     VacationAbsentDecrease = temp5.val;
                                 }
-                                else {
-                                    adapter.log.warn("VacationAbsentDecrease not defined");
+                                //else {
+                                //    adapter.log.warn("VacationAbsentDecrease not defined");
+                                //}
+                            }
+                            
+                            else if (PartyNow) {
+                                let temp3 = await adapter.getStateAsync(idPreset + "relative.PartyDecrease");
+                                adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
+                                if (temp3 !== null && temp3.val!==0) {
+                                    RoomState += "party / ";
+                                    PartyDecrease = temp3.val;
                                 }
+                                //else {
+                                //    adapter.log.warn("PartyDecrease not defined");
+                                //}
+                            }
+                            else if (!Present) {
+                                let temp1 = await adapter.getStateAsync(idPreset + "relative.AbsentDecrease");
+                                adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
+                                if (temp1 !== null && temp1.val!==0) {
+                                    RoomState += "not present / ";
+                                    AbsentDecrease = temp1.val;
+                                }
+                                //else {
+                                //    adapter.log.warn("AbsentDecrease not defined");
+                                //}
+                            }
+                            else if (GuestsPresent) {
+                                let temp2 = await adapter.getStateAsync(idPreset + "relative.GuestIncrease");
+                                adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
+                                if (temp2 !== null && temp2.val!==0) {
+                                    RoomState += "guests present / ";
+                                    GuestIncrease = temp2.val;
+                                }
+                                //else {
+                                //    adapter.log.warn("GuestIncrease not defined");
+                                //}
                             }
                         }
                         else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
 
-                            if (VacationAbsent) {
-                                let temp6 = await adapter.getStateAsync(idPreset + "absolute.VacationAbsentDecrease");
-                                adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp6));
-                                if (temp6 !== null && temp6.val !== 0) {
-                                    ReducedTemperature = temp6.val;
-                                    RoomState += "vacation absent / ";
-                                }
-                                else {
-                                    //adapter.log.warn("VacationAbsentDecrease not defined");
-                                }
-                            }
-                            else if (WindowOpen) {
+                            if (WindowOpen) {
                                 let temp6 = await adapter.getStateAsync(idPreset + "absolute.WindowOpenDecrease");
                                 adapter.log.debug("WindowOpenDecrease " + JSON.stringify(temp6));
                                 if (temp6 !== null && temp6.val !== 0) {
                                     ReducedTemperature = temp6.val;
                                     RoomState += "window open / ";
                                 }
-                                else {
+                                //else {
                                     //adapter.log.warn("WindowOpenDecrease not defined");
-                                }
+                                //}
                             }
-
+                            else if (VacationAbsent) {
+                                let temp6 = await adapter.getStateAsync(idPreset + "absolute.VacationAbsentDecrease");
+                                adapter.log.debug("VacationAbsentDecrease " + JSON.stringify(temp6));
+                                if (temp6 !== null && temp6.val !== 0) {
+                                    ReducedTemperature = temp6.val;
+                                    RoomState += "vacation absent / ";
+                                }
+                                //else {
+                                    //adapter.log.warn("VacationAbsentDecrease not defined");
+                                //}
+                            }
                             else if (PartyNow) {
                                 let temp6 = await adapter.getStateAsync(idPreset + "absolute.PartyDecrease");
                                 adapter.log.debug("PartyDecrease " + JSON.stringify(temp6));
@@ -2855,9 +2841,9 @@ async function CheckTemperatureChange(room2check) {
                                     ReducedTemperature = temp6.val;
                                     RoomState += "party / ";
                                 }
-                                else {
+                                //else {
                                     //adapter.log.warn("PartyDecrease not defined");
-                                }
+                                //}
                             }
 
                             else if (!Present) {
@@ -2867,9 +2853,9 @@ async function CheckTemperatureChange(room2check) {
                                     ReducedTemperature = temp6.val;
                                     RoomState += "not present / ";
                                 }
-                                else {
+                                //else {
                                     //adapter.log.warn("AbsentDecrease not defined");
-                                }
+                                //}
                             }
 
                             else if (GuestsPresent) {
@@ -2879,9 +2865,9 @@ async function CheckTemperatureChange(room2check) {
                                     ReducedTemperature = temp6.val;
                                     RoomState += "guests / ";
                                 }
-                                else {
+                                //else {
                                     //adapter.log.warn("GuestIncrease not defined");
-                                }
+                                //}
                             }
                         }
 
@@ -3068,7 +3054,7 @@ async function CheckTemperatureChange(room2check) {
 
                                 if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
 
-                                    adapter.log.info('room ' + adapter.config.rooms[room].name + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+                                    adapter.log.info('room ' + adapter.config.rooms[room].name + " Thermostat " + adapter.config.devices[ii].name + " target is " + nextSetTemperature);
 
                                     //adapter.log.debug("*4 " + state);
                                     //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
@@ -3111,6 +3097,9 @@ async function CheckTemperatureChange(room2check) {
         }
         else {
             adapter.log.debug("nothing to do: no heating period (certain temp todo)");
+            var RoomState = "no heating period";
+            let id = "Rooms." + adapter.config.rooms[room].name + ".State";
+            await adapter.setStateAsync(id, { ack: true, val: RoomState });
         }
 
         await HandleActorsGeneral(HeatingPeriodActive);
@@ -3124,7 +3113,7 @@ async function CheckTemperatureChange(room2check) {
 
 async function StartTemperaturOverride(room) {
 
-    adapter.log.info("start temperature override for room " + room);
+    adapter.log.info("change temperature override for room " + room);
 
     try {
         let roomID = findObjectIdByKey(adapter.config.rooms, 'name', room);
@@ -3135,12 +3124,17 @@ async function StartTemperaturOverride(room) {
             let nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
             let nextSetTemperature = nextSetTemperatureVal.val;
 
-
-
             let OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
             let OverrideTime = OverrideTimeVal.val.split(":");
 
-            if (nextSetTemperature > 0) {
+            if (adapter.config.rooms[roomID].TempOverride && nextSetTemperature === 0) {
+                // we want to cancel override
+
+                StopTempOverride(roomID, -1);
+            }
+
+
+            else if (nextSetTemperature > 0) {
                 if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
 
                     let now = new Date();
@@ -3524,7 +3518,7 @@ async function CheckWindowSensors(roomID) {
 
             adapter.log.debug("Check sensors for " + roomName);
 
-            
+
             for (let i = 0; i < adapter.config.devices.length; i++) {
 
                 //adapter.log.debug("---check sensor with OID " + adapter.config.devices[i].OID_Current);
@@ -3555,7 +3549,7 @@ async function CheckWindowSensors(roomID) {
 
             adapter.config.rooms[roomID].WindowIsOpen = state2Set;
 
-            let id = "Rooms."  + adapter.config.rooms[roomID].name + ".WindowIsOpen";
+            let id = "Rooms." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
             await adapter.setStateAsync(id, { ack: true, val: state2Set });
 
         }
