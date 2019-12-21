@@ -3103,11 +3103,16 @@ async function CheckTemperatureChange(room2check) {
         else {
             adapter.log.debug("nothing to do: no heating period (certain temp todo)");
             var RoomState = "no heating period";
-            let id = "Rooms." + adapter.config.rooms[room].name + ".State";
-            await adapter.setStateAsync(id, { ack: true, val: RoomState });
+
+            for (var r = 0; r < adapter.config.rooms.length; r++) {
+                if (adapter.config.rooms[r].isActive) {
+                    let id = "Rooms." + adapter.config.rooms[r].name + ".State";
+                    await adapter.setStateAsync(id, { ack: true, val: RoomState });
+                }
+            }
         }
 
-        await HandleActorsGeneral(HeatingPeriodActive);
+        await HandleActorsGeneral(HeatingPeriodActive.val);
 
         getCronStat();
     }
@@ -3229,7 +3234,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
                         adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " to " + target);
                     }
                     else {
-                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " nothing to do");
+                        adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " nothing to do");
                     }
                 }
             }
