@@ -2266,6 +2266,11 @@ function getCronStat() {
             adapter.log.debug('[INFO] ' + '      status = ' + cronJobs[n].running + ' next event: ' + timeConverter(cronJobs[n].nextDates()));
         }
     }
+
+    if (cronJobs.length > 100) {
+        adapter.log.warn("more then 100 cron jobs existing for this adapter, this might be a configuration error!");
+    }
+
 }
 
 function deleteCronJob(id) {
