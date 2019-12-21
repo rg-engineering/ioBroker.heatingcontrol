@@ -101,6 +101,9 @@ DefaultTargets[4] = ['21:00', 21];
 
 let SystemDateFormat = "DD.MM.YYYY";
 
+
+let ActorsWithoutThermostat = [];
+
 let adapter;
 function startAdapter(options) {
     options = options || {};
@@ -197,6 +200,8 @@ async function main() {
         await CreateDatepoints();
         
         SystemDateFormat = await GetSystemDateformat();
+
+        SearchActorsWithoutThermostat();
 
         await checkHeatingPeriod();
 
@@ -3200,26 +3205,66 @@ async function StartTemperaturOverride(room) {
 async function HandleActorsGeneral(HeatingPeriodActive) {
     if (adapter.config.UseActors) {
 
-        var room;
-        //if no heating period and acturs should be set to on or off
+        //if no heating period and actors should be set to on or off
         if (!HeatingPeriodActive && adapter.config.UseActorsIfNotHeating > 1) {
-            let target = adapter.config.UseActorsIfNotHeating === 2 ? false : true;
+            let target = false;
+            if (parseInt(adapter.config.UseActorsIfNotHeating) === 2) {
+                target = false;
+            }
+            else if (parseInt(adapter.config.UseActorsIfNotHeating) === 3) {
+                target = true;
+            }
+            else {
+                adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNotHeating));
+            }
+
             for (let device = 0; device < adapter.config.devices.length; device++) {
                 if (adapter.config.devices[device].type === 2) {
+                    //check current state and set only if changed
 
-                    await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
-                    adapter.log.debug('room ' + adapter.config.devices[target].room + " actor " + adapter.config.devices[device].OID_Target + " " + state);
+                    let currentState = await adapter.getForeignStateAsync(adapter.config.devices[device].OID_Target);
+                    if (currentState.val !== target) {
+
+                        await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
+                        adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " to " + target);
+                    }
+                    else {
+                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " nothing to do");
+                    }
                 }
             }
         }
 
-
+        
         //if we are in heating period but room has no thermostat
-        if (HeatingPeriodActive && adapter.config.UseActorsIfNoThermostat > 1) {
+        if (HeatingPeriodActive && parseInt(adapter.config.UseActorsIfNoThermostat) > 1) {
+            if (typeof ActorsWithoutThermostat !== 'undefined' && ActorsWithoutThermostat.length > 0) {
+                let target = false;
+                if (parseInt(adapter.config.UseActorsIfNoThermostat) === 2) {
+                    target = false;
+                }
+                else if (parseInt(adapter.config.UseActorsIfNoThermostat) === 3) {
+                    target = true;
+                }
+                else {
+                    adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNoThermostat));
+                }
 
-            //let target = adapter.config.UseActorsIfNoThermostat === 2 ? false : true;
+                adapter.log.info("HandleActorsGeneral: setting actuators without thermostats to " + target);
 
-            adapter.log.warn("HandleActorsGeneral: not implemented yet");
+                for (let d = 0; d < ActorsWithoutThermostat.length; d++) {
+                    //prüfen, ob state schon target entspricht
+                    let currentState = await adapter.getForeignStateAsync(ActorsWithoutThermostat[d].oid);
+                    if (currentState.val !== target) {
+                        
+                        await adapter.setForeignStateAsync(ActorsWithoutThermostat[d].oid, target);
+                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " to " + target);
+                    }
+                    else {
+                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " nothing to do");
+                    }
+                }
+            }
         }
     }
 }
@@ -3561,7 +3606,56 @@ async function CheckWindowSensors(roomID) {
     return state2Set;
 }
 
+function SearchActorsWithoutThermostat() {
+    //ActorsWithoutThermostat
+    try {
+        if (adapter.config.UseActors && parseInt(adapter.config.UseActorsIfNoThermostat) > 1) {
+            adapter.log.info('searching actuators without thermostats');
 
+            for (let room = 0; room < adapter.config.rooms.length; room++) {
+
+                if (adapter.config.rooms[room].isActive) {
+                    let bHasThermostat = false;
+                    let bHasActors = false;
+                    let devices = findObjectsByKey(adapter.config.devices, 'room', adapter.config.rooms[room].name);
+
+                    if (devices !== null) {
+
+                        for (let d = 0; d < devices.length; d++) {
+                            if (devices[d].type === 1 && devices[d].isActive) { // thermostat
+                                bHasThermostat = true;
+                                adapter.log.debug("found thermostat " + devices[d].name + " for " + adapter.config.rooms[room].name);
+                            }
+                            if (devices[d].type === 2 && devices[d].isActive) { // actor
+                                bHasActors = true;
+                                adapter.log.debug("found actor " + devices[d].name + " for " + adapter.config.rooms[room].name);
+                            }
+                        }
+
+                        if (!bHasThermostat && bHasActors) {
+                            for (let d = 0; d < devices.length; d++) {
+
+                                if (devices[d].type === 2 && devices[d].isActive) { // actor
+
+                                    adapter.log.debug("push actor " + devices[d].name + " to list");
+
+                                    ActorsWithoutThermostat.push({
+                                        name: devices[d].name,
+                                        oid: devices[d].OID_Target
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            adapter.log.debug('found actuators without thermostats: ' + JSON.stringify(ActorsWithoutThermostat));
+        }
+    }
+    catch (e) {
+        adapter.log.error('exception in SearchActorsWithoutThermostat [' + e + ']');
+    }
+}
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {
