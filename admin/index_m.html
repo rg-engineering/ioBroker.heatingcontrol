@@ -168,8 +168,6 @@
                     timeout1 = null;
                 }
 
-                AdapterIsOnline = true;
-
                 DeviceList = list;
 
                 console.log('got devices ' + JSON.stringify(DeviceList));
@@ -189,6 +187,8 @@
                     clearTimeout(timeout2);
                     timeout2 = null;
                 }
+
+                AdapterIsOnline = true;
 
                 console.log('got functions ' + JSON.stringify(list));
 
@@ -357,15 +357,26 @@
             showHideSettings();
             M.updateTextFields();
 
-
             var _id = 'heatingcontrol.' + instance;
             console.log('my instance ' + _id);
             getFunctions(settings.Gewerk, onChange, _id);
-            getDevices(onChange, _id);
-            getRooms(onChange, _id, false);
 
+            if (typeof settings.devices !== 'undefined' && settings.devices != null && settings.devices.length > 0) {
+                DeviceList = settings.devices;
+                console.log('using devices from settings ' + JSON.stringify(DeviceList));
+            }
+            else {
+                getDevices(onChange, _id);
+            }
+
+            if (typeof settings.rooms !== 'undefined' && settings.rooms != null &&  settings.rooms.length > 0) {
+                values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
+                console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
+            }
+            else {
+                getRooms(onChange, _id, false);
+            }
         }
-
 
         // ... and the function save has to exist.
         // you have to make sure the callback is called with the settings object as first param!
