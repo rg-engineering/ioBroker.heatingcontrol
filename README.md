@@ -133,6 +133,8 @@ Just configure events from ical in admin. Supported are
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
 * (René) handling of actuators without thermostat
+* (René) see issue #66: handle lowering in time between 0:00 and first period
+* (René) see issue #64: import of configuration fixed
 
 ### 0.3.9 (2019-12-14)
 * (René) see issue #60: sensor delay

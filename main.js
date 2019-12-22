@@ -103,6 +103,7 @@ let SystemDateFormat = "DD.MM.YYYY";
 
 
 let ActorsWithoutThermostat = [];
+let lastSetTemperature = [];
 
 let adapter;
 function startAdapter(options) {
@@ -2785,11 +2786,11 @@ async function CheckTemperatureChange(room2check) {
                                 //    adapter.log.warn("VacationAbsentDecrease not defined");
                                 //}
                             }
-                            
+
                             else if (PartyNow) {
                                 let temp3 = await adapter.getStateAsync(idPreset + "relative.PartyDecrease");
                                 adapter.log.debug("PartyDecrease " + JSON.stringify(temp3));
-                                if (temp3 !== null && temp3.val!==0) {
+                                if (temp3 !== null && temp3.val !== 0) {
                                     RoomState += "party / ";
                                     PartyDecrease = temp3.val;
                                 }
@@ -2800,7 +2801,7 @@ async function CheckTemperatureChange(room2check) {
                             else if (!Present) {
                                 let temp1 = await adapter.getStateAsync(idPreset + "relative.AbsentDecrease");
                                 adapter.log.debug("AbsentDecrease " + JSON.stringify(temp1));
-                                if (temp1 !== null && temp1.val!==0) {
+                                if (temp1 !== null && temp1.val !== 0) {
                                     RoomState += "not present / ";
                                     AbsentDecrease = temp1.val;
                                 }
@@ -2811,7 +2812,7 @@ async function CheckTemperatureChange(room2check) {
                             else if (GuestsPresent) {
                                 let temp2 = await adapter.getStateAsync(idPreset + "relative.GuestIncrease");
                                 adapter.log.debug("GuestIncrease " + JSON.stringify(temp2));
-                                if (temp2 !== null && temp2.val!==0) {
+                                if (temp2 !== null && temp2.val !== 0) {
                                     RoomState += "guests present / ";
                                     GuestIncrease = temp2.val;
                                 }
@@ -2830,7 +2831,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "window open / ";
                                 }
                                 //else {
-                                    //adapter.log.warn("WindowOpenDecrease not defined");
+                                //adapter.log.warn("WindowOpenDecrease not defined");
                                 //}
                             }
                             else if (VacationAbsent) {
@@ -2841,7 +2842,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "vacation absent / ";
                                 }
                                 //else {
-                                    //adapter.log.warn("VacationAbsentDecrease not defined");
+                                //adapter.log.warn("VacationAbsentDecrease not defined");
                                 //}
                             }
                             else if (PartyNow) {
@@ -2852,7 +2853,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "party / ";
                                 }
                                 //else {
-                                    //adapter.log.warn("PartyDecrease not defined");
+                                //adapter.log.warn("PartyDecrease not defined");
                                 //}
                             }
 
@@ -2864,7 +2865,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "not present / ";
                                 }
                                 //else {
-                                    //adapter.log.warn("AbsentDecrease not defined");
+                                //adapter.log.warn("AbsentDecrease not defined");
                                 //}
                             }
 
@@ -2876,7 +2877,7 @@ async function CheckTemperatureChange(room2check) {
                                     RoomState += "guests / ";
                                 }
                                 //else {
-                                    //adapter.log.warn("GuestIncrease not defined");
+                                //adapter.log.warn("GuestIncrease not defined");
                                 //}
                             }
                         }
@@ -3027,7 +3028,26 @@ async function CheckTemperatureChange(room2check) {
                             adapter.log.warn('CheckTemperatureChange:not implemented yet, profile type is ' + parseInt(adapter.config.ProfileType, 10));
                         }
 
-                        if (currentPeriod > -1) {
+                        if (currentPeriod < 0) {// before first period
+                            // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
+
+                            if (typeof lastSetTemperature[room] !== 'undefined') {
+                                nextTemperature = lastSetTemperature[room];
+                            }
+                            else {
+                                adapter.log.error("### current period not found and no previous temperature available ");
+                                RoomState = "error: current period not found";
+                                currentPeriod = -2;
+                            }
+
+                        }
+                        else {
+                            //merke letzte Temperature
+
+                            lastSetTemperature[room] = nextTemperature;
+                        }
+
+                        if (currentPeriod > -2) {
                             //find devices for rooms
 
                             adapter.log.debug("### current > 1 " + currentPeriod + " " + parseInt(adapter.config.TemperatureDecrease));
@@ -3073,24 +3093,23 @@ async function CheckTemperatureChange(room2check) {
                                 }
                             }
 
-                            const currenttime = sNextTime[0] + ":" + sNextTime[1];
-                            const timePeriod = "Period " + currentPeriod + " : " + currenttime;
-                            let id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
-                            await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
+                            if (currentPeriod > -1) {
+                                const currenttime = sNextTime[0] + ":" + sNextTime[1];
+                                const timePeriod = "Period " + currentPeriod + " : " + currenttime;
+                                let id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
+                                await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
 
-                            id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
-                            await adapter.setStateAsync(id3, { ack: true, val: currentPeriod });
+                                id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
+                                await adapter.setStateAsync(id3, { ack: true, val: currentPeriod });
 
-                            id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
-                            await adapter.setStateAsync(id3, { ack: true, val: currenttime });
-
+                                id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodTime";
+                                await adapter.setStateAsync(id3, { ack: true, val: currenttime });
+                            }
                         }
                         else {
-                            adapter.log.debug("### current period not found ");
+                            adapter.log.error("### current period not found ");
                             RoomState = "error: current period not found";
-
-
-                            // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
+                            //sollte nicht mehr passieren
                         }
 
                         if (RoomState === "") {
