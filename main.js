@@ -1899,7 +1899,7 @@ async function HandleStateChangeDevices(id, state) {
                     if (windowIsOpen) {
                         adapter.log.debug('sensor delay ' + adapter.config.SensorDelay * 1000);
                         let timerId = setTimeout(function (room) {
-                            adapter.log.debug('fired');
+                            //adapter.log.debug('fired');
 
                             CheckTemperatureChange(room);
 
@@ -2882,172 +2882,48 @@ async function CheckTemperatureChange(room2check) {
                             }
                         }
 
-
-
                         let currentPeriod = -1;
                         let nextTemperature = -99;
                         let sNextTime;
-                        var period;
-                        adapter.log.debug("number of periods  " + adapter.config.NumberOfPeriods);
+                        //var period;
 
-                        if (parseInt(adapter.config.ProfileType, 10) === 1) {
+                        let ret = await FindNextPeriod(room, now, currentProfile);
 
-                            for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
-                                const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.time';
-                                adapter.log.debug("check ID " + id);
+                        currentPeriod = ret.currentPeriod;
+                        nextTemperature = ret.nextTemperature;
+                        sNextTime = ret.sNextTime;
 
-                                const nextTime = await adapter.getStateAsync(id);
-                                //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
-
-                                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                                //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
-
-                                //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
-
-                                if (now.getHours() > parseInt(nextTimes[0])
-                                    || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
-
-                                    const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.Temperature';
-
-                                    let temp6 = await adapter.getStateAsync(id2);
-
-                                    nextTemperature = Check4ValidTemmperature(temp6.val);
-
-                                    adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
-                                    currentPeriod = period;
-                                    sNextTime = nextTimes;
-
-                                }
-
-                            }
-                        }
-                        else if (parseInt(adapter.config.ProfileType, 10) === 2) {
-
-                            let daysname = "";
-                            if (now.getDay() > 0 && now.getDay() < 6) {
-                                daysname = "Mo-Fr";
-                            }
-                            else {
-                                daysname = "Sa-So";
-                            }
-
-                            if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
-                                daysname = "Sa-So";
-                                RoomState += "public holiday / ";
-                            }
-
-                            if (HolidayPresent) {
-                                daysname = "Sa-So";
-                                RoomState += "holiday present / ";
-                            }
-
-                            for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
-                                const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
-                                adapter.log.debug("check ID " + id);
-
-                                const nextTime = await adapter.getStateAsync(id);
-                                //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
-
-                                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                                //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
-
-                                //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
-
-                                if (now.getHours() > parseInt(nextTimes[0])
-                                    || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
-
-                                    const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
-
-                                    let temp6 = await adapter.getStateAsync(id2);
-                                    nextTemperature = Check4ValidTemmperature(temp6.val);
-
-                                    adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
-                                    currentPeriod = period;
-                                    sNextTime = nextTimes;
-
-                                }
-
-                            }
-                        }
-                        else if (parseInt(adapter.config.ProfileType, 10) === 3) {
-
-                            let daysname = "";
-                            switch (now.getDay()) {
-                                case 1: daysname = "Mon"; break;
-                                case 2: daysname = "Tue"; break;
-                                case 3: daysname = "Wed"; break;
-                                case 4: daysname = "Thu"; break;
-                                case 5: daysname = "Fri"; break;
-                                case 6: daysname = "Sat"; break;
-                                case 0: daysname = "Sun"; break;
-                            }
-
-                            if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
-                                daysname = "Sun";
-                                RoomState += "public holiday / ";
-                            }
-
-                            if (HolidayPresent) {
-                                daysname = "Sun";
-                                RoomState += "holiday present / ";
-                            }
-
-                            for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
-
-                                const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
-
-                                adapter.log.debug("check ID " + id);
-
-                                const nextTime = await adapter.getStateAsync(id);
-                                //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
-
-                                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
-
-                                //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
-
-                                //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
-
-                                if (now.getHours() > parseInt(nextTimes[0])
-                                    || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
-
-                                    const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
-
-                                    let temp6 = await adapter.getStateAsync(id2);
-                                    nextTemperature = Check4ValidTemmperature(temp6.val);
-
-                                    adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
-                                    currentPeriod = period;
-                                    sNextTime = nextTimes;
-                                }
-                            }
-                        }
-                        else {
-                            //adapter.log.warn("profile type != 1 not implemented yet");
-                            adapter.log.warn('CheckTemperatureChange:not implemented yet, profile type is ' + parseInt(adapter.config.ProfileType, 10));
-                        }
-
-                        if (currentPeriod < 0) {// before first period
+                        if (currentPeriod === -2) {
                             // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
+                            //yesterrday 23.59
 
+                            var ts = Math.round(now.getTime() / 1000);
+                            var tsYesterday = ts - (24 * 3600);
+                            let yesterday = new Date(tsYesterday * 1000);
+                            yesterday.setHours(23);
+                            yesterday.setMinutes(59);
+                            ret = await FindNextPeriod(room, yesterday, currentProfile);
+
+                            currentPeriod = ret.currentPeriod;
+                            nextTemperature = ret.nextTemperature;
+                            sNextTime = ret.sNextTime;
+                        }
+
+                        if (currentPeriod === -2) {// also yesterday not found
                             if (typeof lastSetTemperature[room] !== 'undefined') {
                                 nextTemperature = lastSetTemperature[room];
+                                currentPeriod = -1;
                             }
                             else {
                                 adapter.log.error("### current period not found and no previous temperature available ");
                                 RoomState = "error: current period not found";
                                 currentPeriod = -2;
                             }
-
-                        }
-                        else {
-                            //merke letzte Temperature
-
-                            lastSetTemperature[room] = nextTemperature;
                         }
 
                         if (currentPeriod > -2) {
+                            lastSetTemperature[room] = nextTemperature;
+
                             //find devices for rooms
 
                             adapter.log.debug("### current > 1 " + currentPeriod + " " + parseInt(adapter.config.TemperatureDecrease));
@@ -3144,6 +3020,166 @@ async function CheckTemperatureChange(room2check) {
         adapter.log.error('exception in CheckTemperatureChange [' + e + ']');
     }
 }
+
+async function FindNextPeriod(room, now, currentProfile) {
+    adapter.log.debug("FindNextPeriod for " + now.toLocaleString() + " in " + adapter.config.rooms[room].name);
+
+    let nextTemperature = -99;
+    let currentPeriod = -2;
+    let period;
+    let sNextTime;
+
+    if (parseInt(adapter.config.ProfileType, 10) === 1) {
+
+        for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+            const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.time';
+            adapter.log.debug("check ID " + id);
+
+            const nextTime = await adapter.getStateAsync(id);
+            //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+            //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
+
+            //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
+
+            if (now.getHours() > parseInt(nextTimes[0])
+                || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
+
+                const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + '.Temperature';
+
+                let temp6 = await adapter.getStateAsync(id2);
+
+                nextTemperature = Check4ValidTemmperature(temp6.val);
+
+                adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
+                currentPeriod = period;
+                sNextTime = nextTimes;
+
+            }
+
+        }
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+
+        let daysname = "";
+        if (now.getDay() > 0 && now.getDay() < 6) {
+            daysname = "Mo-Fr";
+        }
+        else {
+            daysname = "Sa-So";
+        }
+
+        if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
+            daysname = "Sa-So";
+            RoomState += "public holiday / ";
+        }
+
+        if (HolidayPresent) {
+            daysname = "Sa-So";
+            RoomState += "holiday present / ";
+        }
+
+        for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+            const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
+            adapter.log.debug("check ID " + id);
+
+            const nextTime = await adapter.getStateAsync(id);
+            //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+            //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
+
+            //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
+
+            if (now.getHours() > parseInt(nextTimes[0])
+                || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
+
+                const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
+
+                let temp6 = await adapter.getStateAsync(id2);
+                nextTemperature = Check4ValidTemmperature(temp6.val);
+
+                adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
+                currentPeriod = period;
+                sNextTime = nextTimes;
+
+            }
+
+        }
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+        let daysname = "";
+        switch (now.getDay()) {
+            case 1: daysname = "Mon"; break;
+            case 2: daysname = "Tue"; break;
+            case 3: daysname = "Wed"; break;
+            case 4: daysname = "Thu"; break;
+            case 5: daysname = "Fri"; break;
+            case 6: daysname = "Sat"; break;
+            case 0: daysname = "Sun"; break;
+        }
+
+        if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
+            daysname = "Sun";
+            RoomState += "public holiday / ";
+        }
+
+        if (HolidayPresent) {
+            daysname = "Sun";
+            RoomState += "holiday present / ";
+        }
+
+        for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+
+            const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.time';
+
+            adapter.log.debug("check ID " + id);
+
+            const nextTime = await adapter.getStateAsync(id);
+            //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+
+            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+            //adapter.log.debug("# " + JSON.stringify(nextTimes) + " " + now.getHours() + " " + now.getMinutes());
+
+            //hier Zeitraum prüfen, dann kann das ganze auch bei Änderung aufgerufen werden
+
+            if (now.getHours() > parseInt(nextTimes[0])
+                || (now.getHours() === parseInt(nextTimes[0]) && now.getMinutes() >= parseInt(nextTimes[1]))) {
+
+                const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + '.Temperature';
+
+                let temp6 = await adapter.getStateAsync(id2);
+                nextTemperature = Check4ValidTemmperature(temp6.val);
+
+                adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
+                currentPeriod = period;
+                sNextTime = nextTimes;
+            }
+        }
+    }
+    else {
+        //adapter.log.warn("profile type != 1 not implemented yet");
+        adapter.log.warn('FindNextPeriod: profile not implemented yet, profile type is ' + parseInt(adapter.config.ProfileType, 10));
+    }
+
+    let ret = {
+        currentPeriod: currentPeriod,
+        nextTemperature: nextTemperature,
+        sNextTime: sNextTime
+    };
+
+
+    adapter.log.debug(adapter.config.rooms[room].name + " found period " + currentPeriod + " with " + nextTemperature + " on " + sNextTime);
+
+
+    return ret;
+}
+
 
 async function StartTemperaturOverride(room) {
 
