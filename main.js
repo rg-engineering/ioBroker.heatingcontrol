@@ -2896,12 +2896,13 @@ async function CheckTemperatureChange(room2check) {
                         if (currentPeriod === -2) {
                             // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
                             //yesterrday 23.59
-
+                            adapter.log.debug("search in yesterday (1) " + now.toLocaleString()); 
                             var ts = Math.round(now.getTime() / 1000);
                             var tsYesterday = ts - (24 * 3600);
                             let yesterday = new Date(tsYesterday * 1000);
                             yesterday.setHours(23);
                             yesterday.setMinutes(59);
+                            adapter.log.debug("search in yesterday (2) " + yesterday.toLocaleString());
                             ret = await FindNextPeriod(room, yesterday, currentProfile);
 
                             currentPeriod = ret.currentPeriod;
