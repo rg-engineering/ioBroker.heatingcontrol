@@ -138,10 +138,27 @@
 
             if ($useSensors.prop('checked')) {
                 console.log('show sensor settings');
+                 
             }
             else {
                 console.log('hide sensors settings');
             }
+
+            var $useFixHeatingPeriod = $('#UseFixHeatingPeriod');
+
+            if ($useFixHeatingPeriod.prop('checked')) {
+                console.log('show sensor fix heating period settings');
+                $('.col-FixHeatingPeriod-Start').show();
+                $('.col-FixHeatingPeriod-End').show();
+            }
+            else {
+                console.log('hide sensor fix heating period settings');
+                $('.col-FixHeatingPeriod-Start').hide();
+                $('.col-FixHeatingPeriod-End').hide();
+            }
+            
+
+
 
             //first col of device tables
             show_hide_column("table_thermostats", "thermostat_col_0", 0, false);
@@ -965,20 +982,17 @@
                         <label for="UseFixHeatingPeriod" class="translate">UseFixHeatingPeriod</label>
                     </div>
 
-                    <div class="input-field col s4">
+                    <div class="input-field col s4 col-FixHeatingPeriod-Start">
                         <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
                         <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
                     </div>
 
-                    <div class="input-field col s4">
+                    <div class="input-field col s4 col-FixHeatingPeriod-End">
                         <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
                         <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
                     </div>
 
                 </div>
-
-
-
             </div>
 
             <!-- tab "devices" -->

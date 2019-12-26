@@ -659,5 +659,17 @@ systemDictionary = {
         "es": "Retraso del sensor [seg.]",
         "pl": "Opóźnienie czujnika [s]",
         "zh-cn": "传感器延迟[秒]"
+    },
+    "UseMinTempPerRoom": {
+        "en": "use minimum temperature per room",
+        "de": "Mindesttemperatur pro Raum verwenden",
+        "ru": "используйте минимальную температуру на комнату",
+        "pt": "use temperatura mínima por quarto",
+        "nl": "gebruik de minimumtemperatuur per kamer",
+        "fr": "utiliser une température minimale par pièce",
+        "it": "utilizzare la temperatura minima per stanza",
+        "es": "usar temperatura mínima por habitación",
+        "pl": "stosować minimalną temperaturę na pokój",
+        "zh-cn": "每个房间使用最低温度"
     }
 };
