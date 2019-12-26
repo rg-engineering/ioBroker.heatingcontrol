@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.10",
+    "version": "0.3.11",
     "news": {
-      "0.3.10": {
+      "0.3.11": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -74,6 +74,7 @@
     "Path2GuestsPresentDP": "",
     "Path2PresentDPType": 1,
     "Path2PartyNowDP": "",
-    "SensorDelay":  0
+    "SensorDelay": 0,
+    "UseMinTempPerRoom": false
   }
 }

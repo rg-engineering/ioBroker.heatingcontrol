@@ -901,10 +901,22 @@ async function CreateDatepoints() {
 
                 adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
 
-
+                if (adapter.config.UseMinTempPerRoom) {
+                    await adapter.setObjectNotExistsAsync(id1 + '.MinimumTemperature', {
+                        type: 'state',
+                        common: {
+                            name: 'MinimumTemperature',
+                            type: 'number',
+                            role: 'history',
+                            unit: '°C',
+                            read: true,
+                            write: true
+                        },
+                        native: { id: 'MinimumTemperature' }
+                    });
+                }
                  
                 //===============================================================================
-                //ab hier verschoben
                 await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
                     type: 'state',
                     common: {
@@ -2004,6 +2016,25 @@ async function HandleActors(room, current, target) {
     */
 }
 
+async function CheckMinTemp(room, target) {
+
+    if (adapter.config.UseMinTempPerRoom) {
+
+        let id = "Rooms." + adapter.config.rooms[room].name + ".MinimumTemperature";
+
+        adapter.log.debug("checking min temp with " + id);
+        const minTemp = await adapter.getStateAsync(id);
+        adapter.log.debug("got " + JSON.stringify(minTemp));
+
+        if (typeof minTemp !== 'undefined' && minTemp !== null && minTemp.val !== null && target < minTemp.val) {
+            adapter.log.info("target " + target + " lower then minimum " + minTemp.val + " : setting to min");
+            target = minTemp.val;
+        }
+    }
+
+    return target;
+}
+
 
 async function HandleThermostat(oid, temperature) {
 
@@ -2965,6 +2996,9 @@ async function CheckTemperatureChange(room2check) {
 
                                     //adapter.log.debug("*4 " + state);
                                     //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+
+                                    nextSetTemperature = await CheckMinTemp(room, nextSetTemperature);
+
                                     await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
 
                                 }
@@ -3244,6 +3278,9 @@ async function StartTemperaturOverride(room) {
 
                             //adapter.log.debug("*4 " + state);
                             //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+
+                            nextSetTemperature = await CheckMinTemp(room, nextSetTemperature);
+
                             await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
                         }
                     }

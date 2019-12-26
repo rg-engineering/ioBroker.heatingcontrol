@@ -129,7 +129,10 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.10 (2019-12-xx)
+### 0.3.11 (2019-12-xx)
+* (René) option: minimum temperature per room
+
+### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
 * (René) handling of actuators without thermostat
