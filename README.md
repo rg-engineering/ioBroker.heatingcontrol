@@ -131,6 +131,8 @@ Just configure events from ical in admin. Supported are
 
 ### 0.3.11 (2019-12-xx)
 * (René) option: minimum temperature per room
+* (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
+
 
 ### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0
