@@ -2918,7 +2918,7 @@ async function CheckTemperatureChange(room2check) {
                         let sNextTime;
                         //var period;
 
-                        let ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent);
+                        let ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
 
                         currentPeriod = ret.currentPeriod;
                         nextTemperature = ret.nextTemperature;
@@ -2934,7 +2934,7 @@ async function CheckTemperatureChange(room2check) {
                             yesterday.setHours(23);
                             yesterday.setMinutes(59);
                             adapter.log.debug("search in yesterday (2) " + yesterday.toLocaleString());
-                            ret = await FindNextPeriod(room, yesterday, currentProfile, PublicHolidyToday, HolidayPresent);
+                            ret = await FindNextPeriod(room, yesterday, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
 
                             currentPeriod = ret.currentPeriod;
                             nextTemperature = ret.nextTemperature;
@@ -3056,7 +3056,7 @@ async function CheckTemperatureChange(room2check) {
     }
 }
 
-async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent ) {
+async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState ) {
     adapter.log.debug("FindNextPeriod for " + now.toLocaleString() + " in " + adapter.config.rooms[room].name);
 
     let nextTemperature = -99;
