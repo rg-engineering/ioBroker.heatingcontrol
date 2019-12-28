@@ -2552,7 +2552,7 @@ async function CalculateNextTime() {
 
                     ActiveRomms++;
 
-                    for (var day = 1; day <= 7; day++)
+                    for (var day = 1; day <= 7; day++) {
 
                         switch (day) {
                             case 1: sday = "Mon"; break;
@@ -2564,52 +2564,53 @@ async function CalculateNextTime() {
                             case 7: sday = "Sun"; break;
                         }
 
-                    //only per room, not global
-                    let LastTimeSetHour = -1;
-                    let LastTimeSetMinute = -1;
+                        //only per room, not global
+                        let LastTimeSetHour = -1;
+                        let LastTimeSetMinute = -1;
 
-                    adapter.log.debug("setting " + sday);
+                        adapter.log.debug("setting " + sday);
 
-                    for (period = 0; period < adapter.config.NumberOfPeriods; period++) {
-                        const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + sday + ".Periods." + period + '.time';
+                        for (period = 0; period < adapter.config.NumberOfPeriods; period++) {
+                            const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + sday + ".Periods." + period + '.time';
 
-                        //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
+                            //adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id);
 
-                        const nextTime = await adapter.getStateAsync(id);
-                        
+                            const nextTime = await adapter.getStateAsync(id);
 
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        if (CheckValidTime(id,nextTime)) {
-                            adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
-                            let nextTimes = nextTime.val.split(':'); //here we get hour and minute
 
-                            //add to list if not already there
-                            let bFound = false;
-                            for (i = 0; i < timerList.length; i++) {
-                                if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === day) {
-                                    bFound = true;
-                                    //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            if (CheckValidTime(id, nextTime)) {
+                                adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
+                                let nextTimes = nextTime.val.split(':'); //here we get hour and minute
+
+                                //add to list if not already there
+                                let bFound = false;
+                                for (i = 0; i < timerList.length; i++) {
+                                    if (timerList[i].hour === parseInt(nextTimes[0]) && timerList[i].minute === parseInt(nextTimes[1]) && timerList[i].day === day) {
+                                        bFound = true;
+                                        //adapter.log.debug("already in list " + JSON.stringify(nextTime));
+                                    }
                                 }
-                            }
-                            if (!bFound) {
-                                let TimeSetHour = parseInt(nextTimes[0]);
-                                let TimeSetMinute = parseInt(nextTimes[1]);
+                                if (!bFound) {
+                                    let TimeSetHour = parseInt(nextTimes[0]);
+                                    let TimeSetMinute = parseInt(nextTimes[1]);
 
-                                //see issue 13
-                                if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
-                                    adapter.log.debug("push to list " + " = " + nextTimes);
+                                    //see issue 13
+                                    if (TimeSetHour > LastTimeSetHour || (TimeSetHour === LastTimeSetHour && TimeSetMinute > LastTimeSetMinute)) {
+                                        adapter.log.debug("push to list " + " = " + nextTimes);
 
-                                    LastTimeSetHour = TimeSetHour;
-                                    LastTimeSetMinute = TimeSetMinute;
+                                        LastTimeSetHour = TimeSetHour;
+                                        LastTimeSetMinute = TimeSetMinute;
 
-                                    timerList.push({
-                                        hour: parseInt(nextTimes[0]),
-                                        minute: parseInt(nextTimes[1]),
-                                        day: day
-                                    });
-                                }
-                                else {
-                                    adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                        timerList.push({
+                                            hour: parseInt(nextTimes[0]),
+                                            minute: parseInt(nextTimes[1]),
+                                            day: day
+                                        });
+                                    }
+                                    else {
+                                        adapter.log.warn("wrong order of periods: " + TimeSetHour + ":" + TimeSetMinute + " is smaller then " + LastTimeSetHour + ":" + LastTimeSetMinute + ". Please reorder periods");
+                                    }
                                 }
                             }
                         }
