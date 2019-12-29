@@ -3379,7 +3379,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
 
 function Check4ValidTemmperature(temperature) {
 
-    if (isNaN(temperature)) {
+    if (isNaN(temperature) || typeof temperature === 'string') {
 
         adapter.log.warn("try to convert " + temperature + " to a number");
 
