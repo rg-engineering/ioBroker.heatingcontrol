@@ -2038,11 +2038,17 @@ async function CheckMinTemp(room, target) {
 
 async function HandleThermostat(oid, temperature) {
 
+    let target =  Check4ValidTemmperature(temperature);
+
     let currentTarget = await adapter.getForeignStateAsync(oid);
 
-    if (currentTarget.val !== temperature) {
-        await adapter.setForeignStateAsync(oid, temperature);
-        adapter.log.debug("thermostat " + oid + " to " + temperature);
+    if (typeof currentTarget.val !== typeof target) {
+        adapter.log.warn("HandleThermostat: different types " + typeof currentTarget.val + " vs " + typeof target);
+    }
+
+    if (currentTarget.val !== target) {
+        await adapter.setForeignStateAsync(oid, target);
+        adapter.log.debug("thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
     }
     else {
         adapter.log.debug("thermostat " + oid + " nothing to do, already " + currentTarget.val );
