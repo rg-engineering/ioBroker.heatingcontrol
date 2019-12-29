@@ -3,7 +3,7 @@
   "version": "0.3.14",
   "description": "HeatingControl Adapter",
   "author": {
-    "name": "René G.",
+    "name": "RenÃ© G.",
     "email": "info@rg-engineering.eu"
   },
   "homepage": "https://github.com/rg-engineering/ioBroker.heatingcontrol",
@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "cron": "^1.7.2",
-    "@iobroker/adapter-core": "^1.0.3"
+    "@iobroker/adapter-core": "^2.0.0"
   },
   "devDependencies": {
     "gulp": "^4.0.0",
     "mocha": "^6.0.2",
     "chai": "^4.2.0",
-    "@iobroker/testing": "1.3.1"
+    "@iobroker/testing": "2.0.0"
   },
   "main": "main.js",
   "bugs": {
