@@ -2794,7 +2794,9 @@ async function CheckTemperatureChange(room2check) {
 
                         let ReducedTemperature = 0;
 
-                        let WindowOpen = adapter.config.rooms[room].WindowIsOpen;
+                        const WindowOpen = adapter.config.rooms[room].WindowIsOpen;
+                        adapter.log.debug(adapter.config.rooms[room].name + " window open is " + WindowOpen);
+
 
                         let idPreset = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".";
 
@@ -3700,9 +3702,11 @@ async function CheckWindowSensors(roomID) {
                 }
             }
 
+            adapter.log.debug(roomName + " window open is " + state2Set);
+
             adapter.config.rooms[roomID].WindowIsOpen = state2Set;
 
-            let id = "Rooms." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
+            const id = "Rooms." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
             await adapter.setStateAsync(id, { ack: true, val: state2Set });
 
         }
