@@ -134,8 +134,9 @@ Just configure events from ical in admin. Supported are
 ## Changelog
 
 
-### 0.3.14 (2019-12-29)
+### 0.3.14 (2020-01-12)
 * (René) format conversion for temperatures in string to number
+* (René) ack for MinTemperature
 
 ### 0.3.13 (2019-12-28)
 * (René) bugfix create cron jobs for profile type 3 (daily)
