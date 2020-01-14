@@ -132,7 +132,8 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
-
+### 0.3.15 (2020-01-xx)
+* (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 
 ### 0.3.14 (2020-01-12)
 * (René) format conversion for temperatures in string to number

@@ -2023,11 +2023,11 @@ async function HandleActors(room, current, target) {
     */
 }
 
-async function CheckMinTemp(room, target) {
+async function CheckMinTemp(roomId, target) {
 
     if (adapter.config.UseMinTempPerRoom) {
 
-        const id = "Rooms." + adapter.config.rooms[room].name + ".MinimumTemperature";
+        const id = "Rooms." + adapter.config.rooms[roomId].name + ".MinimumTemperature";
 
         adapter.log.debug("checking min temp with " + id);
         const minTemp = await adapter.getStateAsync(id);
@@ -3293,7 +3293,7 @@ async function StartTemperaturOverride(room) {
                             //adapter.log.debug("*4 " + state);
                             //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
 
-                            nextSetTemperature = await CheckMinTemp(room, nextSetTemperature);
+                            nextSetTemperature = await CheckMinTemp(roomID, nextSetTemperature);
 
                             await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
                         }
