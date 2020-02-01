@@ -2025,40 +2025,61 @@ async function HandleActors(room, current, target) {
 
 async function CheckMinTemp(roomId, target) {
 
-    if (adapter.config.UseMinTempPerRoom) {
+    try {
+        if (adapter.config.UseMinTempPerRoom) {
 
-        const id = "Rooms." + adapter.config.rooms[roomId].name + ".MinimumTemperature";
+            const id = "Rooms." + adapter.config.rooms[roomId].name + ".MinimumTemperature";
 
-        adapter.log.debug("checking min temp with " + id);
-        const minTemp = await adapter.getStateAsync(id);
-        adapter.log.debug("got " + JSON.stringify(minTemp));
+            adapter.log.debug("checking min temp with " + id);
+            const minTemp = await adapter.getStateAsync(id);
+            adapter.log.debug("got " + JSON.stringify(minTemp));
 
-        if (typeof minTemp !== "undefined" && minTemp !== null && minTemp.val !== null && target < minTemp.val) {
-            adapter.log.info("target " + target + " lower then minimum " + minTemp.val + " : setting to min");
-            target = minTemp.val;
+            if (typeof minTemp !== "undefined" && minTemp !== null && minTemp.val !== null && target < minTemp.val) {
+                adapter.log.info("target " + target + " lower then minimum " + minTemp.val + " : setting to min");
+                target = minTemp.val;
+            }
         }
     }
-
+    catch (e) {
+        adapter.log.error("exception in CheckMinTemp [" + e + "]");
+    }
     return target;
 }
 
 
 async function HandleThermostat(oid, temperature) {
 
-    const target =  Check4ValidTemmperature(temperature);
+    try {
 
-    const currentTarget = await adapter.getForeignStateAsync(oid);
+        const target = Check4ValidTemmperature(temperature);
 
-    if (typeof currentTarget.val !== typeof target) {
-        adapter.log.warn("HandleThermostat: different types " + typeof currentTarget.val + " vs " + typeof target);
+        const currentTarget = await adapter.getForeignStateAsync(oid);
+        //adapter.log.debug("333 " + JSON.stringify(currentTarget));
+
+        
+        if (currentTarget != null && typeof currentTarget != "undefined" && typeof currentTarget.val !== typeof target) {
+            adapter.log.warn("HandleThermostat: different types " + typeof currentTarget.val + " vs " + typeof target);
+        }
+
+
+        if (currentTarget != null && typeof currentTarget != "undefined") {
+            if (currentTarget.val !== target) {
+                await adapter.setForeignStateAsync(oid, target);
+                adapter.log.debug("thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
+            }
+            else {
+                adapter.log.debug("thermostat " + oid + " nothing to do, already " + currentTarget.val);
+            }
+        }
+        else {
+            await adapter.setForeignStateAsync(oid, target);
+            adapter.log.debug("thermostat " + oid + " to " + target + "; current is udefined");
+
+        }
+
     }
-
-    if (currentTarget.val !== target) {
-        await adapter.setForeignStateAsync(oid, target);
-        adapter.log.debug("thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
-    }
-    else {
-        adapter.log.debug("thermostat " + oid + " nothing to do, already " + currentTarget.val );
+    catch (e) {
+        adapter.log.error("exception in HandleThermostat [" + e + "]");
     }
 }
 
@@ -3053,11 +3074,11 @@ async function CheckTemperatureChange(room2check) {
         }
         else {
             adapter.log.debug("nothing to do: no heating period (certain temp todo)");
-            var RoomState = "no heating period";
+            const RoomState = "no heating period";
 
-            for (var r = 0; r < adapter.config.rooms.length; r++) {
+            for (let r = 0; r < adapter.config.rooms.length; r++) {
                 if (adapter.config.rooms[r].isActive) {
-                    let id = "Rooms." + adapter.config.rooms[r].name + ".State";
+                    const id = "Rooms." + adapter.config.rooms[r].name + ".State";
                     await adapter.setStateAsync(id, { ack: true, val: RoomState });
                 }
             }
@@ -3068,7 +3089,7 @@ async function CheckTemperatureChange(room2check) {
         getCronStat();
     }
     catch (e) {
-        adapter.log.error('exception in CheckTemperatureChange [' + e + ']');
+        adapter.log.error("exception in CheckTemperatureChange [" + e + "]");
     }
 }
 
@@ -3320,82 +3341,118 @@ async function StartTemperaturOverride(room) {
 
 
 async function HandleActorsGeneral(HeatingPeriodActive) {
-    if (adapter.config.UseActors) {
 
-        //if no heating period and actors should be set to on or off
-        if (!HeatingPeriodActive && adapter.config.UseActorsIfNotHeating > 1) {
-            let target = false;
-            if (parseInt(adapter.config.UseActorsIfNotHeating) === 2) {
-                target = false;
-            }
-            else if (parseInt(adapter.config.UseActorsIfNotHeating) === 3) {
-                target = true;
-            }
-            else {
-                adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNotHeating));
-            }
+    try {
 
-            for (let device = 0; device < adapter.config.devices.length; device++) {
-                if (adapter.config.devices[device].type === 2) {
-                    //check current state and set only if changed
+        if (adapter.config.UseActors) {
 
-                    let currentState = await adapter.getForeignStateAsync(adapter.config.devices[device].OID_Target);
-                    if (currentState.val !== target) {
+            //if no heating period and actors should be set to on or off
+            if (!HeatingPeriodActive && adapter.config.UseActorsIfNotHeating > 1) {
 
-                        await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
-                        adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " to " + target);
-                    }
-                    else {
-                        adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " nothing to do");
-                    }
-                }
-            }
-        }
+                adapter.log.debug("switch off all actors");
 
-        
-        //if we are in heating period but room has no thermostat
-        if (HeatingPeriodActive && parseInt(adapter.config.UseActorsIfNoThermostat) > 1) {
-            if (typeof ActorsWithoutThermostat !== 'undefined' && ActorsWithoutThermostat.length > 0) {
                 let target = false;
-                if (parseInt(adapter.config.UseActorsIfNoThermostat) === 2) {
+                if (parseInt(adapter.config.UseActorsIfNotHeating) === 2) {
                     target = false;
                 }
-                else if (parseInt(adapter.config.UseActorsIfNoThermostat) === 3) {
+                else if (parseInt(adapter.config.UseActorsIfNotHeating) === 3) {
                     target = true;
                 }
                 else {
-                    adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNoThermostat));
+                    adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNotHeating));
                 }
 
-                adapter.log.info("HandleActorsGeneral: setting actuators without thermostats to " + target);
+                for (let device = 0; device < adapter.config.devices.length; device++) {
+                    if (adapter.config.devices[device].type === 2) {
+                        //check current state and set only if changed
 
-                for (let d = 0; d < ActorsWithoutThermostat.length; d++) {
-                    //prüfen, ob state schon target entspricht
-                    let currentState = await adapter.getForeignStateAsync(ActorsWithoutThermostat[d].oid);
-                    if (currentState.val !== target) {
-                        
-                        await adapter.setForeignStateAsync(ActorsWithoutThermostat[d].oid, target);
-                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " to " + target);
+                        const currentState = await adapter.getForeignStateAsync(adapter.config.devices[device].OID_Target);
+
+                        if (currentState != null && typeof currentState != "undefined") {
+                            if (currentState.val !== target) {
+
+                                await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
+                                adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " to " + target);
+                            }
+                            else {
+                                adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " nothing to do");
+                            }
+                        }
+                        else {
+                            await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
+                            adapter.log.debug(" actor " + adapter.config.devices[device].OID_Target + " to " + target + " current undefined");
+
+                        }
+                    }
+                }
+            }
+
+
+            //if we are in heating period but room has no thermostat
+            if (HeatingPeriodActive && parseInt(adapter.config.UseActorsIfNoThermostat) > 1) {
+
+                if (typeof ActorsWithoutThermostat !== "undefined" && ActorsWithoutThermostat.length > 0) {
+
+                    adapter.log.debug("switch off all actors");
+
+                    let target = false;
+                    if (parseInt(adapter.config.UseActorsIfNoThermostat) === 2) {
+                        target = false;
+                    }
+                    else if (parseInt(adapter.config.UseActorsIfNoThermostat) === 3) {
+                        target = true;
                     }
                     else {
-                        adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " nothing to do");
+                        adapter.log.warn("HandleActorsGeneral: unknown target value: " + parseInt(adapter.config.UseActorsIfNoThermostat));
+                    }
+
+                    adapter.log.info("HandleActorsGeneral: setting actuators without thermostats to " + target);
+
+                    for (let d = 0; d < ActorsWithoutThermostat.length; d++) {
+                        //prüfen, ob state schon target entspricht
+                        const currentState = await adapter.getForeignStateAsync(ActorsWithoutThermostat[d].oid);
+
+                        if (currentState != null && typeof currentState != "undefined") {
+                            if (currentState.val !== target) {
+
+                                await adapter.setForeignStateAsync(ActorsWithoutThermostat[d].oid, target);
+                                adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " to " + target);
+                            }
+                            else {
+                                adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " nothing to do");
+                            }
+                        }
+                        else {
+                            await adapter.setForeignStateAsync(ActorsWithoutThermostat[d].oid, target);
+                            adapter.log.debug(" actor " + ActorsWithoutThermostat[d].oid + " to " + target + " current undefined");
+                        }
                     }
                 }
             }
         }
+    }
+    catch (e) {
+        adapter.log.error("exception in HandleActorsGeneral [" + e + "]");
     }
 }
 
 function Check4ValidTemmperature(temperature) {
 
-    if (isNaN(temperature) || typeof temperature === 'string') {
+    try {
+        if (isNaN(temperature) || typeof temperature === "string") {
 
-        adapter.log.warn("try to convert " + temperature + " to a number");
+            adapter.log.warn("try to convert " + temperature + " to a number");
 
-        return parseInt(temperature);
+            return parseInt(temperature);
+        }
+        else {
+            return temperature;
+        }
+
     }
-    else {
-        return temperature;
+    catch (e) {
+        adapter.log.error("exception in Check4ValidTemmperature [" + e + "]");
+        return 0;
     }
 
 }

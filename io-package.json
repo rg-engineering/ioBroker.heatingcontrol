@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.15",
+    "version": "0.3.16",
     "news": {
-      "0.3.15": {
+      "0.3.16": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",

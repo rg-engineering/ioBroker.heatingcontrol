@@ -132,6 +132,9 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+### 0.3.16 (2020-02-xx)
+
+
 ### 0.3.15 (2020-01-18)
 * (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 
