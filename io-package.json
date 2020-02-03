@@ -17,17 +17,29 @@
       }
     },
     "title": "HeatingControl",
-    "desc": {
-      "en": "Heating Control ",
+    "titleLang": {
+      "en": "Heating Control",
       "de": "Heizungsregelung",
       "ru": "Управление отоплением",
       "pt": "Controle de aquecimento",
-      "nl": "Verwarmingsregeling",
-      "fr": "Contrôle de chauffage",
-      "pl": "Sterowanie ogrzewaniem",
-      "zh-cn": "加热控制",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
       "it": "Controllo del riscaldamento",
-      "es": "Control de calefacción"
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
+    },
+    "desc": {
+      "en": "Heating Control",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
