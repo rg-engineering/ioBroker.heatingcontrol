@@ -1883,7 +1883,9 @@ async function HandleStateChangeDevices(id, state) {
                         const current = await adapter.getForeignStateAsync(devices[d].OID_Current);
                         //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(devices[d]));
                         //await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
-                        await HandleActors(devices[d].room, parseFloat(current.val), parseFloat(state.val));
+                        if (current != null && typeof current != "undefined") {
+                            await HandleActors(devices[d].room, parseFloat(current.val), parseFloat(state.val));
+                        }
                     }
                     else {
 
@@ -1893,7 +1895,9 @@ async function HandleStateChangeDevices(id, state) {
                             const target = await adapter.getForeignStateAsync(devices[d].OID_Target);
                             //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
                             //await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
-                            await HandleActors(devices[d].room, parseFloat(state.val), parseFloat(target.val));
+                            if (target != null && typeof target != "undefined") {
+                                await HandleActors(devices[d].room, parseFloat(state.val), parseFloat(target.val));
+                            }
                         }
                         else {
                             adapter.log.warn("wrong device type ");
@@ -2941,7 +2945,7 @@ async function CheckTemperatureChange(room2check) {
                                     NewTarget = ReducedTemperature;
                                 }
                                 else {
-                                    NewTarget = OverrideTemp;
+                                    NewTarget = OverrideTemp.val;
                                 }
                             }
 
