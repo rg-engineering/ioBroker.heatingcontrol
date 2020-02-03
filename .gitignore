@@ -8,3 +8,7 @@ node_modules
 /todo1.txt
 /.project
 /.settings/
+/log.txt
+/main_old.js
+/obj/Debug/
+*.orig
