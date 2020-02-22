@@ -132,7 +132,11 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
-### 0.3.16 (2020-02-xx)
+### 0.3.17 (2020-02-xx)
+* (René) check datapoint configuration: if datapoint points to itself then error messages
++ (René) support of new vis see issue  #76
+
+### 0.3.16 (2020-02-09)
 * (René) deccrease/increase-handling also when Override is active (see issue #72)
 * (René) priority handling for temperature increase / decrease overworked (use only values not equal zero)
 

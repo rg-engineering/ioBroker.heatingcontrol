@@ -1360,7 +1360,7 @@ async function CreateDatepoints() {
 function SubscribeStates(callback) {
 
     //if we need to handle actors, then subscribe on current and target temperature
-    adapter.log.debug('#start subscribtion ');
+    adapter.log.debug("#start subscribtion ");
 
     try {
 
@@ -1376,61 +1376,93 @@ function SubscribeStates(callback) {
 
 
         if (adapter.config.Path2FeiertagAdapter !== null && typeof adapter.config.Path2FeiertagAdapter !== "undefined" && adapter.config.Path2FeiertagAdapter.length > 0) {
-            var names = adapter.config.Path2FeiertagAdapter.split('.');
+            const names = adapter.config.Path2FeiertagAdapter.split('.');
 
             if (names.length === 2) {
                 //feiertage.0.heute.boolean
                 adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter + ".heute.boolean");
 
-                adapter.log.info('subscribe ' + adapter.config.Path2FeiertagAdapter + '.heute.boolean');
+                adapter.log.info("subscribe " + adapter.config.Path2FeiertagAdapter + ".heute.boolean");
             }
             else {
-                adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter);
 
-                adapter.log.info('subscribe ' + adapter.config.Path2FeiertagAdapter);
+                if (adapter.config.Path2FeiertagAdapter.split('.')[0].includes("heatingcontrol")) {
+                    adapter.log.error("error in configuration for Path2FeiertagAdapter! data point should not point to itself. use external data points or leave it blank");
+                }
+                else {
+                    adapter.subscribeForeignStates(adapter.config.Path2FeiertagAdapter);
+                    adapter.log.info("subscribe " + adapter.config.Path2FeiertagAdapter);
+                }
             }
         }
         else {
-            adapter.log.debug('no subscribe Path2FeiertagAdapter ');
+            adapter.log.debug("no subscribe Path2FeiertagAdapter ");
         }
         if (adapter.config.Path2PresentDP !== null && typeof adapter.config.Path2PresentDP !== "undefined" && adapter.config.Path2PresentDP.length > 0) {
-            adapter.subscribeForeignStates(adapter.config.Path2PresentDP);
-            adapter.log.info('subscribe ' + adapter.config.Path2PresentDP);
+
+            if (adapter.config.Path2PresentDP.split('.')[0].includes("heatingcontrol")) {
+                adapter.log.error("error in configuration for Path2PresentDP! data point should not point to itself. use external data points or leave it blank");
+            }
+            else {
+                adapter.subscribeForeignStates(adapter.config.Path2PresentDP);
+                adapter.log.info("subscribe " + adapter.config.Path2PresentDP);
+            }
         }
         else {
-            adapter.log.debug('no subscribe Path2PresentDP ');
+            adapter.log.debug("no subscribe Path2PresentDP ");
         }
 
         if (adapter.config.Path2VacationDP !== null && typeof adapter.config.Path2VacationDP !== "undefined" && adapter.config.Path2VacationDP.length > 0) {
-            adapter.subscribeForeignStates(adapter.config.Path2VacationDP);
-            adapter.log.info('subscribe ' + adapter.config.Path2VacationDP);
+
+            if (adapter.config.Path2VacationDP.split('.')[0].includes("heatingcontrol")) {
+                adapter.log.error("error in configuration for Path2VacationDP! data point should not point to itself. use external data points or leave it blank");
+            }
+            else {
+                adapter.subscribeForeignStates(adapter.config.Path2VacationDP);
+                adapter.log.info("subscribe " + adapter.config.Path2VacationDP);
+            }
         }
         else {
-            adapter.log.debug('no subscribe Path2VacationDP ');
+            adapter.log.debug("no subscribe Path2VacationDP ");
         }
 
         if (adapter.config.Path2HolidayPresentDP !== null && typeof adapter.config.Path2HolidayPresentDP !== "undefined" && adapter.config.Path2HolidayPresentDP.length > 0) {
-            adapter.subscribeForeignStates(adapter.config.Path2HolidayPresentDP);
-            adapter.log.info('subscribe ' + adapter.config.Path2HolidayPresentDP);
+            if (adapter.config.Path2HolidayPresentDP.split('.')[0].includes("heatingcontrol")) {
+                adapter.log.error("error in configuration for Path2HolidayPresentDP! data point should not point to itself. use external data points or leave it blank");
+            }
+            else {
+                adapter.subscribeForeignStates(adapter.config.Path2HolidayPresentDP);
+                adapter.log.info("subscribe " + adapter.config.Path2HolidayPresentDP);
+            }
         }
         else {
-            adapter.log.debug('no subscribe Path2HolidayPresentDP ');
+            adapter.log.debug("no subscribe Path2HolidayPresentDP ");
         }
 
         if (adapter.config.Path2GuestsPresentDP !== null && typeof adapter.config.Path2GuestsPresentDP !== "undefined" && adapter.config.Path2GuestsPresentDP.length > 0) {
-            adapter.subscribeForeignStates(adapter.config.Path2GuestsPresentDP);
-            adapter.log.info('subscribe ' + adapter.config.Path2GuestsPresentDP);
+            if (adapter.config.Path2GuestsPresentDP.split('.')[0].includes("heatingcontrol")) {
+                adapter.log.error("error in configuration for Path2GuestsPresentDP! data point should not point to itself. use external data points or leave it blank");
+            }
+            else {
+                adapter.subscribeForeignStates(adapter.config.Path2GuestsPresentDP);
+                adapter.log.info("subscribe " + adapter.config.Path2GuestsPresentDP);
+            }
         }
         else {
-            adapter.log.debug('no subscribe Path2GuestsPresentDP ');
+            adapter.log.debug("no subscribe Path2GuestsPresentDP ");
         }
 
         if (adapter.config.Path2PartyNowDP !== null && typeof adapter.config.Path2PartyNowDP !== "undefined" && adapter.config.Path2PartyNowDP.length > 0) {
-            adapter.subscribeForeignStates(adapter.config.Path2PartyNowDP);
-            adapter.log.info('subscribe ' + adapter.config.Path2PartyNowDP);
+            if (adapter.config.Path2PartyNowDP.split('.')[0].includes("heatingcontrol")) {
+                adapter.log.error("error in configuration for Path2PartyNowDP! data point should not point to itself. use external data points or leave it blank");
+            }
+            else {
+                adapter.subscribeForeignStates(adapter.config.Path2PartyNowDP);
+                adapter.log.info("subscribe " + adapter.config.Path2PartyNowDP);
+            }
         }
         else {
-            adapter.log.debug('no subscribe Path2PartyNowDP ');
+            adapter.log.debug("no subscribe Path2PartyNowDP ");
         }
 
         if (adapter.config.devices === null || typeof adapter.config.devices === "undefined") {
@@ -1455,37 +1487,37 @@ function SubscribeStates(callback) {
                 if (roomdata !== null && roomdata.isActive) {
                     if (adapter.config.UseActors) {
                         if (adapter.config.devices[i].type === 1) { //thermostat
-                            adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + ' / ' + adapter.config.devices[i].OID_Current);
+                            adapter.log.info("subscribe " + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Target + ' / ' + adapter.config.devices[i].OID_Current);
 
                             adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
                             adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
 
                             if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
-                                adapter.log.warn('configuration error thermostat for ' + adapter.config.devices[i].room + ': OID target should be different to OID current!');
+                                adapter.log.warn("configuration error thermostat for " + adapter.config.devices[i].room + ": OID target should be different to OID current!");
                             }
                         }
                     }
 
                     if (adapter.config.UseSensors) {
                         if (adapter.config.devices[i].type === 3) { //sensor
-                            adapter.log.info('subscribe ' + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
+                            adapter.log.info("subscribe " + adapter.config.devices[i].room + ' ' + adapter.config.devices[i].OID_Current);
                             adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
                         }
                     }
                 }
                 else {
-                    adapter.log.debug('room not active or not available ' + JSON.stringify(roomdata));
+                    adapter.log.debug("room not active or not available " + JSON.stringify(roomdata));
                 }
             }
             else {
-                adapter.log.debug('device not active ');
+                adapter.log.debug("device not active ");
             }
         }
 
-        adapter.log.debug('#subscribtion finished');
+        adapter.log.debug("#subscribtion finished");
     }
     catch (e) {
-        adapter.log.error('exception in SubscribeStates [' + e + ']');
+        adapter.log.error("exception in SubscribeStates [" + e + "]");
     }
     if (callback) callback();
 }
