@@ -739,21 +739,21 @@ async function CreateDatepoints() {
         }
         
 
-        let mode = "";
-        await adapter.setObjectNotExistsAsync('TemperatureDecreaseMode', {
-            type: 'state',
+       
+        await adapter.setObjectNotExistsAsync("info.TemperatureDecreaseMode", {
+            type: "info",
             common: {
-                name: 'TemperatureDecreaseMode',
-                type: 'string',
-                role: 'history',
-                unit: '',
+                name: "TemperatureDecreaseMode",
+                type: "string",
+                role: "history",
+                unit: "",
                 read: true,
                 write: false
             },
-            native: { id: 'TemperatureDecreaseMode' }
+            native: { id: "TemperatureDecreaseMode" }
         });
 
-
+        let mode = "";
         switch (parseInt(adapter.config.TemperatureDecrease)) {
             case 1:
                 mode = "relative";
@@ -768,8 +768,143 @@ async function CreateDatepoints() {
                 mode = "unknown";
                 break;
         }
+        await adapter.setStateAsync("info.TemperatureDecreaseMode", { ack: true, val: mode});
 
-        await adapter.setStateAsync('TemperatureDecreaseMode', { ack: true, val: mode});
+        await adapter.setObjectNotExistsAsync("info.ProfileType", {
+            type: "info",
+            common: {
+                name: "ProfileType",
+                type: "string",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "ProfileType" }
+        });
+
+        let ProfileType = "";
+        switch (parseInt(adapter.config.ProfileType)) {
+            case 1:
+                ProfileType = "Mo-Su";
+                break;
+            case 2:
+                ProfileType = "Mo - Fr / Sa - Su";
+                break;
+            case 3:
+                ProfileType = "every Day";
+                break;
+            default:
+                ProfileType = "unknown";
+                break;
+        }
+        await adapter.setStateAsync("info.ProfileType", { ack: true, val: ProfileType });
+
+        await adapter.setObjectNotExistsAsync("info.NumberOfProfiles", {
+            type: "info",
+            common: {
+                name: "NumberOfProfiles",
+                type: "number",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "NumberOfProfiles" }
+        });
+        await adapter.setStateAsync("info.NumberOfProfiles", { ack: true, val: adapter.config.NumberOfProfiles });
+
+        await adapter.setObjectNotExistsAsync("info.NumberOfPeriods", {
+            type: "info",
+            common: {
+                name: "NumberOfPeriods",
+                type: "number",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "info.NumberOfPeriods" }
+        });
+        await adapter.setStateAsync("info.NumberOfPeriods", { ack: true, val: adapter.config.NumberOfPeriods });
+
+        await adapter.setObjectNotExistsAsync("info.PublicHolidayLikeSunday", {
+            type: "info",
+            common: {
+                name: "PublicHolidayLikeSunday",
+                type: "boolean",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "PublicHolidayLikeSunday" }
+        });
+        await adapter.setStateAsync("info.PublicHolidayLikeSunday", { ack: true, val: adapter.config.PublicHolidayLikeSunday });
+
+        await adapter.setObjectNotExistsAsync("info.UseMinTempPerRoom", {
+            type: "info",
+            common: {
+                name: "UseMinTempPerRoom",
+                type: "boolean",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "info.UseMinTempPerRoom" }
+        });
+        await adapter.setStateAsync("info.UseMinTempPerRoom", { ack: true, val: adapter.config.UseMinTempPerRoom });
+
+
+        await adapter.setObjectNotExistsAsync("info.UseFixHeatingPeriod", {
+            type: "info",
+            common: {
+                name: "UseFixHeatingPeriod",
+                type: "boolean",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "UseFixHeatingPeriod" }
+        });
+        await adapter.setStateAsync("info.UseFixHeatingPeriod", { ack: true, val: adapter.config.UseFixHeatingPeriod });
+
+
+        if (adapter.config.UseFixHeatingPeriod) {
+            await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodStart", {
+                type: "info",
+                common: {
+                    name: "FixHeatingPeriodStart",
+                    type: "string",
+                    role: "history",
+                    unit: "",
+                    read: true,
+                    write: false
+                },
+                native: { id: "FixHeatingPeriodStart" }
+            });
+            await adapter.setStateAsync("info.FixHeatingPeriodStart", { ack: true, val: adapter.config.FixHeatingPeriodStart });
+
+
+            await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodEnd", {
+                type: "info",
+                common: {
+                    name: "FixHeatingPeriodEnd",
+                    type: "string",
+                    role: "history",
+                    unit: "",
+                    read: true,
+                    write: false
+                },
+                native: { id: "FixHeatingPeriodEnd" }
+            });
+            await adapter.setStateAsync("info.FixHeatingPeriodEnd", { ack: true, val: adapter.config.FixHeatingPeriodEnd });
+
+        }
+
+
 
 
 
@@ -919,6 +1054,21 @@ async function CreateDatepoints() {
                 }
                  
                 //===============================================================================
+                await adapter.setObjectNotExistsAsync(id1 + ".ActiveTimeSlot", {
+                    type: "state",
+                    common: {
+                        name: "ActiveTimeSlot",
+                        type: "number",
+                        role: "history",
+                        unit: "",
+                        read: true,
+                        write: false
+                    },
+                    native: { id: 'ActiveTimeSlot' }
+                });
+
+
+
                 await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriodFull', {
                     type: 'state',
                     common: {
@@ -929,7 +1079,7 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: 'CurrentTimePeriod' }
+                    native: { id: 'CurrentTimePeriodFull' }
                 });
 
                 await adapter.setObjectNotExistsAsync(id1 + '.CurrentTimePeriod', {
@@ -2209,6 +2359,7 @@ function CronStop() {
     }
 }
 
+
 function CreateCron4HeatingPeriod() {
 
     if (adapter.config.UseFixHeatingPeriod) {
@@ -2997,6 +3148,7 @@ async function CheckTemperatureChange(room2check) {
                         let currentPeriod = -1;
                         let nextTemperature = -99;
                         let sNextTime;
+                        let ActiveTimeSlot = -1;
                         //var period;
 
                         let ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
@@ -3004,6 +3156,7 @@ async function CheckTemperatureChange(room2check) {
                         currentPeriod = ret.currentPeriod;
                         nextTemperature = ret.nextTemperature;
                         sNextTime = ret.sNextTime;
+                        ActiveTimeSlot = ret.ActiveTimeSlot;
 
                         if (currentPeriod === -2) {
                             // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
@@ -3020,6 +3173,8 @@ async function CheckTemperatureChange(room2check) {
                             currentPeriod = ret.currentPeriod;
                             nextTemperature = ret.nextTemperature;
                             sNextTime = ret.sNextTime;
+                            ActiveTimeSlot = ret.ActiveTimeSlot;
+                            
                         }
 
                         if (currentPeriod === -2) {// also yesterday not found
@@ -3075,9 +3230,13 @@ async function CheckTemperatureChange(room2check) {
                             
 
                             if (currentPeriod > -1) {
+                                let id3 = "Rooms." + adapter.config.rooms[room].name + ".ActiveTimeSlot";
+                                await adapter.setStateAsync(id3, { ack: true, val: ActiveTimeSlot });
+
+
                                 const currenttime = sNextTime[0] + ":" + sNextTime[1];
                                 const timePeriod = "Period " + currentPeriod + " : " + currenttime;
-                                let id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
+                                id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriodFull";
                                 await adapter.setStateAsync(id3, { ack: true, val: timePeriod });
 
                                 id3 = "Rooms." + adapter.config.rooms[room].name + ".CurrentTimePeriod";
@@ -3154,6 +3313,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
     let nextTemperature = -99;
     let currentPeriod = -2;
+    let ActiveTimeSlot = -1;
     let period;
     let sNextTime;
 
@@ -3184,7 +3344,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
                 sNextTime = nextTimes;
-
+                ActiveTimeSlot = period;
             }
 
         }
@@ -3194,9 +3354,11 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         let daysname = "";
         if (now.getDay() > 0 && now.getDay() < 6) {
             daysname = "Mo-Fr";
+            ActiveTimeSlot = 0;
         }
         else {
             daysname = "Sa-So";
+            ActiveTimeSlot = parseInt(adapter.config.NumberOfPeriods,10);
         }
 
         if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
@@ -3234,6 +3396,8 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 currentPeriod = period;
                 sNextTime = nextTimes;
 
+                ActiveTimeSlot += period;
+
             }
 
         }
@@ -3242,13 +3406,34 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
         let daysname = "";
         switch (now.getDay()) {
-            case 1: daysname = "Mon"; break;
-            case 2: daysname = "Tue"; break;
-            case 3: daysname = "Wed"; break;
-            case 4: daysname = "Thu"; break;
-            case 5: daysname = "Fri"; break;
-            case 6: daysname = "Sat"; break;
-            case 0: daysname = "Sun"; break;
+            case 1:
+                daysname = "Mon";
+                ActiveTimeSlot = 0 * parseInt(adapter.config.NumberOfPeriods,10);
+                break;
+            case 2:
+                daysname = "Tue";
+                ActiveTimeSlot = 1 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
+            case 3:
+                daysname = "Wed";
+                ActiveTimeSlot = 2 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
+            case 4:
+                daysname = "Thu";
+                ActiveTimeSlot = 3 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
+            case 5:
+                daysname = "Fri";
+                ActiveTimeSlot = 4 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
+            case 6:
+                daysname = "Sat";
+                ActiveTimeSlot = 5 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
+            case 0:
+                daysname = "Sun";
+                ActiveTimeSlot = 6 * parseInt(adapter.config.NumberOfPeriods, 10);
+                break;
         }
 
         if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
@@ -3287,6 +3472,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
                 sNextTime = nextTimes;
+                ActiveTimeSlot += period;
             }
         }
     }
@@ -3298,7 +3484,8 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     const ret = {
         currentPeriod: currentPeriod,
         nextTemperature: nextTemperature,
-        sNextTime: sNextTime
+        sNextTime: sNextTime,
+        ActiveTimeSlot: ActiveTimeSlot
     };
 
     adapter.log.debug(adapter.config.rooms[room].name + " found period " + currentPeriod + " with " + nextTemperature + " on " + sNextTime);

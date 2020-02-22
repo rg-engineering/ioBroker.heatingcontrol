@@ -31,16 +31,12 @@ Features:
 * interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
 * manual temperature override for a certain time
 * predefined heating period
-* A visualization example will be provided later
+* visualization from [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) is supported. Thank you!
 
 [FAQ](doc/FAQ.md)
 
 
 ## Installation
-
-
-
-
 
 ## Settings
 ### main
