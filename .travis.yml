@@ -6,7 +6,6 @@ language: node_js
 node_js:
   - '8'
   - '10'
-  - '11'
   - '12'
 before_script:
   - export NPMVERSION=$(echo "$($(which npm) -v)"|cut -c1)
