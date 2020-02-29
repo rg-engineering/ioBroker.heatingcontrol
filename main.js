@@ -3346,7 +3346,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
         for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
             const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + ".Mo-Su.Periods." + period + ".time";
-            adapter.log.debug("check ID " + id);
+            adapter.log.debug("check ID " + id + " period " + period);
 
             const nextTime = await adapter.getStateAsync(id);
             //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
@@ -3369,10 +3369,13 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
                 sNextTime = nextTimes;
-                ActiveTimeSlot = period;
             }
-
         }
+        if (period >= 0) {
+            ActiveTimeSlot += currentPeriod;
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
+        }
+
     }
     else if (parseInt(adapter.config.ProfileType, 10) === 2) {
 
@@ -3380,25 +3383,31 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         if (now.getDay() > 0 && now.getDay() < 6) {
             daysname = "Mo-Fr";
             ActiveTimeSlot = 0;
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
         else {
             daysname = "Sa-So";
-            ActiveTimeSlot = parseInt(adapter.config.NumberOfPeriods,10);
+            ActiveTimeSlot = parseInt(adapter.config.NumberOfPeriods, 10);
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
 
         if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
             daysname = "Sa-So";
             RoomState += "public holiday / ";
+            ActiveTimeSlot = parseInt(adapter.config.NumberOfPeriods, 10);
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
 
         if (HolidayPresent) {
             daysname = "Sa-So";
             RoomState += "holiday present / ";
+            ActiveTimeSlot = parseInt(adapter.config.NumberOfPeriods, 10);
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
 
         for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
             const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + ".time";
-            adapter.log.debug("check ID " + id);
+            adapter.log.debug("check ID " + id + " period " + period);
 
             const nextTime = await adapter.getStateAsync(id);
             //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
@@ -3420,12 +3429,13 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
                 sNextTime = nextTimes;
-
-                ActiveTimeSlot += period;
-
             }
-
         }
+        if (period >= 0) {
+            ActiveTimeSlot += currentPeriod;
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
+        }
+
     }
     else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
@@ -3433,49 +3443,60 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         switch (now.getDay()) {
             case 1:
                 daysname = "Mon";
-                ActiveTimeSlot = 0 * parseInt(adapter.config.NumberOfPeriods,10);
+                ActiveTimeSlot = 0 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 2:
                 daysname = "Tue";
                 ActiveTimeSlot = 1 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 3:
                 daysname = "Wed";
                 ActiveTimeSlot = 2 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 4:
                 daysname = "Thu";
                 ActiveTimeSlot = 3 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 5:
                 daysname = "Fri";
                 ActiveTimeSlot = 4 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 6:
                 daysname = "Sat";
                 ActiveTimeSlot = 5 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
             case 0:
                 daysname = "Sun";
                 ActiveTimeSlot = 6 * parseInt(adapter.config.NumberOfPeriods, 10);
+                adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
                 break;
         }
 
         if (PublicHolidyToday && adapter.config.PublicHolidayLikeSunday) {
             daysname = "Sun";
             RoomState += "public holiday / ";
+            ActiveTimeSlot = 6 * parseInt(adapter.config.NumberOfPeriods, 10);
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
 
         if (HolidayPresent) {
             daysname = "Sun";
             RoomState += "holiday present / ";
+            ActiveTimeSlot = 6 * parseInt(adapter.config.NumberOfPeriods, 10);
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot);
         }
 
         for (period = 0; period < parseInt(adapter.config.NumberOfPeriods, 10); period++) {
 
             const id = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + ".time";
 
-            adapter.log.debug("check ID " + id);
+            adapter.log.debug("check ID " + id + " period " + period);
 
             const nextTime = await adapter.getStateAsync(id);
             //adapter.log.debug("##found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
@@ -3497,8 +3518,12 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
                 sNextTime = nextTimes;
-                ActiveTimeSlot += period;
             }
+            
+        }
+        if (period >= 0) {
+            ActiveTimeSlot += currentPeriod;
+            adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
     }
     else {
