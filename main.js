@@ -737,7 +737,32 @@ async function CreateDatepoints() {
         if (currentprofile === null) {
             await adapter.setStateAsync('CurrentProfile', { ack: true, val: 1 });
         }
-        
+
+        await adapter.setObjectNotExistsAsync("info.UsedRooms", {
+            type: "state",
+            common: {
+                name: "UsedRooms",
+                type: "string",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "UsedRooms" }
+        });
+
+        let UsedRooms = "";
+
+        for (let room = 0; room < adapter.config.rooms.length; room++) {
+
+            if (adapter.config.rooms[room].isActive) {
+
+                UsedRooms += adapter.config.rooms[room].name;
+                UsedRooms += ";";
+            }
+        }
+
+        await adapter.setStateAsync("info.UsedRooms", { ack: true, val: UsedRooms });
 
        
         await adapter.setObjectNotExistsAsync("info.TemperatureDecreaseMode", {
