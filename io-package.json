@@ -87,6 +87,8 @@
     "Path2PresentDPType": 1,
     "Path2PartyNowDP": "",
     "SensorDelay": 0,
-    "UseMinTempPerRoom": false
+    "UseMinTempPerRoom": false,
+    "ThermostatModeIfNoHeatingperiod": 3,
+    "FixTempIfNoHeatingPeriod": "15;"
   }
 }

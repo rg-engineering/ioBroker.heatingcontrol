@@ -671,5 +671,54 @@ systemDictionary = {
         "es": "usar temperatura mínima por habitación",
         "pl": "stosować minimalną temperaturę na pokój",
         "zh-cn": "每个房间使用最低温度"
+    },
+    "ThermostatModeIfNoHeatingperiod": {
+        "en": "Thermostat mode if no heatingperiod",
+        "de": "Thermostatmodus, wenn keine Heizperiode vorhanden ist",
+        "ru": "Режим термостата, если нет отопительного периода",
+        "pt": "Modo termostato se não houver período de aquecimento",
+        "nl": "Thermostaatmodus indien geen verwarmingsperiode",
+        "fr": "Mode thermostat en l'absence de période de chauffage",
+        "it": "Modalità termostato se nessun periodo di riscaldamento",
+        "es": "Modo termostato si no hay período de calentamiento",
+        "pl": "Tryb termostatu, jeśli nie ma okresu ogrzewania",
+        "zh-cn": "如果没有加热时间，则为恒温模式"
+    },
+    "FixTempIfNoHeatingPeriod": {
+        "en": "Fix Temperature if no heatingperiod",
+        "de": "Feste Temperatur, wenn keine Heizperiode vorhanden ist",
+        "ru": "Фиксировать температуру, если нет периода нагрева",
+        "pt": "Temperatura fixa se nenhum período de aquecimento",
+        "nl": "Stel de temperatuur in als er geen verwarmingsperiode is",
+        "fr": "Fixer la température si aucune période de chauffage",
+        "it": "Temperatura fissa se nessun periodo di riscaldamento",
+        "es": "Fije la temperatura si no hay período de calentamiento",
+        "pl": "Napraw temperaturę, jeśli nie ma okresu ogrzewania",
+        "zh-cn": "如果不加热，则固定温度"
+    },
+
+    "fixTempPerRoom": {
+        "en": "fix Temperature per room",
+        "de": "Fix Temperatur pro Raum",
+        "ru": "фиксировать температуру в комнате",
+        "pt": "temperatura fixa por quarto",
+        "nl": "fix temperatuur per kamer",
+        "fr": "Fixer la température par pièce",
+        "it": "temperatura fissa per stanza",
+        "es": "fijar la temperatura por habitación",
+        "pl": "fix Temperatura na pokój",
+        "zh-cn": "固定每个房间的温度"
+    },
+    "fixTempForAll": {
+        "en": "fix Temperature for all rooms",
+        "de": "Fix Temperatur für alle Räume",
+        "ru": "установить температуру для всех комнат",
+        "pt": "temperatura fixa para todos os quartos",
+        "nl": "fix temperatuur voor alle kamers",
+        "fr": "fixer la température pour toutes les pièces",
+        "it": "temperatura fissa per tutte le stanze",
+        "es": "fijar la temperatura para todas las habitaciones",
+        "pl": "naprawić temperaturę we wszystkich pokojach",
+        "zh-cn": "固定所有房间的温度"
     }
 };

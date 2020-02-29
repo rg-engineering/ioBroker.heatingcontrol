@@ -102,8 +102,8 @@ DefaultTargets[4] = ['21:00', 21];
 let SystemDateFormat = "DD.MM.YYYY";
 
 
-let ActorsWithoutThermostat = [];
-let lastSetTemperature = [];
+const ActorsWithoutThermostat = [];
+const lastSetTemperature = [];
 
 let adapter;
 function startAdapter(options) {
@@ -1061,6 +1061,26 @@ async function CreateDatepoints() {
 
                 adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
 
+
+                if (adapter.config.ThermostatModeIfNoHeatingperiod == 1) {
+                    await adapter.setObjectNotExistsAsync(id1 + ".TemperatureIfNoHeatingPeriod", {
+                        type: "state",
+                        common: {
+                            name: "TemperatureIfNoHeatingPeriod",
+                            type: "number",
+                            role: "history",
+                            unit: "°C",
+                            read: true,
+                            write: true
+                        },
+                        native: { id: "TemperatureIfNoHeatingPeriod" }
+                    });
+
+                    adapter.subscribeStates(id1 + ".TemperatureIfNoHeatingPeriod");
+                }
+
+
+
                 if (adapter.config.UseMinTempPerRoom) {
                     await adapter.setObjectNotExistsAsync(id1 + '.MinimumTemperature', {
                         type: 'state',
@@ -1979,6 +1999,11 @@ async function HandleStateChangeGeneral(id, state) {
     }
 
     if (ids[4] === "MinimumTemperature") {
+        await CheckTemperatureChange();
+        bRet = true;
+    }
+
+    if (ids[4] == "TemperatureIfNoHeatingPeriod") {
         await CheckTemperatureChange();
         bRet = true;
     }
@@ -3290,11 +3315,17 @@ async function CheckTemperatureChange(room2check) {
             }
         }
         else {
-            adapter.log.debug("nothing to do: no heating period (certain temp todo)");
+            adapter.log.debug("nothing to do: no heating period");
             const RoomState = "no heating period";
 
-            for (let r = 0; r < adapter.config.rooms.length; r++) {
+
+           for (let r = 0; r < adapter.config.rooms.length; r++) {
                 if (adapter.config.rooms[r].isActive) {
+
+                    await SetTarget4NoHeatingPeriod(r);
+
+
+
                     const id = "Rooms." + adapter.config.rooms[r].name + ".State";
                     await adapter.setStateAsync(id, { ack: true, val: RoomState });
                 }
@@ -3308,6 +3339,34 @@ async function CheckTemperatureChange(room2check) {
     catch (e) {
         adapter.log.error("exception in CheckTemperatureChange [" + e + "]");
     }
+}
+
+
+async function SetTarget4NoHeatingPeriod(roomId) {
+
+    if (adapter.config.ThermostatModeIfNoHeatingperiod == 1) {
+        const id = "Rooms." + adapter.config.rooms[roomId].name + ".TemperatureIfNoHeatingPeriod";
+        const TargetTemp = await adapter.getStateAsync(id);
+
+        if (TargetTemp != null && typeof TargetTemp == "object") {
+            adapter.log.debug("set target (1) if no heating for room " + adapter.config.rooms[roomId].name + " to " + TargetTemp.val);
+
+            await SetNextTemperatureTarget(roomId, TargetTemp.val);
+        }
+        else {
+            adapter.log.error("target temperature for no heating period is not set for " + adapter.config.rooms[roomId].name);
+        }
+
+    }
+    else if (adapter.config.ThermostatModeIfNoHeatingperiod == 2) {
+        const TargetTemp = parseFloat(adapter.config.FixTempIfNoHeatingPeriod);
+        adapter.log.debug("set target (2) if no heating for room " + adapter.config.rooms[roomId].name + " to " + TargetTemp);
+        await SetNextTemperatureTarget(roomId, TargetTemp);
+    }
+    else {
+        adapter.log.debug("do not set target if no heating for room " + adapter.config.rooms[roomId].name);
+    }
+
 }
 
 
@@ -3632,15 +3691,14 @@ async function StartTemperaturOverride(room) {
 }
 
 
-
 async function HandleActorsGeneral(HeatingPeriodActive) {
 
     try {
 
         if (adapter.config.UseActors) {
 
-            //if no heating period and actors should be set to on or off
-            if (!HeatingPeriodActive && adapter.config.UseActorsIfNotHeating > 1) {
+            //if no heating period and thermostats don't have a target and actors should be set to on or off
+            if (!HeatingPeriodActive && adapter.config.ThermostatModeIfNoHeatingperiod == 3 && adapter.config.UseActorsIfNotHeating > 1 ) {
 
                 adapter.log.debug("switch off all actors");
 
