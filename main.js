@@ -741,7 +741,7 @@ async function CreateDatepoints() {
 
        
         await adapter.setObjectNotExistsAsync("info.TemperatureDecreaseMode", {
-            type: "info",
+            type: "state",
             common: {
                 name: "TemperatureDecreaseMode",
                 type: "string",
@@ -771,7 +771,7 @@ async function CreateDatepoints() {
         await adapter.setStateAsync("info.TemperatureDecreaseMode", { ack: true, val: mode});
 
         await adapter.setObjectNotExistsAsync("info.ProfileType", {
-            type: "info",
+            type: "state",
             common: {
                 name: "ProfileType",
                 type: "string",
@@ -801,7 +801,7 @@ async function CreateDatepoints() {
         await adapter.setStateAsync("info.ProfileType", { ack: true, val: ProfileType });
 
         await adapter.setObjectNotExistsAsync("info.NumberOfProfiles", {
-            type: "info",
+            type: "state",
             common: {
                 name: "NumberOfProfiles",
                 type: "number",
@@ -812,10 +812,10 @@ async function CreateDatepoints() {
             },
             native: { id: "NumberOfProfiles" }
         });
-        await adapter.setStateAsync("info.NumberOfProfiles", { ack: true, val: adapter.config.NumberOfProfiles });
+        await adapter.setStateAsync("info.NumberOfProfiles", { ack: true, val: parseInt(adapter.config.NumberOfProfiles) });
 
         await adapter.setObjectNotExistsAsync("info.NumberOfPeriods", {
-            type: "info",
+            type: "state",
             common: {
                 name: "NumberOfPeriods",
                 type: "number",
@@ -824,12 +824,12 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "info.NumberOfPeriods" }
+            native: { id: "NumberOfPeriods" }
         });
-        await adapter.setStateAsync("info.NumberOfPeriods", { ack: true, val: adapter.config.NumberOfPeriods });
+        await adapter.setStateAsync("info.NumberOfPeriods", { ack: true, val: parseInt(adapter.config.NumberOfPeriods) });
 
         await adapter.setObjectNotExistsAsync("info.PublicHolidayLikeSunday", {
-            type: "info",
+            type: "state",
             common: {
                 name: "PublicHolidayLikeSunday",
                 type: "boolean",
@@ -843,7 +843,7 @@ async function CreateDatepoints() {
         await adapter.setStateAsync("info.PublicHolidayLikeSunday", { ack: true, val: adapter.config.PublicHolidayLikeSunday });
 
         await adapter.setObjectNotExistsAsync("info.UseMinTempPerRoom", {
-            type: "info",
+            type: "state",
             common: {
                 name: "UseMinTempPerRoom",
                 type: "boolean",
@@ -852,13 +852,13 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "info.UseMinTempPerRoom" }
+            native: { id: "UseMinTempPerRoom" }
         });
         await adapter.setStateAsync("info.UseMinTempPerRoom", { ack: true, val: adapter.config.UseMinTempPerRoom });
 
 
         await adapter.setObjectNotExistsAsync("info.UseFixHeatingPeriod", {
-            type: "info",
+            type: "state",
             common: {
                 name: "UseFixHeatingPeriod",
                 type: "boolean",
@@ -874,7 +874,7 @@ async function CreateDatepoints() {
 
         if (adapter.config.UseFixHeatingPeriod) {
             await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodStart", {
-                type: "info",
+                type: "state",
                 common: {
                     name: "FixHeatingPeriodStart",
                     type: "string",
@@ -889,7 +889,7 @@ async function CreateDatepoints() {
 
 
             await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodEnd", {
-                type: "info",
+                type: "state",
                 common: {
                     name: "FixHeatingPeriodEnd",
                     type: "string",
