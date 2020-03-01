@@ -2301,7 +2301,7 @@ async function HandleThermostat(oid, temperature) {
         if (currentTarget != null && typeof currentTarget != "undefined") {
             if (currentTarget.val !== target) {
                 await adapter.setForeignStateAsync(oid, target);
-                adapter.log.debug("thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
+                adapter.log.info("set thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
             }
             else {
                 adapter.log.debug("thermostat " + oid + " nothing to do, already " + currentTarget.val);
@@ -2309,7 +2309,7 @@ async function HandleThermostat(oid, temperature) {
         }
         else {
             await adapter.setForeignStateAsync(oid, target);
-            adapter.log.debug("thermostat " + oid + " to " + target + "; current is udefined");
+            adapter.log.warn("thermostat " + oid + " to " + target + "; current is undefined");
 
         }
 
@@ -2987,7 +2987,7 @@ async function CheckTemperatureChange(room2check) {
 
 
     try {
-        adapter.log.info("calculating new target temperatures");
+        adapter.log.debug("calculating new target temperatures");
 
         const now = new Date();
 
@@ -3373,13 +3373,13 @@ async function SetTarget4NoHeatingPeriod(roomId) {
 async function SetNextTemperatureTarget(roomID, TargetTemperature) {
 
 
-    adapter.log.info("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify( TargetTemperature));
+    adapter.log.debug("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify( TargetTemperature));
 
     for (let ii = 0; ii < adapter.config.devices.length; ii++) {
 
         if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === adapter.config.rooms[roomID].name && adapter.config.devices[ii].isActive) {
 
-            adapter.log.info("room " + adapter.config.rooms[roomID].name + " Thermostat " + adapter.config.devices[ii].name + " target is " + TargetTemperature);
+            adapter.log.debug("room " + adapter.config.rooms[roomID].name + " Thermostat " + adapter.config.devices[ii].name + " target is " + TargetTemperature);
 
             //adapter.log.debug("*4 " + state);
             //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
