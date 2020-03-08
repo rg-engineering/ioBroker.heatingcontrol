@@ -70,7 +70,7 @@ ThermostatTypeTab[20] = ['tado Thermostat', 'Thermostat', '.Target-Temperature',
 //id ist ham.0.RaumName.ThermostatName.
 const MaxTadoThermostatType = 20;
 
-
+let WindowOpenTimerId = null;
 
 
 const ActorTypeTab = [];
@@ -735,7 +735,7 @@ async function CreateDatepoints() {
         const currentprofile = await adapter.getStateAsync('CurrentProfile');
         //set default only if nothing was set before
         if (currentprofile === null) {
-            await adapter.setStateAsync('CurrentProfile', { ack: true, val: 1 });
+            await adapter.setStateAsync("CurrentProfile", { ack: true, val: 1 });
         }
 
         await adapter.setObjectNotExistsAsync("info.UsedRooms", {
@@ -762,8 +762,26 @@ async function CreateDatepoints() {
             }
         }
 
+        if (UsedRooms != null && UsedRooms.length > 0) {
+            //remove last ;
+            UsedRooms = UsedRooms.slice(0, -1);
+        }
+
         await adapter.setStateAsync("info.UsedRooms", { ack: true, val: UsedRooms });
 
+
+        await adapter.setObjectNotExistsAsync("info", {
+            type: "channel",
+            common: {
+                name: "info",
+                type: "string",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "info" }
+        });
        
         await adapter.setObjectNotExistsAsync("info.TemperatureDecreaseMode", {
             type: "state",
@@ -1053,13 +1071,41 @@ async function CreateDatepoints() {
 
 
         //all room related
+        await adapter.setObjectNotExistsAsync("Rooms", {
+            type: "channel",
+            common: {
+                name: "Rooms",
+                type: "string",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "Rooms" }
+        });
+
+
+
         for (let room = 0; room < adapter.config.rooms.length; room++) {
 
             if (adapter.config.rooms[room].isActive) {
 
-                let id1 = "Rooms." + adapter.config.rooms[room].name;
+                const id1 = "Rooms." + adapter.config.rooms[room].name;
 
                 adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
+                await adapter.setObjectNotExistsAsync(id1, {
+                    type: "channel",
+                    common: {
+                        name: adapter.config.rooms[room].name,
+                        type: "string",
+                        role: "history",
+                        unit: "",
+                        read: true,
+                        write: false
+                    },
+                    native: { id: adapter.config.rooms[room].name }
+                });
+
 
 
                 if (adapter.config.ThermostatModeIfNoHeatingperiod == 1) {
@@ -1230,14 +1276,58 @@ async function CreateDatepoints() {
 
 
         // all profile related 
+
+        await adapter.setObjectNotExistsAsync("Profiles", {
+            type: "channel",
+            common: {
+                name: "Profiles",
+                type: "string",
+                role: "history",
+                unit: "",
+                read: true,
+                write: false
+            },
+            native: { id: "Profiles" }
+        });
+
+
         for (let profile = 0; profile < parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
             adapter.log.debug('rooms ' + adapter.config.rooms.length);
+
+            await adapter.setObjectNotExistsAsync("Profiles." + profile, {
+                type: "channel",
+                common: {
+                    name: "Profile"+profile,
+                    type: "string",
+                    role: "history",
+                    unit: "",
+                    read: true,
+                    write: false
+                },
+                native: { id: "Profiles." + profile }
+            });
+
 
             for (let room = 0; room < adapter.config.rooms.length; room++) {
 
                 if (adapter.config.rooms[room].isActive) {
 
                     let id1 = "Profiles." + profile + "." + adapter.config.rooms[room].name;
+
+
+                    await adapter.setObjectNotExistsAsync(id1, {
+                        type: "channel",
+                        common: {
+                            name: adapter.config.rooms[room].name,
+                            type: "string",
+                            role: "history",
+                            unit: "",
+                            read: true,
+                            write: false
+                        },
+                        native: { id: adapter.config.rooms[room].name }
+                    });
+
 
                     if (parseInt(adapter.config.TemperatureDecrease) === 1) {// relative
 
@@ -2153,8 +2243,13 @@ async function HandleStateChangeDevices(id, state) {
                     //nur wenn offen, verzögern
                     if (windowIsOpen) {
                         adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
-                        let timerId = setTimeout(function (room) {
+                        WindowOpenTimerId = setTimeout(function (room) {
                             //adapter.log.debug('fired');
+
+                            if (WindowOpenTimerId) {
+                                clearTimeout(WindowOpenTimerId);
+                                WindowOpenTimerId = null;
+                            }
 
                             CheckTemperatureChange(room);
 
@@ -2166,6 +2261,10 @@ async function HandleStateChangeDevices(id, state) {
                         CheckTemperatureChange(devices[d].room);
 
                         //und falls timer noch rennt; abbrechen
+                        if (WindowOpenTimerId) {
+                            clearTimeout(WindowOpenTimerId);
+                            WindowOpenTimerId = null;
+                        }
 
                     }
                 }
@@ -2185,11 +2284,14 @@ async function HandleStateChangeDevices(id, state) {
 
 }
 
+/*
 async function wait(ms) {
     return new Promise(resolve => {
         setTimeout(resolve, ms);
     });
 }
+*/
+
 
 //*******************************************************************
 //
