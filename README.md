@@ -141,7 +141,9 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.18 (2020-03-08)
+### 0.4.00 (2020-xx-xx)
+
+### 0.3.18 (2020-03-08) -> first stable release
 * (René) fix issues eported by adapter checker
 
 ### 0.3.17 (2020-03-01)
