@@ -669,8 +669,8 @@ async function CreateStates4Period(id, period) {
         common: {
             name: "period from",
             type: "string",
-            role: "value.timer",
-            unit: "",
+            role: "value",
+            unit: "hh:mm",
             read: true,
             write: true
         },
@@ -680,7 +680,8 @@ async function CreateStates4Period(id, period) {
     await adapter.extendObject(id + ".time", {
         common: {
             type: "string",
-            role: "value.timer",
+            role: "value",
+            unit: "hh:mm",
         }
     });
 
@@ -1465,7 +1466,7 @@ async function CreateDatepoints() {
                     common: {
                         name: "TemperaturOverrideTime",
                         type: "string",
-                        role: "value.timer",
+                        role: "value",
                         unit: "hh:mm",
                         read: true,
                         write: true
@@ -1475,7 +1476,7 @@ async function CreateDatepoints() {
 
                 await adapter.extendObject(id1 + ".TemperaturOverrideTime", {
                     common: {
-                        role: "value.timer",
+                        role: "value",
                     }
                 });
 
