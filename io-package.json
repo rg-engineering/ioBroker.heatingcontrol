@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.18",
+    "version": "0.3.19",
     "news": {
-      "0.3.18": {
+      "0.3.19": {
         "en": "some bug fixes",
         "de": "einige Bugfixes",
         "ru": "некоторые исправления ошибок",
@@ -14,6 +14,18 @@
         "es": "algunas correcciones de errores",
         "pl": "niektóre poprawki błędów",
         "zh-cn": "一些错误修复"
+      },
+      "0.3.18": {
+        "en": "first stable release",
+        "de": "erste stabile Veröffentlichung",
+        "ru": "первый стабильный релиз",
+        "pt": "primeiro lançamento estável",
+        "nl": "eerste stabiele release",
+        "fr": "première version stable",
+        "it": "prima versione stabile",
+        "es": "primer lanzamiento estable",
+        "pl": "pierwsze stabilne wydanie",
+        "zh-cn": "首次稳定发布"
       }
     },
     "title": "HeatingControl",
