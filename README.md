@@ -146,7 +146,7 @@ Just configure events from ical in admin. Supported are
 * (René) see issue #87: change type of time data points to string
 * (René) see issue #87: set correct roles for data points
 * (René) see issue #84: set default value for minimum temperature
-* (René) see issue #86: ???
+* (René) see issue #86: all "float" converted to "number""
 
 ### 0.3.18 (2020-03-08)
 * (René) fix issues reported by adapter checker
