@@ -3174,39 +3174,45 @@ function StopHeatingPeriod() {
 let cronJobs = [];
 
 function CronCreate(Hour, Minute, day) {
-    const timezone = adapter.config.timezone || "Europe/Berlin";
 
-    //https://crontab-generator.org/
-    let cronString = "0 " + Minute + " " + Hour + " * * ";
+    try {
 
-    if (day === 0) { //every day
-        cronString += "*";
-    }
-    else if (day === -1) {//Mo-Fr
-        cronString += " 1-5";
-    }
-    else if (day === -2) {//Sa-So
-        cronString += " 0,6";
-    }
-    else if (day === 7) { //So
-        cronString += " 0";
-    }
-    else if (day > 0 && day < 7) {
-        cronString += day;
-    }
-    const nextCron = cronJobs.length;
+        const timezone = adapter.config.timezone || "Europe/Berlin";
 
-    adapter.log.debug("create cron job #" + nextCron + " at " + Hour + ":" + Minute + " string: " + cronString + " " + timezone);
+        //https://crontab-generator.org/
+        let cronString = "0 " + Minute + " " + Hour + " * * ";
 
-    //details see https://www.npmjs.com/package/cron
-    cronJobs[nextCron] = new CronJob(cronString,
-        () => CheckTemperatureChange(),
-        () => adapter.log.debug("cron job stopped"), // This function is executed when the job stops
-        true,
-        timezone
-    );
+        if (day === 0) { //every day
+            cronString += "*";
+        }
+        else if (day === -1) {//Mo-Fr
+            cronString += " 1-5";
+        }
+        else if (day === -2) {//Sa-So
+            cronString += " 0,6";
+        }
+        else if (day === 7) { //So
+            cronString += " 0";
+        }
+        else if (day > 0 && day < 7) {
+            cronString += day;
+        }
+        const nextCron = cronJobs.length;
 
-    
+        adapter.log.debug("create cron job #" + nextCron + " at " + Hour + ":" + Minute + " string: " + cronString + " " + timezone);
+
+        //details see https://www.npmjs.com/package/cron
+        cronJobs[nextCron] = new CronJob(cronString,
+            () => CheckTemperatureChange(),
+            () => adapter.log.debug("cron job stopped"), // This function is executed when the job stops
+            true,
+            timezone
+        );
+
+    }
+    catch (e) {
+        adapter.log.error("exception in CronCreate [" + e + "]");
+    }
 }
 
 function getCronStat() {

@@ -141,7 +141,7 @@ Just configure events from ical in admin. Supported are
 
 ## Changelog
 
-### 0.3.19 (2020-03-xx)
+### 0.3.19 (2020-03-15)
 * (René) create correct cron job for sunday if profile type "every day" is used
 * (René) see issue #87: change type of time data points to string
 * (René) see issue #87: set correct roles for data points
