@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.4.0",
+    "version": "0.3.19",
     "news": {
-      "0.4.0": {
+      "0.3.19": {
         "en": "to do",
 
       },
@@ -17,7 +17,9 @@
         "it": "prima versione stabile",
         "es": "primer lanzamiento estable",
         "pl": "pierwsze stabilne wydanie",
-        "zh-cn": "首次稳定发布"
+        "zh-cn": "首次稳定发布"     
+         }
+
       }
     },
     "title": "HeatingControl",
