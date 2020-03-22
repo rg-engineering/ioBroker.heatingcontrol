@@ -1,25 +1,31 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.3.19",
+    "version": "0.4.0",
     "news": {
-      "0.3.19": {
-        "en": "to do",
-
+      "0.4.0": {
+        "en": "use changes from thermostat",
+        "de": "Verwenden Sie Änderungen vom Thermostat",
+        "ru": "использовать изменения от термостата",
+        "pt": "use mudanças do termostato",
+        "nl": "gebruik veranderingen van thermostaat",
+        "fr": "utiliser les changements du thermostat",
+        "it": "utilizzare le modifiche dal termostato",
+        "es": "usar cambios del termostato",
+        "pl": "użyj zmian z termostatu",
+        "zh-cn": "使用恒温器的更改"
       },
-      "0.3.18": {
-        "en": "first stable release",
-        "de": "erste stabile Veröffentlichung",
-        "ru": "первый стабильный релиз",
-        "pt": "primeiro lançamento estável",
-        "nl": "eerste stabiele release",
-        "fr": "première version stable",
-        "it": "prima versione stabile",
-        "es": "primer lanzamiento estable",
-        "pl": "pierwsze stabilne wydanie",
-        "zh-cn": "首次稳定发布"     
-         }
-
+      "0.3.19": {
+        "en": "some bug fixes",
+        "de": "einige Bugfixes",
+        "ru": "некоторые исправления ошибок",
+        "pt": "algumas correções de bugs",
+        "nl": "enkele bugfixes",
+        "fr": "quelques corrections de bugs",
+        "it": "alcune correzioni di bug",
+        "es": "algunas correcciones de errores",
+        "pl": "niektóre poprawki błędów",
+        "zh-cn": "一些错误修复"
       }
     },
     "title": "HeatingControl",
@@ -95,6 +101,7 @@
     "SensorDelay": 0,
     "UseMinTempPerRoom": false,
     "ThermostatModeIfNoHeatingperiod": 3,
-    "FixTempIfNoHeatingPeriod": "15;"
+    "FixTempIfNoHeatingPeriod": "15;",
+    "UseChangesFromThermostat": 1
   }
 }

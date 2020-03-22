@@ -132,6 +132,17 @@ Just configure events from ical in admin. Supported are
 * heatingcontrol.0.GuestsPresent
 * heatingcontrol.0.PartyNow
 
+## use changes from thermostat
+Many user asked for an option to take over changes done on thermostat into adapter. Now a couple of options are implemented:
+
+| option                   | description                                                
+|--------------------------|---------------------------------------------------------------------------------------
+| no                       | as we have until version 0.3.x, changes from thermostat are ignored
+| as override              | changes from thermostat are taken as override; override time must be set in advance in heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime
+|                          | if override time is not set, than override is not executed
+| as new profile setting   | changes from thermostat are taken as target temperature for current profile period
+| adjustable per room      | above options can be configured per room. new datapoints will be added to object tree
+
 ## Requirements
 * Node version 8 or higher is required
 
@@ -140,6 +151,9 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+
+### 0.4.00 (2020-03-xx)
+* (René) use changes from thermostat
 
 ### 0.3.19 (2020-03-15)
 * (René) create correct cron job for sunday if profile type "every day" is used
