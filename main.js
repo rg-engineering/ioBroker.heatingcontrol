@@ -3350,7 +3350,10 @@ function getCronStat() {
     }
 
     if (cronJobs.length > 300) {
-        adapter.log.warn("more then 300 cron jobs existing for this adapter, this might be a configuration error!");
+        adapter.log.warn("more then 300 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
+    }
+    else {
+        adapter.log.info(cronJobs.length + " cron jobs created");
     }
 
 }
