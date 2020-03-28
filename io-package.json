@@ -14,18 +14,6 @@
         "es": "usar cambios del termostato",
         "pl": "użyj zmian z termostatu",
         "zh-cn": "使用恒温器的更改"
-      },
-      "0.3.19": {
-        "en": "some bug fixes",
-        "de": "einige Bugfixes",
-        "ru": "некоторые исправления ошибок",
-        "pt": "algumas correções de bugs",
-        "nl": "enkele bugfixes",
-        "fr": "quelques corrections de bugs",
-        "it": "alcune correzioni di bug",
-        "es": "algunas correcciones de errores",
-        "pl": "niektóre poprawki błędów",
-        "zh-cn": "一些错误修复"
       }
     },
     "title": "HeatingControl",
