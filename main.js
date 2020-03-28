@@ -278,7 +278,7 @@ async function ListRooms(obj) {
 
         const language = await GetSystemLanguage();
 
-        for (let e in rooms) {
+        for (const e in rooms) {
 
             let name = "undefined";
 
@@ -348,7 +348,7 @@ async function ListFunctions(obj) {
 
     const language = await GetSystemLanguage();
 
-    for (let e1 in functions) {
+    for (const e1 in functions) {
 
         let name = "undefined";
 
@@ -406,11 +406,11 @@ async function ListDevices(obj) {
         
 
         const HeatingMember = [];
-        for (let e1 in functions) {
+        for (const e1 in functions) {
 
             if (functions[e1].common.name === adapter.config.Gewerk ) {
                 const ids1 = functions[e1].common.members;
-                for (let n1 in ids1) {
+                for (const n1 in ids1) {
                     
                     HeatingMember.push({
                         id: ids1[n1]
@@ -421,10 +421,10 @@ async function ListDevices(obj) {
         adapter.log.debug("heating member: " + JSON.stringify(HeatingMember));
 
         let NextID = 1;
-        for (let e in rooms) {
+        for (const e in rooms) {
 
             const ids = rooms[e].common.members;
-            for (let n in ids) {
+            for (const n in ids) {
 
                 const adapterObj = await adapter.getForeignObjectAsync(ids[n]);
 
@@ -2807,16 +2807,68 @@ async function HandleStateChangeDevices(id, state) {
 
                             adapter.log.debug("change from thermostat as override for " + devices[d].room + " to " + state.val);
 
-                            //nur temperatur setzen; dann startet override 
+                            //nur temperatur setzen; dann startet override automatisch
                             const idPreset = "Rooms." + devices[d].room + ".TemperaturOverride";
                             //adapter.log.info("### override from thermostat " + idPreset);
-                            adapter.setState(idPreset, { ack: true, val: state.val });
+                            await adapter.setStateAsync(idPreset, { ack: true, val: state.val });
                         }
                         else if (parseInt(adapter.config.UseChangesFromThermostat) === 3) {
-                            adapter.log.debug("change from thermostat as new profile setting");
+                            adapter.log.debug("change from thermostat as new profile setting for " + devices[d].room + " to " + state.val);
+                                                     
+                            //just set new value
+                            const currentProfile = await GetCurrentProfile();
+                            const idCurrentPeriod = "Rooms." + devices[d].room + ".CurrentTimePeriod";
+
+                            const currentPeriod = await adapter.getStateAsync(idCurrentPeriod);
+
+                            const now = new Date();
+                            let temp;
+                            let PublicHolidyToday = false;
+                            if (adapter.config.PublicHolidayLikeSunday === true) {
+                                temp = await adapter.getStateAsync("PublicHolidyToday");
+                                PublicHolidyToday = temp.val;
+
+                            }
+                            temp = await adapter.getStateAsync("HolidayPresent");
+                            const HolidayPresent = temp.val;
+
+                            let RoomState;
+                           
+                            let ProfileId="";
+                            if (parseInt(adapter.config.ProfileType, 10) === 1) {
+                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
+                            }
+                            else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+                                
+
+                                const ret = await FindNextPeriod(devices[d].room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+                                const daysName = ret.DaysName;
+
+
+                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+
+                            }
+                            else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+                                const ret = await FindNextPeriod(devices[d].room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+                                const daysName = ret.DaysName;
+
+                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+                            }
+
+                            adapter.log.debug("set state " + ProfileId);
+
+                            await adapter.setStateAsync(ProfileId, { val: state.val, ack: true });
+
+
+
+                            //not necessary because change will trigger it anyway...
+                            //CheckTemperatureChange(devices[d].room);
+
+
                         }
                         else if (parseInt(adapter.config.UseChangesFromThermostat) === 4) {
-                            adapter.log.debug("change from thermostat room specific");
+                            adapter.log.debug("change from thermostat room specific; not implemented yet");
 
 
 
@@ -3216,12 +3268,12 @@ function StopTempOverride(roomID, cronjobID) {
     if (cronjobID >= 0) {
         deleteCronJob(cronjobID);
     }
-    const id = "CurrentProfile";
+    //const id = "CurrentProfile";
 
-    adapter.getState(id, function (err, obj) {
-        if (err) {
-            adapter.log.error(err);
-        } else {
+    //adapter.getState(id, function (err, obj) {
+    //    if (err) {
+    //        adapter.log.error(err);
+    //    } else {
             
 
             const idPreset = "Rooms."  + adapter.config.rooms[roomID].name + ".TemperaturOverride";
@@ -3233,8 +3285,8 @@ function StopTempOverride(roomID, cronjobID) {
             adapter.config.rooms[roomID].TempOverride = false;
 
             CheckTemperatureChange();
-        }
-    });
+     //   }
+    //});
 }
 
 function StartHeatingPeriod() {
@@ -4127,6 +4179,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     let ActiveTimeSlot = -1;
     let period;
     let sNextTime;
+    let daysName = "unknown";
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -4156,6 +4209,9 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 currentPeriod = period;
                 sNextTime = nextTimes;
             }
+
+            daysName = "Mo-Su";
+
         }
         if (period >= 0) {
             ActiveTimeSlot += currentPeriod;
@@ -4221,7 +4277,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
-
+        daysName = daysname;
     }
     else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
@@ -4311,6 +4367,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
+        daysName = daysname;
     }
     else {
         //adapter.log.warn("profile type != 1 not implemented yet");
@@ -4321,7 +4378,8 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         currentPeriod: currentPeriod,
         nextTemperature: nextTemperature,
         sNextTime: sNextTime,
-        ActiveTimeSlot: ActiveTimeSlot
+        ActiveTimeSlot: ActiveTimeSlot,
+        DaysName: daysName
     };
 
     adapter.log.debug(adapter.config.rooms[room].name + " found period " + currentPeriod + " with " + nextTemperature + " on " + sNextTime);
