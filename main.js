@@ -1302,6 +1302,13 @@ async function CreateDatepoints() {
                         }
                     });
 
+                    const Temp2 = await adapter.getStateAsync(id1 + ".ChangesFromThermostatMode");
+                    //set default only if nothing was set before
+                    if (Temp2 === null) {
+
+                        await adapter.setStateAsync(id1 + ".ChangesFromThermostatMode", { ack: true, val: 1 });
+                    }
+                    adapter.subscribeStates(id1 + ".ChangesFromThermostatMode");
 
                 }
 
@@ -2673,6 +2680,16 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
+    if (ids[4] == "ChangesFromThermostatMode") {
+
+        if (state.val <= 0 || state.val > 3) {
+            adapter.log.warn("wrong value " + state.val + " for " + id + " should be > 0 and <= 3");
+        }
+
+        bRet = true;
+    }
+
+
     //heatingcontrol.0.Rooms.Arbeitszimmer.TemperaturOverride
     if (ids[4] === "TemperaturOverride") {
         await StartTemperaturOverride(ids[3] );
@@ -2796,86 +2813,36 @@ async function HandleStateChangeDevices(id, state) {
 
                         //no Actor handling if target is changed
 
-                        //adapter.log.debug("ask  " + devices[d].OID_Current);
-                        //const current = await adapter.getForeignStateAsync(devices[d].OID_Current);
-                        //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(devices[d]));
-                        //if (current != null && typeof current != "undefined") {
-                        //    await HandleActors(devices[d].room, parseFloat(current.val), parseFloat(state.val));
-                        //}
-
                         if (parseInt(adapter.config.UseChangesFromThermostat) === 2) {
-
-                            adapter.log.debug("change from thermostat as override for " + devices[d].room + " to " + state.val);
-
-                            //nur temperatur setzen; dann startet override automatisch
-                            const idPreset = "Rooms." + devices[d].room + ".TemperaturOverride";
-                            //adapter.log.info("### override from thermostat " + idPreset);
-                            await adapter.setStateAsync(idPreset, { ack: true, val: state.val });
+                            await SetOverrideFromThermostat(devices[d].room, state.val);
                         }
                         else if (parseInt(adapter.config.UseChangesFromThermostat) === 3) {
-                            adapter.log.debug("change from thermostat as new profile setting for " + devices[d].room + " to " + state.val);
-                                                     
-                            //just set new value
-                            const currentProfile = await GetCurrentProfile();
-                            const idCurrentPeriod = "Rooms." + devices[d].room + ".CurrentTimePeriod";
 
-                            const currentPeriod = await adapter.getStateAsync(idCurrentPeriod);
-
-                            const now = new Date();
-                            let temp;
-                            let PublicHolidyToday = false;
-                            if (adapter.config.PublicHolidayLikeSunday === true) {
-                                temp = await adapter.getStateAsync("PublicHolidyToday");
-                                PublicHolidyToday = temp.val;
-
-                            }
-                            temp = await adapter.getStateAsync("HolidayPresent");
-                            const HolidayPresent = temp.val;
-
-                            let RoomState;
-                           
-                            let ProfileId="";
-                            if (parseInt(adapter.config.ProfileType, 10) === 1) {
-                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
-                            }
-                            else if (parseInt(adapter.config.ProfileType, 10) === 2) {
-                                
-
-                                const ret = await FindNextPeriod(devices[d].room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
-                                const daysName = ret.DaysName;
-
-
-                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
-
-                            }
-                            else if (parseInt(adapter.config.ProfileType, 10) === 3) {
-
-                                const ret = await FindNextPeriod(devices[d].room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
-                                const daysName = ret.DaysName;
-
-                                ProfileId = "Profiles." + currentProfile + "." + devices[d].room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
-                            }
-
-                            adapter.log.debug("set state " + ProfileId);
-
-                            await adapter.setStateAsync(ProfileId, { val: state.val, ack: true });
-
-
-
-                            //not necessary because change will trigger it anyway...
-                            //CheckTemperatureChange(devices[d].room);
-
-
+                            await SetProfileFromThermostat(devices[d].room, state.val);
                         }
                         else if (parseInt(adapter.config.UseChangesFromThermostat) === 4) {
-                            adapter.log.debug("change from thermostat room specific; not implemented yet");
+                            adapter.log.debug("change from thermostat room specific for " + devices[d].room);
 
+                            const id1 = "Rooms." + devices[d].room + ".ChangesFromThermostatMode";
 
+                            const currentMode = await adapter.getStateAsync(id1);
 
+                            if (currentMode === null || parseInt(currentMode.val) === 0 || parseInt(currentMode.val) === 1) {
+                                //do nothing
+
+                                adapter.log.debug("nothing to do");
+                            }
+                            else if (parseInt(currentMode.val) === 2) {
+                                await SetOverrideFromThermostat(devices[d].room, state.val);
+                            }
+                            else if (parseInt(currentMode.val) === 3) {
+
+                                await SetProfileFromThermostat(devices[d].room, state.val);
+                            }
+                            else {
+                                adapter.log.warn("wrong value " + currentMode.val + " for " + id1 + " should be > 0 and <= 3");
+                            }
                         }
-
-
-
                     }
                     else {
 
@@ -2949,6 +2916,66 @@ async function HandleStateChangeDevices(id, state) {
 
     return bRet;
 
+}
+
+async function SetOverrideFromThermostat(room, newVal) {
+    adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);
+
+    //nur temperatur setzen; dann startet override automatisch
+    const idPreset = "Rooms." + room + ".TemperaturOverride";
+    //adapter.log.info("### override from thermostat " + idPreset);
+    await adapter.setStateAsync(idPreset, { ack: true, val: newVal });
+}
+
+
+async function SetProfileFromThermostat(room, newVal) {
+
+    adapter.log.debug("change from thermostat as new profile setting for " + room + " to " + newVal);
+
+    //just set new value
+    const currentProfile = await GetCurrentProfile();
+    const idCurrentPeriod = "Rooms." + room + ".CurrentTimePeriod";
+
+    const currentPeriod = await adapter.getStateAsync(idCurrentPeriod);
+
+    const now = new Date();
+    let temp;
+    let PublicHolidyToday = false;
+    if (adapter.config.PublicHolidayLikeSunday === true) {
+        temp = await adapter.getStateAsync("PublicHolidyToday");
+        PublicHolidyToday = temp.val;
+
+    }
+    temp = await adapter.getStateAsync("HolidayPresent");
+    const HolidayPresent = temp.val;
+
+    let RoomState;
+
+    let ProfileId = "";
+    if (parseInt(adapter.config.ProfileType, 10) === 1) {
+        ProfileId = "Profiles." + currentProfile + "." + room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+
+        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+        const daysName = ret.DaysName;
+
+        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+        const daysName = ret.DaysName;
+
+        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+    }
+
+    adapter.log.debug("set state " + ProfileId);
+
+    await adapter.setStateAsync(ProfileId, { val: newVal, ack: true });
+
+    //not necessary because change will trigger it anyway...
+    //CheckTemperatureChange(devices[d].room);
 }
 
 /*
@@ -3186,8 +3213,8 @@ function CreateCron4HeatingPeriod() {
         const timezone = adapter.config.timezone || "Europe/Berlin";
         adapter.log.info("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
 
-        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
-        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
 
         try {
@@ -4606,8 +4633,8 @@ async function checkHeatingPeriod() {
     if (adapter.config.UseFixHeatingPeriod) {
         adapter.log.info("initial check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
 
-        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
-        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
         const StartMonth = HeatingPeriodStart[1] - 1;
         const StartDay = HeatingPeriodStart[0];
