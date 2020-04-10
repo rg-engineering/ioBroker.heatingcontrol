@@ -2356,22 +2356,10 @@ function SubscribeStates(callback) {
 
                 if (roomdata !== null && roomdata.isActive) {
 
-                    if (adapter.config.UseChangesFromThermostat > 1) {
-                        if (adapter.config.devices[i].type === 1) { //thermostat
-                            adapter.log.info("subscribe for UseChangesFromThermostat " + adapter.config.devices[i].room + " " + adapter.config.devices[i].OID_Target);
 
-                            if (adapter.config.devices[i].OID_Target != null && adapter.config.devices[i].OID_Target.length > 0) {
-                                adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
-                            }
-                            else {
-                                adapter.log.warn("OID Target for " + adapter.config.devices[i].room + " not set");
-                            }
+                    SubscribeStates4ChangesFromThermostat(i);
 
-                            if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
-                                adapter.log.warn("configuration error thermostat for " + adapter.config.devices[i].room + ": OID target should be different to OID current!");
-                            }
-                        }
-                    }
+                    
 
 
 
@@ -2415,6 +2403,45 @@ function SubscribeStates(callback) {
         adapter.log.error("exception in SubscribeStates [" + e + "]");
     }
     if (callback) callback();
+}
+
+
+function SubscribeStates4ChangesFromThermostat(idx) {
+
+    if (adapter.config.UseChangesFromThermostat > 1) {
+        if (adapter.config.devices[idx].type === 1) { //thermostat
+            adapter.log.info("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+
+            if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
+                adapter.subscribeForeignStates(adapter.config.devices[idx].OID_Target);
+            }
+            else {
+                adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+            }
+
+            if (adapter.config.devices[idx].OID_Target === adapter.config.devices[idx].OID_Current) {
+                adapter.log.warn("configuration error thermostat for " + adapter.config.devices[idx].room + ": OID target should be different to OID current!");
+            }
+        }
+    }
+}
+
+function UnSubscribeStates4ChangesFromThermostat(idx) {
+
+
+    if (adapter.config.devices[idx].type === 1) { //thermostat
+        adapter.log.info("unsubscribe  " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+
+        if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
+            adapter.unsubscribeForeignStates(adapter.config.devices[idx].OID_Target);
+        }
+        else {
+            adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+        }
+
+
+    }
+
 }
 
 //*******************************************************************
@@ -4184,8 +4211,31 @@ async function SetTarget4NoHeatingPeriod(roomId) {
 
 }
 
+let IgnoreStateChangeTimer = -1;
 
 async function SetNextTemperatureTarget(roomID, TargetTemperature) {
+
+    //we need to ignore all state changes when we set from here, otherwise we create override or similar
+    if (IgnoreStateChangeTimer <= 0) {
+
+        adapter.log.debug("need to unsubscribe states");
+        for (let i = 0; i < adapter.config.devices.length; i++) {
+            UnSubscribeStates4ChangesFromThermostat(i);
+        }
+        //subscribe in 10 sec.
+        IgnoreStateChangeTimer = setTimeout(function () {
+
+            adapter.log.debug("need to subscribe states now");
+            for (let i = 0; i < adapter.config.devices.length; i++) {
+                SubscribeStates4ChangesFromThermostat(i);
+            }
+            IgnoreStateChangeTimer = -1;
+        }, 10000);
+
+    }
+    else {
+        adapter.log.debug("already usubscribed");
+    }
 
 
     adapter.log.debug("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify( TargetTemperature));

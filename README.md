@@ -158,7 +158,7 @@ Many user asked for an option to take over changes from thermostat into adapter.
 ## Changelog
 
 ### 0.4.00 (2020-04-xx)
-* (René) use changes from thermostat
+* (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms 
 
 ### 0.3.19 (2020-03-15)
