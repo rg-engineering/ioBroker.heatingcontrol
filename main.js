@@ -2869,44 +2869,12 @@ async function HandleStateChangeDevices(id, state) {
             }
             else if (devices[d].type === 3) {//sensor
 
-                const roomID = findObjectIdByKey(adapter.config.rooms, "name", devices[d].room);
-
-                const windowIsOpen = await CheckWindowSensors(roomID);
-
-                if (adapter.config.SensorDelay > 0) {
-                    //nur wenn offen, verzögern
-                    if (windowIsOpen) {
-                        adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
-                        WindowOpenTimerId = setTimeout(function (room) {
-                            //adapter.log.debug("fired");
-
-                            if (WindowOpenTimerId) {
-                                clearTimeout(WindowOpenTimerId);
-                                WindowOpenTimerId = null;
-                            }
-
-                            CheckTemperatureChange(room);
-
-                        }, adapter.config.SensorDelay * 1000, devices[d].room);
-
-                    }
-                    else {
-                        //wenn zu, dann sofort 
-                        CheckTemperatureChange(devices[d].room);
-
-                        //und falls timer noch rennt; abbrechen
-                        if (WindowOpenTimerId) {
-                            clearTimeout(WindowOpenTimerId);
-                            WindowOpenTimerId = null;
-                        }
-
-                    }
+                //hier können mehrere rooms kommen
+                const roomIDs = findObjectsIdByKey(adapter.config.rooms, "name", devices[d].room);
+                
+                for (let ii = 0; ii < roomIDs.length; ii++) {
+                    await CheckWindowOpen4Room(roomIDs[ii], devices[d]);
                 }
-                //version ohne delay
-                else {
-                    CheckTemperatureChange(devices[d].room);
-                }
-
             }
         }
     }
@@ -2916,6 +2884,45 @@ async function HandleStateChangeDevices(id, state) {
 
     return bRet;
 
+}
+
+
+async function CheckWindowOpen4Room(roomID, device) {
+    const windowIsOpen = await CheckWindowSensors(roomID);
+
+    if (adapter.config.SensorDelay > 0) {
+        //nur wenn offen, verzögern
+        if (windowIsOpen) {
+            adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
+            WindowOpenTimerId = setTimeout(function () {
+                //adapter.log.debug("fired");
+
+                if (WindowOpenTimerId) {
+                    clearTimeout(WindowOpenTimerId);
+                    WindowOpenTimerId = null;
+                }
+                
+                CheckTemperatureChange(device.room);
+
+            }, adapter.config.SensorDelay * 1000, device.room);
+
+        }
+        else {
+            //wenn zu, dann sofort 
+            CheckTemperatureChange(device.room);
+
+            //und falls timer noch rennt; abbrechen
+            if (WindowOpenTimerId) {
+                clearTimeout(WindowOpenTimerId);
+                WindowOpenTimerId = null;
+            }
+
+        }
+    }
+    //version ohne delay
+    else {
+        CheckTemperatureChange(device.room);
+    }
 }
 
 async function SetOverrideFromThermostat(room, newVal) {
@@ -3172,7 +3179,6 @@ function findObjectIdByKey(array, key, value) {
 //
 // find all objects in array by key and value
 // returns index number array
-/*
 function findObjectsIdByKey(array, key, value) {
 
     const ret = [];
@@ -3187,7 +3193,7 @@ function findObjectsIdByKey(array, key, value) {
     }
     return ret;
 }
-*/
+
 
 
 
@@ -3295,15 +3301,15 @@ function StopTempOverride(roomID, cronjobID) {
     if (cronjobID >= 0) {
         deleteCronJob(cronjobID);
     }
-    //const id = "CurrentProfile";
+    const id = "CurrentProfile";
+    //this is needed..
+    adapter.getState(id, function (err, obj) {
+        if (err) {
+            adapter.log.error(err);
+        } else {
 
-    //adapter.getState(id, function (err, obj) {
-    //    if (err) {
-    //        adapter.log.error(err);
-    //    } else {
-            
 
-            const idPreset = "Rooms."  + adapter.config.rooms[roomID].name + ".TemperaturOverride";
+            const idPreset = "Rooms." + adapter.config.rooms[roomID].name + ".TemperaturOverride";
 
             adapter.log.info("### " + idPreset);
 
@@ -3312,8 +3318,8 @@ function StopTempOverride(roomID, cronjobID) {
             adapter.config.rooms[roomID].TempOverride = false;
 
             CheckTemperatureChange();
-     //   }
-    //});
+        }
+    });
 }
 
 function StartHeatingPeriod() {
