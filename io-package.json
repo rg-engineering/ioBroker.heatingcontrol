@@ -90,6 +90,7 @@
     "UseMinTempPerRoom": false,
     "ThermostatModeIfNoHeatingperiod": 3,
     "FixTempIfNoHeatingPeriod": "15;",
-    "UseChangesFromThermostat": 1
+    "UseChangesFromThermostat": 1,
+    "UseVisFromPittini":  false
   }
 }

@@ -18,6 +18,7 @@ const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
 
 
+
 //========================================================================
 //this must be false for production use! set it to true when you use static data for debuggung purpose only
 //const bDebug = false;
@@ -218,6 +219,16 @@ async function main() {
         await CheckTemperatureChange();
 
         await SubscribeStates();
+
+        if (adapter.config.UseVisFromPittini) {
+            adapter.log.info("starting vis");
+
+            const myVis = require("./HeatingControlVis");
+            adapter.log.info("starting vis part 2");
+            const vis = new myVis(adapter);
+            //vis.main();
+
+        }
     }
     catch (e) {
         adapter.log.error("exception in  main [" + e + "]");
