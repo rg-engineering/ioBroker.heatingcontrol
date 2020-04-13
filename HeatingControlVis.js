@@ -1,4 +1,4 @@
-//Mapping Skript zum Adapter HeatingControl V 0.3.19 oder höher
+//Mapping Skript zum Adapter HeatingControl V 0.3.19 oder hÃ¶her
 // Skriptversion 1.0.5 Stand 23.3.2020 - https://github.com/Pittini/iobroker-heatingcontrol-vis
 
 
@@ -23,10 +23,10 @@ class HeatingControlVis {
 
         this.log("init called");
 
-        //    const praefix = "javascript.0.vis.HeatingControl."; //Grundpfad für Script DPs
+        //    const praefix = "javascript.0.vis.HeatingControl."; //Grundpfad fÃ¼r Script DPs
         //    const hcpraefix = "heatingcontrol.0."; //Pfad zu HeatingControlDatenpunkten
 
-        this.praefix = "vis."; //Grundpfad für Script DPs
+        this.praefix = "vis."; //Grundpfad fÃ¼r Script DPs
         this.hcpraefix = ""; //Pfad zu HeatingControlDatenpunkten
 
         this.logging = true; //Logmeldungen an/ab schalten
@@ -34,13 +34,13 @@ class HeatingControlVis {
         this.WindowOpenImg = "/vis.0/HeatingControl/images/fts_window_1w_open.svg";
 
         this.AbsTempValueListValue = "0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25";
-        this.AbsTempValueListText = "inaktiv;1°C;2°C;3°C;4°C;5°C;6°C;7°C;8°C;9°C;10°C;11°C;12°C;13°C;14°C;15°C;16°C;17°C;18°C;19°C;20°C;21°C;22°C;23°C;24°C;25°C";
+        this.AbsTempValueListText = "inaktiv;1Â°C;2Â°C;3Â°C;4Â°C;5Â°C;6Â°C;7Â°C;8Â°C;9Â°C;10Â°C;11Â°C;12Â°C;13Â°C;14Â°C;15Â°C;16Â°C;17Â°C;18Â°C;19Â°C;20Â°C;21Â°C;22Â°C;23Â°C;24Â°C;25Â°C";
 
         this.RelTempValueListValue = "0;1;2;3;4;5;6;7;8;9;10";
-        this.RelTempDivValueListText = "inaktiv;-1°C;-2°C;-3°C;-4°C;-5°C;-6°C;-7°C;-8°C;-9°C;-10°C";
-        this.RelTempAddValueListText = "inaktiv;+1°C;+2°C;+3°C;+4°C;+5°C;+6°C;+7°C;+8°C;+9°C;+10°C";
+        this.RelTempDivValueListText = "inaktiv;-1Â°C;-2Â°C;-3Â°C;-4Â°C;-5Â°C;-6Â°C;-7Â°C;-8Â°C;-9Â°C;-10Â°C";
+        this.RelTempAddValueListText = "inaktiv;+1Â°C;+2Â°C;+3Â°C;+4Â°C;+5Â°C;+6Â°C;+7Â°C;+8Â°C;+9Â°C;+10Â°C";
 
-        //Ab hier nichts mehr ändern
+        //Ab hier nichts mehr Ã¤ndern
         this.RefreshingVis = false;
         this.ChoosenRoom = "";
 
@@ -73,7 +73,7 @@ class HeatingControlVis {
         this.CurrentProfile = temp.val - 1;
         this.log("123 " + JSON.stringify(this.UsedRooms));
         //RoomsBereich
-        this.Rooms = this.UsedRooms.split(";"); //Raumliste in Array wandeln für Fensterüberwachung
+        this.Rooms = this.UsedRooms.split(";"); //Raumliste in Array wandeln fÃ¼r FensterÃ¼berwachung
 
         this.log("rooms" + JSON.stringify(this.Rooms));
 
@@ -87,9 +87,9 @@ class HeatingControlVis {
 
         this.log("Profiltype " + this.ProfileType);
 
-        //States für Zeit/Temp Einstellung
+        //States fÃ¼r Zeit/Temp Einstellung
         switch (this.ProfileType) {
-            //Dps erzeugen für alle ProfilType Varianten
+            //Dps erzeugen fÃ¼r alle ProfilType Varianten
             //V1 Alle Tage zusammen
             case "Mo - Su":
                 y = 0;
@@ -152,7 +152,7 @@ class HeatingControlVis {
                 break;
         }
 
-        //States für Profileinstellungen
+        //States fÃ¼r Profileinstellungen
         this.states[y] = { id: this.praefix + "TempDecreaseValues." + "AbsentDecrease", initial: 0, forceCreation: false, common: { read: true, write: true, name: "AbsentDecrease", type: "number", def: 0 } }; // 
         y++;
         this.states[y] = { id: this.praefix + "TempDecreaseValues." + "GuestIncrease", initial: 0, forceCreation: false, common: { read: true, write: true, name: "GuestIncrease", type: "number", def: 0 } }; // 
@@ -164,34 +164,34 @@ class HeatingControlVis {
         this.states[y] = { id: this.praefix + "TempDecreaseValues." + "WindowOpenDecrease", initial: 0, forceCreation: false, common: { read: true, write: true, name: "WindowOpenDecrease", type: "number", def: 0 } }; // 
         y++;
 
-        //States für Raumeinstellungen
+        //States fÃ¼r Raumeinstellungen
         this.states[y] = { id: this.praefix + "RoomValues." + "MinimumTemperature", initial: 0, forceCreation: false, common: { read: true, write: true, name: "MinimumTemperature", type: "number", def: 0 } }; // 
         y++;
         this.states[y] = { id: this.praefix + "RoomValues." + "TemperaturOverride", initial: 0, forceCreation: false, common: { read: true, write: true, name: "TemperaturOverride", type: "number", def: 20 } }; // 
         y++;
         this.states[y] = { id: this.praefix + "RoomValues." + "TemperaturOverrideTime", initial: "00:00", forceCreation: false, common: { read: true, write: true, name: "TemperaturOverrideTime", type: "string", def: "00:00" } }; // 
         y++;
-        this.states[y] = { id: this.praefix + "RoomValues." + "WindowIsOpen", initial: false, forceCreation: false, common: { read: true, write: true, name: "Fenster geöffnet?", type: "boolean", def: false } }; // 
+        this.states[y] = { id: this.praefix + "RoomValues." + "WindowIsOpen", initial: false, forceCreation: false, common: { read: true, write: true, name: "Fenster geÃ¶ffnet?", type: "boolean", def: false } }; // 
         y++;
         this.states[y] = { id: this.praefix + "RoomValues." + "CurrentTimePeriod", initial: 0, forceCreation: false, common: { read: true, write: true, name: "Aktiver Zeit Slot", type: "number", def: 0 } }; // 
         y++;
 
         //Hilfs Datenpunkte
-        this.states[y] = { id: this.praefix + "ChoosenRoom", initial: "", forceCreation: false, common: { read: true, write: true, name: "In Vis gewählter Raum", type: "string", def: "" } }; // Welcher Raum wurde in Vis gewählt
+        this.states[y] = { id: this.praefix + "ChoosenRoom", initial: "", forceCreation: false, common: { read: true, write: true, name: "In Vis gewÃ¤hlter Raum", type: "string", def: "" } }; // Welcher Raum wurde in Vis gewÃ¤hlt
         y++;
-        this.states[y] = { id: this.praefix + "ProfileValueListValue", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe für ProfilValueList Werte", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "ProfileValueListValue", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe fÃ¼r ProfilValueList Werte", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "ProfileValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe für ProfilValueList Text", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "ProfileValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe fÃ¼r ProfilValueList Text", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "TempValueListValue", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe für TemperaturValueList Wert", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "TempValueListValue", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe fÃ¼r TemperaturValueList Wert", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "TempAddValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe für TemperaturValueList Text", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "TempAddValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe fÃ¼r TemperaturValueList Text", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "TempDivValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe für TemperaturValueList Text", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "TempDivValueListText", initial: "", forceCreation: false, common: { read: true, write: true, name: "Vorgabe fÃ¼r TemperaturValueList Text", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "WindowStatesHtmlTable", initial: "", forceCreation: false, common: { read: true, write: true, name: "Tabellarische Übersicht der geöffneten Fenster", type: "string", def: "" } }; //
+        this.states[y] = { id: this.praefix + "WindowStatesHtmlTable", initial: "", forceCreation: false, common: { read: true, write: true, name: "Tabellarische Ãœbersicht der geÃ¶ffneten Fenster", type: "string", def: "" } }; //
         y++;
-        this.states[y] = { id: this.praefix + "OpenWindowRoomCount", initial: 0, forceCreation: false, common: { read: true, write: true, name: "In wievielen Räumen sind Fenster geöffnet", type: "number", def: 0 } }; //
+        this.states[y] = { id: this.praefix + "OpenWindowRoomCount", initial: 0, forceCreation: false, common: { read: true, write: true, name: "In wievielen RÃ¤umen sind Fenster geÃ¶ffnet", type: "number", def: 0 } }; //
 
         await this.CreateStates();
 
@@ -226,18 +226,18 @@ class HeatingControlVis {
 
         this.log("main called");
 
-        await this.InitRoom(); //Gewählten Raum einlesen, bei Erststart default setzen
+        await this.InitRoom(); //GewÃ¤hlten Raum einlesen, bei Erststart default setzen
 
         await this.InitWindowStates(); //Fensterstati einlesen
 
         await this.CreateWindowStatesTable(); //Fensterstati Liste erzeugen
 
         //ValueList Vorgabewerte anhand Profileinstellungen erzeugen
-        await this.SetProfileValueList(); //ValueList Vorgaben für Profile erzeugen
+        await this.SetProfileValueList(); //ValueList Vorgaben fÃ¼r Profile erzeugen
 
-        await this.SetTempDecreaseModeValueLists();//ValueList Vorgaben (Werte und Texte) für Decreasemodes erzeugen
+        await this.SetTempDecreaseModeValueLists();//ValueList Vorgaben (Werte und Texte) fÃ¼r Decreasemodes erzeugen
 
-        await this.CreateCurrentTimePeriodTrigger("none"); //TimeperiodTrigger für aktuellen Raum wählen
+        await this.CreateCurrentTimePeriodTrigger("none"); //TimeperiodTrigger fÃ¼r aktuellen Raum wÃ¤hlen
 
         await this.SetTrigger();    //Trigger erzeugen
 
@@ -247,7 +247,7 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
-    async InitRoom() { //Gewählten Raum einlesen, bei Erststart default= erster in der Raumliste setzen
+    async InitRoom() { //GewÃ¤hlten Raum einlesen, bei Erststart default= erster in der Raumliste setzen
 
         this.log("InitRoom called ");
         let temp = await this.adapter.getStateAsync(this.praefix + "ChoosenRoom");
@@ -258,7 +258,7 @@ class HeatingControlVis {
 
             temp = await this.adapter.getStateAsync("heatingcontrol.0.info.UsedRooms");
             const dummy = temp.val;
-            if (dummy.includes(";")) { //Wenn ein semikolon in der Raumliste vorhanden ist, sind auch mehrere Räume vorhanden, davon nachfolgend den ersten extrahieren
+            if (dummy.includes(";")) { //Wenn ein semikolon in der Raumliste vorhanden ist, sind auch mehrere RÃ¤ume vorhanden, davon nachfolgend den ersten extrahieren
                 this.ChoosenRoom = dummy.substring(0, dummy.indexOf(";")); //In Raumliste nach dem Semikolon suchen und alles links davon extrahieren
                 if (this.logging) this.log("ChoosenRoom=" + this.ChoosenRoom);
             }
@@ -287,7 +287,7 @@ class HeatingControlVis {
     //==========================================================================================================================
     async InitWindowStates() { //Bei Programmstart alle Raum/Fensterstati einlesen
         this.log("InitWindowStates called ");
-        for (let x = 0; x <= this.Rooms.length - 1; x++) { //Alle Räume durchlaufen
+        for (let x = 0; x <= this.Rooms.length - 1; x++) { //Alle RÃ¤ume durchlaufen
 
             let temp = await this.adapter.getStateAsync(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
             this.WindowState[x] = temp.val;
@@ -327,7 +327,7 @@ class HeatingControlVis {
     */
     
     //==========================================================================================================================
-    async CreateWindowStatesTable() { // Erzeugt List mit Räumen und Fensterstatus
+    async CreateWindowStatesTable() { // Erzeugt List mit RÃ¤umen und Fensterstatus
         this.log("CreateWindowStatesTable called ");
         let HtmlTable = "";
         this.OpenWindowRoomCount = 0;
@@ -377,7 +377,7 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
-    SetWindowState() { //Fenster offenstatus für einzelnen Raum/Fenster festlegen
+    SetWindowState() { //Fenster offenstatus fÃ¼r einzelnen Raum/Fenster festlegen
         if (this.logging) this.log("Reaching SetWindowState");
         this.adapter.setState(this.praefix + "RoomValues." + "WindowIsOpen", this.adapter.setState(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen").val);
     }
@@ -388,9 +388,9 @@ class HeatingControlVis {
         this.log("SetVis called");
 
         if (this.logging) this.log("Reaching SetVis");
-        this.RefreshingVis = true; //Um zu vermeiden dass es ne Schleife gibt wo die Vis Aktualisierung bei Raumwechsel als Änderung gewertet wird
+        this.RefreshingVis = true; //Um zu vermeiden dass es ne Schleife gibt wo die Vis Aktualisierung bei Raumwechsel als Ã„nderung gewertet wird
         let temp;
-        switch (this.ProfileType) { //Profiltyp abhängige Zeit und Temperaturwerte setzen
+        switch (this.ProfileType) { //Profiltyp abhÃ¤ngige Zeit und Temperaturwerte setzen
             case "Mo - Su":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.adapter.getStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Su.Periods." + x + ".Temperature");
@@ -459,7 +459,7 @@ class HeatingControlVis {
         //Raum Werte setzen
         
         temp = await this.adapter.getStateAsync(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "MinimumTemperature");
-        if (temp != null && temp.val != 0 ) { //Prüfen ob Minimum Temp Null ist
+        if (temp != null && temp.val != 0 ) { //PrÃ¼fen ob Minimum Temp Null ist
 
             temp = await this.adapter.getStateAsync(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "MinimumTemperature");
             await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", temp.val);
@@ -478,15 +478,15 @@ class HeatingControlVis {
         temp = await this.adapter.getStateAsync(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "ActiveTimeSlot")
         await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", temp.val);
 
-        setTimeout(function () { // Timeout setzt refresh status wieder zurück
+        setTimeout(function () { // Timeout setzt refresh status wieder zurÃ¼ck
             this.RefreshingVis = false;
         }, 250);
         this.log("SetVis done");
     }
 
     //==========================================================================================================================
-    async SetTempDecreaseModeValueLists() { //Setzt die Vorgabewerte der Valuelists je nach gewähltem DecreaseMode
-        this.log("SetTempDecreaseModeValueLists called");
+    async SetTempDecreaseModeValueLists() { //Setzt die Vorgabewerte der Valuelists je nach gewÃ¤hltem DecreaseMode
+        this.log("SetTempDecreaseModeValueLists called " + this.AbsTempValueListText + " " + this.RelTempDivValueListText);
 
         switch (this.TempDecreaseMode) {
             case "relative":
@@ -504,21 +504,25 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
-    async SetProfileValueList() { //Einträge für Vis Profil Valuelist erstellen
-        this.log("SetProfileValueList called ");
+    async SetProfileValueList() { //EintrÃ¤ge fÃ¼r Vis Profil Valuelist erstellen
+        this.log("SetProfileValueList called " + this.NumberOfProfiles);
 
         let ProfileValueListValue = "";
         let ProfileValueListText = "";
 
         for (let x = 1; x <= this.NumberOfProfiles; x++) {
+            this.log("SetProfileValueList x= " + x);
             ProfileValueListValue = ProfileValueListValue + ";" + x;
             ProfileValueListText = ProfileValueListText + ";" + x;
         }
+
+        this.log("SetProfileValueList " + ProfileValueListValue);
+
         ProfileValueListValue = ProfileValueListValue.slice(1);
         ProfileValueListText = ProfileValueListText.slice(1);
 
-        await this.adapter.setStateAsync(this.praefix+".ProfileValueListValue", ProfileValueListValue);
-        await this.adapter.setStateAsync(this.praefix + ".ProfileValueListText", ProfileValueListText);
+        await this.adapter.setStateAsync(this.praefix + "ProfileValueListValue", ProfileValueListValue);
+        await this.adapter.setStateAsync(this.praefix + "ProfileValueListText", ProfileValueListText);
 
         this.log("SetProfileValueList done");
     }
@@ -530,15 +534,15 @@ class HeatingControlVis {
 
         if (this.logging) this.log("reaching CreateCurrentTimePeriodTrigger - Oldroom= " + OldRoom + " ChoosenRoom= " + this.ChoosenRoom);
         if (OldRoom != "none") { //Wenn kein Oldroom angegeben kein unsubscribe machen
-            if (this.adapter.unsubscribe(this.hcpraefix + "Rooms." + OldRoom + ".ActiveTimeSlot")) { //Trigger auf vorherigen Raum löschen
-                if (this.logging) this.log("Trigger für Raum " + OldRoom + " gelöscht, und für Raum " + this.ChoosenRoom + " gesetzt.");
+            if (this.adapter.unsubscribe(this.hcpraefix + "Rooms." + OldRoom + ".ActiveTimeSlot")) { //Trigger auf vorherigen Raum lÃ¶schen
+                if (this.logging) this.log("Trigger fÃ¼r Raum " + OldRoom + " gelÃ¶scht, und fÃ¼r Raum " + this.ChoosenRoom + " gesetzt.");
             }
         }
 
         //wieder rein
         /*
         on(this.hcpraefix + "Rooms." + this.ChoosenRoom + ".ActiveTimeSlot", function (dp) { //Neuen Trigger setzen
-            if (this.RefreshingVis == false) this.adapter.setState(this.praefix + "RoomValues." + "CurrentTimePeriod", dp.state.val);//Wenn Änderung des akuellen Zeitslots im aktuell gewählten Raum
+            if (this.RefreshingVis == false) this.adapter.setState(this.praefix + "RoomValues." + "CurrentTimePeriod", dp.state.val);//Wenn Ã„nderung des akuellen Zeitslots im aktuell gewÃ¤hlten Raum
         });
         */
 
@@ -551,23 +555,23 @@ class HeatingControlVis {
         /*
 
         // !!!!!!!!!
-        // Änderungen im admin führen zum restart, und neu einlesen, deshalb hier nicht notwendig
+        // Ã„nderungen im admin fÃ¼hren zum restart, und neu einlesen, deshalb hier nicht notwendig
 
-        //Trigger für HC Info Daten aus Admin
-        on(this.hcpraefix + "info.NumberOfProfiles", function (dp) { //Wenn Anzahl der Profile im Admin geändert
+        //Trigger fÃ¼r HC Info Daten aus Admin
+        on(this.hcpraefix + "info.NumberOfProfiles", function (dp) { //Wenn Anzahl der Profile im Admin geÃ¤ndert
             this.NumberOfProfiles = dp.state.val;
             this.SetProfileValueList();
         });
-        on(this.hcpraefix + "info.NumberOfPeriods", function (dp) { //Wenn Anzahl der Perioden im Admin geändert
+        on(this.hcpraefix + "info.NumberOfPeriods", function (dp) { //Wenn Anzahl der Perioden im Admin geÃ¤ndert
             this.NumberOfPeriods = dp.state.val - 1;
         });
-        on(this.hcpraefix + "info.ProfileType", function (dp) { //Wenn Änderung Profiltyp im Admin
+        on(this.hcpraefix + "info.ProfileType", function (dp) { //Wenn Ã„nderung Profiltyp im Admin
             this.ProfileType = dp.state.val;
         });
-        on(this.hcpraefix + "info.TemperatureDecreaseMode", function (dp) { //Wenn Änderung des DecreaseModes im Admin
+        on(this.hcpraefix + "info.TemperatureDecreaseMode", function (dp) { //Wenn Ã„nderung des DecreaseModes im Admin
             this.TempDecreaseMode = dp.state.val;
         });
-        on(this.hcpraefix + "info.UsedRooms", function (dp) { //Wenn Änderung der UsedRooms im Admin
+        on(this.hcpraefix + "info.UsedRooms", function (dp) { //Wenn Ã„nderung der UsedRooms im Admin
             this.UsedRooms = dp.state.val;
         });
 
@@ -579,20 +583,20 @@ class HeatingControlVis {
         
 
         //Trigger HC Main Root
-        on(this.hcpraefix + "CurrentProfile", function (dp) { //Wenn Änderung des Profils
+        on(this.hcpraefix + "CurrentProfile", function (dp) { //Wenn Ã„nderung des Profils
             this.CurrentProfile = dp.state.val - 1;
             this.SetVis();
         });
 
         //Trigger Script Dps
         //Root
-        on(this.praefix + "ChoosenRoom", function (dp) { //Wenn Änderung des Raums
+        on(this.praefix + "ChoosenRoom", function (dp) { //Wenn Ã„nderung des Raums
             this.ChoosenRoom = dp.state.val;
             this.SetVis();
-            this.CreateCurrentTimePeriodTrigger(dp.oldState.val); //Sonderfall - Um die aktuelle Periode anzeigen zu können muss ein wechselnder Trigger auf den aktuellen Raum im HC Rooms Zweig gesetzt und bei wechsel wieder gelöscht werden
+            this.CreateCurrentTimePeriodTrigger(dp.oldState.val); //Sonderfall - Um die aktuelle Periode anzeigen zu kÃ¶nnen muss ein wechselnder Trigger auf den aktuellen Raum im HC Rooms Zweig gesetzt und bei wechsel wieder gelÃ¶scht werden
         });
 
-        //Trigger für RaumDPs
+        //Trigger fÃ¼r RaumDPs
         on(this.praefix + "RoomValues." + "MinimumTemperature", function (dp) { //Wenn 
             if (this.RefreshingVis == false) this.SetRoomValue("MinimumTemperature", dp.state.val);
         });
@@ -603,10 +607,10 @@ class HeatingControlVis {
             if (this.RefreshingVis == false) this.SetRoomValue("TemperaturOverrideTime", dp.state.val);
         });
 
-        //Trigger für alle Fenster Stati
+        //Trigger fÃ¼r alle Fenster Stati
         for (let x = 0; x <= this.UsedRooms.split(";").length - 1; x++) {
             if (this.logging) this.log(x + " " + this.Rooms[x]);
-            on(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen", function (dp) { //Wenn Fensterstatus sich ändert
+            on(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen", function (dp) { //Wenn Fensterstatus sich Ã¤ndert
                 this.WindowState[x] = dp.state.val;
                 this.WindowStateTimeStamp[x] = formatDate(dp.state.lc, "TT.MM.JJJJ SS:mm:ss");
                 this.SetWindowState();
@@ -615,7 +619,7 @@ class HeatingControlVis {
             });
         }
 
-        //Trigger für DecreaseModes
+        //Trigger fÃ¼r DecreaseModes
         on(this.praefix + "TempDecreaseValues." + "AbsentDecrease", function (dp) { //Wenn 
             if (this.RefreshingVis == false) this.SetDecreaseValue("AbsentDecrease", dp.state.val);
         });
@@ -632,7 +636,7 @@ class HeatingControlVis {
             if (this.RefreshingVis == false) this.SetDecreaseValue("WindowOpenDecrease", dp.state.val);
         });
 
-        switch (this.ProfileType) { //Trigger für Vis Zeit und Temperatur je nach Profiltyp
+        switch (this.ProfileType) { //Trigger fÃ¼r Vis Zeit und Temperatur je nach Profiltyp
             case "Mo - Su": //Version1 Alle Tage zusammen
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     on(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", function (dp) { //Wenn 

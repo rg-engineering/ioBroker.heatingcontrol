@@ -15,7 +15,7 @@
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url) 
 
 
-Adapter for controlling your heating system.
+## Adapter for controlling your heating system.
 
 Features:
 * Control the setpoint temperature levels of all thermostats per schedules

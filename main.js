@@ -4120,7 +4120,7 @@ async function CheckTemperatureChange(room2check) {
                                     }
                                 }
                                 else {
-                                    adapter.log.debug("### new target temp" + nextTemperature);
+                                    adapter.log.debug("### new target temp " + nextTemperature);
                                 }
                             }
                             else {
