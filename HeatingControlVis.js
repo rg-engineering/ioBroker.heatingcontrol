@@ -89,9 +89,14 @@ class HeatingControlVis {
 
         //States für Zeit/Temp Einstellung
         switch (this.ProfileType) {
+            default:
+                this.log("unknown profile type");
+                break;
+
+
             //Dps erzeugen für alle ProfilType Varianten
             //V1 Alle Tage zusammen
-            case "Mo - Su":
+            case "Mo-Su":
                 y = 0;
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.states[y] = { id: this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", initial: 20, forceCreation: false, common: { read: true, write: true, name: "target temperature", type: "number", def: 20 } };
@@ -102,7 +107,7 @@ class HeatingControlVis {
                 break;
 
             //V2 Mo-Fr / Sa-So
-            case "Mo - Fr / Sa - Su":
+            case "Mo-Fr / Sa-Su":
                 y = 0;
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.states[y] = { id: this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", initial: 20, forceCreation: false, common: { read: true, write: true, name: "target temperature", type: "number", def: 20 } };
@@ -215,8 +220,6 @@ class HeatingControlVis {
                 common: this.states[i].common,
                 val: this.states[i].initial
             });
-
-            
         }
 
         this.log("CreateStates done");
@@ -349,37 +352,38 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
-    SetTimeTempValue(ProfileDays, What, ScriptDpVal, Period) { //Werte vom Vis, Bereich Zeit/Temperatur, in AdapterDPs schreiben
+    async SetTimeTempValue(ProfileDays, What, ScriptDpVal, Period) { //Werte vom Vis, Bereich Zeit/Temperatur, in AdapterDPs schreiben
         if (this.RefreshingVis == false) {
             this.log(typeof (ScriptDpVal));
             if (this.logging) this.log("Reaching SetTimeTempValue");
             if (this.logging) this.log("SetTimeTempValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What + " set to " + ScriptDpVal);
-            this.adapter.setState(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What, ScriptDpVal);
+
+            await this.adapter.setStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What, ScriptDpVal);
         }
     }
 
     //==========================================================================================================================
-    SetDecreaseValue(What, ScriptDpVal) {//Werte vom Vis, Bereich Absenkungen, in AdapterDPs schreiben
+    async SetDecreaseValue(What, ScriptDpVal) {//Werte vom Vis, Bereich Absenkungen, in AdapterDPs schreiben
         if (this.RefreshingVis == false) {
             if (this.logging) this.log("Reaching SetDecreaseValue");
             if (this.logging) this.log("SetDecreasValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What + " set to " + ScriptDpVal);
-            this.adapter.setState(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What, ScriptDpVal);
+            await this.adapter.setStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What, ScriptDpVal);
         }
     }
 
     //==========================================================================================================================
-    SetRoomValue(What, ScriptDpVal) {
+    async SetRoomValue(What, ScriptDpVal) {
         if (this.RefreshingVis == false) {
             if (this.logging) this.log("Reaching SetDecreaseValue");
             if (this.logging) this.log("SetRoomValue: " + this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + What + " set to " + ScriptDpVal);
-            this.adapter.setState(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + What, ScriptDpVal);
+            await this.adapter.setStateAsync(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + What, ScriptDpVal);
         }
     }
 
     //==========================================================================================================================
-    SetWindowState() { //Fenster offenstatus für einzelnen Raum/Fenster festlegen
+    async SetWindowState() { //Fenster offenstatus für einzelnen Raum/Fenster festlegen
         if (this.logging) this.log("Reaching SetWindowState");
-        this.adapter.setState(this.praefix + "RoomValues." + "WindowIsOpen", this.adapter.setState(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen").val);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", this.adapter.setState(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen").val);
     }
 
     //==========================================================================================================================
@@ -539,6 +543,7 @@ class HeatingControlVis {
             }
         }
 
+        this.adapter.subscribeStates(this.hcpraefix + "Rooms." + this.ChoosenRoom + ".ActiveTimeSlot");
         //wieder rein
         /*
         on(this.hcpraefix + "Rooms." + this.ChoosenRoom + ".ActiveTimeSlot", function (dp) { //Neuen Trigger setzen
@@ -551,170 +556,141 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     async SetTrigger() {
-        //wieder rein
-        /*
+        this.adaptaer.subscribeStates(this.praefix + "ChoosenRoom");
 
-        // !!!!!!!!!
-        // Änderungen im admin führen zum restart, und neu einlesen, deshalb hier nicht notwendig
+        this.adaptaer.subscribeStates(this.praefix + "RoomValues." + "MinimumTemperature");
+        this.adaptaer.subscribeStates(this.praefix + "RoomValues." + "TemperaturOverride");
+        this.adaptaer.subscribeStates(this.praefix + "RoomValues." + "TemperaturOverrideTime");
 
-        //Trigger für HC Info Daten aus Admin
-        on(this.hcpraefix + "info.NumberOfProfiles", function (dp) { //Wenn Anzahl der Profile im Admin geändert
-            this.NumberOfProfiles = dp.state.val;
-            this.SetProfileValueList();
-        });
-        on(this.hcpraefix + "info.NumberOfPeriods", function (dp) { //Wenn Anzahl der Perioden im Admin geändert
-            this.NumberOfPeriods = dp.state.val - 1;
-        });
-        on(this.hcpraefix + "info.ProfileType", function (dp) { //Wenn Änderung Profiltyp im Admin
-            this.ProfileType = dp.state.val;
-        });
-        on(this.hcpraefix + "info.TemperatureDecreaseMode", function (dp) { //Wenn Änderung des DecreaseModes im Admin
-            this.TempDecreaseMode = dp.state.val;
-        });
-        on(this.hcpraefix + "info.UsedRooms", function (dp) { //Wenn Änderung der UsedRooms im Admin
-            this.UsedRooms = dp.state.val;
-        });
+        this.adaptaer.subscribeStates(this.praefix + "TempDecreaseValues." + "AbsentDecrease");
+        this.adaptaer.subscribeStates(this.praefix + "TempDecreaseValues." + "GuestIncrease");
+        this.adaptaer.subscribeStates(this.praefix + "TempDecreaseValues." + "PartyDecrease");
+        this.adaptaer.subscribeStates(this.praefix + "TempDecreaseValues." + "VacationAbsentDecrease");
+        this.adaptaer.subscribeStates(this.praefix + "TempDecreaseValues." + "WindowOpenDecrease");
 
-        // Currently not in use, disabled
-        
-        //on(hcpraefix + "info.PublicHolidayLikeSunday", function (dp) { //Wenn 
-        //    PublicHolidayLikeSunday = dp.state.val;
-        //});
-        
-
-        //Trigger HC Main Root
-        on(this.hcpraefix + "CurrentProfile", function (dp) { //Wenn Änderung des Profils
-            this.CurrentProfile = dp.state.val - 1;
-            this.SetVis();
-        });
-
-        //Trigger Script Dps
-        //Root
-        on(this.praefix + "ChoosenRoom", function (dp) { //Wenn Änderung des Raums
-            this.ChoosenRoom = dp.state.val;
-            this.SetVis();
-            this.CreateCurrentTimePeriodTrigger(dp.oldState.val); //Sonderfall - Um die aktuelle Periode anzeigen zu können muss ein wechselnder Trigger auf den aktuellen Raum im HC Rooms Zweig gesetzt und bei wechsel wieder gelöscht werden
-        });
-
-        //Trigger für RaumDPs
-        on(this.praefix + "RoomValues." + "MinimumTemperature", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetRoomValue("MinimumTemperature", dp.state.val);
-        });
-        on(this.praefix + "RoomValues." + "TemperaturOverride", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetRoomValue("TemperaturOverride", dp.state.val);
-        });
-        on(this.praefix + "RoomValues." + "TemperaturOverrideTime", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetRoomValue("TemperaturOverrideTime", dp.state.val);
-        });
-
-        //Trigger für alle Fenster Stati
-        for (let x = 0; x <= this.UsedRooms.split(";").length - 1; x++) {
-            if (this.logging) this.log(x + " " + this.Rooms[x]);
-            on(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen", function (dp) { //Wenn Fensterstatus sich ändert
-                this.WindowState[x] = dp.state.val;
-                this.WindowStateTimeStamp[x] = formatDate(dp.state.lc, "TT.MM.JJJJ SS:mm:ss");
-                this.SetWindowState();
-                this.CreateWindowStatesTable();
-                if (this.logging) this.log(this.WindowState[x]);
-            });
-        }
-
-        //Trigger für DecreaseModes
-        on(this.praefix + "TempDecreaseValues." + "AbsentDecrease", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetDecreaseValue("AbsentDecrease", dp.state.val);
-        });
-        on(this.praefix + "TempDecreaseValues." + "GuestIncrease", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetDecreaseValue("GuestIncrease", dp.state.val);
-        });
-        on(this.praefix + "TempDecreaseValues." + "PartyDecrease", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetDecreaseValue("PartyDecrease", dp.state.val);
-        });
-        on(this.praefix + "TempDecreaseValues." + "VacationAbsentDecrease", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetDecreaseValue("VacationAbsentDecrease", dp.state.val);
-        });
-        on(this.praefix + "TempDecreaseValues." + "WindowOpenDecrease", function (dp) { //Wenn 
-            if (this.RefreshingVis == false) this.SetDecreaseValue("WindowOpenDecrease", dp.state.val);
-        });
 
         switch (this.ProfileType) { //Trigger für Vis Zeit und Temperatur je nach Profiltyp
             case "Mo - Su": //Version1 Alle Tage zusammen
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
-                    on(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mo-Su", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mo-Su", "time", dp.state.val, x);
-                    });
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time");
                 }
                 break;
             case "Mo - Fr / Sa - Su": //Version2
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
-                    on(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mo-Fr", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mo-Fr", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sa-So", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sa-So", "time", dp.state.val, x);
-                    });
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".time");
                 }
                 break;
             case "every Day": //Version3
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
-                    on(this.praefix + "ProfileTypes.Mon.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mon", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Mon.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Mon", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Tue.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Tue", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Tue.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Tue", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Wed.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Wed", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Wed.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Wed", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Thu.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Thu", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Thu.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Thu", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Fri.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Fri", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Fri.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Fri", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sat.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sat", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sat.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sat", "time", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sun.Periods." + x + ".Temperature", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sun", "Temperature", dp.state.val, x);
-                    });
-                    on(this.praefix + "ProfileTypes.Sun.Periods." + x + ".time", function (dp) { //Wenn 
-                        if (this.RefreshingVis == false) this.SetTimeTempValue("Sun", "time", dp.state.val, x);
-                    });
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mon.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Mon.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Tue.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Tue.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Wed.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Wed.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Thu.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Thu.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Fri.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Fri.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sat.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sat.Periods." + x + ".time");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sun.Periods." + x + ".Temperature");
+                    this.adaptaer.subscribeStates(this.praefix + "ProfileTypes.Sun.Periods." + x + ".time");
                 }
                 break;
         }
-    */
     }
 
-    
+    //==========================================================================================================================
+    async HandleStateChanges(id, state) {
+        const ids = id.split(".");
 
+        if (ids[3] === "ChoosenRoom") {
+            this.ChoosenRoom = state.val;
+            await this.SetVis();
+            await this.CreateCurrentTimePeriodTrigger(state.val); // wieder ein olvalue //Sonderfall - Um die aktuelle Periode anzeigen zu können muss ein wechselnder Trigger auf den aktuellen Raum im HC Rooms Zweig gesetzt und bei wechsel wieder gelöscht werden
+        }
+
+        //HeatingControl.0.vis.ProfileTypes.Mon.Periods.0.Temperature
+        else if (ids[3] === "ProfileTypes") {
+            if (ids[7] === "time") {
+                if (this.RefreshingVis == false) {
+                    await this.SetTimeTempValue(ids[4], "time", state.val, ids[6]);
+                }
+            }
+            else if (ids[7] === "Temperature") {
+                if (this.RefreshingVis == false) {
+                    await this.SetTimeTempValue(ids[4], "Temperature", state.val, ids[6]);
+                }
+            }
+
+        }
+        else if (ids[3] === "TempDecreaseValues") {
+            if (ids[4] === "AbsentDecrease") {
+                if (this.RefreshingVis == false) {
+                    await this.SetDecreaseValue("AbsentDecrease", state.val);
+                }
+            }
+            else if (ids[4] === "GuestIncrease") {
+                if (this.RefreshingVis == false) {
+                    await this.SetDecreaseValue("GuestIncrease", state.val);
+                }
+            }
+            else if (ids[4] === "PartyDecrease") {
+                if (this.RefreshingVis == false) {
+                    await this.SetDecreaseValue("PartyDecrease", state.val);
+                }
+            }
+            else if (ids[4] === "VacationAbsentDecrease") {
+                if (this.RefreshingVis == false) {
+                    await this.SetDecreaseValue("VacationAbsentDecrease", state.val);
+                }
+            }
+            else if (ids[4] === "WindowOpenDecrease") {
+                if (this.RefreshingVis == false) {
+                    await this.SetDecreaseValue("WindowOpenDecrease", state.val);
+                }
+            }
+        }
+        else if (ids[3] === "RoomValues") {
+            if (ids[4] === "MinimumTemperature") {
+                if (this.RefreshingVis == false) {
+                    await this.SetRoomValue("MinimumTemperature", state.val);
+                }
+            }
+            else if (ids[4] === "TemperaturOverride") {
+                if (this.RefreshingVis == false) {
+                    await this.SetRoomValue("TemperaturOverride", state.val);
+                }
+            }
+            else if (ids[4] === "TemperaturOverrideTime") {
+                if (this.RefreshingVis == false) {
+                    await this.SetRoomValue("TemperaturOverrideTime", state.val);
+                }
+            }
+        }
+    }
+
+    //==========================================================================================================================
+    async Change_CurrentProfile(newProfile) {
+        this.CurrentProfile = newProfile;
+        await this.SetVis();
+    }
+    
+    //==========================================================================================================================
+/* wieder rein
+    async Change_WindowState() {
+        this.WindowState[x] = state.val;
+        this.WindowStateTimeStamp[x] = formatDate(dp.state.lc, "TT.MM.JJJJ SS:mm:ss");
+        await this.SetWindowState();
+        await this.CreateWindowStatesTable();
+        if (this.logging) this.log(this.WindowState[x]);
+    }
+*/
 }
 
 module.exports = HeatingControlVis;

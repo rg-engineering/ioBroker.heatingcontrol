@@ -17,6 +17,7 @@
 const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
 
+let vis = null;
 
 
 //========================================================================
@@ -225,8 +226,8 @@ async function main() {
 
             const myVis = require("./HeatingControlVis");
             adapter.log.info("starting vis part 2");
-            const vis = new myVis(adapter);
-            //vis.main();
+            vis = new myVis(adapter);
+            
 
         }
     }
@@ -2619,7 +2620,18 @@ async function HandleStateChange(id, state) {
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
 
+
+
     const ids = id.split("."); //
+
+    //vis - related
+    //heatingcontrol.0.vis.WindowStatesHtmlTable
+    if (ids[2] === vis) {
+        if (vis != null) {
+            vis.HandleStateChanges(id, state);
+        }
+    }
+
 
     if (ids[2] === "CurrentProfile") {
 
@@ -2629,6 +2641,13 @@ async function HandleStateChangeGeneral(id, state) {
         if (state.val < 1 ) {
             await adapter.setStateAsync(id, { ack: true, val: 1 });
         }
+
+        await CalculateNextTime();
+        
+        if (vis != null) {
+            await vis.Change_CurrentProfile(state.val);
+        }
+
         bRet = true;
     }
 
@@ -2639,7 +2658,7 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
-    //not handled heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
+    //heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
     if (ids[8] === "time") { 
 
         if (CheckValidTime(id, state)) {
@@ -2748,12 +2767,14 @@ async function HandleStateChangeGeneral(id, state) {
         }
     }
 
-    if (ids[7] === "time" || ids[2] ==="CurrentProfile") {
-        await CalculateNextTime();
-        bRet = true;
-    }
-
     
+
+//    if (ids[7] === "time") {
+//        await CalculateNextTime();
+//        bRet = true;
+//    }
+
+
 
     return bRet;
 }
