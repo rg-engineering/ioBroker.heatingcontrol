@@ -720,5 +720,77 @@ systemDictionary = {
         "es": "fijar la temperatura para todas las habitaciones",
         "pl": "naprawić temperaturę we wszystkich pokojach",
         "zh-cn": "固定所有房间的温度"
+    },
+    "UseVisFromPittini": {
+        "en": "use of visualisation project from Pittini",
+        "de": "Verwendung des Visualisierungsprojekts von Pittini",
+        "ru": "использование проекта визуализации от Pittini",
+        "pt": "uso do projeto de visualização da Pittini",
+        "nl": "gebruik van visualisatieproject van Pittini",
+        "fr": "utilisation du projet de visualisation de Pittini",
+        "it": "utilizzo del progetto di visualizzazione di Pittini",
+        "es": "uso del proyecto de visualización de Pittini",
+        "pl": "wykorzystanie projektu wizualizacji z Pittini",
+        "zh-cn": "使用Pittini的可视化项目"
+    },
+    "hint_vis_from_Pittini": {
+        "en": "this option integrates javascript script from Pittini into the adapter. A separate script is not necessary anymore. If you still like to use the script  or you do not use Pittini's visualisation project at all then disable that option",
+        "de": "Diese Option integriert das Javascript-Skript von Pittini in den Adapter. Ein separates Skript ist nicht mehr erforderlich. Wenn Sie das Skript weiterhin verwenden möchten oder das Visualisierungsprojekt von Pittini überhaupt nicht verwenden, deaktivieren Sie diese Option",
+        "ru": "эта опция интегрирует JavaScript-скрипт из Pittini в адаптер. Отдельный скрипт больше не нужен. Если вам все еще нравится использовать скрипт или вы вообще не используете проект визуализации Pittini, отключите эту опцию",
+        "pt": "essa opção integra o script javascript da Pittini no adaptador. Um script separado não é mais necessário. Se você ainda gosta de usar o script ou se não usa o projeto de visualização de Pittini, desative essa opção",
+        "nl": "deze optie integreert javascript-script van Pittini in de adapter. Een apart script is niet meer nodig. Als je het script nog steeds graag gebruikt of je gebruikt het visualisatieproject van Pittini helemaal niet, schakel die optie dan uit",
+        "fr": "cette option intègre le script javascript de Pittini dans l'adaptateur. Un script séparé n'est plus nécessaire. Si vous aimez toujours utiliser le script ou si vous n'utilisez pas du tout le projet de visualisation de Pittini, désactivez cette option",
+        "it": "questa opzione integra lo script javascript di Pittini nell'adattatore. Non è più necessario uno script separato. Se ti piace ancora usare lo script o non usi affatto il progetto di visualizzazione di Pittini, disabilita questa opzione",
+        "es": "Esta opción integra el script javascript de Pittini en el adaptador. Un guión separado ya no es necesario. Si todavía desea utilizar el script o no utiliza el proyecto de visualización de Pittini, desactive esa opción",
+        "pl": "ta opcja integruje skrypt javascript z Pittini do adaptera. Osobny skrypt nie jest już potrzebny. Jeśli nadal lubisz korzystać ze skryptu lub w ogóle nie korzystasz z projektu wizualizacji Pittiniego, wyłącz tę opcję",
+        "zh-cn": "此选项将Pittini中的javascript脚本集成到适配器中。不再需要单独的脚本。如果您仍然喜欢使用脚本，或者根本不使用Pittini的可视化项目，请禁用该选项"
+    },
+    "UseChangesFromThermostat": {
+        "en": "use of changes from thermostat",
+        "de": "Verwendung von Änderungen vom Thermostat",
+        "ru": "использование изменений от термостата",
+        "pt": "uso de alterações do termostato",
+        "nl": "gebruik van wijzigingen van thermostaat",
+        "fr": "utilisation des changements du thermostat",
+        "it": "uso delle modifiche dal termostato",
+        "es": "uso de cambios del termostato",
+        "pl": "zastosowanie zmian w stosunku do termostatu",
+        "zh-cn": "使用恒温器的变化"
+    },
+    "as_override": {
+        "en": "as Override",
+        "de": "als Override",
+        "ru": "как Override",
+        "pt": "como Substituir",
+        "nl": "als Override",
+        "fr": "comme Override",
+        "it": "come Override",
+        "es": "como anulación",
+        "pl": "jako Zastąpienie",
+        "zh-cn": "优先"
+    },
+    "as_new_profile_setting": {
+        "en": "as new profile setting",
+        "de": "als neue Profileinstellung",
+        "ru": "как новая настройка профиля",
+        "pt": "como nova configuração de perfil",
+        "nl": "als nieuwe profielinstelling",
+        "fr": "comme nouveau paramètre de profil",
+        "it": "come nuova impostazione del profilo",
+        "es": "como nueva configuración de perfil",
+        "pl": "jako nowe ustawienie profilu",
+        "zh-cn": "作为新的配置文件设置"
+    },
+    "adjustable_per_room": {
+        "en": "adjustable per room",
+        "de": "pro Raum einstellbar",
+        "ru": "регулируемый на номер",
+        "pt": "ajustável por quarto",
+        "nl": "per kamer instelbaar",
+        "fr": "réglable par chambre",
+        "it": "regolabile per camera",
+        "es": "ajustable por habitación",
+        "pl": "regulowany na pokój",
+        "zh-cn": "每间房间可调"
     }
 };
