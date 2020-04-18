@@ -908,7 +908,7 @@ async function CreateDatepoints() {
                 ProfileType = "Mo-Su";
                 break;
             case 2:
-                ProfileType = "Mo - Fr / Sa - Su";
+                ProfileType = "Mo-Fr / Sa-Su";
                 break;
             case 3:
                 ProfileType = "every Day";
@@ -2626,9 +2626,11 @@ async function HandleStateChangeGeneral(id, state) {
 
     //vis - related
     //heatingcontrol.0.vis.WindowStatesHtmlTable
-    if (ids[2] === vis) {
+    //heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot
+    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" ) {
         if (vis != null) {
-            vis.HandleStateChanges(id, state);
+            bRet = await vis.HandleStateChanges(id, state);
+            
         }
     }
 
@@ -2748,11 +2750,12 @@ async function HandleStateChangeGeneral(id, state) {
 
 
     //heatingcontrol.0.Rooms.Arbeitszimmer.TemperaturOverride
-    if (ids[4] === "TemperaturOverride") {
+    //heatingcontrol.0.vis.RoomValues.TemperaturOverride
+    if (ids[4] === "TemperaturOverride" && ids[3] !== "RoomValues" ) {
         await StartTemperaturOverride(ids[3] );
         bRet = true;
     }
-    if (ids[4] === "TemperaturOverrideTime") {
+    if (ids[4] === "TemperaturOverrideTime" && ids[3] !== "RoomValues") {
 
         if (CheckValidTime(id, state)) {
 
