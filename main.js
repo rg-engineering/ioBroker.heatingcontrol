@@ -17,6 +17,8 @@
 const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
 
+let vis = null;
+
 
 //========================================================================
 //this must be false for production use! set it to true when you use static data for debuggung purpose only
@@ -218,6 +220,16 @@ async function main() {
         await CheckTemperatureChange();
 
         await SubscribeStates();
+
+        if (adapter.config.UseVisFromPittini) {
+            adapter.log.info("starting vis");
+
+            const myVis = require("./HeatingControlVis");
+            adapter.log.info("starting vis part 2");
+            vis = new myVis(adapter);
+            
+
+        }
     }
     catch (e) {
         adapter.log.error("exception in  main [" + e + "]");
@@ -278,7 +290,7 @@ async function ListRooms(obj) {
 
         const language = await GetSystemLanguage();
 
-        for (let e in rooms) {
+        for (const e in rooms) {
 
             let name = "undefined";
 
@@ -348,7 +360,7 @@ async function ListFunctions(obj) {
 
     const language = await GetSystemLanguage();
 
-    for (let e1 in functions) {
+    for (const e1 in functions) {
 
         let name = "undefined";
 
@@ -406,11 +418,11 @@ async function ListDevices(obj) {
         
 
         const HeatingMember = [];
-        for (let e1 in functions) {
+        for (const e1 in functions) {
 
             if (functions[e1].common.name === adapter.config.Gewerk ) {
                 const ids1 = functions[e1].common.members;
-                for (let n1 in ids1) {
+                for (const n1 in ids1) {
                     
                     HeatingMember.push({
                         id: ids1[n1]
@@ -421,10 +433,10 @@ async function ListDevices(obj) {
         adapter.log.debug("heating member: " + JSON.stringify(HeatingMember));
 
         let NextID = 1;
-        for (let e in rooms) {
+        for (const e in rooms) {
 
             const ids = rooms[e].common.members;
-            for (let n in ids) {
+            for (const n in ids) {
 
                 const adapterObj = await adapter.getForeignObjectAsync(ids[n]);
 
@@ -896,7 +908,7 @@ async function CreateDatepoints() {
                 ProfileType = "Mo-Su";
                 break;
             case 2:
-                ProfileType = "Mo - Fr / Sa - Su";
+                ProfileType = "Mo-Fr / Sa-Su";
                 break;
             case 3:
                 ProfileType = "every Day";
@@ -1281,6 +1293,37 @@ async function CreateDatepoints() {
                     
                     await adapter.setStateAsync(id1 + ".TemperatureIfNoHeatingPeriod", { ack: true, val: 0 });
                 }
+
+                if (parseInt(adapter.config.UseChangesFromThermostat) === 4) { //each room reparately
+                    await adapter.setObjectNotExistsAsync(id1 + ".ChangesFromThermostatMode", {
+                        type: "state",
+                        common: {
+                            name: "ChangesFromThermostatMode",
+                            type: "number",
+                            role: "value",
+                            unit: "",
+                            read: true,
+                            write: true
+                        },
+                        native: { id: "ChangesFromThermostatMode" }
+                    });
+
+                    await adapter.extendObject(id1 + ".ChangesFromThermostatMode", {
+                        common: {
+                            role: "value",
+                        }
+                    });
+
+                    const Temp2 = await adapter.getStateAsync(id1 + ".ChangesFromThermostatMode");
+                    //set default only if nothing was set before
+                    if (Temp2 === null) {
+
+                        await adapter.setStateAsync(id1 + ".ChangesFromThermostatMode", { ack: true, val: 1 });
+                    }
+                    adapter.subscribeStates(id1 + ".ChangesFromThermostatMode");
+
+                }
+
 
 
                 if (adapter.config.UseMinTempPerRoom) {
@@ -2324,12 +2367,25 @@ function SubscribeStates(callback) {
                 //adapter.log.debug("room " + JSON.stringify(roomdata));
 
                 if (roomdata !== null && roomdata.isActive) {
+
+
+                    SubscribeStates4ChangesFromThermostat(i);
+
+                    
+
+
+
                     if (adapter.config.UseActors) {
                         if (adapter.config.devices[i].type === 1) { //thermostat
-                            adapter.log.info("subscribe " + adapter.config.devices[i].room + " " + adapter.config.devices[i].OID_Target + " / " + adapter.config.devices[i].OID_Current);
+                            adapter.log.info("subscribe for UseActors  " + adapter.config.devices[i].room + " "  + adapter.config.devices[i].OID_Current);
 
-                            adapter.subscribeForeignStates(adapter.config.devices[i].OID_Target);
-                            adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+                            if (adapter.config.devices[i].OID_Current != null && adapter.config.devices[i].OID_Current.length > 0) {
+
+                                adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
+                            }
+                            else {
+                                adapter.log.warn("OID Current for " + adapter.config.devices[i].room + " not set");
+                            }
 
                             if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
                                 adapter.log.warn("configuration error thermostat for " + adapter.config.devices[i].room + ": OID target should be different to OID current!");
@@ -2359,6 +2415,45 @@ function SubscribeStates(callback) {
         adapter.log.error("exception in SubscribeStates [" + e + "]");
     }
     if (callback) callback();
+}
+
+
+function SubscribeStates4ChangesFromThermostat(idx) {
+
+    if (adapter.config.UseChangesFromThermostat > 1) {
+        if (adapter.config.devices[idx].type === 1) { //thermostat
+            adapter.log.info("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+
+            if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
+                adapter.subscribeForeignStates(adapter.config.devices[idx].OID_Target);
+            }
+            else {
+                adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+            }
+
+            if (adapter.config.devices[idx].OID_Target === adapter.config.devices[idx].OID_Current) {
+                adapter.log.warn("configuration error thermostat for " + adapter.config.devices[idx].room + ": OID target should be different to OID current!");
+            }
+        }
+    }
+}
+
+function UnSubscribeStates4ChangesFromThermostat(idx) {
+
+
+    if (adapter.config.devices[idx].type === 1) { //thermostat
+        adapter.log.info("unsubscribe  " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+
+        if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
+            adapter.unsubscribeForeignStates(adapter.config.devices[idx].OID_Target);
+        }
+        else {
+            adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+        }
+
+
+    }
+
 }
 
 //*******************************************************************
@@ -2525,7 +2620,20 @@ async function HandleStateChange(id, state) {
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
 
+
+
     const ids = id.split("."); //
+
+    //vis - related
+    //heatingcontrol.0.vis.WindowStatesHtmlTable
+    //heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot
+    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" ) {
+        if (vis != null) {
+            bRet = await vis.HandleStateChanges(id, state);
+            
+        }
+    }
+
 
     if (ids[2] === "CurrentProfile") {
 
@@ -2535,6 +2643,13 @@ async function HandleStateChangeGeneral(id, state) {
         if (state.val < 1 ) {
             await adapter.setStateAsync(id, { ack: true, val: 1 });
         }
+
+        await CalculateNextTime();
+        
+        if (vis != null) {
+            await vis.Change_CurrentProfile(state.val);
+        }
+
         bRet = true;
     }
 
@@ -2545,7 +2660,7 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
-    //not handled heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
+    //heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
     if (ids[8] === "time") { 
 
         if (CheckValidTime(id, state)) {
@@ -2624,12 +2739,23 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
     }
 
+    if (ids[4] == "ChangesFromThermostatMode") {
+
+        if (state.val <= 0 || state.val > 3) {
+            adapter.log.warn("wrong value " + state.val + " for " + id + " should be > 0 and <= 3");
+        }
+
+        bRet = true;
+    }
+
+
     //heatingcontrol.0.Rooms.Arbeitszimmer.TemperaturOverride
-    if (ids[4] === "TemperaturOverride") {
+    //heatingcontrol.0.vis.RoomValues.TemperaturOverride
+    if (ids[4] === "TemperaturOverride" && ids[3] !== "RoomValues" ) {
         await StartTemperaturOverride(ids[3] );
         bRet = true;
     }
-    if (ids[4] === "TemperaturOverrideTime") {
+    if (ids[4] === "TemperaturOverrideTime" && ids[3] !== "RoomValues") {
 
         if (CheckValidTime(id, state)) {
 
@@ -2644,12 +2770,14 @@ async function HandleStateChangeGeneral(id, state) {
         }
     }
 
-    if (ids[7] === "time" || ids[2] ==="CurrentProfile") {
-        await CalculateNextTime();
-        bRet = true;
-    }
-
     
+
+//    if (ids[7] === "time") {
+//        await CalculateNextTime();
+//        bRet = true;
+//    }
+
+
 
     return bRet;
 }
@@ -2734,7 +2862,7 @@ async function HandleStateChangeDevices(id, state) {
 
             if (devices[d].type === 1) {//thermostat
 
-                //adapter.log.debug("thermostat got ");
+                adapter.log.debug("### change from thermostat got " + devicetype);
                 const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
                 //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
@@ -2744,12 +2872,38 @@ async function HandleStateChangeDevices(id, state) {
                     //adapter.log.debug("we are in heating period");
                     if (devicetype === 1) { //it was target of thermostat
                         bRet = true;
-                        //adapter.log.debug("ask  " + devices[d].OID_Current);
-                        const current = await adapter.getForeignStateAsync(devices[d].OID_Current);
-                        //adapter.log.debug("we got current " + current.val + " " + JSON.stringify(devices[d]));
-                        //await HandleActors(device.id, parseFloat(current.val), parseFloat(state.val));
-                        if (current != null && typeof current != "undefined") {
-                            await HandleActors(devices[d].room, parseFloat(current.val), parseFloat(state.val));
+
+                        //no Actor handling if target is changed
+
+                        if (parseInt(adapter.config.UseChangesFromThermostat) === 2) {
+                            await SetOverrideFromThermostat(devices[d].room, state.val);
+                        }
+                        else if (parseInt(adapter.config.UseChangesFromThermostat) === 3) {
+
+                            await SetProfileFromThermostat(devices[d].room, state.val);
+                        }
+                        else if (parseInt(adapter.config.UseChangesFromThermostat) === 4) {
+                            adapter.log.debug("change from thermostat room specific for " + devices[d].room);
+
+                            const id1 = "Rooms." + devices[d].room + ".ChangesFromThermostatMode";
+
+                            const currentMode = await adapter.getStateAsync(id1);
+
+                            if (currentMode === null || parseInt(currentMode.val) === 0 || parseInt(currentMode.val) === 1) {
+                                //do nothing
+
+                                adapter.log.debug("nothing to do");
+                            }
+                            else if (parseInt(currentMode.val) === 2) {
+                                await SetOverrideFromThermostat(devices[d].room, state.val);
+                            }
+                            else if (parseInt(currentMode.val) === 3) {
+
+                                await SetProfileFromThermostat(devices[d].room, state.val);
+                            }
+                            else {
+                                adapter.log.warn("wrong value " + currentMode.val + " for " + id1 + " should be > 0 and <= 3");
+                            }
                         }
                     }
                     else {
@@ -2759,7 +2913,6 @@ async function HandleStateChangeDevices(id, state) {
                             //adapter.log.debug("ask  " + devices[d].OID_Target);
                             const target = await adapter.getForeignStateAsync(devices[d].OID_Target);
                             //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
-                            //await HandleActors(device.id, parseFloat(state.val), parseFloat(target.val));
                             if (target != null && typeof target != "undefined") {
                                 await HandleActors(devices[d].room, parseFloat(state.val), parseFloat(target.val));
                             }
@@ -2778,44 +2931,12 @@ async function HandleStateChangeDevices(id, state) {
             }
             else if (devices[d].type === 3) {//sensor
 
-                const roomID = findObjectIdByKey(adapter.config.rooms, "name", devices[d].room);
-
-                const windowIsOpen = await CheckWindowSensors(roomID);
-
-                if (adapter.config.SensorDelay > 0) {
-                    //nur wenn offen, verzögern
-                    if (windowIsOpen) {
-                        adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
-                        WindowOpenTimerId = setTimeout(function (room) {
-                            //adapter.log.debug("fired");
-
-                            if (WindowOpenTimerId) {
-                                clearTimeout(WindowOpenTimerId);
-                                WindowOpenTimerId = null;
-                            }
-
-                            CheckTemperatureChange(room);
-
-                        }, adapter.config.SensorDelay * 1000, devices[d].room);
-
-                    }
-                    else {
-                        //wenn zu, dann sofort 
-                        CheckTemperatureChange(devices[d].room);
-
-                        //und falls timer noch rennt; abbrechen
-                        if (WindowOpenTimerId) {
-                            clearTimeout(WindowOpenTimerId);
-                            WindowOpenTimerId = null;
-                        }
-
-                    }
+                //hier können mehrere rooms kommen
+                const roomIDs = findObjectsIdByKey(adapter.config.rooms, "name", devices[d].room);
+                
+                for (let ii = 0; ii < roomIDs.length; ii++) {
+                    await CheckWindowOpen4Room(roomIDs[ii], devices[d]);
                 }
-                //version ohne delay
-                else {
-                    CheckTemperatureChange(devices[d].room);
-                }
-
             }
         }
     }
@@ -2825,6 +2946,105 @@ async function HandleStateChangeDevices(id, state) {
 
     return bRet;
 
+}
+
+
+async function CheckWindowOpen4Room(roomID, device) {
+    const windowIsOpen = await CheckWindowSensors(roomID);
+
+    if (adapter.config.SensorDelay > 0) {
+        //nur wenn offen, verzögern
+        if (windowIsOpen) {
+            adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
+            WindowOpenTimerId = setTimeout(function () {
+                //adapter.log.debug("fired");
+
+                if (WindowOpenTimerId) {
+                    clearTimeout(WindowOpenTimerId);
+                    WindowOpenTimerId = null;
+                }
+                
+                CheckTemperatureChange(device.room);
+
+            }, adapter.config.SensorDelay * 1000, device.room);
+
+        }
+        else {
+            //wenn zu, dann sofort 
+            CheckTemperatureChange(device.room);
+
+            //und falls timer noch rennt; abbrechen
+            if (WindowOpenTimerId) {
+                clearTimeout(WindowOpenTimerId);
+                WindowOpenTimerId = null;
+            }
+
+        }
+    }
+    //version ohne delay
+    else {
+        CheckTemperatureChange(device.room);
+    }
+}
+
+async function SetOverrideFromThermostat(room, newVal) {
+    adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);
+
+    //nur temperatur setzen; dann startet override automatisch
+    const idPreset = "Rooms." + room + ".TemperaturOverride";
+    //adapter.log.info("### override from thermostat " + idPreset);
+    await adapter.setStateAsync(idPreset, { ack: true, val: newVal });
+}
+
+
+async function SetProfileFromThermostat(room, newVal) {
+
+    adapter.log.debug("change from thermostat as new profile setting for " + room + " to " + newVal);
+
+    //just set new value
+    const currentProfile = await GetCurrentProfile();
+    const idCurrentPeriod = "Rooms." + room + ".CurrentTimePeriod";
+
+    const currentPeriod = await adapter.getStateAsync(idCurrentPeriod);
+
+    const now = new Date();
+    let temp;
+    let PublicHolidyToday = false;
+    if (adapter.config.PublicHolidayLikeSunday === true) {
+        temp = await adapter.getStateAsync("PublicHolidyToday");
+        PublicHolidyToday = temp.val;
+
+    }
+    temp = await adapter.getStateAsync("HolidayPresent");
+    const HolidayPresent = temp.val;
+
+    let RoomState;
+
+    let ProfileId = "";
+    if (parseInt(adapter.config.ProfileType, 10) === 1) {
+        ProfileId = "Profiles." + currentProfile + "." + room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+
+        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+        const daysName = ret.DaysName;
+
+        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+    }
+    else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+        const daysName = ret.DaysName;
+
+        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+    }
+
+    adapter.log.debug("set state " + ProfileId);
+
+    await adapter.setStateAsync(ProfileId, { val: newVal, ack: true });
+
+    //not necessary because change will trigger it anyway...
+    //CheckTemperatureChange(devices[d].room);
 }
 
 /*
@@ -3021,7 +3241,6 @@ function findObjectIdByKey(array, key, value) {
 //
 // find all objects in array by key and value
 // returns index number array
-/*
 function findObjectsIdByKey(array, key, value) {
 
     const ret = [];
@@ -3036,7 +3255,7 @@ function findObjectsIdByKey(array, key, value) {
     }
     return ret;
 }
-*/
+
 
 
 
@@ -3062,8 +3281,8 @@ function CreateCron4HeatingPeriod() {
         const timezone = adapter.config.timezone || "Europe/Berlin";
         adapter.log.info("check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
 
-        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
-        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
 
         try {
@@ -3145,14 +3364,14 @@ function StopTempOverride(roomID, cronjobID) {
         deleteCronJob(cronjobID);
     }
     const id = "CurrentProfile";
-
+    //this is needed..
     adapter.getState(id, function (err, obj) {
         if (err) {
             adapter.log.error(err);
         } else {
-            
 
-            const idPreset = "Rooms."  + adapter.config.rooms[roomID].name + ".TemperaturOverride";
+
+            const idPreset = "Rooms." + adapter.config.rooms[roomID].name + ".TemperaturOverride";
 
             adapter.log.info("### " + idPreset);
 
@@ -3225,8 +3444,11 @@ function getCronStat() {
         }
     }
 
-    if (cronJobs.length > 100) {
-        adapter.log.warn("more then 100 cron jobs existing for this adapter, this might be a configuration error!");
+    if (cronJobs.length > 300) {
+        adapter.log.warn("more then 300 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
+    }
+    else {
+        adapter.log.info(cronJobs.length + " cron jobs created");
     }
 
 }
@@ -3922,7 +4144,7 @@ async function CheckTemperatureChange(room2check) {
                                     }
                                 }
                                 else {
-                                    adapter.log.debug("### new target temp" + nextTemperature);
+                                    adapter.log.debug("### new target temp " + nextTemperature);
                                 }
                             }
                             else {
@@ -4024,8 +4246,31 @@ async function SetTarget4NoHeatingPeriod(roomId) {
 
 }
 
+let IgnoreStateChangeTimer = -1;
 
 async function SetNextTemperatureTarget(roomID, TargetTemperature) {
+
+    //we need to ignore all state changes when we set from here, otherwise we create override or similar
+    if (IgnoreStateChangeTimer <= 0) {
+
+        adapter.log.debug("need to unsubscribe states");
+        for (let i = 0; i < adapter.config.devices.length; i++) {
+            UnSubscribeStates4ChangesFromThermostat(i);
+        }
+        //subscribe in 10 sec.
+        IgnoreStateChangeTimer = setTimeout(function () {
+
+            adapter.log.debug("need to subscribe states now");
+            for (let i = 0; i < adapter.config.devices.length; i++) {
+                SubscribeStates4ChangesFromThermostat(i);
+            }
+            IgnoreStateChangeTimer = -1;
+        }, 10000);
+
+    }
+    else {
+        adapter.log.debug("already usubscribed");
+    }
 
 
     adapter.log.debug("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify( TargetTemperature));
@@ -4055,6 +4300,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     let ActiveTimeSlot = -1;
     let period;
     let sNextTime;
+    let daysName = "unknown";
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -4084,6 +4330,9 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 currentPeriod = period;
                 sNextTime = nextTimes;
             }
+
+            daysName = "Mo-Su";
+
         }
         if (period >= 0) {
             ActiveTimeSlot += currentPeriod;
@@ -4149,7 +4398,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
-
+        daysName = daysname;
     }
     else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
@@ -4239,6 +4488,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
+        daysName = daysname;
     }
     else {
         //adapter.log.warn("profile type != 1 not implemented yet");
@@ -4249,7 +4499,8 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         currentPeriod: currentPeriod,
         nextTemperature: nextTemperature,
         sNextTime: sNextTime,
-        ActiveTimeSlot: ActiveTimeSlot
+        ActiveTimeSlot: ActiveTimeSlot,
+        DaysName: daysName
     };
 
     adapter.log.debug(adapter.config.rooms[room].name + " found period " + currentPeriod + " with " + nextTemperature + " on " + sNextTime);
@@ -4473,8 +4724,8 @@ async function checkHeatingPeriod() {
     if (adapter.config.UseFixHeatingPeriod) {
         adapter.log.info("initial check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
 
-        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,\/ -]/);
-        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,\/ -]/);
+        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
+        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
         const StartMonth = HeatingPeriodStart[1] - 1;
         const StartDay = HeatingPeriodStart[0];
