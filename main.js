@@ -3020,31 +3020,45 @@ async function SetProfileFromThermostat(room, newVal) {
 
     let RoomState;
 
-    let ProfileId = "";
-    if (parseInt(adapter.config.ProfileType, 10) === 1) {
-        ProfileId = "Profiles." + currentProfile + "." + room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
+    let RoomID = -1;
+    for (let i = 0; i < adapter.config.rooms.length; i++) {
+        if (adapter.config.rooms[i].name === room) {
+            RoomID = i;
+        }
     }
-    else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+   
+    if (RoomID >= 0) {
 
-        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
-        const daysName = ret.DaysName;
 
-        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+        let ProfileId = "";
+        if (parseInt(adapter.config.ProfileType, 10) === 1) {
+            ProfileId = "Profiles." + currentProfile + "." + room + ".Mo-Su.Periods." + currentPeriod.val + ".Temperature";
+        }
+        else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+
+            const ret = await FindNextPeriod(RoomID, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+            const daysName = ret.DaysName;
+
+            ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+        }
+        else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+            const ret = await FindNextPeriod(RoomID, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
+            const daysName = ret.DaysName;
+
+            ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+        }
+
+        adapter.log.debug("SetProfileFromThermostat: set state " + ProfileId + " to " + newVal);
+
+        await adapter.setStateAsync(ProfileId, { val: newVal, ack: true });
+
+        //not necessary because change will trigger it anyway...
+        //CheckTemperatureChange(devices[d].room);
     }
-    else if (parseInt(adapter.config.ProfileType, 10) === 3) {
-
-        const ret = await FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState);
-        const daysName = ret.DaysName;
-
-        ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+    else {
+        adapter.log.error("room  " + room + " not found ");
     }
-
-    adapter.log.debug("set state " + ProfileId);
-
-    await adapter.setStateAsync(ProfileId, { val: newVal, ack: true });
-
-    //not necessary because change will trigger it anyway...
-    //CheckTemperatureChange(devices[d].room);
 }
 
 /*
