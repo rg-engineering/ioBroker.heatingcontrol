@@ -2627,7 +2627,8 @@ async function HandleStateChangeGeneral(id, state) {
     //vis - related
     //heatingcontrol.0.vis.WindowStatesHtmlTable
     //heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot
-    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" ) {
+    //heatingcontrol.0.Rooms.Schlafzimmer.WindowIsOpen
+    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" || ids[4] === "WindowIsOpen" ) {
         if (vis != null) {
             bRet = await vis.HandleStateChanges(id, state);
             
@@ -2892,7 +2893,7 @@ async function HandleStateChangeDevices(id, state) {
                             if (currentMode === null || parseInt(currentMode.val) === 0 || parseInt(currentMode.val) === 1) {
                                 //do nothing
 
-                                adapter.log.debug("nothing to do");
+                                adapter.log.debug("nothing to do, mode = no");
                             }
                             else if (parseInt(currentMode.val) === 2) {
                                 await SetOverrideFromThermostat(devices[d].room, state.val);
@@ -3040,6 +3041,10 @@ async function SetProfileFromThermostat(room, newVal) {
             const daysName = ret.DaysName;
 
             ProfileId = "Profiles." + currentProfile + "." + room + "." + daysName + ".Periods." + currentPeriod.val + ".Temperature";
+
+            //                  Profiles.0.Arbeitszimmer.Sa-So.Periods.1.Temperature
+            // heatingcontrol.0.Profiles.0.Arbeitszimmer.Sa-So.Periods.1.Temperature
+
         }
         else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
@@ -5018,7 +5023,7 @@ async function CheckAllExternalStates() {
 async function CheckWindowSensors(roomID) {
 
     let state2Set = false;
-
+    
     try {
         if (adapter.config.UseSensors) {
             const roomName = adapter.config.rooms[roomID].name;
@@ -5064,7 +5069,7 @@ async function CheckWindowSensors(roomID) {
         }
     }
     catch (e) {
-        adapter.log.error("exception in CheckWindowSensors [" + e + "]");
+        adapter.log.error("exception in CheckWindowSensors [" + e + "] roomID" + roomID);
     }
 
     return state2Set;

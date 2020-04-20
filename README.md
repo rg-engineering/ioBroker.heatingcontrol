@@ -145,7 +145,7 @@ Many user asked for an option to take over changes from thermostat into adapter.
 |                          |               1 - no
 |                          |               2 - as override 
 |                          |               3 -  as new profile setting 
-|                          | a warnning will appear in log if values lower then 0 or higher then 3 are used
+|                          | a warning will appear in log if values lower then 0 or higher then 3 are used
 
 
 ## Requirements
