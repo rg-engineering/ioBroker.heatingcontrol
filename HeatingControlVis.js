@@ -95,7 +95,7 @@ class HeatingControlVis {
                 break;
             //Dps erzeugen für alle ProfilType Varianten
             //V1 Alle Tage zusammen
-            case "Mo-Su":
+            case "Mo - Su":
                 y = 0;
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.states[y] = { id: this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", initial: 20, forceCreation: false, common: { read: true, write: true, name: "target temperature", type: "number", def: 20 } };
@@ -106,7 +106,7 @@ class HeatingControlVis {
                 break;
 
             //V2 Mo-Fr / Sa-So
-            case "Mo-Fr / Sa-Su":
+            case "Mo - Fr / Sa - Su":
                 y = 0;
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.states[y] = { id: this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", initial: 20, forceCreation: false, common: { read: true, write: true, name: "target temperature", type: "number", def: 20 } };
@@ -399,7 +399,7 @@ class HeatingControlVis {
             default:
                 this.log("unknown profile type");
                 break;
-            case "Mo-Su":
+            case "Mo - Su":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.adapter.getStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Su.Periods." + x + ".Temperature");
                     await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", temp.val);
@@ -407,7 +407,7 @@ class HeatingControlVis {
                     await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time", temp.val);
                 }
                 break;
-            case "Mo-Fr / Sa-Su":
+            case "Mo - Fr / Sa - Su":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.adapter.getStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Fr.Periods." + x + ".Temperature");
                     await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", temp.val);
@@ -582,13 +582,13 @@ class HeatingControlVis {
             default:
                 this.log("unknown profile type");
                 break;
-            case "Mo-Su": //Version1 Alle Tage zusammen
+            case "Mo - Su": //Version1 Alle Tage zusammen
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.adapter.subscribeStates(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature");
                     this.adapter.subscribeStates(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time");
                 }
                 break;
-            case "Mo-Fr / Sa-Su": //Version2
+            case "Mo - Fr / Sa - Su": //Version2
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     this.adapter.subscribeStates(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature");
                     this.adapter.subscribeStates(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".time");

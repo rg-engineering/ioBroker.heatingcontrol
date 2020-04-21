@@ -905,10 +905,12 @@ async function CreateDatepoints() {
         let ProfileType = "";
         switch (parseInt(adapter.config.ProfileType)) {
             case 1:
-                ProfileType = "Mo-Su";
+                ProfileType = "Mo - Su";
+                //ProfileType = "Mo-Su";
                 break;
             case 2:
-                ProfileType = "Mo-Fr / Sa-Su";
+                ProfileType = "Mo - Fr / Sa - Su";
+                //ProfileType = "Mo-Fr / Sa-Su";
                 break;
             case 3:
                 ProfileType = "every Day";
