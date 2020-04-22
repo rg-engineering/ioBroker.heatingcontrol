@@ -1,6 +1,15 @@
+.git
 .idea
+*.code-workspace
 node_modules
-/bin/
+nbproject
+
+# npm package files
+iobroker.*.tgz
+
+Thumbs.db
+
+/iob_npm.done
 
 /*.njsproj
 /todo.txt
