@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)](https://greenkeeper.io/)
+
 
 **If you like it, please consider a donation:**
                                                                           
