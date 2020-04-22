@@ -2424,7 +2424,7 @@ function SubscribeStates4ChangesFromThermostat(idx) {
 
     if (adapter.config.UseChangesFromThermostat > 1) {
         if (adapter.config.devices[idx].type === 1) { //thermostat
-            adapter.log.info("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+            adapter.log.debug("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
 
             if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
                 adapter.subscribeForeignStates(adapter.config.devices[idx].OID_Target);
@@ -2444,7 +2444,7 @@ function UnSubscribeStates4ChangesFromThermostat(idx) {
 
 
     if (adapter.config.devices[idx].type === 1) { //thermostat
-        adapter.log.info("unsubscribe  " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
+        adapter.log.debug("unsubscribe  " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
 
         if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
             adapter.unsubscribeForeignStates(adapter.config.devices[idx].OID_Target);
@@ -4272,28 +4272,29 @@ let IgnoreStateChangeTimer = -1;
 async function SetNextTemperatureTarget(roomID, TargetTemperature) {
 
     //we need to ignore all state changes when we set from here, otherwise we create override or similar
-    if (IgnoreStateChangeTimer <= 0) {
+    if (adapter.config.UseChangesFromThermostat > 1) {
 
-        adapter.log.debug("need to unsubscribe states");
-        for (let i = 0; i < adapter.config.devices.length; i++) {
-            UnSubscribeStates4ChangesFromThermostat(i);
-        }
-        //subscribe in 10 sec.
-        IgnoreStateChangeTimer = setTimeout(function () {
+        if (IgnoreStateChangeTimer <= 0) {
 
-            adapter.log.debug("need to subscribe states now");
+            adapter.log.debug("need to unsubscribe states");
             for (let i = 0; i < adapter.config.devices.length; i++) {
-                SubscribeStates4ChangesFromThermostat(i);
+                UnSubscribeStates4ChangesFromThermostat(i);
             }
-            IgnoreStateChangeTimer = -1;
-        }, 10000);
+            //subscribe in 10 sec.
+            IgnoreStateChangeTimer = setTimeout(function () {
 
+                adapter.log.debug("need to subscribe states now");
+                for (let i = 0; i < adapter.config.devices.length; i++) {
+                    SubscribeStates4ChangesFromThermostat(i);
+                }
+                IgnoreStateChangeTimer = -1;
+            }, 10000);
+
+        }
+        else {
+            adapter.log.debug("already unsubscribed");
+        }
     }
-    else {
-        adapter.log.debug("already usubscribed");
-    }
-
-
     adapter.log.debug("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify( TargetTemperature));
 
     for (let ii = 0; ii < adapter.config.devices.length; ii++) {
