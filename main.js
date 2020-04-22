@@ -292,7 +292,7 @@ async function ListRooms(obj) {
 
         for (const e in rooms) {
 
-            let name = "undefined";
+            let name = undefined;
 
             if (typeof rooms[e].common.name === "string") {
                 name = rooms[e].common.name;
@@ -362,7 +362,7 @@ async function ListFunctions(obj) {
 
     for (const e1 in functions) {
 
-        let name = "undefined";
+        let name = undefined;
 
         if (typeof functions[e1].common.name === "string") {
             name = functions[e1].common.name;
@@ -392,11 +392,11 @@ async function ListFunctions(obj) {
 // used as interface to admin
 async function ListDevices(obj) {
 
-    if (adapter.config.devices === null || typeof adapter.config.devices === "undefined" || adapter.config.devices.length === 0 || adapter.config.deleteall) {
+    if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0 || adapter.config.deleteall) {
 
         adapter.log.info("create new device list " + JSON.stringify(adapter.config.devices));
 
-        if (adapter.config.devices !== null && typeof adapter.config.devices !== "undefined" ) {
+        if (adapter.config.devices !== null && typeof adapter.config.devices !== undefined ) {
             
             adapter.config.devices.length = 0;
         }
@@ -553,11 +553,11 @@ async function ListDevices(obj) {
 
     
 
-    if (adapter.config.devices === null || typeof adapter.config.devices === "undefined" || adapter.config.devices.length === 0) {
+    if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0) {
 
         let room = "Office";
 
-        if (adapter.config.rooms !== null && typeof adapter.config.rooms !== "undefined" && adapter.config.rooms.length > 0) {
+        if (adapter.config.rooms !== null && typeof adapter.config.rooms !== undefined && adapter.config.rooms.length > 0) {
             room = adapter.config.rooms[0].name;
         }
 
@@ -2259,7 +2259,7 @@ function SubscribeStates(callback) {
 
 
 
-        if (adapter.config.Path2FeiertagAdapter !== null && typeof adapter.config.Path2FeiertagAdapter !== "undefined" && adapter.config.Path2FeiertagAdapter.length > 0) {
+        if (adapter.config.Path2FeiertagAdapter !== null && typeof adapter.config.Path2FeiertagAdapter !== undefined && adapter.config.Path2FeiertagAdapter.length > 0) {
             const names = adapter.config.Path2FeiertagAdapter.split(".");
 
             if (names.length === 2) {
@@ -2282,7 +2282,7 @@ function SubscribeStates(callback) {
         else {
             adapter.log.debug("no subscribe Path2FeiertagAdapter ");
         }
-        if (adapter.config.Path2PresentDP !== null && typeof adapter.config.Path2PresentDP !== "undefined" && adapter.config.Path2PresentDP.length > 0) {
+        if (adapter.config.Path2PresentDP !== null && typeof adapter.config.Path2PresentDP !== undefined && adapter.config.Path2PresentDP.length > 0) {
 
             if (adapter.config.Path2PresentDP.split(".")[0].includes("heatingcontrol")) {
                 adapter.log.error("error in configuration for Path2PresentDP! data point should not point to itself. use external data points or leave it blank");
@@ -2296,7 +2296,7 @@ function SubscribeStates(callback) {
             adapter.log.debug("no subscribe Path2PresentDP ");
         }
 
-        if (adapter.config.Path2VacationDP !== null && typeof adapter.config.Path2VacationDP !== "undefined" && adapter.config.Path2VacationDP.length > 0) {
+        if (adapter.config.Path2VacationDP !== null && typeof adapter.config.Path2VacationDP !== undefined && adapter.config.Path2VacationDP.length > 0) {
 
             if (adapter.config.Path2VacationDP.split(".")[0].includes("heatingcontrol")) {
                 adapter.log.error("error in configuration for Path2VacationDP! data point should not point to itself. use external data points or leave it blank");
@@ -2310,7 +2310,7 @@ function SubscribeStates(callback) {
             adapter.log.debug("no subscribe Path2VacationDP ");
         }
 
-        if (adapter.config.Path2HolidayPresentDP !== null && typeof adapter.config.Path2HolidayPresentDP !== "undefined" && adapter.config.Path2HolidayPresentDP.length > 0) {
+        if (adapter.config.Path2HolidayPresentDP !== null && typeof adapter.config.Path2HolidayPresentDP !== undefined && adapter.config.Path2HolidayPresentDP.length > 0) {
             if (adapter.config.Path2HolidayPresentDP.split(".")[0].includes("heatingcontrol")) {
                 adapter.log.error("error in configuration for Path2HolidayPresentDP! data point should not point to itself. use external data points or leave it blank");
             }
@@ -2323,7 +2323,7 @@ function SubscribeStates(callback) {
             adapter.log.debug("no subscribe Path2HolidayPresentDP ");
         }
 
-        if (adapter.config.Path2GuestsPresentDP !== null && typeof adapter.config.Path2GuestsPresentDP !== "undefined" && adapter.config.Path2GuestsPresentDP.length > 0) {
+        if (adapter.config.Path2GuestsPresentDP !== null && typeof adapter.config.Path2GuestsPresentDP !== undefined && adapter.config.Path2GuestsPresentDP.length > 0) {
             if (adapter.config.Path2GuestsPresentDP.split(".")[0].includes("heatingcontrol")) {
                 adapter.log.error("error in configuration for Path2GuestsPresentDP! data point should not point to itself. use external data points or leave it blank");
             }
@@ -2336,7 +2336,7 @@ function SubscribeStates(callback) {
             adapter.log.debug("no subscribe Path2GuestsPresentDP ");
         }
 
-        if (adapter.config.Path2PartyNowDP !== null && typeof adapter.config.Path2PartyNowDP !== "undefined" && adapter.config.Path2PartyNowDP.length > 0) {
+        if (adapter.config.Path2PartyNowDP !== null && typeof adapter.config.Path2PartyNowDP !== undefined && adapter.config.Path2PartyNowDP.length > 0) {
             if (adapter.config.Path2PartyNowDP.split(".")[0].includes("heatingcontrol")) {
                 adapter.log.error("error in configuration for Path2PartyNowDP! data point should not point to itself. use external data points or leave it blank");
             }
@@ -2349,12 +2349,12 @@ function SubscribeStates(callback) {
             adapter.log.debug("no subscribe Path2PartyNowDP ");
         }
 
-        if (adapter.config.devices === null || typeof adapter.config.devices === "undefined") {
+        if (adapter.config.devices === null || typeof adapter.config.devices === undefined) {
             adapter.log.warn("no devices available for subscription");
             return;
         }
 
-        if (adapter.config.rooms === null || typeof adapter.config.rooms === "undefined") {
+        if (adapter.config.rooms === null || typeof adapter.config.rooms === undefined) {
             adapter.log.warn("no rooms available for subscription");
             return;
         }
@@ -2916,7 +2916,7 @@ async function HandleStateChangeDevices(id, state) {
                             //adapter.log.debug("ask  " + devices[d].OID_Target);
                             const target = await adapter.getForeignStateAsync(devices[d].OID_Target);
                             //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
-                            if (target != null && typeof target != "undefined") {
+                            if (target != null && typeof target != undefined) {
                                 await HandleActors(devices[d].room, parseFloat(state.val), parseFloat(target.val));
                             }
                         }
@@ -3156,7 +3156,7 @@ async function CheckMinTemp(roomId, target) {
             const minTemp = await adapter.getStateAsync(id);
             adapter.log.debug("got " + JSON.stringify(minTemp));
 
-            if (typeof minTemp !== "undefined" && minTemp !== null && minTemp.val !== null && target < minTemp.val) {
+            if (typeof minTemp !== undefined && minTemp !== null && minTemp.val !== null && target < minTemp.val) {
                 adapter.log.info("target " + target + " lower then minimum " + minTemp.val + " : setting to min");
                 target = minTemp.val;
             }
@@ -3179,12 +3179,12 @@ async function HandleThermostat(oid, temperature) {
         //adapter.log.debug("333 " + JSON.stringify(currentTarget));
 
         
-        if (currentTarget != null && typeof currentTarget != "undefined" && typeof currentTarget.val !== typeof target) {
+        if (currentTarget != null && typeof currentTarget != undefined && typeof currentTarget.val !== typeof target) {
             adapter.log.warn("HandleThermostat: different types " + typeof currentTarget.val + " vs " + typeof target);
         }
 
 
-        if (currentTarget != null && typeof currentTarget != "undefined") {
+        if (currentTarget != null && typeof currentTarget != undefined) {
             if (currentTarget.val !== target) {
                 await adapter.setForeignStateAsync(oid, target);
                 adapter.log.info("set thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
@@ -3211,7 +3211,7 @@ async function HandleThermostat(oid, temperature) {
 // find a object in array by key and value
 // returns the object
 function findObjectByKey(array, key, value) {
-    if (array !== null && typeof array !== "undefined") {
+    if (array !== null && typeof array !== undefined) {
         for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
                 return array[i];
@@ -3229,7 +3229,7 @@ function findObjectsByKey(array, key, value) {
 
     const ret = [];
 
-    if (array !== null && typeof array !== "undefined") {
+    if (array !== null && typeof array !== undefined) {
         for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
                 ret.push(array[i]);
@@ -3246,7 +3246,7 @@ function findObjectsByKey(array, key, value) {
 // returns index number
 function findObjectIdByKey(array, key, value) {
 
-    if (array !== null && typeof array !== "undefined") {
+    if (array !== null && typeof array !== undefined) {
 
         for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
@@ -3266,7 +3266,7 @@ function findObjectsIdByKey(array, key, value) {
 
     const ret = [];
 
-    if (array !== null && typeof array !== "undefined") {
+    if (array !== null && typeof array !== undefined) {
 
         for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
@@ -3460,7 +3460,7 @@ function getCronStat() {
     //adapter.log.debug("cron jobs");
     for (let n = 0; n < cronJobs.length; n++) {
 
-        if (typeof cronJobs[n] !== "undefined") {
+        if (typeof cronJobs[n] !== undefined) {
             adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
         }
     }
@@ -3815,7 +3815,7 @@ function CheckValidTime(id, nextTime) {
 
     let bRet = true;
     try {
-        if (nextTime === "null" || typeof nextTime === "undefined") {
+        if (nextTime === "null" || typeof nextTime === undefined) {
             adapter.log.error("nextTime not found for " + id);
             bRet = false;
         }
@@ -3872,13 +3872,13 @@ async function GetCurrentProfile() {
 //normally it's a temperature target value
 async function CheckTemperatureChange(room2check) {
 
-    if (adapter.config.devices === null || typeof adapter.config.devices === "undefined") {
+    if (adapter.config.devices === null || typeof adapter.config.devices === undefined) {
         adapter.log.warn("no devices available for checkTempChange");
         return;
     }
 
     let onlyOneRoom = false;
-    if (typeof room2check !== "undefined" && room2check.length > 0) {
+    if (typeof room2check !== undefined && room2check.length > 0) {
         adapter.log.debug("room to check is " + room2check);
         onlyOneRoom = true;
     }
@@ -4126,7 +4126,7 @@ async function CheckTemperatureChange(room2check) {
                         }
 
                         if (currentPeriod === -2) {// also yesterday not found
-                            if (typeof lastSetTemperature[room] !== "undefined") {
+                            if (typeof lastSetTemperature[room] !== undefined) {
                                 nextTemperature = lastSetTemperature[room];
                                 currentPeriod = -1;
                             }
@@ -4646,7 +4646,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
 
                         const currentState = await adapter.getForeignStateAsync(adapter.config.devices[device].OID_Target);
 
-                        if (currentState != null && typeof currentState != "undefined") {
+                        if (currentState != null && typeof currentState != undefined) {
                             if (currentState.val !== target) {
 
                                 await adapter.setForeignStateAsync(adapter.config.devices[device].OID_Target, target);
@@ -4669,7 +4669,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
             //if we are in heating period but room has no thermostat
             if (HeatingPeriodActive && parseInt(adapter.config.UseActorsIfNoThermostat) > 1) {
 
-                if (typeof ActorsWithoutThermostat !== "undefined" && ActorsWithoutThermostat.length > 0) {
+                if (typeof ActorsWithoutThermostat !== undefined && ActorsWithoutThermostat.length > 0) {
 
                     adapter.log.debug("switch off all actors");
 
@@ -4690,7 +4690,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
                         //prüfen, ob state schon target entspricht
                         const currentState = await adapter.getForeignStateAsync(ActorsWithoutThermostat[d].oid);
 
-                        if (currentState != null && typeof currentState != "undefined") {
+                        if (currentState != null && typeof currentState != undefined) {
                             if (currentState.val !== target) {
 
                                 await adapter.setForeignStateAsync(ActorsWithoutThermostat[d].oid, target);
@@ -4805,7 +4805,7 @@ async function CheckAllActors() {
                     noOfActors++;
                     const current = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
 
-                    if (current !== null && typeof current !== "undefined") {
+                    if (current !== null && typeof current !== undefined) {
                         if (current.val) {
                             actorsOn++;
                         }
@@ -4850,7 +4850,7 @@ async function CheckAllExternalStates() {
 
             //adapter.log.debug("### 4444 " + PublicHoliday.val);
 
-            if (PublicHoliday !== null && typeof PublicHoliday !== "undefined") {
+            if (PublicHoliday !== null && typeof PublicHoliday !== undefined) {
                 //heatingcontrol.0.PublicHolidyToday
                 adapter.log.info("setting PublicHolidyToday to " + PublicHoliday.val);
                 await adapter.setStateAsync("PublicHolidyToday", { val: PublicHoliday.val, ack: true });
@@ -4880,7 +4880,7 @@ async function CheckAllExternalStates() {
 
                 adapter.log.debug("got Present (1) " + JSON.stringify(nTemp));
 
-                if (nTemp !== null && typeof nTemp !== "undefined") {
+                if (nTemp !== null && typeof nTemp !== undefined) {
                     present = nTemp.val;
                 }
             }
@@ -4890,14 +4890,14 @@ async function CheckAllExternalStates() {
 
                 adapter.log.debug("got Present (2) " + JSON.stringify(nTemp));
 
-                if (nTemp !== null && typeof nTemp !== "undefined") {
+                if (nTemp !== null && typeof nTemp !== undefined) {
                     if (nTemp.val > 0) {
                         present = true;
                     }
                 }
             }
 
-            if (present !== null && typeof present !== "undefined") {
+            if (present !== null && typeof present !== undefined) {
                 //heatingcontrol.0.Present
                 adapter.log.info("setting Present to " + present);
                 await adapter.setStateAsync("Present", { val: present, ack: true });
@@ -4921,7 +4921,7 @@ async function CheckAllExternalStates() {
 
             const vacation = await adapter.getForeignStateAsync(adapter.config.Path2VacationDP);
 
-            if (vacation !== null && typeof vacation !== "undefined") {
+            if (vacation !== null && typeof vacation !== undefined) {
                 //heatingcontrol.0.VacationAbsent
                 adapter.log.info("setting VacationAbsent to " + vacation.val);
                 await adapter.setStateAsync("VacationAbsent", { val: vacation.val, ack: true });
@@ -4945,7 +4945,7 @@ async function CheckAllExternalStates() {
 
             const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
 
-            if (guestspresent !== null && typeof guestspresent !== "undefined") {
+            if (guestspresent !== null && typeof guestspresent !== undefined) {
                 //heatingcontrol.0.GuestsPresent
                 adapter.log.info("setting GuestsPresent to " + guestspresent.val);
                 await adapter.setStateAsync("GuestsPresent", { val: guestspresent.val, ack: true });
@@ -4969,7 +4969,7 @@ async function CheckAllExternalStates() {
 
             const partynow = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
 
-            if (partynow !== null && typeof partynow !== "undefined") {
+            if (partynow !== null && typeof partynow !== undefined) {
                 //heatingcontrol.0.PartyNow
                 adapter.log.info("setting PartyNow to " + partynow.val);
                 await adapter.setStateAsync("PartyNow", { val: partynow.val, ack: true });
@@ -4994,7 +4994,7 @@ async function CheckAllExternalStates() {
 
             const holidaypresent = await adapter.getForeignStateAsync(adapter.config.Path2HolidayPresentDP);
 
-            if (holidaypresent !== null && typeof holidaypresent !== "undefined") {
+            if (holidaypresent !== null && typeof holidaypresent !== undefined) {
                 //heatingcontrol.0.HolidayPresent
                 adapter.log.info("setting HolidayPresent to " + holidaypresent.val);
                 await adapter.setStateAsync("HolidayPresent", { val: holidaypresent.val, ack: true });
@@ -5047,7 +5047,7 @@ async function CheckWindowSensors(roomID) {
 
                         adapter.log.debug("got sensor state " + JSON.stringify(state) + " from " + adapter.config.devices[i].OID_Current);
 
-                        if (state !== null && typeof state !== "undefined") {
+                        if (state !== null && typeof state !== undefined) {
                             if (state.val) {
                                 adapter.log.info(roomName + " window open on " + adapter.config.devices[i].name);
                                 state2Set = true;
