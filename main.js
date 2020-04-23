@@ -3870,7 +3870,7 @@ async function GetCurrentProfile() {
 // this is called by cron
 // so we need to find out what needs to be changed and change it
 //normally it's a temperature target value
-async function CheckTemperatureChange(room2check) {
+async function CheckTemperatureChange(room2check=null) {
 
     if (adapter.config.devices === null || typeof adapter.config.devices === undefined) {
         adapter.log.warn("no devices available for checkTempChange");
@@ -3878,7 +3878,7 @@ async function CheckTemperatureChange(room2check) {
     }
 
     let onlyOneRoom = false;
-    if (typeof room2check !== undefined && room2check.length > 0) {
+    if (room2check !== null && typeof room2check !== undefined && room2check.length > 0) {
         adapter.log.debug("room to check is " + room2check);
         onlyOneRoom = true;
     }
