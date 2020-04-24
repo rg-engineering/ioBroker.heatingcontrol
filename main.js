@@ -2471,10 +2471,21 @@ async function HandleStateChange(id, state) {
 
     try {
 
+        
         if (state && state.ack !== true) {
             //first set ack flag
-            await adapter.setStateAsync(id, { ack: true });
+            /*
+            try {
+                await adapter.setStateAsync(id, { ack: true });
+            }
+            catch (e) {
+                adapter.log.error("exception in setStateAsync [" + e + "]");
+            }
+            */
         }
+        
+
+        
 
         if (id !== LastStateChangeID || state.val !== LastStateVal) {
 
