@@ -2471,26 +2471,21 @@ async function HandleStateChange(id, state) {
 
     try {
 
-        
         if (state && state.ack !== true) {
             //first set ack flag
-            /*
+            
             try {
-                await adapter.setStateAsync(id, { ack: true });
+                await adapter.setStateAsync(id, {val: state.val, ack: true });
             }
             catch (e) {
                 adapter.log.error("exception in setStateAsync [" + e + "]");
             }
-            */
+            
         }
         
-
-        
-
         if (id !== LastStateChangeID || state.val !== LastStateVal) {
 
             adapter.log.debug("### " + id + " " + LastStateChangeID + " " + state.val + " " + LastStateVal);
-
 
             let bHandled = false;
             LastStateChangeID = id;
