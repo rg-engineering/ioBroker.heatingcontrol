@@ -72,7 +72,7 @@ ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature",
 //id ist ham.0.RaumName.ThermostatName.
 //const MaxTadoThermostatType = 20;
 
-let WindowOpenTimerId = null;
+let WindowOpenTimerId = [];
 
 
 const ActorTypeTab = [];
@@ -200,6 +200,11 @@ function startAdapter(options) {
 async function main() {
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
+
+        for (let room = 0; room < adapter.config.rooms.length; room++) {
+            WindowOpenTimerId[room] = null;
+        }
+
         await CreateDatepoints();
 
         //SystemDateFormat = await GetSystemDateformat();
@@ -2957,6 +2962,18 @@ async function HandleStateChangeDevices(id, state) {
 
 }
 
+function WindowOpenTimeout(RoomName, roomID) {
+    adapter.log.debug("Window open timeout for " + RoomName);
+
+    if (WindowOpenTimerId[roomID]) {
+        clearTimeout(WindowOpenTimerId[roomID]);
+        WindowOpenTimerId[roomID] = null;
+    }
+
+    CheckTemperatureChange(RoomName);
+
+}
+
 
 async function CheckWindowOpen4Room(roomID, device) {
     const windowIsOpen = await CheckWindowSensors(roomID);
@@ -2964,28 +2981,17 @@ async function CheckWindowOpen4Room(roomID, device) {
     if (adapter.config.SensorDelay > 0) {
         //nur wenn offen, verzögern
         if (windowIsOpen) {
-            adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000);
-            WindowOpenTimerId = setTimeout(function () {
-                //adapter.log.debug("fired");
-
-                if (WindowOpenTimerId) {
-                    clearTimeout(WindowOpenTimerId);
-                    WindowOpenTimerId = null;
-                }
-
-                CheckTemperatureChange(device.room);
-
-            }, adapter.config.SensorDelay * 1000, device.room);
-
+            adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000 + " for " + device.room);
+            WindowOpenTimerId[roomID] = setTimeout(WindowOpenTimeout, adapter.config.SensorDelay * 1000, device.room, roomID);
         }
         else {
             //wenn zu, dann sofort 
             CheckTemperatureChange(device.room);
 
             //und falls timer noch rennt; abbrechen
-            if (WindowOpenTimerId) {
-                clearTimeout(WindowOpenTimerId);
-                WindowOpenTimerId = null;
+            if (WindowOpenTimerId[roomID]) {
+                clearTimeout(WindowOpenTimerId[roomID]);
+                WindowOpenTimerId[roomID] = null;
             }
 
         }
