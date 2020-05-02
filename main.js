@@ -72,7 +72,7 @@ ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature",
 //id ist ham.0.RaumName.ThermostatName.
 //const MaxTadoThermostatType = 20;
 
-let WindowOpenTimerId = [];
+const WindowOpenTimerId = [];
 
 
 const ActorTypeTab = [];

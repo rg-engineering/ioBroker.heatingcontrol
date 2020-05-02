@@ -383,8 +383,10 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     async SetWindowState() { //Fenster offenstatus für einzelnen Raum/Fenster festlegen
-        this.log("Reaching SetWindowState");
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", this.adapter.setState(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen").val);
+        const state = this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen";
+        this.log("Reaching SetWindowState for " + state);
+        const temp = await this.adapter.getStateAsync(state);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", temp.val);
     }
 
     //==========================================================================================================================
