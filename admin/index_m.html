@@ -175,7 +175,8 @@
                 elementPageSensors.classList.remove("hide");
 
 
-                $('.col-SensorDelay').show();
+                $('.col-SensorOpenDelay').show();
+                $('.col-SensorCloseDelay').show();
                  
             }
             else {
@@ -183,7 +184,8 @@
 
                 elementPageSensors.classList.add("hide");
 
-                $('.col-SensorDelay').hide();
+                $('.col-SensorOpenDelay').hide();
+                $('.col-SensorCloseDelay').hide();
             }
 
             var $useFixHeatingPeriod = $('#UseFixHeatingPeriod');
@@ -938,9 +940,14 @@
                         <label for="UseSensors" class="translate">use_sensors</label>
                     </div>
 
-                    <div class="input-field col s6 col-SensorDelay">
+                    <div class="input-field col s3 col-SensorOpenDelay">
                         <input type="number" id="SensorDelay" class="value" />
-                        <label for="SensorDelay" class="translate">SensorDelay</label>
+                        <label for="SensorDelay" class="translate">SensorOpenDelay</label>
+                    </div>
+
+                    <div class="input-field col s3 col-SensorCloseDelay">
+                        <input type="number" id="SensorCloseDelay" class="value" />
+                        <label for="SensorCloseDelay" class="translate">SensorCloseDelay</label>
                     </div>
 
                 </div>
