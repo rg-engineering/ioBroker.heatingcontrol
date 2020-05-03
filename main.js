@@ -2638,11 +2638,20 @@ async function HandleStateChangeGeneral(id, state) {
 
     const ids = id.split("."); //
 
-    //vis - related
+    //vis - related - forwarder
     //heatingcontrol.0.vis.WindowStatesHtmlTable
     //heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot
     //heatingcontrol.0.Rooms.Schlafzimmer.WindowIsOpen
-    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" || ids[4] === "WindowIsOpen") {
+    //heatingcontrol.0.vis.TempDecreaseValues.WindowOpenDecrease
+    //heatingcontrol.0.vis.RoomValues.TemperaturOverrideTime
+    //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.Periods.0.Temperature
+
+    if (ids[2] === "vis"
+        || ids[4] === "ActiveTimeSlot"
+        || ids[4] === "WindowIsOpen"
+        || ids[3] === "ProfileTypes"
+        || ids[3] === "RoomValues"
+        || ids[3] === "TempDecreaseValues") {
         if (vis != null) {
             bRet = await vis.HandleStateChanges(id, state);
 

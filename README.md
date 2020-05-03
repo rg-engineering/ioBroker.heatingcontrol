@@ -158,7 +158,8 @@ Many user asked for an option to take over changes from thermostat into adapter.
 ## Changelog
 
 ### 0.5.0 (2020-05-xx)
-* (René) see issue #???: sensor close delay added (similar to already existing sensor open delay)
+* (René) see issue #101: sensor close delay added (similar to already existing sensor open delay)
+* (René) see issue #103: date/time format string corrected for vis
 
 
 ### 0.4.0 (2020-05-02)
