@@ -1,101 +1,102 @@
 {
-    "common": {
-        "name": "heatingcontrol",
-        "version": "0.4.0",
-        "news": {
-            "0.4.0": {
-                "en": "use changes from thermostat",
-                "de": "Verwenden Sie Änderungen vom Thermostat",
-                "ru": "использовать изменения от термостата",
-                "pt": "use mudanças do termostato",
-                "nl": "gebruik veranderingen van thermostaat",
-                "fr": "utiliser les changements du thermostat",
-                "it": "utilizzare le modifiche dal termostato",
-                "es": "usar cambios del termostato",
-                "pl": "użyj zmian z termostatu",
-                "zh-cn": "使用恒温器的更改"
-            }
-        },
-        "title": "HeatingControl",
-        "titleLang": {
-            "en": "Heating Control",
-            "de": "Heizungsregelung",
-            "ru": "Управление отоплением",
-            "pt": "Controle de aquecimento",
-            "nl": "Verwarmingregeling",
-            "fr": "Contrôle du chauffage",
-            "it": "Controllo del riscaldamento",
-            "es": "Control de calentamiento",
-            "pl": "Kontrola ogrzewania",
-            "zh-cn": "加热控制"
-        },
-        "desc": {
-            "en": "Heating Control",
-            "de": "Heizungsregelung",
-            "ru": "Управление отоплением",
-            "pt": "Controle de aquecimento",
-            "nl": "Verwarmingregeling",
-            "fr": "Contrôle du chauffage",
-            "it": "Controllo del riscaldamento",
-            "es": "Control de calentamiento",
-            "pl": "Kontrola ogrzewania",
-            "zh-cn": "加热控制"
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "heatingcontrol.png",
-        "enabled": true,
-        "messagebox": true,
-        "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
-        "keywords": [
-            "heating"
-        ],
-        "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
-        "loglevel": "info",
-        "stopBeforeUpdate": true,
-        "type": "climate-control",
-        "license": "MIT",
-        "materialize": true,
-        "compact": true,
-        "authors": [
-            {
-                "name": "René G.",
-                "email": "info@rg-engineering.eu"
-            }
-        ],
-        "contributors": [
-            "DutchmanNL <rdrozda86@gmail.com>"
-        ]
+  "common": {
+    "name": "heatingcontrol",
+    "version": "0.5.0",
+    "news": {
+      "0.4.0": {
+        "en": "use changes from thermostat",
+        "de": "Verwenden Sie Änderungen vom Thermostat",
+        "ru": "использовать изменения от термостата",
+        "pt": "use mudanças do termostato",
+        "nl": "gebruik veranderingen van thermostaat",
+        "fr": "utiliser les changements du thermostat",
+        "it": "utilizzare le modifiche dal termostato",
+        "es": "usar cambios del termostato",
+        "pl": "użyj zmian z termostatu",
+        "zh-cn": "使用恒温器的更改"
+      }
     },
-    "native": {
-        "devices": [],
-        "rooms": [],
-        "UseActors": false,
-        "Gewerk": "Heizung",
-        "ProfileType": 1,
-        "NumberOfProfiles": 1,
-        "NumberOfPeriods": 5,
-        "timezone": "Europe/Berlin",
-        "deleteall": false,
-        "UseActorsIfNotHeating": 1,
-        "UseActorsIfNoThermostat": 1,
-        "Path2FeiertagAdapter": "",
-        "Path2PresentDP": "",
-        "PublicHolidayLikeSunday": true,
-        "UseFixHeatingPeriod": false,
-        "FixHeatingPeriodStart": "01.10.",
-        "FixHeatingPeriodEnd": "31.03.",
-        "TemperatureDecrease": 3,
-        "Path2VacationDP": "",
-        "Path2HolidayPresentDP": "",
-        "Path2GuestsPresentDP": "",
-        "Path2PresentDPType": 1,
-        "Path2PartyNowDP": "",
-        "SensorDelay": 0,
-        "UseMinTempPerRoom": false,
-        "ThermostatModeIfNoHeatingperiod": 3,
-        "FixTempIfNoHeatingPeriod": "15;",
-        "UseChangesFromThermostat": 1,
-        "UseVisFromPittini": false
-    }
+    "title": "HeatingControl",
+    "titleLang": {
+      "en": "Heating Control",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
+    },
+    "desc": {
+      "en": "Heating Control",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "heatingcontrol.png",
+    "enabled": true,
+    "messagebox": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
+    "keywords": [
+      "heating"
+    ],
+    "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
+    "loglevel": "info",
+    "stopBeforeUpdate": true,
+    "type": "climate-control",
+    "license": "MIT",
+    "materialize": true,
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ],
+    "contributors": [
+      "DutchmanNL <rdrozda86@gmail.com>"
+    ]
+  },
+  "native": {
+    "devices": [],
+    "rooms": [],
+    "UseActors": false,
+    "Gewerk": "Heizung",
+    "ProfileType": 1,
+    "NumberOfProfiles": 1,
+    "NumberOfPeriods": 5,
+    "timezone": "Europe/Berlin",
+    "deleteall": false,
+    "UseActorsIfNotHeating": 1,
+    "UseActorsIfNoThermostat": 1,
+    "Path2FeiertagAdapter": "",
+    "Path2PresentDP": "",
+    "PublicHolidayLikeSunday": true,
+    "UseFixHeatingPeriod": false,
+    "FixHeatingPeriodStart": "01.10.",
+    "FixHeatingPeriodEnd": "31.03.",
+    "TemperatureDecrease": 3,
+    "Path2VacationDP": "",
+    "Path2HolidayPresentDP": "",
+    "Path2GuestsPresentDP": "",
+    "Path2PresentDPType": 1,
+    "Path2PartyNowDP": "",
+    "SensorDelay": 0,
+    "UseMinTempPerRoom": false,
+    "ThermostatModeIfNoHeatingperiod": 3,
+    "FixTempIfNoHeatingPeriod": "15;",
+    "UseChangesFromThermostat": 1,
+    "UseVisFromPittini": false,
+    "SensorCloseDelay": 0
+  }
 }

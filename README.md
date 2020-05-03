@@ -157,6 +157,10 @@ Many user asked for an option to take over changes from thermostat into adapter.
 
 ## Changelog
 
+### 0.5.0 (2020-05-xx)
+* (René) see issue #???: sensor close delay added (similar to already existing sensor open delay)
+
+
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
