@@ -23,6 +23,8 @@ class HeatingControlVis {
 
         this.log("init called");
 
+        this.language = "de";
+
         //    const praefix = "javascript.0.vis.HeatingControl."; //Grundpfad für Script DPs
         //    const hcpraefix = "heatingcontrol.0."; //Pfad zu HeatingControlDatenpunkten
 
@@ -205,6 +207,11 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
+    SetLanguage(lang) {
+        this.language = lang;
+    }
+
+    //==========================================================================================================================
     async CreateStates() {
         this.log("CreateStates called");
 
@@ -275,15 +282,24 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     TimeConverter(UNIX_timestamp) {
+
+
+
         const a = new Date(UNIX_timestamp * 1000);
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        if (this.language === "de") {
+            months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+        }
+        
         const year = a.getFullYear();
         const month = months[a.getMonth()];
-        const date = a.getDate();
-        const hour = a.getHours();
-        const min = a.getMinutes();
-        const sec = a.getSeconds();
-        const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+        const date = ("0" + a.getDate()).slice(-2);
+        const hour = ("0" + a.getHours()).slice(-2);
+        const min = ("0" + a.getMinutes()).slice(-2);
+        const sec = ("0" + a.getSeconds()).slice(-2);
+        const time = date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
         return time;
     }
 
