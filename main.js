@@ -6,9 +6,6 @@
 
 */
 
-
-
-
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
@@ -73,6 +70,7 @@ ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature",
 //const MaxTadoThermostatType = 20;
 
 const WindowOpenTimerId = [];
+const WindowCloseTimerId = [];
 
 
 const ActorTypeTab = [];
@@ -233,6 +231,9 @@ async function main() {
             adapter.log.info("starting vis part 2");
             vis = new myVis(adapter);
 
+            const language = await GetSystemLanguage();
+
+            vis.SetLanguage(language);
 
         }
     }
@@ -2637,11 +2638,20 @@ async function HandleStateChangeGeneral(id, state) {
 
     const ids = id.split("."); //
 
-    //vis - related
+    //vis - related - forwarder
     //heatingcontrol.0.vis.WindowStatesHtmlTable
     //heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot
     //heatingcontrol.0.Rooms.Schlafzimmer.WindowIsOpen
-    if (ids[2] === "vis" || ids[4] === "ActiveTimeSlot" || ids[4] === "WindowIsOpen") {
+    //heatingcontrol.0.vis.TempDecreaseValues.WindowOpenDecrease
+    //heatingcontrol.0.vis.RoomValues.TemperaturOverrideTime
+    //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.Periods.0.Temperature
+
+    if (ids[2] === "vis"
+        || ids[4] === "ActiveTimeSlot"
+        || ids[4] === "WindowIsOpen"
+        || ids[3] === "ProfileTypes"
+        || ids[3] === "RoomValues"
+        || ids[3] === "TempDecreaseValues") {
         if (vis != null) {
             bRet = await vis.HandleStateChanges(id, state);
 
@@ -2974,7 +2984,56 @@ function WindowOpenTimeout(RoomName, roomID) {
 
 }
 
+function WindowCloseTimeout(RoomName, roomID) {
+    adapter.log.debug("Window close timeout for " + RoomName);
 
+    if (WindowCloseTimerId[roomID]) {
+        clearTimeout(WindowCloseTimerId[roomID]);
+        WindowCloseTimerId[roomID] = null;
+    }
+
+    CheckTemperatureChange(RoomName);
+
+}
+
+async function CheckWindowOpen4Room(roomID, device) {
+    const windowIsOpen = await CheckWindowSensors(roomID);
+
+    if (windowIsOpen) {
+        // falls IsClosed timer noch rennt; abbrechen
+        if (WindowCloseTimerId[roomID]) {
+            adapter.log.info("cancel Close TimerId ");
+            clearTimeout(WindowCloseTimerId[roomID]);
+            WindowCloseTimerId[roomID] = null;
+        }
+
+        if (adapter.config.SensorDelay > 0) {
+            WindowOpenTimerId[roomID] = setTimeout(WindowOpenTimeout, adapter.config.SensorDelay * 1000, device.room, roomID);
+            adapter.log.info("sensor open delay " + adapter.config.SensorDelay * 1000 + " for " + device.room);
+        }
+        else {
+            CheckTemperatureChange(device.room);
+        }
+    }
+    else { //isClosed
+        //falls IsOpen timer noch rennt; abbrechen
+        if (WindowOpenTimerId[roomID]) {
+            adapter.log.info("cancel Open TimerId ");
+            clearTimeout(WindowOpenTimerId[roomID]);
+            WindowOpenTimerId[roomID] = null;
+        }
+        if (adapter.config.SensorCloseDelay > 0) {
+            WindowCloseTimerId[roomID] = setTimeout(WindowCloseTimeout, adapter.config.SensorCloseDelay * 1000, device.room, roomID);
+            adapter.log.info("sensor close delay " + adapter.config.SensorCloseDelay * 1000 + " for " + device.room);
+        }
+        else {
+            CheckTemperatureChange(device.room);
+        }
+    }
+}
+
+/*
+ * alte Version
 async function CheckWindowOpen4Room(roomID, device) {
     const windowIsOpen = await CheckWindowSensors(roomID);
 
@@ -3001,6 +3060,7 @@ async function CheckWindowOpen4Room(roomID, device) {
         CheckTemperatureChange(device.room);
     }
 }
+*/
 
 async function SetOverrideFromThermostat(room, newVal) {
     adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);

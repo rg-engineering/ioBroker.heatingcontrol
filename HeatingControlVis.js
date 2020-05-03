@@ -7,7 +7,7 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     log(msg) {
-        this.adapter.log.debug("vis: " + msg);
+        this.adapter.log.info("vis: " + msg);
     }
 
 
@@ -22,6 +22,8 @@ class HeatingControlVis {
     async Init() {
 
         this.log("init called");
+
+        this.language = "de";
 
         //    const praefix = "javascript.0.vis.HeatingControl."; //Grundpfad für Script DPs
         //    const hcpraefix = "heatingcontrol.0."; //Pfad zu HeatingControlDatenpunkten
@@ -205,6 +207,11 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
+    SetLanguage(lang) {
+        this.language = lang;
+    }
+
+    //==========================================================================================================================
     async CreateStates() {
         this.log("CreateStates called");
 
@@ -275,15 +282,22 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     TimeConverter(UNIX_timestamp) {
+
         const a = new Date(UNIX_timestamp * 1000);
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        if (this.language === "de") {
+            months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+        }
+        
         const year = a.getFullYear();
         const month = months[a.getMonth()];
-        const date = a.getDate();
-        const hour = a.getHours();
-        const min = a.getMinutes();
-        const sec = a.getSeconds();
-        const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+        const date = ("0" + a.getDate()).slice(-2);
+        const hour = ("0" + a.getHours()).slice(-2);
+        const min = ("0" + a.getMinutes()).slice(-2);
+        const sec = ("0" + a.getSeconds()).slice(-2);
+        const time = date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
         return time;
     }
 
@@ -367,7 +381,7 @@ class HeatingControlVis {
     async SetDecreaseValue(What, ScriptDpVal) {//Werte vom Vis, Bereich Absenkungen, in AdapterDPs schreiben
         if (this.RefreshingVis === false) {
             //if (this.logging) this.log("Reaching SetDecreaseValue");
-            this.log("SetDecreasValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What + " set to " + ScriptDpVal);
+            this.log("SetDecreaseValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What + " set to " + ScriptDpVal);
             await this.adapter.setStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What, ScriptDpVal);
         }
     }
@@ -488,9 +502,14 @@ class HeatingControlVis {
         temp = await this.adapter.getStateAsync(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "ActiveTimeSlot");
         await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", temp.val);
 
+
+        this.RefreshingVis = false;
+
+        /*
         setTimeout(function () { // Timeout setzt refresh status wieder zurück
             this.RefreshingVis = false;
         }, 250);
+        */
         this.log("SetVis done");
     }
 
@@ -544,7 +563,7 @@ class HeatingControlVis {
 
         if (this.logging) this.log("reaching CreateCurrentTimePeriodTrigger - Oldroom= " + this.OldChoosenRoom + " ChoosenRoom= " + this.ChoosenRoom);
         if (this.OldChoosenRoom != "none" && this.OldChoosenRoom != "") { //Wenn kein Oldroom angegeben kein unsubscribe machen
-            this.adapter.unsubscribe(this.hcpraefix + "Rooms." + this.OldChoosenRoom + ".ActiveTimeSlot"); //Trigger auf vorherigen Raum löschen
+            this.adapter.unsubscribeStates(this.hcpraefix + "Rooms." + this.OldChoosenRoom + ".ActiveTimeSlot"); //Trigger auf vorherigen Raum löschen
             if (this.logging) this.log("Trigger für Raum " + this.OldChoosenRoom + " gelöscht, und für Raum " + this.ChoosenRoom + " gesetzt.");
 
         }
@@ -623,7 +642,7 @@ class HeatingControlVis {
     async HandleStateChanges(id, state) {
 
         let bRet = true;
-        this.log("HandleStateChanges " + id);
+        this.log("HandleStateChanges " + id + " with " + state.val + " refreshVis " + this.RefreshingVis);
 
         const ids = id.split(".");
 
@@ -679,7 +698,7 @@ class HeatingControlVis {
             }
         }
         else if (ids[3] === "TempDecreaseValues") {
-            this.log("HandleStateChanges TempDecreaseValues ");
+            this.log("HandleStateChanges TempDecreaseValues " + " with " + state.val);
             if (ids[4] === "AbsentDecrease") {
                 if (this.RefreshingVis === false) {
                     await this.SetDecreaseValue("AbsentDecrease", state.val);
