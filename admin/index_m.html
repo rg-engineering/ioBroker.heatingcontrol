@@ -1080,34 +1080,34 @@
                     </div>
 
                     <div class="input-field col s4 col-FixTempIfNoHeatingPeriod">
-                        <input type="number" id="FixTempIfNoHeatingPeriod" class="value"  />
+                        <input type="number" id="FixTempIfNoHeatingPeriod" class="value" />
                         <label for="FixTempIfNoHeatingPeriod" class="translate">FixTempIfNoHeatingPeriod</label>
                     </div>
 
                 </div>
 
 
-                </div>
+            </div>
 
-                <!-- tab "devices" -->
-                <div id="tab-devices" class="col s12 page">
-                    <div class="col s12" id="rooms">
-                        <div class="table-values-div">
-                            <table id="table_rooms" class="table-values" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th id="rooms_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
-                                        <th id="rooms_col_2" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                        <th id="rooms_col_3" data-name="WindowIsOpen" data-type="checkbox" style="background: #64b5f6" class="translate">WindowIsOpen</th>
-                                        <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
+            <!-- tab "devices" -->
+            <div id="tab-devices" class="col s12 page">
+                <div class="col s12" id="rooms">
+                    <div class="table-values-div">
+                        <table id="table_rooms" class="table-values" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th id="rooms_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
+                                    <th id="rooms_col_2" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                    <th id="rooms_col_3" data-name="WindowIsOpen" data-type="checkbox" style="background: #64b5f6" class="translate">WindowIsOpen</th>
+                                    <th data-buttons="edit delete" style="width: 100px; background: #64b5f6"></th>
 
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
+        </div>
         <div class="m material-dialogs">
             <div id="dialog-select-member" class="modal modal-fixed-footer">
                 <div class="modal-content">
@@ -1135,86 +1135,97 @@
                         </div>
                         <div class="col s12">
                             <ul class="tabs">
-                                <li class="tab col s4"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
+                                <li id="page-thermostats" class="tab col s4"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
                                 <li id="page-actors" class="tab col s4"><a href="#tab-popup_actors" class="translate">actors</a></li>
                                 <li id="page-sensors" class="tab col s4"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
                             </ul>
                         </div>
                         <div id="tab-popup_thermostats" class="col s12 page">
-
-
-                            <div class="col s12" id="thermostats">
-                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-
-                                <div class="table-values-div">
-                                    <table id="table_thermostats" class="table-values" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th id="thermostat_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
-
-                                                <th id="thermostat_col_1" data-name="name" style="background: #64b5f6" class="translate">thermostat</th>
-                                                <th id="thermostat_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID current</th>
-                                                <th id="thermostat_edit1" data-buttons="edit1" style="width: 100px; background: #64b5f6"></th>
-                                                <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
-                                                <th id="thermostat_edit2" data-buttons="edit2" style="width: 100px; background: #64b5f6"></th>
-
-                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
-
-                                            </tr>
-                                        </thead>
-                                    </table>
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">hint_thermostats</span>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col s12" id="thermostats">
+                                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
 
+                                    <div class="table-values-div">
+                                        <table id="table_thermostats" class="table-values" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th id="thermostat_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+
+                                                    <th id="thermostat_col_1" data-name="name" style="background: #64b5f6" class="translate">thermostat</th>
+                                                    <th id="thermostat_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID current</th>
+                                                    <th id="thermostat_edit1" data-buttons="edit1" style="width: 100px; background: #64b5f6"></th>
+                                                    <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
+                                                    <th id="thermostat_edit2" data-buttons="edit2" style="width: 100px; background: #64b5f6"></th>
+
+                                                    <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                    <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
+
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                         <div id="tab-popup_actors" class="col s12 page">
-                            <div class="col s12" id="actors">
-                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                                <div class="table-values-div">
-                                    <table id="table_actors" class="table-values" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th id="actor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
-                                                <th id="actor_col_1" data-name="name" style="background: #64b5f6" class="translate">actor</th>
-                                                <th id="actor_col_2" data-name="OID_Target" style="background: #64b5f6" class="translate">OID</th>
-                                                <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
-                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
-
-                                            </tr>
-                                        </thead>
-                                    </table>
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">hint_actors</span>
                                 </div>
                             </div>
-
-
-
+                            <div class="row">
+                                <div class="col s12" id="actors">
+                                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                    <div class="table-values-div">
+                                        <table id="table_actors" class="table-values" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th id="actor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                                    <th id="actor_col_1" data-name="name" style="background: #64b5f6" class="translate">actor</th>
+                                                    <th id="actor_col_2" data-name="OID_Target" style="background: #64b5f6" class="translate">OID</th>
+                                                    <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
+                                                    <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                    <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="tab-popup_sensors" class="col s12 page">
-                            <div class="col s12" id="sensors">
-                                <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
-                                <div class="table-values-div">
-                                    <table id="table_sensors" class="table-values" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th id="sensor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
-                                                <th id="sensor_col_1" data-name="name" style="background: #64b5f6" class="translate">sensor</th>
-                                                <th id="sensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
-                                                <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
-                                                <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                                <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
-
-                                            </tr>
-                                        </thead>
-                                    </table>
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">hint_sensors</span>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col s12" id="sensors">
+                                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                    <div class="table-values-div">
+                                        <table id="table_sensors" class="table-values" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th id="sensor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                                    <th id="sensor_col_1" data-name="name" style="background: #64b5f6" class="translate">sensor</th>
+                                                    <th id="sensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
+                                                    <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
+                                                    <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                    <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
-
-
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

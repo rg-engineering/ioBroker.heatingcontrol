@@ -1,19 +1,31 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "news": {
-      "0.4.0": {
-        "en": "use changes from thermostat",
-        "de": "Verwenden Sie Änderungen vom Thermostat",
-        "ru": "использовать изменения от термостата",
-        "pt": "use mudanças do termostato",
-        "nl": "gebruik veranderingen van thermostaat",
-        "fr": "utiliser les changements du thermostat",
-        "it": "utilizzare le modifiche dal termostato",
-        "es": "usar cambios del termostato",
-        "pl": "użyj zmian z termostatu",
-        "zh-cn": "使用恒温器的更改"
+      "0.5.1": {
+        "en": "log a warning if actuators are configured but UseActors are off / Sentry added",
+        "de": "Protokollieren Sie eine Warnung, wenn Aktoren konfiguriert sind, UseActors jedoch deaktiviert sind / Sentry hinzugefügt",
+        "ru": "протоколировать предупреждение, если приводы настроены, но UseActors выключены / добавлен Sentry",
+        "pt": "registre um aviso se os atuadores estiverem configurados, mas o UseActors estiver desativado / o Sentry foi adicionado",
+        "nl": "log een waarschuwing als actuatoren zijn geconfigureerd maar UseActors zijn uitgeschakeld / Sentry toegevoegd",
+        "fr": "enregistrer un avertissement si les actionneurs sont configurés mais que UseActors est désactivé / Sentry ajouté",
+        "it": "registra un avviso se gli attuatori sono configurati ma UseActors è disattivato / Sentry aggiunto",
+        "es": "registrar una advertencia si los actuadores están configurados pero UseActors están desactivados / Sentry agregado",
+        "pl": "zaloguj ostrzeżenie, jeśli siłowniki są skonfigurowane, ale UseActors są wyłączone / Dodano Sentry",
+        "zh-cn": "如果配置了执行器但UseActors已关闭/已添加Sentry，则记录警告"
+      },
+      "0.5.0": {
+        "en": "sensor close delay added",
+        "de": "Verzögerung beim Schließen des Sensors hinzugefügt",
+        "ru": "добавлена задержка закрытия датчика",
+        "pt": "atraso de fechamento do sensor adicionado",
+        "nl": "sensor sluitvertraging toegevoegd",
+        "fr": "délai de fermeture du capteur ajouté",
+        "it": "ritardo chiusura sensore aggiunto",
+        "es": "retardo de cierre del sensor agregado",
+        "pl": "dodano opóźnienie zamknięcia czujnika",
+        "zh-cn": "添加了传感器关闭延迟"
       }
     },
     "title": "HeatingControl",
@@ -56,6 +68,11 @@
     "type": "climate-control",
     "license": "MIT",
     "materialize": true,
+    "plugins": {
+      "sentry": {
+        "dsn": "https://f27d7fdc1a6e4f4ea5580a5f4fe9dfcf@o390433.ingest.sentry.io/5233514"
+      }
+    },
     "compact": true,
     "authors": [
       {

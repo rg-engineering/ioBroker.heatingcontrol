@@ -2952,14 +2952,24 @@ async function HandleStateChangeDevices(id, state) {
             }
             else if (devices[d].type === 2) {//actor
                 //nothing to do
+
+                if (!adapter.config.UseActors) {
+                    adapter.log.warn("wrong configuration: use actors is off, but actors are configured ");
+                }
+
             }
             else if (devices[d].type === 3) {//sensor
 
-                //hier können mehrere rooms kommen
-                const roomIDs = findObjectsIdByKey(adapter.config.rooms, "name", devices[d].room);
+                if (!adapter.config.UseSensors) {
+                    //hier können mehrere rooms kommen
+                    const roomIDs = findObjectsIdByKey(adapter.config.rooms, "name", devices[d].room);
 
-                for (let ii = 0; ii < roomIDs.length; ii++) {
-                    await CheckWindowOpen4Room(roomIDs[ii], devices[d]);
+                    for (let ii = 0; ii < roomIDs.length; ii++) {
+                        await CheckWindowOpen4Room(roomIDs[ii], devices[d]);
+                    }
+                }
+                else {
+                    adapter.log.warn("wrong configuration: use sensors is off, but sensors are configured ");
                 }
             }
         }
@@ -5199,6 +5209,114 @@ function SearchActorsWithoutThermostat() {
     catch (e) {
         adapter.log.error("exception in SearchActorsWithoutThermostat [" + e + "]");
     }
+}
+
+
+/**
+ * @param {string} timeVal
+ * @param {string} timeLimit
+ */
+function IsLater(timeVal, timeLimit) {
+
+    let ret = false;
+    try {
+        adapter.log.debug("check IsLater : " + timeVal + " " + timeLimit);
+
+        if (typeof timeVal === "string" && typeof timeLimit === "string") {
+            const valIn = timeVal.split(":");
+            const valLimits = timeLimit.split(":");
+
+            if (valIn.length > 1 && valLimits.length > 1) {
+
+                if (parseInt(valIn[0]) > parseInt(valLimits[0])
+                    || (parseInt(valIn[0]) == parseInt(valLimits[0]) && parseInt(valIn[1]) > parseInt(valLimits[1]))) {
+                    ret = true;
+                    adapter.log.debug("yes, IsLater : " + timeVal + " " + timeLimit);
+                }
+            }
+            else {
+                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
+            }
+        }
+        else {
+            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
+        }
+    }
+    catch (e) {
+        adapter.log.error("exception in IsLater [" + e + "]");
+    }
+    return ret;
+}
+
+/**
+ * @param {string } timeVal
+ * @param {string } [timeLimit]
+ */
+function IsEarlier(timeVal, timeLimit) {
+
+    let ret = false;
+    try {
+        adapter.log.debug("check IsEarlier : " + timeVal + " " + timeLimit);
+
+        if (typeof timeVal === "string" && typeof timeLimit === "string") {
+            const valIn = timeVal.split(":");
+            const valLimits = timeLimit.split(":");
+
+            if (valIn.length > 1 && valLimits.length > 1) {
+
+                if (parseInt(valIn[0]) < parseInt(valLimits[0])
+                    || (parseInt(valIn[0]) == parseInt(valLimits[0]) && parseInt(valIn[1]) < parseInt(valLimits[1]))) {
+                    ret = true;
+                    adapter.log.debug("yes, IsEarlier : " + timeVal + " " + timeLimit);
+                }
+            }
+            else {
+                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
+            }
+        }
+        else {
+            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
+        }
+    }
+    catch (e) {
+        adapter.log.error("exception in IsEarlier [" + e + "]");
+    }
+    return ret;
+}
+
+/**
+ * @param {string} timeVal
+ * @param {string} timeLimit
+ */
+function IsEqual(timeVal, timeLimit) {
+
+    let ret = false;
+    try {
+        adapter.log.debug("check IsEqual : " + timeVal + " " + timeLimit);
+
+        if (typeof timeVal === "string" && typeof timeLimit === "string") {
+            const valIn = timeVal.split(":");
+            const valLimits = timeLimit.split(":");
+
+            if (valIn.length > 1 && valLimits.length > 1) {
+
+                if (parseInt(valIn[0]) === parseInt(valLimits[0]) && parseInt(valIn[1]) === parseInt(valLimits[1])) {
+                    ret = true;
+                    adapter.log.debug("yes, IsEqual : " + timeVal + " " + timeLimit);
+                }
+            }
+            else {
+                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
+            }
+        }
+        else {
+            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
+        }
+    }
+    catch (e) {
+        adapter.log.error("exception in IsEqual [" + e + "]");
+    }
+    return ret;
 }
 
 // If started as allInOne/compact mode => return function to create instance

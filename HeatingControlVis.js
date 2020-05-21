@@ -7,7 +7,7 @@ class HeatingControlVis {
 
     //==========================================================================================================================
     log(msg) {
-        this.adapter.log.info("vis: " + msg);
+        this.adapter.log.debug("vis: " + msg);
     }
 
 
@@ -596,7 +596,7 @@ class HeatingControlVis {
         const Rooms = this.UsedRooms.split(";");
         for (let x = 0; x <= Rooms.length - 1; x++) {
             if (this.logging) this.log(x + " " + Rooms[x]);
-            this.adapter.subscribeStates(this.hcpraefix + "Rooms." + Rooms[x] + ".WindowIsOpen") //Wenn Fensterstatus sich ändert
+            this.adapter.subscribeStates(this.hcpraefix + "Rooms." + Rooms[x] + ".WindowIsOpen"); //Wenn Fensterstatus sich ändert
         }
 
         switch (this.ProfileType) { //Trigger für Vis Zeit und Temperatur je nach Profiltyp
