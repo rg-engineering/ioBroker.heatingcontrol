@@ -2947,7 +2947,9 @@ async function HandleStateChangeDevices(id, state) {
                     }
                 }
                 else {
-                    adapter.log.warn("handling actors out of heating period not implemented yet");
+                    if (adapter.config.UseActors) {
+                        adapter.log.warn("handling actors out of heating period not implemented yet");
+                    }
                 }
             }
             else if (devices[d].type === 2) {//actor
