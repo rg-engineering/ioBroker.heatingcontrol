@@ -13,7 +13,7 @@
         "it": " correzione bug: registra un avviso se i sensori sono configurati ma UseSensors è disattivato",
         "es": " corrección de errores: registre una advertencia si los sensores están configurados pero UseSensors está desactivado",
         "pl": " naprawa błędu: zaloguj ostrzeżenie, jeśli czujniki są skonfigurowane, ale UseSensors jest wyłączony",
-        "zh-cn": " 错误修复：如果配置了传感器但UseSensors已关闭，则记录警告",
+        "zh-cn": " 错误修复：如果配置了传感器但UseSensors已关闭，则记录警告"
       },
       "0.5.1": {
         "en": "log a warning if actuators are configured but UseActors are off / Sentry added",
@@ -40,62 +40,62 @@
         "zh-cn": "添加了传感器关闭延迟"
       }
     },
-      "title": "HeatingControl",
-      "titleLang": {
-        "en": "Heating Control",
-        "de": "Heizungsregelung",
-        "ru": "Управление отоплением",
-        "pt": "Controle de aquecimento",
-        "nl": "Verwarmingregeling",
-        "fr": "Contrôle du chauffage",
-        "it": "Controllo del riscaldamento",
-        "es": "Control de calentamiento",
-        "pl": "Kontrola ogrzewania",
-        "zh-cn": "加热控制"
-      },
-      "desc": {
-        "en": "Heating Control",
-        "de": "Heizungsregelung",
-        "ru": "Управление отоплением",
-        "pt": "Controle de aquecimento",
-        "nl": "Verwarmingregeling",
-        "fr": "Contrôle du chauffage",
-        "it": "Controllo del riscaldamento",
-        "es": "Control de calentamiento",
-        "pl": "Kontrola ogrzewania",
-        "zh-cn": "加热控制"
-      },
-      "platform": "Javascript/Node.js",
-      "mode": "daemon",
-      "icon": "heatingcontrol.png",
-      "enabled": true,
-      "messagebox": true,
-      "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
-      "keywords": [
-        "heating"
-      ],
-      "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
-      "loglevel": "info",
-      "stopBeforeUpdate": true,
-      "type": "climate-control",
-      "license": "MIT",
-      "materialize": true,
-      "plugins": {
-        "sentry": {
-          "dsn": "https://f27d7fdc1a6e4f4ea5580a5f4fe9dfcf@o390433.ingest.sentry.io/5233514"
-        }
-      },
-      "compact": true,
-      "authors": [
-        {
-          "name": "René G.",
-          "email": "info@rg-engineering.eu"
-        }
-      ],
-      "contributors": [
-        "DutchmanNL <rdrozda86@gmail.com>"
-      ]
+    "title": "HeatingControl",
+    "titleLang": {
+      "en": "Heating Control",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
     },
+    "desc": {
+      "en": "Heating Control",
+      "de": "Heizungsregelung",
+      "ru": "Управление отоплением",
+      "pt": "Controle de aquecimento",
+      "nl": "Verwarmingregeling",
+      "fr": "Contrôle du chauffage",
+      "it": "Controllo del riscaldamento",
+      "es": "Control de calentamiento",
+      "pl": "Kontrola ogrzewania",
+      "zh-cn": "加热控制"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "heatingcontrol.png",
+    "enabled": true,
+    "messagebox": true,
+    "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
+    "keywords": [
+      "heating"
+    ],
+    "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
+    "loglevel": "info",
+    "stopBeforeUpdate": true,
+    "type": "climate-control",
+    "license": "MIT",
+    "materialize": true,
+    "plugins": {
+      "sentry": {
+        "dsn": "https://f27d7fdc1a6e4f4ea5580a5f4fe9dfcf@o390433.ingest.sentry.io/5233514"
+      }
+    },
+    "compact": true,
+    "authors": [
+      {
+        "name": "René G.",
+        "email": "info@rg-engineering.eu"
+      }
+    ],
+    "contributors": [
+      "DutchmanNL <rdrozda86@gmail.com>"
+    ]
+  },
   "native": {
     "devices": [],
     "rooms": [],
