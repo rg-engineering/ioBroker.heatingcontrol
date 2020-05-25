@@ -2962,7 +2962,7 @@ async function HandleStateChangeDevices(id, state) {
             }
             else if (devices[d].type === 3) {//sensor
 
-                if (!adapter.config.UseSensors) {
+                if (adapter.config.UseSensors) {
                     //hier können mehrere rooms kommen
                     const roomIDs = findObjectsIdByKey(adapter.config.rooms, "name", devices[d].room);
 
