@@ -4,16 +4,16 @@
     "version": "0.5.2",
     "news": {
       "0.5.2": {
-        "en": " bug fix: log a warning if sensors are configured but UseSensors is off",
-        "de": " Fehlerbehebung: Protokollieren Sie eine Warnung, wenn Sensoren konfiguriert sind, UseSensors jedoch deaktiviert ist",
-        "ru": " исправление ошибки: регистрируйте предупреждение, если датчики настроены, но UseSensors выключен",
-        "pt": " correção de bug: registre um aviso se os sensores estiverem configurados, mas o UseSensors estiver desativado",
-        "nl": " bugfix: log een waarschuwing als sensoren zijn geconfigureerd maar UseSensors is uitgeschakeld",
-        "fr": " correction de bogue: consigner un avertissement si les capteurs sont configurés mais UseSensors est désactivé",
-        "it": " correzione bug: registra un avviso se i sensori sono configurati ma UseSensors è disattivato",
-        "es": " corrección de errores: registre una advertencia si los sensores están configurados pero UseSensors está desactivado",
-        "pl": " naprawa błędu: zaloguj ostrzeżenie, jeśli czujniki są skonfigurowane, ale UseSensors jest wyłączony",
-        "zh-cn": " 错误修复：如果配置了传感器但UseSensors已关闭，则记录警告"
+        "en": "bug fix: log a warning if sensors are configured but UseSensors is off",
+        "de": "Fehlerbehebung: Protokollieren Sie eine Warnung, wenn Sensoren konfiguriert sind, UseSensors jedoch deaktiviert ist",
+        "ru": "исправление ошибки: регистрируйте предупреждение, если датчики настроены, но UseSensors выключен",
+        "pt": "correção de bug: registre um aviso se os sensores estiverem configurados, mas o UseSensors estiver desativado",
+        "nl": "bugfix: log een waarschuwing als sensoren zijn geconfigureerd maar UseSensors is uitgeschakeld",
+        "fr": "correction de bogue: consigner un avertissement si les capteurs sont configurés mais UseSensors est désactivé",
+        "it": "correzione bug: registra un avviso se i sensori sono configurati ma UseSensors è disattivato",
+        "es": "corrección de errores: registre una advertencia si los sensores están configurados pero UseSensors está desactivado",
+        "pl": "naprawa błędu: zaloguj ostrzeżenie, jeśli czujniki są skonfigurowane, ale UseSensors jest wyłączony",
+        "zh-cn": "错误修复：如果配置了传感器但UseSensors已关闭，则记录警告"
       },
       "0.5.1": {
         "en": "log a warning if actuators are configured but UseActors are off / Sentry added",

@@ -2670,6 +2670,8 @@ async function HandleStateChangeGeneral(id, state) {
 
         await CalculateNextTime();
 
+        await CheckTemperatureChange();
+
         if (vis != null) {
             await vis.Change_CurrentProfile(state.val);
         }
@@ -4712,7 +4714,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
             //if no heating period and thermostats don't have a target and actors should be set to on or off
             if (!HeatingPeriodActive && adapter.config.ThermostatModeIfNoHeatingperiod == 3 && adapter.config.UseActorsIfNotHeating > 1) {
 
-                adapter.log.debug("switch off all actors");
+                adapter.log.debug("handle actors out of heating period");
 
                 let target = false;
                 if (parseInt(adapter.config.UseActorsIfNotHeating) === 2) {
@@ -4756,7 +4758,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
 
                 if (typeof ActorsWithoutThermostat !== undefined && ActorsWithoutThermostat.length > 0) {
 
-                    adapter.log.debug("switch off all actors");
+                    adapter.log.debug("handle actors for rooms without thermostat");
 
                     let target = false;
                     if (parseInt(adapter.config.UseActorsIfNoThermostat) === 2) {
