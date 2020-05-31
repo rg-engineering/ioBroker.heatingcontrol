@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.2",
+    "version": "0.5.3",
     "news": {
+      "0.5.3": {
+        "en": "new temperatures set when current profile is changed",
+        "de": "Neue Temperaturen werden eingestellt, wenn das aktuelle Profil geändert wird",
+        "ru": "новые температуры устанавливаются при изменении текущего профиля",
+        "pt": "novas temperaturas definidas quando o perfil atual é alterado",
+        "nl": "nieuwe temperaturen ingesteld wanneer het huidige profiel wordt gewijzigd",
+        "fr": "nouvelles températures définies lorsque le profil actuel est modifié",
+        "it": "nuove temperature impostate quando si cambia il profilo corrente",
+        "es": "nuevas temperaturas establecidas cuando se cambia el perfil actual",
+        "pl": "nowe temperatury ustawione po zmianie bieżącego profilu",
+        "zh-cn": "更改电流曲线时设置的新温度"
+      },
       "0.5.2": {
         "en": "bug fix: log a warning if sensors are configured but UseSensors is off",
         "de": "Fehlerbehebung: Protokollieren Sie eine Warnung, wenn Sensoren konfiguriert sind, UseSensors jedoch deaktiviert ist",
