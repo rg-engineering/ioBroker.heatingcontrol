@@ -3543,21 +3543,22 @@ function CronCreate(Hour, Minute, day) {
 
 function getCronStat() {
 
-    //adapter.log.debug("cron jobs");
-    for (let n = 0; n < cronJobs.length; n++) {
+    if (typeof cronJobs !== undefined) {
 
-        if (typeof cronJobs[n] !== undefined) {
-            adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
+        //adapter.log.debug("cron jobs");
+        for (let n = 0; n < cronJobs.length; n++) {
+            if (typeof cronJobs[n] !== undefined) {
+                adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
+            }
+        }
+
+        if (cronJobs.length > 500) {
+            adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
+        }
+        else {
+            adapter.log.info(cronJobs.length + " cron jobs created");
         }
     }
-
-    if (cronJobs.length > 300) {
-        adapter.log.warn("more then 300 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
-    }
-    else {
-        adapter.log.info(cronJobs.length + " cron jobs created");
-    }
-
 }
 
 function deleteCronJob(id) {
