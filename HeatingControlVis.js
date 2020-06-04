@@ -413,7 +413,7 @@ class HeatingControlVis {
         let ret = 0;
         const result = await this.adapter.getStateAsync(path);
 
-        if (typeof result != undefined && typeof result.val != undefined) {
+        if (result != null && typeof result != undefined && typeof result.val != undefined) {
             ret = result.val;
         }
         else {

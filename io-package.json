@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "news": {
+      "0.5.4": {
+        "en": "HeatingControlVis: avoid exception ",
+        "de": "HeatingControlVis: Ausnahme vermeiden",
+        "ru": "HeatingControlVis: избежать исключения",
+        "pt": "HeatingControlVis: evite exceção",
+        "nl": "HeatingControlVis: vermijd uitzonderingen",
+        "fr": "HeatingControlVis: éviter les exceptions",
+        "it": "HeatingControlVis: evitare eccezioni",
+        "es": "HeatingControlVis: evitar excepciones",
+        "pl": "HeatingControlVis: unikaj wyjątku",
+        "zh-cn": "HeatingControlVis：避免异常"
+      },
       "0.5.3": {
         "en": "new temperatures set when current profile is changed",
         "de": "Neue Temperaturen werden eingestellt, wenn das aktuelle Profil geändert wird",
