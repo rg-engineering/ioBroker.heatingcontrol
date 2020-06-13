@@ -1,8 +1,10 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.4",
+    "version": "0.5.5",
     "news": {
+      "0.5.5": {
+      },
       "0.5.4": {
         "en": "HeatingControlVis: avoid exception ",
         "de": "HeatingControlVis: Ausnahme vermeiden",
