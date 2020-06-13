@@ -308,11 +308,13 @@ class HeatingControlVis {
     //==========================================================================================================================
     async InitWindowStates() { //Bei Programmstart alle Raum/Fensterstati einlesen
         this.log("D","InitWindowStates called ");
-        for (let x = 0; x <= this.Rooms.length - 1; x++) { //Alle Räume durchlaufen
+        for (let x = 0; x < this.Rooms.length; x++) { //Alle Räume durchlaufen
 
-            const temp = await this.GetValue(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
+            //here we need object instead of value only...
+            const temp = await this.GetValueObject(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
             this.WindowState[x] = temp;
 
+            this.log("D", "windowstate " + this.Rooms[x] + " " + JSON.stringify(temp));
 
             //temp = await this.GetValue(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
             const timestamp = temp.lc/1000.0;
@@ -423,6 +425,20 @@ class HeatingControlVis {
 
     }
 
+    async GetValueObject(path) {
+
+        let ret = 0;
+        const result = await this.adapter.getStateAsync(path);
+
+        if (result != null && typeof result != undefined && typeof result.val != undefined) {
+            ret = result;
+        }
+        else {
+            this.log("E", "error: for " + path + " got " + JSON.stringify(result));
+        }
+        return ret;
+
+    }
     //==========================================================================================================================
     async SetVis() { // Vis Daten durch Adapterdaten ersetzen bei Umschaltung Raum oder Profil
 
