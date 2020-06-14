@@ -1,9 +1,19 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.5",
+    "version": "0.5.6",
     "news": {
-      "0.5.5": {
+      "0.5.6": {
+        "en": "bug fix: window overview",
+        "de": "Fehlerbehebung: Fensterübersicht",
+        "ru": "исправление ошибки: обзор окна",
+        "pt": "correção de bug: visão geral da janela",
+        "nl": "bugfix: vensteroverzicht",
+        "fr": "correction de bogue: aperçu de la fenêtre",
+        "it": "correzione bug: panoramica della finestra",
+        "es": "corrección de errores: descripción general de la ventana",
+        "pl": "naprawa błędu: przegląd okna",
+        "zh-cn": "错误修复：窗口概述"
       },
       "0.5.4": {
         "en": "HeatingControlVis: avoid exception ",

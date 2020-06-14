@@ -312,17 +312,19 @@ class HeatingControlVis {
 
             //here we need object instead of value only...
             const temp = await this.GetValueObject(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
-            this.WindowState[x] = temp;
+
+            this.WindowState[x] = temp.val;
 
             this.log("D", "windowstate " + this.Rooms[x] + " " + JSON.stringify(temp));
 
             //temp = await this.GetValue(this.hcpraefix + "Rooms." + this.Rooms[x] + ".WindowIsOpen");
-            const timestamp = temp.lc/1000.0;
+            const timestamp = temp.lc / 1000.0;
 
             this.WindowStateTimeStamp[x] = this.TimeConverter(timestamp);
-            this.log("D","timestamp " + timestamp + " = " + this.WindowStateTimeStamp[x] );
+            this.log("D", "timestamp " + timestamp + " = " + this.WindowStateTimeStamp[x]);
 
             //this.WindowStateTimeStamp[x] = formatDate(timestamp, "TT.MM.JJJJ SS:mm:ss");
+
         }
         this.log("D","InitWindowStates done ");
     }

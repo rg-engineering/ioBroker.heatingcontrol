@@ -166,7 +166,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.5.5 (2020-06-14)
+### 0.5.6 (2020-06-14)
 * (René) see issue #113: re-order of rooms added
 * (René) see issue #112: bug fix "Fensterübersicht"
 
