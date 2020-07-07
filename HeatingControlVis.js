@@ -53,7 +53,9 @@ class HeatingControlVis {
 
         //HeatingControl Werte einlesen bei Scriptstart
         //Infobereich
-        let temp = await this.GetValue(this.hcpraefix + "info.NumberOfProfiles");
+        let temp = await this.GetValue(this.hcpraefix + "info.UseMinTempPerRoom");
+        this.MinimumTemperatureUsed = temp;
+        temp = await this.GetValue(this.hcpraefix + "info.NumberOfProfiles");
         this.NumberOfProfiles = temp;
         this.log("D","NumberOfProfiles " + JSON.stringify(this.NumberOfProfiles));
         temp = await this.GetValue(this.hcpraefix + "info.UsedRooms");
@@ -519,16 +521,13 @@ class HeatingControlVis {
         await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "WindowOpenDecrease", temp);
 
         //Raum Werte setzen
-        
-        temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "MinimumTemperature");
-        if (temp != 0 ) { //Prüfen ob Minimum Temp Null ist
-
+        if (this.MinimumTemperatureUsed) {
             temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "MinimumTemperature");
             await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", temp);
         }
         else {
             await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", 0);
-            this.log("D","MinimumTemp=Null, skipping entry and showing 0");
+            this.log("D","MinimumTemp skipping entry and showing 0");
         }
 
         temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "TemperaturOverride");

@@ -417,6 +417,12 @@
             myOnChange = onChange;
             // Signal to admin, that no changes yet
             onChange(false);
+
+            $('.timepicker').timepicker({
+                "twelveHour": false
+            });
+
+
             showHideSettings();
             M.updateTextFields();
 
