@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "news": {
+      "0.5.7": {
+        "en": "MinimumTemperature for vis only if enabled",
+        "de": "MinimumTemperature für vis nur wenn aktiviert",
+        "ru": "Минимальная температура для виз только если включена",
+        "pt": "MinimumTemperature for vis apenas se ativado",
+        "nl": "Minimumtemperatuur voor vis alleen indien ingeschakeld",
+        "fr": "Température minimale pour vis uniquement si activée",
+        "it": "Temperatura minima per vis solo se abilitata",
+        "es": "Temperatura mínima para vis solo si está habilitado",
+        "pl": "Minimalna temperatura dla vis tylko, jeśli jest włączona",
+        "zh-cn": "vis的MinimumTemperature仅在启用时"
+      },
       "0.5.6": {
         "en": "bug fix: window overview",
         "de": "Fehlerbehebung: Fensterübersicht",
