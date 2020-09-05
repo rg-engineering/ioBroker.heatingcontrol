@@ -168,6 +168,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 0.6.0 (2020-09-xx)
 * (René) see issue #123: use window open / close delay only when window state changed
+* (René) see issue #122: better log for different type warning
+* (René) see issue #120: override from thermostat only if it's different to current settings
+
 
 ### 0.5.7 (2020-07-07)
 * (René) see issue #116: get MinimumTemperature for vis only if enabled

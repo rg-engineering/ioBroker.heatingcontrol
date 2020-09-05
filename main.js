@@ -1364,6 +1364,22 @@ async function CreateDatepoints() {
                 }
 
                 //===============================================================================
+
+                
+                await adapter.setObjectNotExistsAsync(id1 + ".CurrentTarget", {
+                    type: "state",
+                    common: {
+                        name: "CurrentTarget",
+                        type: "number",
+                        role: "value",
+                        unit: "°C",
+                        read: true,
+                        write: false
+                    },
+                    native: { id: "CurrentTarget" }
+                });
+
+
                 await adapter.setObjectNotExistsAsync(id1 + ".ActiveTimeSlot", {
                     type: "state",
                     common: {
@@ -3058,12 +3074,26 @@ async function CheckWindowOpen4Room(roomID, device) {
 
 
 async function SetOverrideFromThermostat(room, newVal) {
-    adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);
 
-    //nur temperatur setzen; dann startet override automatisch
-    const idPreset = "Rooms." + room + ".TemperaturOverride";
-    //adapter.log.info("### override from thermostat " + idPreset);
-    await adapter.setStateAsync(idPreset, { ack: true, val: newVal });
+    const id = "Rooms." + room + ".CurrentTarget";
+    const current = await adapter.getStateAsync(id);
+    if (current != null) {
+        if (newVal != current.val) {
+
+            adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);
+
+            //nur temperatur setzen; dann startet override automatisch
+            const idPreset = "Rooms." + room + ".TemperaturOverride";
+            //adapter.log.info("### override from thermostat " + idPreset);
+            await adapter.setStateAsync(idPreset, { ack: true, val: newVal });
+        }
+        else {
+            adapter.log.debug("nothing to do for change from thermostat as override for " + room + " to " + newVal);
+        }
+    }
+    else {
+        adapter.log.error("SetOverrideFromThermostat: current target from " + id + " not available ");
+    }
 }
 
 
@@ -3247,7 +3277,7 @@ async function HandleThermostat(oid, temperature) {
 
 
         if (currentTarget != null && typeof currentTarget != undefined && typeof currentTarget.val !== typeof target) {
-            adapter.log.warn("HandleThermostat: different types " + typeof currentTarget.val + " vs " + typeof target);
+            adapter.log.warn("HandleThermostat: different types; OID " + oid + " type is " + typeof currentTarget.val + " vs target type is " + typeof target);
         }
 
 
@@ -3522,23 +3552,29 @@ function CronCreate(Hour, Minute, day) {
     }
 }
 
+
 function getCronStat() {
 
-    if (typeof cronJobs !== undefined) {
+    try {
+        if (typeof cronJobs !== undefined && cronJobs!=null ) {
 
-        //adapter.log.debug("cron jobs");
-        for (let n = 0; n < cronJobs.length; n++) {
-            if (typeof cronJobs[n] !== undefined) {
-                adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
+            //adapter.log.debug("cron jobs");
+            for (let n = 0; n < cronJobs.length; n++) {
+                if (typeof cronJobs[n] !== undefined && cronJobs[n] != null) {
+                    adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
+                }
+            }
+
+            if (cronJobs.length > 500) {
+                adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
+            }
+            else {
+                adapter.log.info(cronJobs.length + " cron jobs created");
             }
         }
-
-        if (cronJobs.length > 500) {
-            adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
-        }
-        else {
-            adapter.log.info(cronJobs.length + " cron jobs created");
-        }
+    }
+    catch (e) {
+        adapter.log.error("exception in getCronStat [" + e + "]");
     }
 }
 
@@ -4364,6 +4400,11 @@ async function SetNextTemperatureTarget(roomID, TargetTemperature) {
         }
     }
     adapter.log.debug("room " + adapter.config.rooms[roomID].name + "  setting new target " + JSON.stringify(TargetTemperature));
+
+
+    const id = "Rooms." + adapter.config.rooms[roomID].name + ".CurrentTarget";
+    await adapter.setStateAsync(id, { ack: true, val: TargetTemperature });
+
 
     for (let ii = 0; ii < adapter.config.devices.length; ii++) {
 
