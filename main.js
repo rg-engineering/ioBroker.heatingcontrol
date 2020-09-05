@@ -3011,70 +3011,51 @@ function WindowCloseTimeout(RoomName, roomID) {
 }
 
 async function CheckWindowOpen4Room(roomID, device) {
-    const windowIsOpen = await CheckWindowSensors(roomID);
 
-    if (windowIsOpen) {
-        // falls IsClosed timer noch rennt; abbrechen
-        if (WindowCloseTimerId[roomID]) {
-            adapter.log.info("cancel Close TimerId ");
-            clearTimeout(WindowCloseTimerId[roomID]);
-            WindowCloseTimerId[roomID] = null;
-        }
+    const ret = await CheckWindowSensors(roomID);
 
-        if (adapter.config.SensorDelay > 0) {
-            WindowOpenTimerId[roomID] = setTimeout(WindowOpenTimeout, adapter.config.SensorDelay * 1000, device.room, roomID);
-            adapter.log.info("sensor open delay " + adapter.config.SensorDelay * 1000 + " for " + device.room);
-        }
-        else {
-            CheckTemperatureChange(device.room);
-        }
-    }
-    else { //isClosed
-        //falls IsOpen timer noch rennt; abbrechen
-        if (WindowOpenTimerId[roomID]) {
-            adapter.log.info("cancel Open TimerId ");
-            clearTimeout(WindowOpenTimerId[roomID]);
-            WindowOpenTimerId[roomID] = null;
-        }
-        if (adapter.config.SensorCloseDelay > 0) {
-            WindowCloseTimerId[roomID] = setTimeout(WindowCloseTimeout, adapter.config.SensorCloseDelay * 1000, device.room, roomID);
-            adapter.log.info("sensor close delay " + adapter.config.SensorCloseDelay * 1000 + " for " + device.room);
-        }
-        else {
-            CheckTemperatureChange(device.room);
-        }
-    }
-}
+    const windowIsOpen = ret.state2Set;
+    const changed = ret.changed;
 
-/*
- * alte Version
-async function CheckWindowOpen4Room(roomID, device) {
-    const windowIsOpen = await CheckWindowSensors(roomID);
-
-    if (adapter.config.SensorDelay > 0) {
-        //nur wenn offen, verzögern
+    if (changed) {
         if (windowIsOpen) {
-            adapter.log.debug("sensor delay " + adapter.config.SensorDelay * 1000 + " for " + device.room);
-            WindowOpenTimerId[roomID] = setTimeout(WindowOpenTimeout, adapter.config.SensorDelay * 1000, device.room, roomID);
-        }
-        else {
-            //wenn zu, dann sofort 
-            CheckTemperatureChange(device.room);
+            // falls IsClosed timer noch rennt; abbrechen
+            if (WindowCloseTimerId[roomID]) {
+                adapter.log.info("cancel Close TimerId ");
+                clearTimeout(WindowCloseTimerId[roomID]);
+                WindowCloseTimerId[roomID] = null;
+            }
 
-            //und falls timer noch rennt; abbrechen
+            if (adapter.config.SensorDelay > 0) {
+                WindowOpenTimerId[roomID] = setTimeout(WindowOpenTimeout, adapter.config.SensorDelay * 1000, device.room, roomID);
+                adapter.log.info("sensor open delay " + adapter.config.SensorDelay * 1000 + " for " + device.room);
+            }
+            else {
+                CheckTemperatureChange(device.room);
+            }
+        }
+        else { //isClosed
+            //falls IsOpen timer noch rennt; abbrechen
             if (WindowOpenTimerId[roomID]) {
+                adapter.log.info("cancel Open TimerId ");
                 clearTimeout(WindowOpenTimerId[roomID]);
                 WindowOpenTimerId[roomID] = null;
             }
-
+            if (adapter.config.SensorCloseDelay > 0) {
+                WindowCloseTimerId[roomID] = setTimeout(WindowCloseTimeout, adapter.config.SensorCloseDelay * 1000, device.room, roomID);
+                adapter.log.info("sensor close delay " + adapter.config.SensorCloseDelay * 1000 + " for " + device.room);
+            }
+            else {
+                CheckTemperatureChange(device.room);
+            }
         }
     }
-    //version ohne delay
     else {
-        CheckTemperatureChange(device.room);
+        adapter.log.info("CheckWindowOpen4Room nothing to do");
     }
 }
-*/
+
+
 
 async function SetOverrideFromThermostat(room, newVal) {
     adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);
@@ -5113,6 +5094,7 @@ async function CheckAllExternalStates() {
 async function CheckWindowSensors(roomID) {
 
     let state2Set = false;
+    let changed = true;
 
     try {
         if (adapter.config.UseSensors) {
@@ -5149,12 +5131,21 @@ async function CheckWindowSensors(roomID) {
                 }
             }
 
-            adapter.log.debug(roomName + " window open is " + state2Set);
+            if (adapter.config.rooms[roomID].WindowIsOpen != state2Set) {
 
-            adapter.config.rooms[roomID].WindowIsOpen = state2Set;
+                changed = true;
 
-            const id = "Rooms." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
-            await adapter.setStateAsync(id, { ack: true, val: state2Set });
+                adapter.log.debug(roomName + " window open is " + state2Set);
+
+                adapter.config.rooms[roomID].WindowIsOpen = state2Set;
+
+                const id = "Rooms." + adapter.config.rooms[roomID].name + ".WindowIsOpen";
+                await adapter.setStateAsync(id, { ack: true, val: state2Set });
+            }
+            else {
+                changed = false;
+                adapter.log.debug(roomName + " window open is still " + state2Set);
+            }
 
         }
     }
@@ -5162,7 +5153,13 @@ async function CheckWindowSensors(roomID) {
         adapter.log.error("exception in CheckWindowSensors [" + e + "] roomID" + roomID);
     }
 
-    return state2Set;
+    const ret = {
+        state2Set: state2Set,
+        changed: changed
+    };
+
+
+    return ret;
 }
 
 function SearchActorsWithoutThermostat() {

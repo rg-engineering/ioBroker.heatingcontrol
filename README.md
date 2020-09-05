@@ -166,7 +166,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.5.7 (2020-07-xx)
+### 0.6.0 (2020-09-xx)
+* (René) see issue #123: use window open / close delay only when window state changed
+
+### 0.5.7 (2020-07-07)
 * (René) see issue #116: get MinimumTemperature for vis only if enabled
 
 ### 0.5.6 (2020-06-14)
