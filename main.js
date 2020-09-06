@@ -2395,12 +2395,8 @@ function SubscribeStates(callback) {
 
                     SubscribeStates4ChangesFromThermostat(i);
 
-
-
-
-
                     if (adapter.config.UseActors) {
-                        if (adapter.config.devices[i].type === 1) { //thermostat
+                        if (adapter.config.devices[i].type === 1 && adapter.config.devices[i].isActive) { //thermostat
                             adapter.log.info("subscribe for UseActors  " + adapter.config.devices[i].room + " " + adapter.config.devices[i].OID_Current);
 
                             if (adapter.config.devices[i].OID_Current != null && adapter.config.devices[i].OID_Current.length > 0) {
@@ -2408,7 +2404,7 @@ function SubscribeStates(callback) {
                                 adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
                             }
                             else {
-                                adapter.log.warn("OID Current for " + adapter.config.devices[i].room + " not set");
+                                adapter.log.warn("OID Current for " + adapter.config.devices[i].name + " in " + adapter.config.devices[i].room + " not set");
                             }
 
                             if (adapter.config.devices[i].OID_Target === adapter.config.devices[i].OID_Current) {
@@ -2418,7 +2414,7 @@ function SubscribeStates(callback) {
                     }
 
                     if (adapter.config.UseSensors) {
-                        if (adapter.config.devices[i].type === 3) { //sensor
+                        if (adapter.config.devices[i].type === 3 && adapter.config.devices[i].isActive) { //sensor
                             adapter.log.info("subscribe " + adapter.config.devices[i].room + " " + adapter.config.devices[i].OID_Current);
                             adapter.subscribeForeignStates(adapter.config.devices[i].OID_Current);
                         }
@@ -2445,14 +2441,14 @@ function SubscribeStates(callback) {
 function SubscribeStates4ChangesFromThermostat(idx) {
 
     if (adapter.config.UseChangesFromThermostat > 1) {
-        if (adapter.config.devices[idx].type === 1) { //thermostat
+        if (adapter.config.devices[idx].type === 1 && adapter.config.devices[i].isActive) { //thermostat
             adapter.log.debug("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
 
             if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
                 adapter.subscribeForeignStates(adapter.config.devices[idx].OID_Target);
             }
             else {
-                adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+                adapter.log.warn("OID Target for " + adapter.config.devices[idx].name + " in " + adapter.config.devices[idx].room + " not set");
             }
 
             if (adapter.config.devices[idx].OID_Target === adapter.config.devices[idx].OID_Current) {
@@ -2465,14 +2461,14 @@ function SubscribeStates4ChangesFromThermostat(idx) {
 function UnSubscribeStates4ChangesFromThermostat(idx) {
 
 
-    if (adapter.config.devices[idx].type === 1) { //thermostat
+    if (adapter.config.devices[idx].type === 1 && adapter.config.devices[idx].isActive) { //thermostat
         adapter.log.debug("unsubscribe  " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
 
         if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
             adapter.unsubscribeForeignStates(adapter.config.devices[idx].OID_Target);
         }
         else {
-            adapter.log.warn("OID Target for " + adapter.config.devices[idx].room + " not set");
+            adapter.log.warn("OID Target for " + adapter.config.devices[idx].name + " in" + adapter.config.devices[idx].room + " not set");
         }
 
 
@@ -3067,7 +3063,7 @@ async function CheckWindowOpen4Room(roomID, device) {
         }
     }
     else {
-        adapter.log.info("CheckWindowOpen4Room nothing to do");
+        adapter.log.info("CheckWindowOpen4Room nothing to do for " + device.room);
     }
 }
 
@@ -3078,6 +3074,10 @@ async function SetOverrideFromThermostat(room, newVal) {
     const id = "Rooms." + room + ".CurrentTarget";
     const current = await adapter.getStateAsync(id);
     if (current != null) {
+
+        adapter.log.debug("got current " + JSON.stringify(current));
+
+
         if (newVal != current.val) {
 
             adapter.log.debug("change from thermostat as override for " + room + " to " + newVal);

@@ -170,6 +170,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #123: use window open / close delay only when window state changed
 * (René) see issue #122: better log for different type warning
 * (René) see issue #120: override from thermostat only if it's different to current settings
+* (René) see issue #126: TestThermostat should not be checked for correct configuration
 
 
 ### 0.5.7 (2020-07-07)
