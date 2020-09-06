@@ -218,6 +218,16 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
+    SetPathImageWindowOpen(path) {
+        this.WindowOpenImg = path;
+    }
+
+    SetPathImageWindowClose(path) {
+        this.WindowClosedImg = path;
+    }
+
+
+    //==========================================================================================================================
     async CreateStates() {
         this.log("D","CreateStates called");
 

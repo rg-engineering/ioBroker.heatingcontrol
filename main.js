@@ -232,8 +232,16 @@ async function main() {
             vis = new myVis(adapter);
 
             const language = await GetSystemLanguage();
-
             vis.SetLanguage(language);
+
+            if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
+                adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
+                vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
+            }
+            if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
+                adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
+                vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
+            }
 
         }
     }
