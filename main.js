@@ -2441,7 +2441,7 @@ function SubscribeStates(callback) {
 function SubscribeStates4ChangesFromThermostat(idx) {
 
     if (adapter.config.UseChangesFromThermostat > 1) {
-        if (adapter.config.devices[idx].type === 1 && adapter.config.devices[i].isActive) { //thermostat
+        if (adapter.config.devices[idx].type === 1 && adapter.config.devices[idx].isActive) { //thermostat
             adapter.log.debug("subscribe for UseChangesFromThermostat " + adapter.config.devices[idx].room + " " + adapter.config.devices[idx].OID_Target);
 
             if (adapter.config.devices[idx].OID_Target != null && adapter.config.devices[idx].OID_Target.length > 0) {
