@@ -4695,9 +4695,11 @@ async function StartTemperaturOverride(room) {
 
                     adapter.config.rooms[roomID].TempOverride = true;
 
-                    const id = "Rooms." + adapter.config.rooms[roomID].name + ".State";
+                    let id = "Rooms." + adapter.config.rooms[roomID].name + ".State";
                     await adapter.setStateAsync(id, { ack: true, val: "override" });
 
+                    id = "Rooms." + adapter.config.rooms[roomID].name + ".CurrentTarget";
+                    await adapter.setStateAsync(id, { ack: true, val: nextSetTemperature });
 
                     //create cron to reset
                     CreateCron4ResetTempOverride(now, roomID);
