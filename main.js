@@ -2928,6 +2928,12 @@ async function HandleStateChangeDevices(id, state) {
 
                             await SetProfileFromThermostat(devices[d].room, state.val);
                         }
+                        else if (parseInt(adapter.config.UseChangesFromThermostat) === 5) {
+                            
+
+                            await SetFromThermostat(devices[d].room, state.val);
+
+                        }
                         else if (parseInt(adapter.config.UseChangesFromThermostat) === 4) {
                             adapter.log.debug("change from thermostat room specific for " + devices[d].room);
 
@@ -3104,6 +3110,21 @@ async function SetOverrideFromThermostat(room, newVal) {
     }
 }
 
+async function SetFromThermostat(room, newVal) {
+    adapter.log.debug("change from thermostat until next profile point " + room + " to " + newVal);
+
+    let RoomID = -1;
+    for (let i = 0; i < adapter.config.rooms.length; i++) {
+        if (adapter.config.rooms[i].name === room) {
+            RoomID = i;
+        }
+    }
+
+    if (RoomID >= 0) {
+        prüfen ob geändert
+        await SetNextTemperatureTarget(RoomID, newVal);
+    }
+}
 
 async function SetProfileFromThermostat(room, newVal) {
 
