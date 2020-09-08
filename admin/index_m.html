@@ -200,8 +200,19 @@
                 $('.col-FixHeatingPeriod-Start').hide();
                 $('.col-FixHeatingPeriod-End').hide();
             }
-            
 
+            var $useVisFromPittini = $('#UseVisFromPittini');
+
+            if ($useVisFromPittini.prop('checked')) {
+                console.log('show settings for Pittini vis');
+                $('.col-PittiniPathImageWindowOpen').show();
+                $('.col-PittiniPathImageWindowClosed').show();
+            }
+            else {
+                console.log('hide settings for Pittini vis');
+                $('.col-PittiniPathImageWindowOpen').hide();
+                $('.col-PittiniPathImageWindowClosed').hide();
+            }
 
 
             //first col of device tables
@@ -992,6 +1003,7 @@
                             <option value="1" class="translate">no</option>
                             <option value="2" class="translate">as_override</option>
                             <option value="3" class="translate">as_new_profile_setting</option>
+                            <option value="5" class="translate">until_next_profile_point</option>
                             <option value="4" class="translate">adjustable_per_room</option>
                         </select>
                         <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
@@ -1008,7 +1020,7 @@
                         <span class="translate">hint_vis_from_Pittini</span>
                     </div>
                 </div>
-
+                
                 <div class="row">
                     <div class="input-field col s3 col-PittiniPathImageWindowOpen">
                         <input type="text" id="PittiniPathImageWindowOpen" class="value" />
