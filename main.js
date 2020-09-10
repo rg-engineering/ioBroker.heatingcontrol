@@ -3121,8 +3121,24 @@ async function SetFromThermostat(room, newVal) {
     }
 
     if (RoomID >= 0) {
-        prüfen ob geändert
-        await SetNextTemperatureTarget(RoomID, newVal);
+        //prüfen ob geändert
+
+        const id = "Rooms." + room + ".CurrentTarget";
+        const current = await adapter.getStateAsync(id);
+        if (current != null) {
+
+            adapter.log.debug("got current " + JSON.stringify(current));
+
+
+            if (newVal != current.val) {
+
+                await SetNextTemperatureTarget(RoomID, newVal);
+            }
+            else {
+
+                adapter.log.debug("SetFromThermostat: nothing to do ");
+            }
+        }
     }
 }
 
