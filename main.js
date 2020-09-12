@@ -4287,17 +4287,17 @@ async function CheckTemperatureChange(room2check=null) {
                         }
 
                         if (currentPeriod > -2) {
-                            lastSetTemperature[room] = nextTemperature;
+                            lastSetTemperature[room] = Check4ValidTemmperature(nextTemperature);
 
                             //find devices for rooms
 
                             adapter.log.debug("### current > 1 " + currentPeriod + " " + parseInt(adapter.config.TemperatureDecrease));
 
-                            let nextSetTemperature = nextTemperature;
+                            let nextSetTemperature = Check4ValidTemmperature(nextTemperature);
 
                             if (parseInt(adapter.config.TemperatureDecrease) === 1) {
-                                nextSetTemperature = nextTemperature - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
-                                adapter.log.debug("### new target temp " + nextTemperature + " " + AbsentDecrease + " " + GuestIncrease + " " + PartyDecrease + " " + VacationAbsentDecrease + " " + WindowOpenDecrease);
+                                nextSetTemperature = Check4ValidTemmperature(nextTemperature) - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
+                                adapter.log.debug("### new target temp " + nextSetTemperature + " ( " + nextTemperature + " " + AbsentDecrease + " " + GuestIncrease + " " + PartyDecrease + " " + VacationAbsentDecrease + " " + WindowOpenDecrease + " ) ");
                             }
                             else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
 

@@ -173,6 +173,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #126: TestThermostat should not be checked for correct configuration
 * (René) see issue #124: vis from Pittini: Image for open / closed window adjustabel (as an option, if nothing is configured the original will be used)
 * (René) see issue #127: use value from thermostat until next profile point 
+* (René) see issue #128: try to convert string data to number
 
 ### 0.5.7 (2020-07-07)
 * (René) see issue #116: get MinimumTemperature for vis only if enabled
