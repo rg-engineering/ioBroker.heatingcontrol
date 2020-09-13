@@ -3315,7 +3315,7 @@ async function HandleThermostat(oid, temperature) {
 
     try {
 
-        const target = Check4ValidTemmperature(temperature);
+        const target = Check4ValidTemperature(temperature);
 
         const currentTarget = await adapter.getForeignStateAsync(oid);
         //adapter.log.debug("333 " + JSON.stringify(currentTarget));
@@ -4112,86 +4112,86 @@ async function CheckTemperatureChange(room2check=null) {
                             //Überarbeitet, dass nur genutzt wird was > 0 ist
 
                             const WindowOpenDecreaseVal = await adapter.getStateAsync(idPreset + "relative.WindowOpenDecrease");
-                            adapter.log.debug("relative WindowOpenDecrease " + JSON.stringify(WindowOpenDecreaseVal));
+                            adapter.log.debug("relative WindowOpenDecrease " + JSON.stringify(WindowOpenDecreaseVal) + " " + typeof WindowOpenDecreaseVal.val);
 
                             const VacationAbsentDecreaseVal = await adapter.getStateAsync(idPreset + "relative.VacationAbsentDecrease");
-                            adapter.log.debug("relative VacationAbsentDecrease " + JSON.stringify(VacationAbsentDecreaseVal));
+                            adapter.log.debug("relative VacationAbsentDecrease " + JSON.stringify(VacationAbsentDecreaseVal) + " " + typeof VacationAbsentDecreaseVal.val);
 
                             const PartyDecreaseVal = await adapter.getStateAsync(idPreset + "relative.PartyDecrease");
-                            adapter.log.debug("relative PartyDecrease " + JSON.stringify(PartyDecreaseVal));
+                            adapter.log.debug("relative PartyDecrease " + JSON.stringify(PartyDecreaseVal) + " " + typeof PartyDecreaseVal.val);
 
                             const AbsentDecreaseVal = await adapter.getStateAsync(idPreset + "relative.AbsentDecrease");
-                            adapter.log.debug("relative AbsentDecrease " + JSON.stringify(AbsentDecreaseVal));
+                            adapter.log.debug("relative AbsentDecrease " + JSON.stringify(AbsentDecreaseVal) + " " + typeof AbsentDecreaseVal.val);
 
                             const GuestIncreaseVal = await adapter.getStateAsync(idPreset + "relative.GuestIncrease");
-                            adapter.log.debug("relative GuestIncrease " + JSON.stringify(GuestIncreaseVal));
+                            adapter.log.debug("relative GuestIncrease " + JSON.stringify(GuestIncreaseVal) + " " + typeof GuestIncreaseVal.val);
 
                             if (WindowOpen && WindowOpenDecreaseVal !== null && WindowOpenDecreaseVal.val !== 0) {
                                 adapter.log.debug("use window open decrease");
                                 RoomState += "window open / ";
-                                WindowOpenDecrease = WindowOpenDecreaseVal.val;
+                                WindowOpenDecrease = Check4ValidTemperature(WindowOpenDecreaseVal.val);
                             }
                             else if (VacationAbsent && VacationAbsentDecreaseVal !== null && VacationAbsentDecreaseVal.val !== 0) {
                                 adapter.log.debug("use vacation absent decrease");
                                 RoomState += "vacation absent / ";
-                                VacationAbsentDecrease = VacationAbsentDecreaseVal.val;
+                                VacationAbsentDecrease = Check4ValidTemperature(VacationAbsentDecreaseVal.val);
                             }
                             else if (PartyNow && PartyDecreaseVal !== null && PartyDecreaseVal.val !== 0) {
                                 adapter.log.debug("use party decrease");
                                 RoomState += "party / ";
-                                PartyDecrease = PartyDecreaseVal.val;
+                                PartyDecrease = Check4ValidTemperature(PartyDecreaseVal.val);
                             }
                             else if (!Present && AbsentDecreaseVal !== null && AbsentDecreaseVal.val !== 0) {
                                 adapter.log.debug("use not present decrease");
                                 RoomState += "not present / ";
-                                AbsentDecrease = AbsentDecreaseVal.val;
+                                AbsentDecrease = Check4ValidTemperature(AbsentDecreaseVal.val);
                             }
                             else if (GuestsPresent && GuestIncreaseVal !== null && GuestIncreaseVal.val !== 0) {
                                 adapter.log.debug("use guests present increase");
                                 RoomState += "guests present / ";
-                                GuestIncrease = GuestIncreaseVal.val;
+                                GuestIncrease = Check4ValidTemperature(GuestIncreaseVal.val);
                             }
                         }
                         else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
 
                             const WindowOpenDecrease = await adapter.getStateAsync(idPreset + "absolute.WindowOpenDecrease");
-                            adapter.log.debug("absolute WindowOpenDecrease " + JSON.stringify(WindowOpenDecrease));
+                            adapter.log.debug("absolute WindowOpenDecrease " + JSON.stringify(WindowOpenDecrease) + " " + typeof WindowOpenDecrease.val);
 
                             const VacationAbsentDecrease = await adapter.getStateAsync(idPreset + "absolute.VacationAbsentDecrease");
-                            adapter.log.debug("absolute VacationAbsentDecrease " + JSON.stringify(VacationAbsentDecrease));
+                            adapter.log.debug("absolute VacationAbsentDecrease " + JSON.stringify(VacationAbsentDecrease) + " " + typeof VacationAbsentDecrease.val);
 
                             const PartyDecrease = await adapter.getStateAsync(idPreset + "absolute.PartyDecrease");
-                            adapter.log.debug("absolute PartyDecrease " + JSON.stringify(PartyDecrease));
+                            adapter.log.debug("absolute PartyDecrease " + JSON.stringify(PartyDecrease) + " " + typeof PartyDecrease.val);
 
                             const AbsentDecrease = await adapter.getStateAsync(idPreset + "absolute.AbsentDecrease");
-                            adapter.log.debug("absolute AbsentDecrease " + JSON.stringify(AbsentDecrease));
+                            adapter.log.debug("absolute AbsentDecrease " + JSON.stringify(AbsentDecrease) + " " + typeof AbsentDecrease.val);
 
                             const GuestIncrease = await adapter.getStateAsync(idPreset + "absolute.GuestIncrease");
-                            adapter.log.debug("absolute GuestIncrease " + JSON.stringify(GuestIncrease));
+                            adapter.log.debug("absolute GuestIncrease " + JSON.stringify(GuestIncrease) + " " + typeof GuestIncrease.val);
 
                             if (WindowOpen && WindowOpenDecrease !== null && WindowOpenDecrease.val !== 0) {
                                 adapter.log.debug("use window open decrease");
-                                ReducedTemperature = WindowOpenDecrease.val;
+                                ReducedTemperature = Check4ValidTemperature(WindowOpenDecrease.val);
                                 RoomState += "window open / ";
                             }
                             else if (VacationAbsent && VacationAbsentDecrease !== null && VacationAbsentDecrease.val !== 0) {
                                 adapter.log.debug("use vacation absent decrease");
-                                ReducedTemperature = VacationAbsentDecrease.val;
+                                ReducedTemperature = Check4ValidTemperature(VacationAbsentDecrease.val);
                                 RoomState += "vacation absent / ";
                             }
                             else if (PartyNow && PartyDecrease !== null && PartyDecrease.val !== 0) {
                                 adapter.log.debug("use party decrease");
-                                ReducedTemperature = PartyDecrease.val;
+                                ReducedTemperature = Check4ValidTemperature(PartyDecrease.val);
                                 RoomState += "party / ";
                             }
                             else if (!Present && AbsentDecrease !== null && AbsentDecrease.val !== 0) {
                                 adapter.log.debug("use not present decrease");
-                                ReducedTemperature = AbsentDecrease.val;
+                                ReducedTemperature = Check4ValidTemperature(AbsentDecrease.val);
                                 RoomState += "not present / ";
                             }
                             else if (GuestsPresent && GuestIncrease !== null && GuestIncrease.val !== 0) {
                                 adapter.log.debug("use guests increase");
-                                ReducedTemperature = GuestIncrease.val;
+                                ReducedTemperature = Check4ValidTemperature(GuestIncrease.val);
                                 RoomState += "guests / ";
                             }
                         }
@@ -4287,16 +4287,16 @@ async function CheckTemperatureChange(room2check=null) {
                         }
 
                         if (currentPeriod > -2) {
-                            lastSetTemperature[room] = Check4ValidTemmperature(nextTemperature);
+                            lastSetTemperature[room] = Check4ValidTemperature(nextTemperature);
 
                             //find devices for rooms
 
                             adapter.log.debug("### current > 1 " + currentPeriod + " " + parseInt(adapter.config.TemperatureDecrease));
 
-                            let nextSetTemperature = Check4ValidTemmperature(nextTemperature);
+                            let nextSetTemperature = Check4ValidTemperature(nextTemperature);
 
                             if (parseInt(adapter.config.TemperatureDecrease) === 1) {
-                                nextSetTemperature = Check4ValidTemmperature(nextTemperature) - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
+                                nextSetTemperature = Check4ValidTemperature(nextTemperature) - AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
                                 adapter.log.debug("### new target temp " + nextSetTemperature + " ( " + nextTemperature + " " + AbsentDecrease + " " + GuestIncrease + " " + PartyDecrease + " " + VacationAbsentDecrease + " " + WindowOpenDecrease + " ) ");
                             }
                             else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
@@ -4500,7 +4500,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
                 const temp6 = await adapter.getStateAsync(id2);
 
-                nextTemperature = Check4ValidTemmperature(temp6.val);
+                nextTemperature = Check4ValidTemperature(temp6.val);
 
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
@@ -4563,7 +4563,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + ".Temperature";
 
                 const temp6 = await adapter.getStateAsync(id2);
-                nextTemperature = Check4ValidTemmperature(temp6.val);
+                nextTemperature = Check4ValidTemperature(temp6.val);
 
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
@@ -4652,7 +4652,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 const id2 = "Profiles." + currentProfile + "." + adapter.config.rooms[room].name + "." + daysname + ".Periods." + period + ".Temperature";
 
                 const temp6 = await adapter.getStateAsync(id2);
-                nextTemperature = Check4ValidTemmperature(temp6.val);
+                nextTemperature = Check4ValidTemperature(temp6.val);
 
                 adapter.log.debug("check time for " + adapter.config.rooms[room].name + " " + id + " " + nextTemperature);
                 currentPeriod = period;
@@ -4871,7 +4871,7 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
     }
 }
 
-function Check4ValidTemmperature(temperature) {
+function Check4ValidTemperature(temperature) {
 
     try {
 
@@ -4891,7 +4891,7 @@ function Check4ValidTemmperature(temperature) {
 
     }
     catch (e) {
-        adapter.log.error("exception in Check4ValidTemmperature [" + e + "]");
+        adapter.log.error("exception in Check4ValidTemperature [" + e + "]");
         return 0;
     }
 
