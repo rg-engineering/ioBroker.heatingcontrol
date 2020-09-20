@@ -130,7 +130,7 @@
     "materialize": true,
     "plugins": {
       "sentry": {
-        "dsn": "https://f27d7fdc1a6e4f4ea5580a5f4fe9dfcf@o390433.ingest.sentry.io/5233514"
+        "dsn": "https://5799cf9f70cb43c7a761192a5f35d419@o390433.ingest.sentry.io/5434781"
       }
     },
     "compact": true,
