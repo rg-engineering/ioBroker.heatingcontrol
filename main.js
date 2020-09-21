@@ -3599,27 +3599,29 @@ function CronCreate(Hour, Minute, day) {
 
 
 function getCronStat() {
-
+    let n = 0;
+    let length = 0;
     try {
         if (typeof cronJobs !== undefined && cronJobs!=null ) {
 
+            length = cronJobs.length;
             //adapter.log.debug("cron jobs");
-            for (let n = 0; n < cronJobs.length; n++) {
+            for (n = 0; n < length; n++) {
                 if (typeof cronJobs[n] !== undefined && cronJobs[n] != null) {
                     adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
                 }
             }
 
-            if (cronJobs.length > 500) {
-                adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + cronJobs.length + ")");
+            if (length > 500) {
+                adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + length + ")");
             }
             else {
-                adapter.log.info(cronJobs.length + " cron jobs created");
+                adapter.log.info(length + " cron jobs created");
             }
         }
     }
     catch (e) {
-        adapter.log.error("exception in getCronStat [" + e + "]");
+        adapter.log.error("exception in getCronStat [" + e + "] : " + n + " of " + length);
     }
 }
 
