@@ -3316,18 +3316,18 @@ async function HandleThermostat(oid, temperature) {
     try {
 
         const target = Check4ValidTemperature(temperature);
-
         const currentTarget = await adapter.getForeignStateAsync(oid);
-        //adapter.log.debug("333 " + JSON.stringify(currentTarget));
-
-
-        if (currentTarget != null && typeof currentTarget != undefined && typeof currentTarget.val !== typeof target) {
-            adapter.log.warn("HandleThermostat: different types; OID " + oid + " type is " + typeof currentTarget.val + " vs target type is " + typeof target);
-        }
-
-
+    
         if (currentTarget != null && typeof currentTarget != undefined) {
-            if (currentTarget.val !== target) {
+
+            var currentValue = Check4ValidTemperature(currentTarget.val);
+
+            if (typeof currentTarget.val !== typeof target) {
+                adapter.log.debug("HandleThermostat: different types; OID " + oid + " type is " + typeof currentTarget.val + " vs target type is " + typeof target);
+                //currentValue = Number(currentTarget.val);
+            }
+
+            if (currentValue !== target) {
                 await adapter.setForeignStateAsync(oid, target);
                 adapter.log.info("set thermostat " + oid + " to " + target + "; current is " + currentTarget.val);
             }
@@ -4881,9 +4881,8 @@ function Check4ValidTemperature(temperature) {
 
         if (isNaN(temperature) || typeof temperature === "string") {
 
-            adapter.log.warn("try to convert " + temperature + " to a number");
-
-            return parseInt(temperature);
+            adapter.log.debug("try to convert " + temperature + " to a number");
+            return Number(temperature);
         }
         else {
             return temperature;
