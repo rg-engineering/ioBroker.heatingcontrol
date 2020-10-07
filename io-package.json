@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "0.6.0",
+    "version": "1.0.0",
     "news": {
+      "1.0.0": {
+      },
+      "0.6.0": {
+      },
       "0.5.7": {
         "en": "MinimumTemperature for vis only if enabled",
         "de": "MinimumTemperature für vis nur wenn aktiviert",

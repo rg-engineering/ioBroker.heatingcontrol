@@ -690,7 +690,8 @@ async function CreateStates4Period(id, period) {
 
 
     //adapter.log.debug("add state " + id + ".time");
-    await adapter.setObjectNotExistsAsync(id + ".time", {
+    let key = id + ".time";
+    await adapter.setObjectNotExistsAsync(key, {
         type: "state",
         common: {
             name: "period from",
@@ -700,16 +701,26 @@ async function CreateStates4Period(id, period) {
             read: true,
             write: true
         },
-        native: { id: id + ".time" }
+        native: { id: key }
     });
 
-    await adapter.extendObject(id + ".time", {
-        common: {
-            type: "string",
-            role: "value",
-            unit: "hh:mm",
+
+    let obj = await adapter.getObjectAsync(key);
+
+    if (obj != null) {
+
+        if (obj.common.type != "string" || obj.common.role != "value" || obj.common.unit !="hh:mm" ) {
+            await adapter.extendObject(key, {
+                common: {
+                    type: "string",
+                    role: "value",
+                    unit: "hh:mm",
+                }
+            });
         }
-    });
+    }
+
+    
 
     const nextTime = await adapter.getStateAsync(id + ".time");
     //set default only if nothing was set before
@@ -723,7 +734,8 @@ async function CreateStates4Period(id, period) {
 
 
     //adapter.log.debug("add state " + id + ".Temperature");
-    await adapter.setObjectNotExistsAsync(id + ".Temperature", {
+    key = id + ".Temperature";
+    await adapter.setObjectNotExistsAsync(key, {
         type: "state",
         common: {
             name: "target temperature",
@@ -733,15 +745,25 @@ async function CreateStates4Period(id, period) {
             read: true,
             write: true
         },
-        native: { id: id + ".Temperature" }
+        native: { id: key }
     });
 
-    await adapter.extendObject(id + ".Temperature", {
-        common: {
-            type: "number",
-            role: "value.temperature",
+    obj = await adapter.getObjectAsync(key);
+
+    if (obj != null) {
+
+        if (obj.common.type != "number" || obj.common.role != "value.temperature" ) {
+            await adapter.extendObject(key, {
+                common: {
+                    type: "number",
+                    role: "value.temperature",
+                
+                }
+            });
         }
-    });
+    }
+
+   
 
     const nextTemp = await adapter.getStateAsync(id + ".Temperature");
     //set default only if nothing was set before
@@ -763,7 +785,10 @@ async function CreateDatepoints() {
     adapter.log.debug("start CreateDatepoints");
 
     try {
-        await adapter.setObjectNotExistsAsync("LastProgramRun", {
+
+        //===========================================================
+        let key = "LastProgramRun";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "LastProgramRun",
@@ -773,17 +798,25 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "LastProgramRun" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("LastProgramRun", {
-            common: {
-                role: "value",
+        let obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
-
-        await adapter.setObjectNotExistsAsync("CurrentProfile", {
+        //===========================================================
+        key = "CurrentProfile";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "CurrentProfile",
@@ -793,22 +826,30 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "CurrentProfile" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("CurrentProfile", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
-
-        const currentprofile = await adapter.getStateAsync("CurrentProfile");
+        }
+        const currentprofile = await adapter.getStateAsync(key);
         //set default only if nothing was set before
         if (currentprofile === null) {
-            await adapter.setStateAsync("CurrentProfile", { ack: true, val: 1 });
+            await adapter.setStateAsync(key, { ack: true, val: 1 });
         }
 
-        await adapter.setObjectNotExistsAsync("info.UsedRooms", {
+        //===========================================================
+        key = "info.UsedRooms";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "UsedRooms",
@@ -818,14 +859,21 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "UsedRooms" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.UsedRooms", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
 
         let UsedRooms = "";
@@ -844,10 +892,11 @@ async function CreateDatepoints() {
             UsedRooms = UsedRooms.slice(0, -1);
         }
 
-        await adapter.setStateAsync("info.UsedRooms", { ack: true, val: UsedRooms });
+        await adapter.setStateAsync(key, { ack: true, val: UsedRooms });
 
-
-        await adapter.setObjectNotExistsAsync("info", {
+        //===========================================================
+        key = "info";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "channel",
             common: {
                 name: "info",
@@ -856,10 +905,12 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "info" }
+            native: { id: key }
         });
 
-        await adapter.setObjectNotExistsAsync("info.TemperatureDecreaseMode", {
+        //===========================================================
+        key = "info.TemperatureDecreaseMode";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "TemperatureDecreaseMode",
@@ -869,15 +920,22 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "TemperatureDecreaseMode" }
+            native: { id: key }
         });
 
 
-        await adapter.extendObject("info.TemperatureDecreaseMode", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
         let mode = "";
         switch (parseInt(adapter.config.TemperatureDecrease)) {
@@ -894,9 +952,11 @@ async function CreateDatepoints() {
                 mode = "unknown";
                 break;
         }
-        await adapter.setStateAsync("info.TemperatureDecreaseMode", { ack: true, val: mode });
+        await adapter.setStateAsync(key, { ack: true, val: mode });
 
-        await adapter.setObjectNotExistsAsync("info.ProfileType", {
+        //===========================================================
+        key = "info.ProfileType";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "ProfileType",
@@ -906,14 +966,21 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "ProfileType" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.ProfileType", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
 
         let ProfileType = "";
@@ -933,9 +1000,11 @@ async function CreateDatepoints() {
                 ProfileType = "unknown";
                 break;
         }
-        await adapter.setStateAsync("info.ProfileType", { ack: true, val: ProfileType });
+        await adapter.setStateAsync(key, { ack: true, val: ProfileType });
 
-        await adapter.setObjectNotExistsAsync("info.NumberOfProfiles", {
+        //===========================================================
+        key = "info.NumberOfProfiles";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "NumberOfProfiles",
@@ -945,18 +1014,27 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "NumberOfProfiles" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.NumberOfProfiles", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
-        await adapter.setStateAsync("info.NumberOfProfiles", { ack: true, val: parseInt(adapter.config.NumberOfProfiles) });
+        await adapter.setStateAsync(key, { ack: true, val: parseInt(adapter.config.NumberOfProfiles) });
 
-        await adapter.setObjectNotExistsAsync("info.NumberOfPeriods", {
+        //===========================================================
+        key = "info.NumberOfPeriods";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "NumberOfPeriods",
@@ -966,17 +1044,27 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "NumberOfPeriods" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.NumberOfPeriods", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
-        await adapter.setStateAsync("info.NumberOfPeriods", { ack: true, val: parseInt(adapter.config.NumberOfPeriods) });
+        }
 
-        await adapter.setObjectNotExistsAsync("info.PublicHolidayLikeSunday", {
+        await adapter.setStateAsync(key, { ack: true, val: parseInt(adapter.config.NumberOfPeriods) });
+
+        //===========================================================
+        key = "info.PublicHolidayLikeSunday";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "PublicHolidayLikeSunday",
@@ -986,17 +1074,27 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "PublicHolidayLikeSunday" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.PublicHolidayLikeSunday", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
-        await adapter.setStateAsync("info.PublicHolidayLikeSunday", { ack: true, val: adapter.config.PublicHolidayLikeSunday });
+        }
 
-        await adapter.setObjectNotExistsAsync("info.UseMinTempPerRoom", {
+        await adapter.setStateAsync(key, { ack: true, val: adapter.config.PublicHolidayLikeSunday });
+
+        //===========================================================
+        key = "info.UseMinTempPerRoom";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "UseMinTempPerRoom",
@@ -1006,19 +1104,27 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "UseMinTempPerRoom" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.UseMinTempPerRoom", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
-        await adapter.setStateAsync("info.UseMinTempPerRoom", { ack: true, val: adapter.config.UseMinTempPerRoom });
+        await adapter.setStateAsync(key, { ack: true, val: adapter.config.UseMinTempPerRoom });
 
-
-        await adapter.setObjectNotExistsAsync("info.UseFixHeatingPeriod", {
+        //===========================================================
+        key = "info.UseFixHeatingPeriod";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "UseFixHeatingPeriod",
@@ -1028,20 +1134,29 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "UseFixHeatingPeriod" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("info.UseFixHeatingPeriod", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
-        await adapter.setStateAsync("info.UseFixHeatingPeriod", { ack: true, val: adapter.config.UseFixHeatingPeriod });
+        await adapter.setStateAsync(key, { ack: true, val: adapter.config.UseFixHeatingPeriod });
 
 
         if (adapter.config.UseFixHeatingPeriod) {
-            await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodStart", {
+            //===========================================================
+            key = "info.FixHeatingPeriodStart";
+            await adapter.setObjectNotExistsAsync(key, {
                 type: "state",
                 common: {
                     name: "FixHeatingPeriodStart",
@@ -1051,18 +1166,26 @@ async function CreateDatepoints() {
                     read: true,
                     write: false
                 },
-                native: { id: "FixHeatingPeriodStart" }
+                native: { id: key }
             });
 
-            await adapter.extendObject("info.FixHeatingPeriodStart", {
-                common: {
-                    role: "value",
+            obj = await adapter.getObjectAsync(key);
+
+            if (obj != null) {
+
+                if (obj.common.role != "value") {
+                    await adapter.extendObject(key, {
+                        common: {
+                            role: "value",
+                        }
+                    });
                 }
-            });
-            await adapter.setStateAsync("info.FixHeatingPeriodStart", { ack: true, val: adapter.config.FixHeatingPeriodStart });
+            }
+            await adapter.setStateAsync(key, { ack: true, val: adapter.config.FixHeatingPeriodStart });
 
-
-            await adapter.setObjectNotExistsAsync("info.FixHeatingPeriodEnd", {
+            //===========================================================
+            key = "info.FixHeatingPeriodEnd";
+            await adapter.setObjectNotExistsAsync(key , {
                 type: "state",
                 common: {
                     name: "FixHeatingPeriodEnd",
@@ -1072,23 +1195,31 @@ async function CreateDatepoints() {
                     read: true,
                     write: false
                 },
-                native: { id: "FixHeatingPeriodEnd" }
+                native: { id: key }
             });
 
-            await adapter.extendObject("info.FixHeatingPeriodEnd", {
-                common: {
-                    role: "value",
+            obj = await adapter.getObjectAsync(key);
+
+            if (obj != null) {
+
+                if (obj.common.role != "value") {
+                    await adapter.extendObject(key, {
+                        common: {
+                            role: "value",
+                        }
+                    });
                 }
-            });
-            await adapter.setStateAsync("info.FixHeatingPeriodEnd", { ack: true, val: adapter.config.FixHeatingPeriodEnd });
+            }
+            await adapter.setStateAsync(key, { ack: true, val: adapter.config.FixHeatingPeriodEnd });
 
         }
 
 
 
 
-
-        await adapter.setObjectNotExistsAsync("HeatingPeriodActive", {
+        //===========================================================
+        key = "HeatingPeriodActive";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "HeatingPeriodActive",
@@ -1098,22 +1229,31 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "HeatingPeriodActive" }
+            native: { id: key }
         });
 
-        await adapter.extendObject("HeatingPeriodActive", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
-
-        const heatingperidactive = await adapter.getStateAsync("HeatingPeriodActive");
-        //set default only if nothing was set before
-        if (heatingperidactive === null) {
-            await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: true });
         }
 
-        await adapter.setObjectNotExistsAsync("PublicHolidyToday", {
+        const heatingperidactive = await adapter.getStateAsync(key);
+        //set default only if nothing was set before
+        if (heatingperidactive === null) {
+            await adapter.setStateAsync(key, { ack: true, val: true });
+        }
+
+        //===========================================================
+        key = "PublicHolidyToday";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "PublicHolidyToday",
@@ -1123,15 +1263,24 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "PublicHolidyToday" }
+            native: { id: key }
         });
-        await adapter.extendObject("PublicHolidyToday", {
-            common: {
-                role: "value",
-            }
-        });
+        obj = await adapter.getObjectAsync(key);
 
-        await adapter.setObjectNotExistsAsync("Present", {
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
+            }
+        }
+
+        //===========================================================
+        key = "Present";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "Present",
@@ -1141,15 +1290,24 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "Present" }
+            native: { id: key }
         });
-        await adapter.extendObject("Present", {
-            common: {
-                role: "value",
-            }
-        });
+        obj = await adapter.getObjectAsync(key);
 
-        await adapter.setObjectNotExistsAsync("PartyNow", {
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
+            }
+        }
+
+        //===========================================================
+        key = "PartyNow";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "PartyNow",
@@ -1159,15 +1317,24 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "PartyNow" }
+            native: { id: key }
         });
-        await adapter.extendObject("PartyNow", {
-            common: {
-                role: "value",
-            }
-        });
+        obj = await adapter.getObjectAsync(key);
 
-        await adapter.setObjectNotExistsAsync("GuestsPresent", {
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
+            }
+        }
+
+        //===========================================================
+        key = "GuestsPresent";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "GuestsPresent",
@@ -1177,15 +1344,24 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "GuestsPresent" }
+            native: { id: key }
         });
-        await adapter.extendObject("GuestsPresent", {
-            common: {
-                role: "value",
-            }
-        });
+        obj = await adapter.getObjectAsync(key);
 
-        await adapter.setObjectNotExistsAsync("HolidayPresent", {
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
+            }
+        }
+
+        //===========================================================
+        key = "HolidayPresent";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "HolidayPresent",
@@ -1195,15 +1371,24 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "HolidayPresent" }
+            native: { id: key }
         });
-        await adapter.extendObject("HolidayPresent", {
-            common: {
-                role: "value",
-            }
-        });
+        obj = await adapter.getObjectAsync(key);
 
-        await adapter.setObjectNotExistsAsync("VacationAbsent", {
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
+            }
+        }
+
+        //===========================================================
+        key = "VacationAbsent";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "VacationAbsent",
@@ -1213,16 +1398,25 @@ async function CreateDatepoints() {
                 read: true,
                 write: true
             },
-            native: { id: "VacationAbsent" }
+            native: { id: key }
         });
-        await adapter.extendObject("VacationAbsent", {
-            common: {
-                role: "value",
+        obj = await adapter.getObjectAsync(key);
+
+        if (obj != null) {
+
+            if (obj.common.role != "value") {
+                await adapter.extendObject(key, {
+                    common: {
+                        role: "value",
+                    }
+                });
             }
-        });
+        }
 
         if (adapter.config.UseActors) {
-            await adapter.setObjectNotExistsAsync("ActorsOn", {
+            //===========================================================
+            key = "ActorsOn";
+            await adapter.setObjectNotExistsAsync(key, {
                 type: "state",
                 common: {
                     name: "HowManyActorsOn",
@@ -1232,20 +1426,29 @@ async function CreateDatepoints() {
                     read: true,
                     write: false
                 },
-                native: { id: "ActorsOn" }
+                native: { id: key }
             });
 
-            await adapter.extendObject("ActorsOn", {
-                common: {
-                    role: "value",
+            obj = await adapter.getObjectAsync(key);
+
+            if (obj != null) {
+
+                if (obj.common.role != "value") {
+                    await adapter.extendObject(key, {
+                        common: {
+                            role: "value",
+                        }
+                    });
                 }
-            });
+            }
 
         }
 
 
         //all room related
-        await adapter.setObjectNotExistsAsync("Rooms", {
+        //===========================================================
+        key = "Rooms";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "channel",
             common: {
                 name: "Rooms",
@@ -1263,6 +1466,7 @@ async function CreateDatepoints() {
 
             if (adapter.config.rooms[room].isActive) {
 
+                //===========================================================
                 const id1 = "Rooms." + adapter.config.rooms[room].name;
 
                 adapter.log.debug("create data points for " + adapter.config.rooms[room].name);
@@ -1281,7 +1485,10 @@ async function CreateDatepoints() {
 
 
                 if (adapter.config.ThermostatModeIfNoHeatingperiod == 1) {
-                    await adapter.setObjectNotExistsAsync(id1 + ".TemperatureIfNoHeatingPeriod", {
+
+                    //===========================================================
+                    key = id1 + ".TemperatureIfNoHeatingPeriod";
+                    await adapter.setObjectNotExistsAsync(key, {
                         type: "state",
                         common: {
                             name: "TemperatureIfNoHeatingPeriod",
@@ -1291,27 +1498,37 @@ async function CreateDatepoints() {
                             read: true,
                             write: true
                         },
-                        native: { id: "TemperatureIfNoHeatingPeriod" }
+                        native: { id: key }
                     });
 
-                    await adapter.extendObject(id1 + ".TemperatureIfNoHeatingPeriod", {
-                        common: {
-                            role: "value.temperature",
+                    obj = await adapter.getObjectAsync(key);
+
+                    if (obj != null) {
+
+                        if (obj.common.role != "value") {
+                            await adapter.extendObject(key, {
+                                common: {
+                                    role: "value",
+                                }
+                            });
                         }
-                    });
+                    }
 
-                    adapter.subscribeStates(id1 + ".TemperatureIfNoHeatingPeriod");
+                    adapter.subscribeStates(key);
                 }
 
-                const Temp1 = await adapter.getStateAsync(id1 + ".TemperatureIfNoHeatingPeriod");
+                const Temp1 = await adapter.getStateAsync(key);
                 //set default only if nothing was set before
                 if (Temp1 === null) {
 
-                    await adapter.setStateAsync(id1 + ".TemperatureIfNoHeatingPeriod", { ack: true, val: 0 });
+                    await adapter.setStateAsync(key, { ack: true, val: 0 });
                 }
 
                 if (parseInt(adapter.config.UseChangesFromThermostat) === 4) { //each room reparately
-                    await adapter.setObjectNotExistsAsync(id1 + ".ChangesFromThermostatMode", {
+
+                    //===========================================================
+                    key = id1 + ".ChangesFromThermostatMode";
+                    await adapter.setObjectNotExistsAsync(key, {
                         type: "state",
                         common: {
                             name: "ChangesFromThermostatMode",
@@ -1321,29 +1538,38 @@ async function CreateDatepoints() {
                             read: true,
                             write: true
                         },
-                        native: { id: "ChangesFromThermostatMode" }
+                        native: { id: key }
                     });
 
-                    await adapter.extendObject(id1 + ".ChangesFromThermostatMode", {
-                        common: {
-                            role: "value",
+                    obj = await adapter.getObjectAsync(key);
+
+                    if (obj != null) {
+
+                        if (obj.common.role != "value") {
+                            await adapter.extendObject(key, {
+                                common: {
+                                    role: "value",
+                                }
+                            });
                         }
-                    });
+                    }
 
-                    const Temp2 = await adapter.getStateAsync(id1 + ".ChangesFromThermostatMode");
+                    const Temp2 = await adapter.getStateAsync(key);
                     //set default only if nothing was set before
                     if (Temp2 === null) {
 
-                        await adapter.setStateAsync(id1 + ".ChangesFromThermostatMode", { ack: true, val: 1 });
+                        await adapter.setStateAsync(key, { ack: true, val: 1 });
                     }
-                    adapter.subscribeStates(id1 + ".ChangesFromThermostatMode");
+                    adapter.subscribeStates(key);
 
                 }
 
 
 
                 if (adapter.config.UseMinTempPerRoom) {
-                    await adapter.setObjectNotExistsAsync(id1 + ".MinimumTemperature", {
+                    //===========================================================
+                    key = id1 + ".MinimumTemperature";
+                    await adapter.setObjectNotExistsAsync(key, {
                         type: "state",
                         common: {
                             name: "MinimumTemperature",
@@ -1353,28 +1579,36 @@ async function CreateDatepoints() {
                             read: true,
                             write: true
                         },
-                        native: { id: "MinimumTemperature" }
+                        native: { id: key }
                     });
 
-                    await adapter.extendObject(id1 + ".MinimumTemperature", {
-                        common: {
-                            role: "value.temperature",
+                    obj = await adapter.getObjectAsync(key);
+
+                    if (obj != null) {
+
+                        if (obj.common.role != "value.temperature") {
+                            await adapter.extendObject(key, {
+                                common: {
+                                    role: "value.temperature",
+                                }
+                            });
                         }
-                    });
+                    }
 
-                    const Temp2 = await adapter.getStateAsync(id1 + ".MinimumTemperature");
+                    
+
+                    const Temp2 = await adapter.getStateAsync(key);
                     //set default only if nothing was set before
                     if (Temp2 === null) {
 
-                        await adapter.setStateAsync(id1 + ".MinimumTemperature", { ack: true, val: 0 });
+                        await adapter.setStateAsync(key, { ack: true, val: 0 });
                     }
-                    adapter.subscribeStates(id1 + ".MinimumTemperature");
+                    adapter.subscribeStates(key);
                 }
 
                 //===============================================================================
-
-                
-                await adapter.setObjectNotExistsAsync(id1 + ".CurrentTarget", {
+                key = id1 + ".CurrentTarget";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "CurrentTarget",
@@ -1384,11 +1618,12 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "CurrentTarget" }
+                    native: { id: key }
                 });
 
-
-                await adapter.setObjectNotExistsAsync(id1 + ".ActiveTimeSlot", {
+                //===============================================================================
+                key = id1 + ".ActiveTimeSlot";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "ActiveTimeSlot",
@@ -1398,16 +1633,25 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "ActiveTimeSlot" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".ActiveTimeSlot", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
-                await adapter.setObjectNotExistsAsync(id1 + ".CurrentTimePeriodFull", {
+                //===============================================================================
+                key = id1 + ".CurrentTimePeriodFull";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "CurrentTimePeriodFull",
@@ -1417,17 +1661,25 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "CurrentTimePeriodFull" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".CurrentTimePeriodFull", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
-
-                await adapter.setObjectNotExistsAsync(id1 + ".CurrentTimePeriod", {
+                //===============================================================================
+                key = id1 + ".CurrentTimePeriod";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "CurrentTimePeriod",
@@ -1437,16 +1689,25 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "CurrentTimePeriod" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".CurrentTimePeriod", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
-                await adapter.setObjectNotExistsAsync(id1 + ".CurrentTimePeriodTime", {
+                //===============================================================================
+                key = id1 + ".CurrentTimePeriodTime";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "CurrentTimePeriodTime",
@@ -1456,16 +1717,25 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "CurrentTimePeriodTime" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".CurrentTimePeriodTime", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
-                await adapter.setObjectNotExistsAsync(id1 + ".WindowIsOpen", {
+                //===============================================================================
+                key = id1 + ".WindowIsOpen";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "WindowIsOpen",
@@ -1475,17 +1745,26 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "WindowIsOpen" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".WindowIsOpen", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
 
-                await adapter.setObjectNotExistsAsync(id1 + ".State", {
+                //===============================================================================
+                key = id1 + ".State";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "State",
@@ -1495,18 +1774,27 @@ async function CreateDatepoints() {
                         read: true,
                         write: false
                     },
-                    native: { id: "State" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".State", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
                 //manuell temperature setting
 
-                await adapter.setObjectNotExistsAsync(id1 + ".TemperaturOverride", {
+                //===============================================================================
+                key = id1 + ".TemperaturOverride";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "TemperaturOverride",
@@ -1516,7 +1804,7 @@ async function CreateDatepoints() {
                         read: true,
                         write: true
                     },
-                    native: { id: "TemperaturOverride" }
+                    native: { id: key }
                 });
 
                 await adapter.extendObject(id1 + ".TemperaturOverride", {
@@ -1531,12 +1819,14 @@ async function CreateDatepoints() {
                 //if (temperaturoverride === null) {
 
                 //set always to 0
-                await adapter.setStateAsync(id1 + ".TemperaturOverride", { ack: true, val: 0 });
+                await adapter.setStateAsync(key, { ack: true, val: 0 });
                 //}
-                adapter.subscribeStates(id1 + ".TemperaturOverride");
+                adapter.subscribeStates(key);
 
 
-                await adapter.setObjectNotExistsAsync(id1 + ".TemperaturOverrideTime", {
+                //===============================================================================
+                key = id1 + ".TemperaturOverrideTime";
+                await adapter.setObjectNotExistsAsync(key, {
                     type: "state",
                     common: {
                         name: "TemperaturOverrideTime",
@@ -1546,21 +1836,28 @@ async function CreateDatepoints() {
                         read: true,
                         write: true
                     },
-                    native: { id: "TemperaturOverrideTime" }
+                    native: { id: key }
                 });
 
-                await adapter.extendObject(id1 + ".TemperaturOverrideTime", {
-                    common: {
-                        role: "value",
+                obj = await adapter.getObjectAsync(key);
+
+                if (obj != null) {
+
+                    if (obj.common.role != "value") {
+                        await adapter.extendObject(key, {
+                            common: {
+                                role: "value",
+                            }
+                        });
                     }
-                });
+                }
 
-                const temperaturoverridetime = await adapter.getStateAsync(id1 + ".TemperaturOverrideTime");
+                const temperaturoverridetime = await adapter.getStateAsync(key);
                 //set default only if nothing was set before
                 if (temperaturoverridetime === null) {
-                    await adapter.setStateAsync(id1 + ".TemperaturOverrideTime", { ack: true, val: "00:00" });
+                    await adapter.setStateAsync(key, { ack: true, val: "00:00" });
                 }
-                adapter.subscribeStates(id1 + ".TemperaturOverrideTime");
+                adapter.subscribeStates(key);
 
             }
         }
@@ -1569,8 +1866,8 @@ async function CreateDatepoints() {
 
 
         // all profile related 
-
-        await adapter.setObjectNotExistsAsync("Profiles", {
+        key = "Profiles";
+        await adapter.setObjectNotExistsAsync(key, {
             type: "channel",
             common: {
                 name: "Profiles",
@@ -1579,14 +1876,16 @@ async function CreateDatepoints() {
                 read: true,
                 write: false
             },
-            native: { id: "Profiles" }
+            native: { id: key }
         });
 
 
         for (let profile = 0; profile < parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
             adapter.log.debug("rooms " + adapter.config.rooms.length);
 
-            await adapter.setObjectNotExistsAsync("Profiles." + profile, {
+            //===============================================================================
+            key = "Profiles." + profile;
+            await adapter.setObjectNotExistsAsync(key, {
                 type: "channel",
                 common: {
                     name: "Profile" + profile,
@@ -1595,7 +1894,7 @@ async function CreateDatepoints() {
                     read: true,
                     write: false
                 },
-                native: { id: "Profiles." + profile }
+                native: { id: key }
             });
 
 
@@ -1605,6 +1904,7 @@ async function CreateDatepoints() {
 
                     const id1 = "Profiles." + profile + "." + adapter.config.rooms[room].name;
 
+                    //===============================================================================
 
                     await adapter.setObjectNotExistsAsync(id1, {
                         type: "channel",
@@ -1623,8 +1923,9 @@ async function CreateDatepoints() {
 
                         adapter.log.debug("create data profile points for " + adapter.config.rooms[room].name);
 
-
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative", {
+                        //===============================================================================
+                        key = id1 + ".relative";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "channel",
                             common: {
                                 name: "relative",
@@ -1633,12 +1934,13 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: false
                             },
-                            native: { id: "relative" }
+                            native: { id: key }
                         });
 
 
-
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative.GuestIncrease", {
+                        //===============================================================================
+                        key = id1 + ".relative.GuestIncrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "GuestIncrease",
@@ -1648,26 +1950,37 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "GuestIncrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".relative.GuestIncrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        
+
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
 
-                        const guestincrease = await adapter.getStateAsync(id1 + ".relative.GuestIncrease");
+                        const guestincrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (guestincrease === null) {
-                            await adapter.setStateAsync(id1 + ".relative.GuestIncrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".relative.GuestIncrease");
+                        adapter.subscribeStates(key);
 
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative.PartyDecrease", {
+                        //===============================================================================
+                        key = id1 + ".relative.PartyDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "PartyDecrease",
@@ -1677,24 +1990,34 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "PartyDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".relative.PartyDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const partydecrease = await adapter.getStateAsync(id1 + ".relative.PartyDecrease");
+
+                        const partydecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (partydecrease === null) {
-                            await adapter.setStateAsync(id1 + ".relative.PartyDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".relative.PartyDecrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative.WindowOpenDecrease", {
+                        //===============================================================================
+                        key = id1 + ".relative.WindowOpenDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "WindowOpenDecrease",
@@ -1704,25 +2027,35 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "WindowOpenDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".relative.WindowOpenDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const windowopendecrease = await adapter.getStateAsync(id1 + ".relative.WindowOpenDecrease");
+
+                        const windowopendecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (windowopendecrease === null) {
-                            await adapter.setStateAsync(id1 + ".relative.WindowOpenDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".relative.WindowOpenDecrease");
+                        adapter.subscribeStates(key);
 
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative.AbsentDecrease", {
+                        //===============================================================================
+                        key = id1 + ".relative.AbsentDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "AbsentDecrease",
@@ -1732,24 +2065,34 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "AbsentDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".relative.AbsentDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const absentdecrease = await adapter.getStateAsync(id1 + ".relative.AbsentDecrease");
+
+                        const absentdecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (absentdecrease === null) {
-                            await adapter.setStateAsync(id1 + ".relative.AbsentDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".relative.AbsentDecrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".relative.VacationAbsentDecrease", {
+                        //===============================================================================
+                        key = id1 + ".relative.VacationAbsentDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "VacationAbsentDecrease",
@@ -1759,30 +2102,39 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "VacationAbsentDecrease" }
+                            native: { id: key}
                         });
 
-                        await adapter.extendObject(id1 + ".relative.VacationAbsentDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const vacationabsentdecrease = await adapter.getStateAsync(id1 + ".relative.VacationAbsentDecrease");
+
+                        const vacationabsentdecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (vacationabsentdecrease === null) {
-                            await adapter.setStateAsync(id1 + ".relative.VacationAbsentDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".relative.VacationAbsentDecrease");
+                        adapter.subscribeStates(key);
 
 
                     }
                     else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
 
                         adapter.log.debug("create data profile points (absolute) for " + adapter.config.rooms[room].name);
-
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute", {
+                        //===============================================================================
+                        key = id1 + ".absolute";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "channel",
                             common: {
                                 name: "absolute",
@@ -1791,12 +2143,13 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: false
                             },
-                            native: { id: "absolute" }
+                            native: { id: key }
                         });
 
 
-
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute.GuestIncrease", {
+                        //===============================================================================
+                        key = id1 + ".absolute.GuestIncrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "GuestIncrease",
@@ -1806,25 +2159,35 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "GuestIncrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".absolute.GuestIncrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
 
-                        const reducedtemperature = await adapter.getStateAsync(id1 + ".absolute.GuestIncrease");
+
+                        const reducedtemperature = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (reducedtemperature === null) {
-                            await adapter.setStateAsync(id1 + ".absolute.GuestIncrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".absolute.GuestIncrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute.PartyDecrease", {
+                        //===============================================================================
+                        key = id1 + ".absolute.PartyDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "PartyDecrease",
@@ -1834,24 +2197,34 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "PartyDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".absolute.PartyDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const partydecrease = await adapter.getStateAsync(id1 + ".absolute.PartyDecrease");
+
+                        const partydecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (partydecrease === null) {
-                            await adapter.setStateAsync(id1 + ".absolute.PartyDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".absolute.PartyDecrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute.WindowOpenDecrease", {
+                        //===============================================================================
+                        key = id1 + ".absolute.WindowOpenDecrease";
+                        await adapter.setObjectNotExistsAsync(, {
                             type: "state",
                             common: {
                                 name: "WindowOpenDecrease",
@@ -1861,25 +2234,35 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "WindowOpenDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".absolute.WindowOpenDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
 
-                        const windowopendecrease = await adapter.getStateAsync(id1 + ".absolute.WindowOpenDecrease");
+
+                        const windowopendecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (windowopendecrease === null) {
-                            await adapter.setStateAsync(id1 + ".absolute.WindowOpenDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".absolute.WindowOpenDecrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute.AbsentDecrease", {
+                        //===============================================================================
+                        key = id1 + ".absolute.AbsentDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "AbsentDecrease",
@@ -1889,24 +2272,34 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "AbsentDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".absolute.AbsentDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const absentdecrease = await adapter.getStateAsync(id1 + ".absolute.AbsentDecrease");
+
+                        const absentdecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (absentdecrease === null) {
-                            await adapter.setStateAsync(id1 + ".absolute.AbsentDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".absolute.AbsentDecrease");
+                        adapter.subscribeStates(key);
 
-                        await adapter.setObjectNotExistsAsync(id1 + ".absolute.VacationAbsentDecrease", {
+                        //===============================================================================
+                        key = id1 + ".absolute.VacationAbsentDecrease";
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "VacationAbsentDecrease",
@@ -1916,22 +2309,30 @@ async function CreateDatepoints() {
                                 read: true,
                                 write: true
                             },
-                            native: { id: "VacationAbsentDecrease" }
+                            native: { id: key }
                         });
 
-                        await adapter.extendObject(id1 + ".absolute.VacationAbsentDecrease", {
-                            common: {
-                                type: "number",
-                                role: "value.temperature",
+                        obj = await adapter.getObjectAsync(key);
+
+                        if (obj != null) {
+
+                            if (obj.common.type != "number" || obj.common.role != "value.temperature") {
+                                await adapter.extendObject(key, {
+                                    common: {
+                                        type: "number",
+                                        role: "value.temperature",
+                                    }
+                                });
                             }
-                        });
+                        }
 
-                        const vacationabsentdecrease = await adapter.getStateAsync(id1 + ".absolute.VacationAbsentDecrease");
+
+                        const vacationabsentdecrease = await adapter.getStateAsync(key);
                         //set default only if nothing was set before
                         if (vacationabsentdecrease === null) {
-                            await adapter.setStateAsync(id1 + ".absolute.VacationAbsentDecrease", { ack: true, val: 0 });
+                            await adapter.setStateAsync(key, { ack: true, val: 0 });
                         }
-                        adapter.subscribeStates(id1 + ".absolute.VacationAbsentDecrease");
+                        adapter.subscribeStates(key);
 
                     }
                     else {
