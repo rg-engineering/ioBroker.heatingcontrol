@@ -2227,7 +2227,7 @@ async function CreateDatepoints() {
 
                         //===============================================================================
                         key = id1 + ".absolute.WindowOpenDecrease";
-                        await adapter.setObjectNotExistsAsync(, {
+                        await adapter.setObjectNotExistsAsync(key, {
                             type: "state",
                             common: {
                                 name: "WindowOpenDecrease",
