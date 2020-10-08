@@ -104,6 +104,7 @@ DefaultTargets[4] = ["21:00", 21];
 
 const ActorsWithoutThermostat = [];
 const lastSetTemperature = [];
+let SystemLanguage;
 
 let adapter;
 function startAdapter(options) {
@@ -224,6 +225,8 @@ async function main() {
 
         await SubscribeStates();
 
+        SystemLanguage = await GetSystemLanguage();
+
         if (adapter.config.UseVisFromPittini) {
             adapter.log.info("starting vis");
 
@@ -231,8 +234,8 @@ async function main() {
             adapter.log.info("starting vis part 2");
             vis = new myVis(adapter);
 
-            const language = await GetSystemLanguage();
-            vis.SetLanguage(language);
+            
+            vis.SetLanguage(SystemLanguage);
 
             if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
                 adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
@@ -256,7 +259,7 @@ async function GetSystemLanguage() {
     const ret = await adapter.getForeignObjectAsync("system.config");
 
     language = ret.common.language;
-
+    adapter.log.debug("got system language " + language);
     return language;
 }
 
@@ -4009,7 +4012,7 @@ function getCronStat() {
             //adapter.log.debug("cron jobs");
             for (n = 0; n < length; n++) {
                 if (typeof cronJobs[n] !== undefined && cronJobs[n] != null) {
-                    adapter.log.debug("[INFO] " + "      status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
+                    adapter.log.debug("cron status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
                 }
             }
 
@@ -4017,7 +4020,7 @@ function getCronStat() {
                 adapter.log.warn("more then 500 cron jobs existing for this adapter, this might be a configuration error! (" + length + ")");
             }
             else {
-                adapter.log.info(length + " cron jobs created");
+                adapter.log.info(length + " cron job(s) created");
             }
         }
     }
@@ -4042,10 +4045,23 @@ function deleteCronJob(id) {
 }
 
 
-function timeConverter(time) {
+function timeConverter(time, timeonly = false) {
 
-    const a = new Date(time);
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let a;
+    if (time != null) {
+        a = new Date(time);
+    }
+    else {
+        a = new Date();
+    }
+    let months;
+
+    if (SystemLanguage === "de") {
+        months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+    }
+    else {
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    }
     const year = a.getFullYear();
     const month = months[a.getMonth()];
     let date = a.getDate();
@@ -4058,12 +4074,12 @@ function timeConverter(time) {
     sec = sec < 10 ? "0" + sec : sec;
 
     let sRet = "";
-    //if (timeonly) {
-    //    sRet = hour + ":" + min + ":" + sec;
-    //}
-    //else {
-    sRet = date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
-    //}
+    if (timeonly) {
+        sRet = hour + ":" + min + ":" + sec;
+    }
+    else {
+        sRet = date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
+    }
 
     return sRet;
 }
