@@ -1,11 +1,34 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "news": {
+      "1.1.0": {
+
+      },
       "1.0.0": {
+        "en": "bug fix for string / number conversions",
+        "de": "Fehlerbehebung für Zeichenfolgen- / Zahlenkonvertierungen",
+        "ru": "исправление ошибки при преобразовании строки / числа",
+        "pt": "correção de bug para conversões de string / número",
+        "nl": "bug fix voor string / number conversies",
+        "fr": "correction de bogue pour les conversions chaîne / nombre",
+        "it": "correzione di bug per conversioni stringa / numero",
+        "es": "corrección de errores para conversiones de cadenas / números",
+        "pl": "poprawka błędu konwersji ciągów / liczb",
+        "zh-cn": "字符串/数字转换的错误修复"
       },
       "0.6.0": {
+        "en": "some optimisations",
+        "de": "einige Optimierungen",
+        "ru": "некоторые оптимизации",
+        "pt": "algumas otimizações",
+        "nl": "enkele optimalisaties",
+        "fr": "quelques optimisations",
+        "it": "alcune ottimizzazioni",
+        "es": "algunas optimizaciones",
+        "pl": "pewne optymalizacje",
+        "zh-cn": "一些优化"
       },
       "0.5.7": {
         "en": "MinimumTemperature for vis only if enabled",
@@ -180,6 +203,8 @@
     "UseVisFromPittini": false,
     "SensorCloseDelay": 0,
     "PittiniPathImageWindowOpen": "",
-    "PittiniPathImageWindowClosed": ""
+    "PittiniPathImageWindowClosed": "",
+    "ActorBeforeOnDelay": 0,
+    "ActorBeforeOffDelay": 0
   }
 }

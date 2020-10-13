@@ -71,7 +71,8 @@ ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature",
 
 const WindowOpenTimerId = [];
 const WindowCloseTimerId = [];
-
+const ActorOffTimerId = [];
+const ActorOnTimerId = [];
 
 const ActorTypeTab = [];
 const MinHomematicActorType = 0;
@@ -3629,6 +3630,8 @@ async function wait(ms) {
 //to do: better control; right now it's just on / off without hystheresis or similar
 async function HandleActors(room, current, target) {
 
+    //const roomID = adapter.config.rooms.filter(d => d.name == room);
+
     //adapter.log.debug('#### " + deviceID + " " + current + " " + target);
     //let room = adapter.config.devices[deviceID].room;
 
@@ -3645,12 +3648,29 @@ async function HandleActors(room, current, target) {
 
             if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
 
+                if (ActorOnTimerId[i]) {
+                    adapter.log.info("cancel ActorOn TimerId ");
+                    clearTimeout(ActorOnTimerId[i]);
+                    ActorOnTimerId[i] = null;
+                }
+
                 const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
                 if (currentState.val !== false) {
-                    //actorsOn++;
-                    toUpdate = true;
-                    await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, false);
-                    adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " off");
+
+                    if (adapter.config.ActorBeforeOffDelay > 0) {
+                        if (ActorOffTimerId[i] != null) {
+                            adapter.log.info("actor off delay already running for " + room);
+                        }
+                        else {
+                            ActorOffTimerId[i] = setTimeout(ActorOffTimeout, adapter.config.ActorBeforeOffDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
+                            adapter.log.info("actor off delay " + adapter.config.ActorBeforeOffDelay + " for " + room);
+                        }
+                    }
+                    else {
+                        //actorsOn++;
+                        toUpdate = true;
+                        await ActorOffTimeout(adapter.config.devices[i].OID_Target, room, false);
+                    }
                 }
                 else {
                     adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
@@ -3666,12 +3686,31 @@ async function HandleActors(room, current, target) {
 
             if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
 
+                
+                if (ActorOffTimerId[i]) {
+                    adapter.log.info("cancel ActorOff TimerId ");
+                    clearTimeout(ActorOffTimerId[i]);
+                    ActorOffTimerId[i] = null;
+                }
+
                 const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+
                 if (currentState.val !== true) {
-                    //actorsOn--;
-                    toUpdate = true;
-                    await adapter.setForeignStateAsync(adapter.config.devices[i].OID_Target, true);
-                    adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " on");
+                    if (adapter.config.ActorBeforeOnDelay > 0) {
+                        if (ActorOnTimerId[i]!=null) {
+                            adapter.log.info("actor on delay already running for " + room);
+                        }
+                        else {
+                            ActorOnTimerId[i] = setTimeout(ActorOnTimeout, adapter.config.ActorBeforeOnDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
+                            adapter.log.info("actor on delay " + adapter.config.ActorBeforeOnDelay + " for " + room);
+                        }
+                    }
+                    else {
+
+                        //actorsOn--;
+                        toUpdate = true;
+                        await ActorOnTimeout(adapter.config.devices[i].OID_Target, room,false);
+                    }
                 }
                 else {
                     adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
@@ -3683,12 +3722,24 @@ async function HandleActors(room, current, target) {
     if (toUpdate) {
         await CheckAllActors();
     }
-    /*
-    if (actorsOn < 0) {
-        actorsOn = 0;
+}
+
+async function ActorOnTimeout(OID_Target, room, toUpdate) {
+    await adapter.setForeignStateAsync(OID_Target, true);
+    adapter.log.debug("room " + room + " actor " + OID_Target + " on");
+
+    if (toUpdate) {
+        await CheckAllActors();
     }
-    await adapter.setStateAsync("ActorsOn", { val: actorsOn, ack: true });
-    */
+}
+
+async function ActorOffTimeout(OID_Target, room, toUpdate) {
+    await adapter.setForeignStateAsync(OID_Target, false);
+    adapter.log.debug("room " + room + " actor " + OID_Target + " off");
+
+    if (toUpdate) {
+        await CheckAllActors();
+    }
 }
 
 async function CheckMinTemp(roomId, target) {
@@ -3724,7 +3775,7 @@ async function HandleThermostat(oid, temperature) {
     
         if (currentTarget != null && typeof currentTarget != undefined) {
 
-            var currentValue = Check4ValidTemperature(currentTarget.val);
+            const currentValue = Check4ValidTemperature(currentTarget.val);
 
             if (typeof currentTarget.val !== typeof target) {
                 adapter.log.debug("HandleThermostat: different types; OID " + oid + " type is " + typeof currentTarget.val + " vs target type is " + typeof target);

@@ -2,8 +2,8 @@
 
 <head>
     <!-- Load ioBroker scripts and styles-->
-    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/fancytree/ui.fancytree.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
 
     <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
@@ -43,10 +43,14 @@
             top: 10px !important;
         }
 
-        redlabel { 
-            color: red; 
+        .collapsible-body {
+            margin-left: 2rem !important;
+            padding-top: 0 !important;
         }
 
+        redlabel {
+            color: red;
+        }
     </style>
 
     <script type="text/javascript">
@@ -135,23 +139,23 @@
                 $('.col-FixTempIfNoHeatingPeriod').hide();
             }
 
-          
-            var elementPageActors =  document.getElementById("page-actors");
+
+            var elementPageActors = document.getElementById("page-actors");
             var elementPageSensors = document.getElementById("page-sensors");
 
             var $useActors = $('#UseActors');
             if ($useActors.prop('checked')) {
                 console.log('show actor settings');
 
-                if (ThermostatModeIfNoHeatingperiod == 2)
-                {
+                if (ThermostatModeIfNoHeatingperiod == 2) {
                     $('.col-useactorifnoheating').hide();
                 }
-                else
-                {
-                    $('.col-useactorifnoheating').show();   
+                else {
+                    $('.col-useactorifnoheating').show();
                 }
                 $('.col-useactorifnothermostat').show();
+                $('.col-ActorOnDelay').show();
+                $('.col-ActorOffDelay').show();
 
                 elementPageActors.classList.remove("hide");
 
@@ -162,8 +166,11 @@
                 $('.col-useactorifnoheating').hide();
                 $('.col-useactorifnothermostat').hide();
 
+                $('.col-ActorOnDelay').hide();
+                $('.col-ActorOffDelay').hide();
+
                 elementPageActors.classList.add("hide");
-               
+
             }
 
 
@@ -177,7 +184,7 @@
 
                 $('.col-SensorOpenDelay').show();
                 $('.col-SensorCloseDelay').show();
-                 
+
             }
             else {
                 console.log('hide sensors settings');
@@ -227,7 +234,7 @@
 
 
         var timeout1;
-        var DeviceList =[];
+        var DeviceList = [];
         function getDevices(onChange, instance) {
             timeout1 = setTimeout(function () {
                 getDevices(onChange, instance);
@@ -297,7 +304,7 @@
                 if (SearchNew) {
                     newRooms = obj.newRooms;
 
-                    $('#checkResult').html(newRooms+' new room(s) ');
+                    $('#checkResult').html(newRooms + ' new room(s) ');
 
                     if (newRooms > 0) {
                         onChange(true);
@@ -449,13 +456,31 @@
                 getDevices(onChange, _id);
             }
 
-            if (typeof settings.rooms !== 'undefined' && settings.rooms != null &&  settings.rooms.length > 0) {
+            if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
             }
             else {
                 getRooms(onChange, _id, false);
             }
+
+            //++++++++++ TABS ++++++++++
+            //Enhance Tabs with onShow-Function
+            $('ul.tabs li a').on('click', function () { onTabShow($(this).attr('href')); });
+            function onTabShow(tabId) {
+                console.log('onTabShow');
+                switch (tabId) {
+                    case "#tab-main":
+                        loadOptions();
+                        break;
+                    
+                }
+            }
+
+            function loadOptions() {
+                $('.collapsible').collapsible();
+            }
+            loadOptions();
         }
 
         // ... and the function save has to exist.
@@ -631,7 +656,7 @@
 
                                 let id2find = findObjectIdByKey(sensors, 'id', SensorList4Room[s].id);
 
-                                  if (id2find == -1) { //not found
+                                if (id2find == -1) { //not found
                                     console.log("deleted " + JSON.stringify(SensorList4Room[s]));
                                     let id2delete = findObjectIdByKey(DeviceList, 'id', SensorList4Room[s].id);
                                     DeviceList.splice(id2delete, 1);
@@ -719,7 +744,7 @@
                                 let OID_Current = getOID(obj);
 
                                 $('#thermostats .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
-                                 
+
                             });
                         }
                     });
@@ -860,177 +885,231 @@
                     <div class="col s6 m4 l2">
                         <img src="heatingcontrol.png" class="logo">
                     </div>
-                </div>
-
-                <div class="row">
+                
                     <div class="col s6 col-adapternotonline">
                         <span class="translate">AdapterNotOnline</span>
                     </div>
                 </div>
 
-                <div class="row">
-
-                    <div class="input-field col s6">
-                        <select id="Gewerk" class="value">
-                            <option value="1" class="translate">nothing</option>
-                        </select>
-                        <label for="Gewerk" class="translate">Gewerk</label>
-                    </div>
-
-                    <div class="input-field col s3">
-                        <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
-                        <div id="checkResult"></div>
-                    </div>
-
-
-
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="timezone" class="value" />
-                        <label for="timezone" class="translate">timezone</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2FeiertagAdapter" class="value" />
-                        <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2PresentDP" class="value" />
-                        <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
-                    </div>
-
-                    <div class="input-field col s6">
-                        <select id="Path2PresentDPType" class="value">
-                            <option value="1" class="translate">boolean</option>
-                            <option value="2" class="translate">number</option>
-                        </select>
-                        <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2VacationDP" class="value" />
-                        <label for="Path2VacationDP" class="translate">Path2VacationDP</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2HolidayPresentDP" class="value" />
-                        <label for="Path2HolidayPresentDP" class="translate">Path2HolidayPresentDP</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2GuestsPresentDP" class="value" />
-                        <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="text" id="Path2PartyNowDP" class="value" />
-                        <label for="Path2PartyNowDP" class="translate">Path2PartyNowDP</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="checkbox" id="deleteall" class="value" />
-                        <label for="deleteall" class="translate">deleteall</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="checkbox" id="UseSensors" class="value" />
-                        <label for="UseSensors" class="translate">use_sensors</label>
-                    </div>
-
-                    <div class="input-field col s3 col-SensorOpenDelay">
-                        <input type="number" id="SensorDelay" class="value" />
-                        <label for="SensorDelay" class="translate">SensorOpenDelay</label>
-                    </div>
-
-                    <div class="input-field col s3 col-SensorCloseDelay">
-                        <input type="number" id="SensorCloseDelay" class="value" />
-                        <label for="SensorCloseDelay" class="translate">SensorCloseDelay</label>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input type="checkbox" id="UseActors" class="value" />
-                        <label for="UseActors" class="translate">use_actors</label>
-                    </div>
-
-                </div>
-
-
-
-                <div class="row">
-                    <div class="input-field col s6 col-useactorifnoheating">
-                        <select id="UseActorsIfNotHeating" class="value">
-                            <option value="1" class="translate">nothing</option>
-                            <option value="2" class="translate">off</option>
-                            <option value="3" class="translate">on</option>
-                        </select>
-                        <label for="UseActorsIfNotHeating" class="translate">UseActorsIfNotHeating</label>
-                    </div>
-                    <div class="input-field col s6 col-useactorifnothermostat">
-                        <select id="UseActorsIfNoThermostat" class="value">
-                            <option value="1" class="translate">nothing</option>
-                            <option value="2" class="translate">off</option>
-                            <option value="3" class="translate">on</option>
-                        </select>
-                        <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6 col-usechangesfromthermostat">
-                        <select id="UseChangesFromThermostat" class="value">
-                            <option value="1" class="translate">no</option>
-                            <option value="2" class="translate">as_override</option>
-                            <option value="3" class="translate">as_new_profile_setting</option>
-                            <option value="5" class="translate">until_next_profile_point</option>
-                            <option value="4" class="translate">adjustable_per_room</option>
-                        </select>
-                        <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s6 col-usevisfrompittini">
-                        <input type="checkbox" id="UseVisFromPittini" class="value" />
-                        <label for="UseVisFromPittini" class="translate">UseVisFromPittini</label>
-                    </div>
-
-                    <div class="col s6 col-use-custom-path-descr">
-                        <span class="translate">hint_vis_from_Pittini</span>
-                    </div>
-                </div>
                 
-                <div class="row">
-                    <div class="input-field col s3 col-PittiniPathImageWindowOpen">
-                        <input type="text" id="PittiniPathImageWindowOpen" class="value" />
-                        <label for="PittiniPathImageWindowOpen" class="translate">PittiniPathImageWindowOpen</label>
-                    </div>
-                    <div class="input-field col s3 col-PittiniPathImageWindowClosed">
-                        <input type="text" id="PittiniPathImageWindowClosed" class="value" />
-                        <label for="PittiniPathImageWindowClosed" class="translate">PittiniPathImageWindowClosed</label>
-                    </div>
-                </div>
+
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">GeneralSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+
+                                <div class="input-field col s6">
+                                    <select id="Gewerk" class="value">
+                                        <option value="1" class="translate">nothing</option>
+                                    </select>
+                                    <label for="Gewerk" class="translate">Gewerk</label>
+                                </div>
+
+                                <div class="input-field col s3">
+                                    <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
+                                    <div id="checkResult"></div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="timezone" class="value" />
+                                    <label for="timezone" class="translate">timezone</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="deleteall" class="value" />
+                                    <label for="deleteall" class="translate">deleteall</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">DPSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2FeiertagAdapter" class="value" />
+                                    <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2PresentDP" class="value" />
+                                    <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
+                                </div>
+
+                                <div class="input-field col s6">
+                                    <select id="Path2PresentDPType" class="value">
+                                        <option value="1" class="translate">boolean</option>
+                                        <option value="2" class="translate">number</option>
+                                    </select>
+                                    <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2VacationDP" class="value" />
+                                    <label for="Path2VacationDP" class="translate">Path2VacationDP</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2HolidayPresentDP" class="value" />
+                                    <label for="Path2HolidayPresentDP" class="translate">Path2HolidayPresentDP</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2GuestsPresentDP" class="value" />
+                                    <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="text" id="Path2PartyNowDP" class="value" />
+                                    <label for="Path2PartyNowDP" class="translate">Path2PartyNowDP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">SensorSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="UseSensors" class="value" />
+                                    <label for="UseSensors" class="translate">use_sensors</label>
+                                </div>
+
+                                <div class="input-field col s3 col-SensorOpenDelay">
+                                    <input type="number" id="SensorDelay" class="value" min="0" step="1" />
+                                    <label for="SensorDelay" class="translate">SensorOpenDelay</label>
+                                </div>
+
+                                <div class="input-field col s3 col-SensorCloseDelay">
+                                    <input type="number" id="SensorCloseDelay" class="value" min="0" step="1" />
+                                    <label for="SensorCloseDelay" class="translate">SensorCloseDelay</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">ActorSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="UseActors" class="value" />
+                                    <label for="UseActors" class="translate">use_actors</label>
+                                </div>
+
+                                <div class="input-field col s3 col-ActorOnDelay">
+                                    <input type="number" id="ActorBeforeOnDelay" class="value" min="0" step="1" />
+                                    <label for="ActorBeforeOnDelay" class="translate">ActorBeforeOnDelay</label>
+                                </div>
+
+                                <div class="input-field col s3 col-ActorOffDelay">
+                                    <input type="number" id="ActorBeforeOffDelay" class="value" min="0" step="1" />
+                                    <label for="ActorBeforeOffDelay" class="translate">ActorBeforeOffDelay</label>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="input-field col s6 col-useactorifnoheating">
+                                    <select id="UseActorsIfNotHeating" class="value">
+                                        <option value="1" class="translate">nothing</option>
+                                        <option value="2" class="translate">off</option>
+                                        <option value="3" class="translate">on</option>
+                                    </select>
+                                    <label for="UseActorsIfNotHeating" class="translate">UseActorsIfNotHeating</label>
+                                </div>
+                                <div class="input-field col s6 col-useactorifnothermostat">
+                                    <select id="UseActorsIfNoThermostat" class="value">
+                                        <option value="1" class="translate">nothing</option>
+                                        <option value="2" class="translate">off</option>
+                                        <option value="3" class="translate">on</option>
+                                    </select>
+                                    <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s6 col-usechangesfromthermostat">
+                                    <select id="UseChangesFromThermostat" class="value">
+                                        <option value="1" class="translate">no</option>
+                                        <option value="2" class="translate">as_override</option>
+                                        <option value="3" class="translate">as_new_profile_setting</option>
+                                        <option value="5" class="translate">until_next_profile_point</option>
+                                        <option value="4" class="translate">adjustable_per_room</option>
+                                    </select>
+                                    <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">VisSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6 col-usevisfrompittini">
+                                    <input type="checkbox" id="UseVisFromPittini" class="value" />
+                                    <label for="UseVisFromPittini" class="translate">UseVisFromPittini</label>
+                                </div>
+
+                                <div class="col s6 col-use-custom-path-descr">
+                                    <span class="translate">hint_vis_from_Pittini</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s3 col-PittiniPathImageWindowOpen">
+                                    <input type="text" id="PittiniPathImageWindowOpen" class="value" />
+                                    <label for="PittiniPathImageWindowOpen" class="translate">PittiniPathImageWindowOpen</label>
+                                </div>
+                                <div class="input-field col s3 col-PittiniPathImageWindowClosed">
+                                    <input type="text" id="PittiniPathImageWindowClosed" class="value" />
+                                    <label for="PittiniPathImageWindowClosed" class="translate">PittiniPathImageWindowClosed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+
+
+                
 
             </div>
 
