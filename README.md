@@ -168,6 +168,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 1.1.0 (2020-10-xx)
 * (René) see issue #132: timer before on and off for actuators 
+* (René) see issue #143: additional checks to avoid unneccessary override 
 
 ### 1.0.0 (2020-10-09)
 * (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)

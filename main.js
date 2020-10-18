@@ -3528,14 +3528,18 @@ async function SetFromThermostat(room, newVal) {
     if (RoomID >= 0) {
         //prüfen ob geändert
 
-        const id = "Rooms." + room + ".CurrentTarget";
+        let id = "Rooms." + room + ".CurrentTarget";
         const current = await adapter.getStateAsync(id);
         if (current != null) {
 
             adapter.log.debug("got current " + JSON.stringify(current));
 
-
             if (newVal != current.val) {
+
+                id = "Rooms." + room + ".State";
+                await adapter.setStateAsync(id, { ack: true, val: "change from thermostat" });
+
+                adapter.config.rooms[RoomID].ChangeFromThermostateUntilNextProfilepoint = true;
 
                 await SetNextTemperatureTarget(RoomID, newVal);
             }
@@ -3630,97 +3634,114 @@ async function wait(ms) {
 //to do: better control; right now it's just on / off without hystheresis or similar
 async function HandleActors(room, current, target) {
 
-    //const roomID = adapter.config.rooms.filter(d => d.name == room);
+    try {
+        //const roomID = adapter.config.rooms.filter(d => d.name == room);
 
-    //adapter.log.debug('#### " + deviceID + " " + current + " " + target);
-    //let room = adapter.config.devices[deviceID].room;
+        //adapter.log.debug('#### " + deviceID + " " + current + " " + target);
+        //let room = adapter.config.devices[deviceID].room;
 
-    adapter.log.info("handle actors " + room + " current " + current + " target " + target);
-    //var oactorsOn = await adapter.getStateAsync("ActorsOn");
+        adapter.log.info("handle actors " + room + " current " + current + " target " + target);
+        //var oactorsOn = await adapter.getStateAsync("ActorsOn");
 
-    //var actorsOn = oactorsOn.val;
+        //var actorsOn = oactorsOn.val;
 
-    let toUpdate = false;
-    //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
-    if (current > target) {
-        //find all actors for that room and set them
-        for (let i = 0; i < adapter.config.devices.length; i++) {
+        let toUpdate = false;
+        //Temperatur größer als Zieltemp: dann Aktor aus; sonst an
+        if (current > target) {
+            //find all actors for that room and set them
+            for (let i = 0; i < adapter.config.devices.length; i++) {
 
-            if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
+                if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
 
-                if (ActorOnTimerId[i]) {
-                    adapter.log.info("cancel ActorOn TimerId ");
-                    clearTimeout(ActorOnTimerId[i]);
-                    ActorOnTimerId[i] = null;
-                }
+                    if (ActorOnTimerId[i]) {
+                        adapter.log.info("cancel ActorOn TimerId ");
+                        clearTimeout(ActorOnTimerId[i]);
+                        ActorOnTimerId[i] = null;
+                    }
 
-                const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
-                if (currentState.val !== false) {
-
-                    if (adapter.config.ActorBeforeOffDelay > 0) {
-                        if (ActorOffTimerId[i] != null) {
-                            adapter.log.info("actor off delay already running for " + room);
-                        }
-                        else {
-                            ActorOffTimerId[i] = setTimeout(ActorOffTimeout, adapter.config.ActorBeforeOffDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
-                            adapter.log.info("actor off delay " + adapter.config.ActorBeforeOffDelay + " for " + room);
-                        }
+                    const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+                    if (currentState == null || typeof currentState == undefined) {
+                        adapter.log.error("HandleActor, could not read " + adapter.config.devices[i].OID_Target);
                     }
                     else {
-                        //actorsOn++;
-                        toUpdate = true;
-                        await ActorOffTimeout(adapter.config.devices[i].OID_Target, room, false);
+
+                        if (currentState.val !== false) {
+
+                            if (adapter.config.ActorBeforeOffDelay > 0) {
+                                if (ActorOffTimerId[i] != null) {
+                                    adapter.log.info("actor off delay already running for " + room);
+                                }
+                                else {
+                                    ActorOffTimerId[i] = setTimeout(ActorOffTimeout, adapter.config.ActorBeforeOffDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
+                                    adapter.log.info("actor off delay " + adapter.config.ActorBeforeOffDelay + " for " + room);
+                                }
+                            }
+                            else {
+                                //actorsOn++;
+                                toUpdate = true;
+                                await ActorOffTimeout(adapter.config.devices[i].OID_Target, room, false);
+                            }
+                        }
+                        else {
+                            adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
+                        }
                     }
                 }
-                else {
-                    adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
+
+            }
+
+        }
+        else if (current < target) {
+
+            //find all actors for that room and set them
+            for (let i = 0; i < adapter.config.devices.length; i++) {
+
+                if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
+
+
+                    if (ActorOffTimerId[i]) {
+                        adapter.log.info("cancel ActorOff TimerId ");
+                        clearTimeout(ActorOffTimerId[i]);
+                        ActorOffTimerId[i] = null;
+                    }
+
+                    const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
+                    if (currentState == null || typeof currentState == undefined) {
+                        adapter.log.error("HandleActor, could not read " + adapter.config.devices[i].OID_Target);
+                    }
+                    else {
+                        if (currentState.val !== true) {
+                            if (adapter.config.ActorBeforeOnDelay > 0) {
+                                if (ActorOnTimerId[i] != null) {
+                                    adapter.log.info("actor on delay already running for " + room);
+                                }
+                                else {
+                                    ActorOnTimerId[i] = setTimeout(ActorOnTimeout, adapter.config.ActorBeforeOnDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
+                                    adapter.log.info("actor on delay " + adapter.config.ActorBeforeOnDelay + " for " + room);
+                                }
+                            }
+                            else {
+
+                                //actorsOn--;
+                                toUpdate = true;
+                                await ActorOnTimeout(adapter.config.devices[i].OID_Target, room, false);
+                            }
+                        }
+                        else {
+                            adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
+                        }
+                    }
                 }
             }
         }
 
-    }
-    else if (current < target) {
 
-        //find all actors for that room and set them
-        for (let i = 0; i < adapter.config.devices.length; i++) {
-
-            if (adapter.config.devices[i].room === room && adapter.config.devices[i].type === 2) {
-
-                
-                if (ActorOffTimerId[i]) {
-                    adapter.log.info("cancel ActorOff TimerId ");
-                    clearTimeout(ActorOffTimerId[i]);
-                    ActorOffTimerId[i] = null;
-                }
-
-                const currentState = await adapter.getForeignStateAsync(adapter.config.devices[i].OID_Target);
-
-                if (currentState.val !== true) {
-                    if (adapter.config.ActorBeforeOnDelay > 0) {
-                        if (ActorOnTimerId[i]!=null) {
-                            adapter.log.info("actor on delay already running for " + room);
-                        }
-                        else {
-                            ActorOnTimerId[i] = setTimeout(ActorOnTimeout, adapter.config.ActorBeforeOnDelay * 1000, adapter.config.devices[i].OID_Target, room, true);
-                            adapter.log.info("actor on delay " + adapter.config.ActorBeforeOnDelay + " for " + room);
-                        }
-                    }
-                    else {
-
-                        //actorsOn--;
-                        toUpdate = true;
-                        await ActorOnTimeout(adapter.config.devices[i].OID_Target, room,false);
-                    }
-                }
-                else {
-                    adapter.log.debug("room " + room + " actor " + adapter.config.devices[i].OID_Target + " nothing to do");
-                }
-            }
+        if (toUpdate) {
+            await CheckAllActors();
         }
     }
-
-    if (toUpdate) {
-        await CheckAllActors();
+    catch (e) {
+        adapter.log.error("exception in HandleActors [" + e + "]");
     }
 }
 
@@ -4681,34 +4702,48 @@ async function CheckTemperatureChange(room2check=null) {
                             await adapter.setStateAsync(id + "State", { ack: true, val: RoomState });
 
                             const OverrideTemp = await adapter.getStateAsync(id + "TemperaturOverride");
-                            let NewTarget = OverrideTemp.val;
-                            if (parseInt(adapter.config.TemperatureDecrease) === 1) {
 
-                                const decrease = AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
-
-                                NewTarget = OverrideTemp - decrease;
-
+                            if (OverrideTemp == null || typeof OverrideTemp == undefined) {
+                                adapter.log.error("could not read override valeu " + id + "TemperaturOverride");
                             }
-                            else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
+                            else {
+                                let NewTarget = OverrideTemp.val;
 
-                                if (ReducedTemperature > 0) {
-                                    NewTarget = ReducedTemperature;
+                                //adapter.log.debug("override temp " + NewTarget);
+
+                                if (parseInt(adapter.config.TemperatureDecrease) === 1) {
+
+                                    const decrease = AbsentDecrease + GuestIncrease - PartyDecrease - VacationAbsentDecrease - WindowOpenDecrease;
+
+                                    NewTarget = OverrideTemp.val - decrease;
+
+                                    //adapter.log.debug("override temp 111 " + NewTarget + " " + decrease);
+
                                 }
-                                else {
-                                    NewTarget = OverrideTemp.val;
+                                else if (parseInt(adapter.config.TemperatureDecrease) === 2) {
+
+                                    if (ReducedTemperature > 0) {
+                                        NewTarget = ReducedTemperature;
+                                        //adapter.log.debug("override temp 222 " + NewTarget);
+                                    }
+                                    else {
+                                        NewTarget = OverrideTemp.val;
+                                        //adapter.log.debug("override temp 333 " + NewTarget);
+                                    }
                                 }
+
+                                NewTarget = Check4ValidTemperature(NewTarget);
+
+                                adapter.log.debug("in override target " + NewTarget);
+
+                                await SetNextTemperatureTarget(room, NewTarget);
                             }
-
-                            adapter.log.debug("in override target " + NewTarget);
-
-                            await SetNextTemperatureTarget(room, NewTarget);
-
                             break;
                         }
 
                         //==============================================
 
-
+                        
 
 
 
@@ -4724,6 +4759,19 @@ async function CheckTemperatureChange(room2check=null) {
                         nextTemperature = ret.nextTemperature;
                         sNextTime = ret.sNextTime;
                         ActiveTimeSlot = ret.ActiveTimeSlot;
+
+                        if (adapter.config.rooms[room].ChangeFromThermostateUntilNextProfilepoint) {
+
+                            if (!ret.IsNewPeriod) {
+                                adapter.log.debug("Change From Thermostate Until Next Profilepoint: we still wait for next profile point ");
+
+                                break;
+                            }
+
+                            //wenn nächster Profilpunkt, dann reset
+                            adapter.config.rooms[room].ChangeFromThermostateUntilNextProfilepoint = false;
+                        }
+
 
                         if (currentPeriod === -2) {
                             // passiert auch zwischen 0:00 Uhr und ersten profilpunkt
@@ -4947,6 +4995,22 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     let period;
     let sNextTime;
     let daysName = "unknown";
+    let isNewPeriod = false;
+    let CurrentActiveTimeSlot = -1;
+
+
+
+    const id3 = "Rooms." + adapter.config.rooms[room].name + ".ActiveTimeSlot";
+    const oCurrentActiveTimeSlot = await adapter.getStateAsync(id3);
+    if (oCurrentActiveTimeSlot != null && typeof oCurrentActiveTimeSlot != undefined) {
+        CurrentActiveTimeSlot = oCurrentActiveTimeSlot.val;
+        adapter.log.debug("found current period " + CurrentActiveTimeSlot + " " + id3 + " " + JSON.stringify(oCurrentActiveTimeSlot));
+    }
+    else {
+        adapter.log.error("could not read current active time slot in FindNextPeriod");
+    }
+
+    
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -5141,15 +5205,22 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         adapter.log.warn("FindNextPeriod: profile not implemented yet, profile type is " + parseInt(adapter.config.ProfileType, 10));
     }
 
+
+    if (ActiveTimeSlot > -1 && CurrentActiveTimeSlot > -1 && CurrentActiveTimeSlot != ActiveTimeSlot) {
+        adapter.log.debug("we are in new time period");
+        isNewPeriod = true;
+    }
+
     const ret = {
         currentPeriod: currentPeriod,
         nextTemperature: nextTemperature,
         sNextTime: sNextTime,
         ActiveTimeSlot: ActiveTimeSlot,
-        DaysName: daysName
+        DaysName: daysName,
+        IsNewPeriod: isNewPeriod
     };
 
-    adapter.log.debug(adapter.config.rooms[room].name + " found period " + currentPeriod + " with " + nextTemperature + " on " + sNextTime);
+    adapter.log.debug(adapter.config.rooms[room].name + " found " + (isNewPeriod ? " new " : " ") + "period  " + currentPeriod + " with target " + nextTemperature + " on " + sNextTime[0] + ":" + sNextTime[1]);
 
     return ret;
 }
@@ -5166,72 +5237,85 @@ async function StartTemperaturOverride(room) {
         if (roomID > -1) {
             const idPreset = "Rooms." + room + ".";
             const nextSetTemperatureVal = await adapter.getStateAsync(idPreset + "TemperaturOverride");
-            let nextSetTemperature = nextSetTemperatureVal.val;
 
-            const OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
-            const OverrideTime = OverrideTimeVal.val.split(":");
-
-            if (adapter.config.rooms[roomID].TempOverride && nextSetTemperature === 0) {
-                // we want to cancel override
-
-                StopTempOverride(roomID, -1);
-            }
-
-
-            else if (nextSetTemperature > 0) {
-                if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
-
-                    const now = new Date();
-                    //adapter.log.debug("### " + OverrideTimeVal.val + " " + JSON.stringify(OverrideTime) + " " + JSON.stringify(now));
-                    if (OverrideTime[0] > 0) {
-                        now.setHours(now.getHours() + parseInt(OverrideTime[0]));
-                        //adapter.log.debug("---1 " + JSON.stringify(now));
-                    }
-                    if (OverrideTime[1] > 0) {
-                        now.setMinutes(now.getMinutes() + parseInt(OverrideTime[1]));
-                        //adapter.log.debug("---2 " + JSON.stringify(now));
-                    }
-
-                    adapter.config.rooms[roomID].TempOverrideDue = now;
-                    //adapter.log.debug("override " + nextSetTemperature + " due " + JSON.stringify(now));
-
-
-                    if (adapter.config.rooms[roomID].TempOverride) {
-                        adapter.log.warn("already in override " + room);
-                    }
-
-                    adapter.config.rooms[roomID].TempOverride = true;
-
-                    let id = "Rooms." + adapter.config.rooms[roomID].name + ".State";
-                    await adapter.setStateAsync(id, { ack: true, val: "override" });
-
-                    id = "Rooms." + adapter.config.rooms[roomID].name + ".CurrentTarget";
-                    await adapter.setStateAsync(id, { ack: true, val: nextSetTemperature });
-
-                    //create cron to reset
-                    CreateCron4ResetTempOverride(now, roomID);
-
-                    for (let ii = 0; ii < adapter.config.devices.length; ii++) {
-
-                        if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === room && adapter.config.devices[ii].isActive) {
-
-                            adapter.log.info("room " + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
-
-                            //adapter.log.debug("*4 " + state);
-                            //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
-
-                            nextSetTemperature = await CheckMinTemp(roomID, nextSetTemperature);
-
-                            await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
-                        }
-                    }
-                }
-                else {
-                    adapter.log.warn("override time not valid: " + OverrideTimeVal.val);
-                }
+            if (nextSetTemperatureVal == null || typeof nextSetTemperatureVal == undefined) {
+                adapter.log.error("could not read override value in StartTemperaturOverride  " + idPreset + "TemperaturOverride");
             }
             else {
-                adapter.log.warn("override temperature not valid: " + nextSetTemperature);
+
+                let nextSetTemperature = Check4ValidTemperature( nextSetTemperatureVal.val);
+
+                const OverrideTimeVal = await adapter.getStateAsync(idPreset + "TemperaturOverrideTime");
+
+                if (OverrideTimeVal == null || typeof OverrideTimeVal == undefined) {
+                    adapter.log.error("could not read override time value in StartTemperaturOverride  " + idPreset + "TemperaturOverrideTime");
+                }
+                else {
+
+                    const OverrideTime = OverrideTimeVal.val.split(":");
+
+                    if (adapter.config.rooms[roomID].TempOverride && nextSetTemperature === 0) {
+                        // we want to cancel override
+
+                        StopTempOverride(roomID, -1);
+                    }
+
+                    else if (nextSetTemperature > 0) {
+                        if (OverrideTime[0] > 0 || OverrideTime[1] > 0) {
+
+                            const now = new Date();
+                            //adapter.log.debug("### " + OverrideTimeVal.val + " " + JSON.stringify(OverrideTime) + " " + JSON.stringify(now));
+                            if (OverrideTime[0] > 0) {
+                                now.setHours(now.getHours() + parseInt(OverrideTime[0]));
+                                //adapter.log.debug("---1 " + JSON.stringify(now));
+                            }
+                            if (OverrideTime[1] > 0) {
+                                now.setMinutes(now.getMinutes() + parseInt(OverrideTime[1]));
+                                //adapter.log.debug("---2 " + JSON.stringify(now));
+                            }
+
+                            adapter.config.rooms[roomID].TempOverrideDue = now;
+                            //adapter.log.debug("override " + nextSetTemperature + " due " + JSON.stringify(now));
+
+
+                            if (adapter.config.rooms[roomID].TempOverride) {
+                                adapter.log.warn("already in override " + room);
+                            }
+
+                            adapter.config.rooms[roomID].TempOverride = true;
+
+                            let id = "Rooms." + adapter.config.rooms[roomID].name + ".State";
+                            await adapter.setStateAsync(id, { ack: true, val: "override" });
+
+                            id = "Rooms." + adapter.config.rooms[roomID].name + ".CurrentTarget";
+                            await adapter.setStateAsync(id, { ack: true, val: nextSetTemperature });
+
+                            //create cron to reset
+                            CreateCron4ResetTempOverride(now, roomID);
+
+                            for (let ii = 0; ii < adapter.config.devices.length; ii++) {
+
+                                if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === room && adapter.config.devices[ii].isActive) {
+
+                                    adapter.log.info("room " + room + " Thermostat " + adapter.config.devices[ii].name + " set to " + nextSetTemperature);
+
+                                    //adapter.log.debug("*4 " + state);
+                                    //await adapter.setForeignStateAsync(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+
+                                    nextSetTemperature = await CheckMinTemp(roomID, nextSetTemperature);
+
+                                    await HandleThermostat(adapter.config.devices[ii].OID_Target, nextSetTemperature);
+                                }
+                            }
+                        }
+                        else {
+                            adapter.log.warn("override time not valid: " + OverrideTimeVal.val);
+                        }
+                    }
+                    else {
+                        adapter.log.warn("override temperature not valid: " + nextSetTemperature);
+                    }
+                }
             }
         }
         else {
