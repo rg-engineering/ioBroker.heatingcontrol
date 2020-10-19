@@ -14,6 +14,12 @@
 const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
 
+const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
+const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
+const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
+const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
+
+
 let vis = null;
 
 
@@ -3746,8 +3752,18 @@ async function HandleActors(room, current, target) {
 }
 
 async function ActorOnTimeout(OID_Target, room, toUpdate) {
+
+    //const roomID = adapter.config.rooms.filter(d => d.name == room);
+
+    const roomID = findObjectIdByKey(adapter.config.rooms, "name", room);
+
     await adapter.setForeignStateAsync(OID_Target, true);
-    adapter.log.debug("room " + room + " actor " + OID_Target + " on");
+    adapter.log.debug("room " + room + " actor " + OID_Target + " on, RoomID " + roomID);
+
+    if (ActorOnTimerId[roomID]) {
+        clearTimeout(ActorOnTimerId[roomID]);
+        ActorOnTimerId[roomID] = null;
+    }
 
     if (toUpdate) {
         await CheckAllActors();
@@ -3755,8 +3771,16 @@ async function ActorOnTimeout(OID_Target, room, toUpdate) {
 }
 
 async function ActorOffTimeout(OID_Target, room, toUpdate) {
+
+    const roomID = adapter.config.rooms.filter(d => d.name == room);
+
     await adapter.setForeignStateAsync(OID_Target, false);
-    adapter.log.debug("room " + room + " actor " + OID_Target + " off");
+    adapter.log.debug("room " + room + " actor " + OID_Target + " off, RoomID " + roomID);
+
+    if (ActorOffTimerId[roomID]) {
+        clearTimeout(ActorOffTimerId[roomID]);
+        ActorOffTimerId[roomID] = null;
+    }
 
     if (toUpdate) {
         await CheckAllActors();
@@ -3824,76 +3848,7 @@ async function HandleThermostat(oid, temperature) {
 }
 
 
-//*******************************************************************
-//
-// find a object in array by key and value
-// returns the object
-function findObjectByKey(array, key, value) {
-    if (array !== null && typeof array !== undefined) {
-        for (let i = 0; i < array.length; i++) {
-            if (array[i][key] === value) {
-                return array[i];
-            }
-        }
-    }
-    return null;
-}
 
-//*******************************************************************
-//
-// find a object in array by key and value
-// returns the object
-function findObjectsByKey(array, key, value) {
-
-    const ret = [];
-
-    if (array !== null && typeof array !== undefined) {
-        for (let i = 0; i < array.length; i++) {
-            if (array[i][key] === value) {
-                ret.push(array[i]);
-            }
-        }
-    }
-    return ret;
-}
-
-
-//*******************************************************************
-//
-// find a object in array by key and value
-// returns index number
-function findObjectIdByKey(array, key, value) {
-
-    if (array !== null && typeof array !== undefined) {
-
-        for (let i = 0; i < array.length; i++) {
-            if (array[i][key] === value) {
-                return i;
-            }
-        }
-    }
-    return -1;
-}
-
-
-//*******************************************************************
-//
-// find all objects in array by key and value
-// returns index number array
-function findObjectsIdByKey(array, key, value) {
-
-    const ret = [];
-
-    if (array !== null && typeof array !== undefined) {
-
-        for (let i = 0; i < array.length; i++) {
-            if (array[i][key] === value) {
-                ret.push(i);
-            }
-        }
-    }
-    return ret;
-}
 
 
 
@@ -4738,6 +4693,7 @@ async function CheckTemperatureChange(room2check=null) {
 
                                 await SetNextTemperatureTarget(room, NewTarget);
                             }
+                            await HandleActorsGeneral(HeatingPeriodActive.val);
                             break;
                         }
 
@@ -5855,112 +5811,7 @@ function SearchActorsWithoutThermostat() {
 }
 
 
-/**
- * @param {string} timeVal
- * @param {string} timeLimit
- */
-function IsLater(timeVal, timeLimit) {
 
-    let ret = false;
-    try {
-        adapter.log.debug("check IsLater : " + timeVal + " " + timeLimit);
-
-        if (typeof timeVal === "string" && typeof timeLimit === "string") {
-            const valIn = timeVal.split(":");
-            const valLimits = timeLimit.split(":");
-
-            if (valIn.length > 1 && valLimits.length > 1) {
-
-                if (parseInt(valIn[0]) > parseInt(valLimits[0])
-                    || (parseInt(valIn[0]) == parseInt(valLimits[0]) && parseInt(valIn[1]) > parseInt(valLimits[1]))) {
-                    ret = true;
-                    adapter.log.debug("yes, IsLater : " + timeVal + " " + timeLimit);
-                }
-            }
-            else {
-                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
-            }
-        }
-        else {
-            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
-        }
-    }
-    catch (e) {
-        adapter.log.error("exception in IsLater [" + e + "]");
-    }
-    return ret;
-}
-
-/**
- * @param {string } timeVal
- * @param {string } [timeLimit]
- */
-function IsEarlier(timeVal, timeLimit) {
-
-    let ret = false;
-    try {
-        adapter.log.debug("check IsEarlier : " + timeVal + " " + timeLimit);
-
-        if (typeof timeVal === "string" && typeof timeLimit === "string") {
-            const valIn = timeVal.split(":");
-            const valLimits = timeLimit.split(":");
-
-            if (valIn.length > 1 && valLimits.length > 1) {
-
-                if (parseInt(valIn[0]) < parseInt(valLimits[0])
-                    || (parseInt(valIn[0]) == parseInt(valLimits[0]) && parseInt(valIn[1]) < parseInt(valLimits[1]))) {
-                    ret = true;
-                    adapter.log.debug("yes, IsEarlier : " + timeVal + " " + timeLimit);
-                }
-            }
-            else {
-                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
-            }
-        }
-        else {
-            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
-        }
-    }
-    catch (e) {
-        adapter.log.error("exception in IsEarlier [" + e + "]");
-    }
-    return ret;
-}
-
-/**
- * @param {string} timeVal
- * @param {string} timeLimit
- */
-function IsEqual(timeVal, timeLimit) {
-
-    let ret = false;
-    try {
-        adapter.log.debug("check IsEqual : " + timeVal + " " + timeLimit);
-
-        if (typeof timeVal === "string" && typeof timeLimit === "string") {
-            const valIn = timeVal.split(":");
-            const valLimits = timeLimit.split(":");
-
-            if (valIn.length > 1 && valLimits.length > 1) {
-
-                if (parseInt(valIn[0]) === parseInt(valLimits[0]) && parseInt(valIn[1]) === parseInt(valLimits[1])) {
-                    ret = true;
-                    adapter.log.debug("yes, IsEqual : " + timeVal + " " + timeLimit);
-                }
-            }
-            else {
-                adapter.log.error("string does not contain : " + timeVal + " " + timeLimit);
-            }
-        }
-        else {
-            adapter.log.error("not a string " + typeof timeVal + " " + typeof timeLimit);
-        }
-    }
-    catch (e) {
-        adapter.log.error("exception in IsEqual [" + e + "]");
-    }
-    return ret;
-}
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {
