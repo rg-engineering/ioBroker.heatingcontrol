@@ -885,13 +885,13 @@
                     <div class="col s6 m4 l2">
                         <img src="heatingcontrol.png" class="logo">
                     </div>
-                
+
                     <div class="col s6 col-adapternotonline">
                         <span class="translate">AdapterNotOnline</span>
                     </div>
                 </div>
 
-                
+
 
                 <ul class="collapsible">
                     <li>
@@ -930,6 +930,8 @@
                                     <label for="deleteall" class="translate">deleteall</label>
                                 </div>
                             </div>
+
+
 
                         </div>
                     </li>
@@ -991,7 +993,28 @@
                             </div>
                         </div>
                     </li>
-                
+
+
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">ThermostatSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6 col-usechangesfromthermostat">
+                                    <select id="UseChangesFromThermostat" class="value">
+                                        <option value="1" class="translate">no</option>
+                                        <option value="2" class="translate">as_override</option>
+                                        <option value="3" class="translate">as_new_profile_setting</option>
+                                        <option value="5" class="translate">until_next_profile_point</option>
+                                        <option value="4" class="translate">adjustable_per_room</option>
+                                    </select>
+                                    <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
                     <li>
                         <div class="collapsible-header">
                             <i class="material-icons">expand_more</i><h6 class="translate">SensorSettings</h6>
@@ -1016,7 +1039,7 @@
                             </div>
                         </div>
                     </li>
-                
+
                     <li>
                         <div class="collapsible-header">
                             <i class="material-icons">expand_more</i><h6 class="translate">ActorSettings</h6>
@@ -1061,18 +1084,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="input-field col s6 col-usechangesfromthermostat">
-                                    <select id="UseChangesFromThermostat" class="value">
-                                        <option value="1" class="translate">no</option>
-                                        <option value="2" class="translate">as_override</option>
-                                        <option value="3" class="translate">as_new_profile_setting</option>
-                                        <option value="5" class="translate">until_next_profile_point</option>
-                                        <option value="4" class="translate">adjustable_per_room</option>
-                                    </select>
-                                    <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
-                                </div>
-                            </div>
+
                         </div>
                     </li>
 
@@ -1109,92 +1121,110 @@
 
 
 
-                
+
 
             </div>
 
             <!-- tab "profile - settings"  -->
             <div id="tab-profiles" class="col s12 page">
 
-                <div class="row">
-                    <div class="input-field col s4">
-                        <select id="ProfileType" class="value">
-                            <option value="1" class="translate">Mo-So</option>
-                            <option value="2" class="translate">Mo-Fr + Sa-So</option>
-                            <option value="3" class="translate">every Day</option>
-                        </select>
-                        <label for="ProfileType" class="translate">ProfileType</label>
-                    </div>
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">GeneralProfileSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
 
-                    <div class="input-field col s4">
-                        <input type="number" id="NumberOfProfiles" min="1" max="10" class="value" />
-                        <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
-                    </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <select id="ProfileType" class="value">
+                                        <option value="1" class="translate">Mo-So</option>
+                                        <option value="2" class="translate">Mo-Fr + Sa-So</option>
+                                        <option value="3" class="translate">every Day</option>
+                                    </select>
+                                    <label for="ProfileType" class="translate">ProfileType</label>
+                                </div>
 
-                    <div class="input-field col s4">
-                        <input type="number" id="NumberOfPeriods" min="1" max="10" class="value" />
-                        <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
-                    </div>
-                </div>
+                                <div class="input-field col s4">
+                                    <input type="number" id="NumberOfProfiles" min="1" max="10" class="value" />
+                                    <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
+                                </div>
 
-                <div class="row">
-                    <div class="input-field col s4">
-                        <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
-                        <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
-                    </div>
-                </div>
+                                <div class="input-field col s4">
+                                    <input type="number" id="NumberOfPeriods" min="1" max="10" class="value" />
+                                    <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
+                                </div>
+                            </div>
 
-                <div class="row">
-                    <div class="input-field col s4">
-                        <select id="TemperatureDecrease" class="value">
-                            <option value="1" class="translate">relative</option>
-                            <option value="2" class="translate">absolute</option>
-                            <option value="3" class="translate">no lowering</option>
-                        </select>
-                        <label for="TemperatureDecrease" class="translate">TemperatureDecrease</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s4">
-                        <input type="checkbox" id="UseMinTempPerRoom" class="value" />
-                        <label for="UseMinTempPerRoom" class="translate">UseMinTempPerRoom</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s4">
-                        <input type="checkbox" id="UseFixHeatingPeriod" class="value" />
-                        <label for="UseFixHeatingPeriod" class="translate">UseFixHeatingPeriod</label>
-                    </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
+                                    <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
+                                </div>
+                            </div>
 
-                    <div class="input-field col s4 col-FixHeatingPeriod-Start">
-                        <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
-                        <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
-                    </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <select id="TemperatureDecrease" class="value">
+                                        <option value="1" class="translate">relative</option>
+                                        <option value="2" class="translate">absolute</option>
+                                        <option value="3" class="translate">no lowering</option>
+                                    </select>
+                                    <label for="TemperatureDecrease" class="translate">TemperatureDecrease</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input type="checkbox" id="UseMinTempPerRoom" class="value" />
+                                    <label for="UseMinTempPerRoom" class="translate">UseMinTempPerRoom</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">HeatingperiodSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
 
-                    <div class="input-field col s4 col-FixHeatingPeriod-End">
-                        <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
-                        <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
-                    </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input type="checkbox" id="UseFixHeatingPeriod" class="value" />
+                                    <label for="UseFixHeatingPeriod" class="translate">UseFixHeatingPeriod</label>
+                                </div>
 
-                </div>
+                                <div class="input-field col s4 col-FixHeatingPeriod-Start">
+                                    <input type="text" id="FixHeatingPeriodStart" class="value" maxlength="6" />
+                                    <label for="FixHeatingPeriodStart" class="translate">FixHeatingPeriodStart</label>
+                                </div>
 
-                <div class="row">
-                    <div class="input-field col s4 col-thermostattodeifnoheatingperiod">
-                        <select id="ThermostatModeIfNoHeatingperiod" class="value">
-                            <option value="1" class="translate">fixTempPerRoom</option>
-                            <option value="2" class="translate">fixTempForAll</option>
-                            <option value="3" class="translate">nothing</option>
-                        </select>
-                        <label for="ThermostatModeIfNoHeatingperiod" class="translate">ThermostatModeIfNoHeatingperiod</label>
-                    </div>
+                                <div class="input-field col s4 col-FixHeatingPeriod-End">
+                                    <input type="text" id="FixHeatingPeriodEnd" class="value" maxlength="6" />
+                                    <label for="FixHeatingPeriodEnd" class="translate">FixHeatingPeriodEnd</label>
+                                </div>
 
-                    <div class="input-field col s4 col-FixTempIfNoHeatingPeriod">
-                        <input type="number" id="FixTempIfNoHeatingPeriod" class="value" />
-                        <label for="FixTempIfNoHeatingPeriod" class="translate">FixTempIfNoHeatingPeriod</label>
-                    </div>
+                            </div>
 
-                </div>
+                            <div class="row">
+                                <div class="input-field col s4 col-thermostattodeifnoheatingperiod">
+                                    <select id="ThermostatModeIfNoHeatingperiod" class="value">
+                                        <option value="1" class="translate">fixTempPerRoom</option>
+                                        <option value="2" class="translate">fixTempForAll</option>
+                                        <option value="3" class="translate">nothing</option>
+                                    </select>
+                                    <label for="ThermostatModeIfNoHeatingperiod" class="translate">ThermostatModeIfNoHeatingperiod</label>
+                                </div>
 
+                                <div class="input-field col s4 col-FixTempIfNoHeatingPeriod">
+                                    <input type="number" id="FixTempIfNoHeatingPeriod" class="value" />
+                                    <label for="FixTempIfNoHeatingPeriod" class="translate">FixTempIfNoHeatingPeriod</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
 
             </div>
 
