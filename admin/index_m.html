@@ -129,6 +129,23 @@
                 $('.col-adapternotonline').hide();
             }
 
+            
+            var TypeDPPresent = $('#Path2PresentDPType')[0].value
+            if (TypeDPPresent == 1) {
+                $('.col_Path2PresentDPLimit').hide();
+            }
+            else {
+                $('.col_Path2PresentDPLimit').show();
+            }
+
+            var TypeDPGuestPresent = $('#Path2GuestsPresentDPType')[0].value
+            if (TypeDPGuestPresent == 1) {
+                $('.col_Path2GuestsPresentDPLimit').hide();
+            }
+            else {
+                $('.col_Path2GuestsPresentDPLimit').show();
+            }
+
             var ThermostatModeIfNoHeatingperiod = $('#ThermostatModeIfNoHeatingperiod')[0].value;
 
             if (ThermostatModeIfNoHeatingperiod == 2) {
@@ -954,13 +971,20 @@
                                     <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
                                 </div>
 
-                                <div class="input-field col s6">
+                                <div class="input-field col s3">
                                     <select id="Path2PresentDPType" class="value">
                                         <option value="1" class="translate">boolean</option>
                                         <option value="2" class="translate">number</option>
                                     </select>
                                     <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
                                 </div>
+
+                                
+                                <div class="input-field col s3 col_Path2PresentDPLimit">
+                                    <input type="number" id="Path2PresentDPLimit" class="value" min="0" step="1" />
+                                    <label for="Path2PresentDPLimit" class="translate">Path2PresentDPLimit</label>
+                                </div>
+                               
 
                             </div>
 
@@ -983,6 +1007,22 @@
                                     <input type="text" id="Path2GuestsPresentDP" class="value" />
                                     <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
                                 </div>
+
+                                <div class="input-field col s3">
+                                    <select id="Path2GuestsPresentDPType" class="value">
+                                        <option value="1" class="translate">boolean</option>
+                                        <option value="2" class="translate">number</option>
+                                    </select>
+                                    <label for="Path2GuestsPresentDPType" class="translate">Path2GuestsPresentDPType</label>
+                                </div>
+
+                                
+                                <div class="input-field col s3 col_Path2GuestsPresentDPLimit">
+                                    <input type="number" id="Path2GuestsPresentDPLimit" class="value" min="0" step="1" />
+                                    <label for="Path2GuestsPresentDPLimit" class="translate">Path2GuestsPresentDPLimit</label>
+                                </div>
+                               
+
                             </div>
 
                             <div class="row">

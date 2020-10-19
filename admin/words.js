@@ -1,5 +1,5 @@
-/*global systemDictionary:true */
-'use strict';
+/* global systemDictionary:true */
+"use strict";
 
 systemDictionary = {
     "AdapterNotOnline": {
@@ -88,10 +88,27 @@ systemDictionary = {
         "en": "Path to data point \"party now\"", "de": "Pfad zum Datenpunkt \"Party jetzt\"", "ru": "Путь к точке данных \"вечеринка сейчас\"", "pt": "Caminho para o ponto de dados \"party now\"", "nl": "Pad naar datapunt \"party now\"", "fr": "Chemin vers le point de données \"partie maintenant\"", "it": "Percorso del punto dati \"party now\"", "es": "Ruta de acceso del punto de datos \"fiesta\" de ahora\"", "pl": "Droga do punktu danych \"partia\"", "zh-cn": "路径的数据点\"派对现在\""
     },
     "Path2PresentDP": {
-        "en": "Path to data point \"currently present\"", "de": "Pfad zum Datenpunkt \"derzeit anwesend\"", "ru": "Путь к точке данных \"в настоящее время присутствует\"", "pt": "Caminho para o ponto de dados \"atualmente presente\"", "nl": "Pad naar gegevenspunt \"momenteel aanwezig\"", "fr": "Chemin vers le point de données \"actuellement présent\"", "it": "Percorso del punto dati \"attualmente presente\"", "es": "Ruta de acceso del punto de datos \"en la actualidad presente\"", "pl": "Droga do punktu danych \"obecnie\"", "zh-cn": "路径的数据点\"目前\""
-    },
+        "en": "Path to data point \\\"currently present\\\"",
+        "de": "Pfad zum Datenpunkt \"aktuell anwesend\"",
+        "ru": "Путь к точке данных \\ \"в настоящее время \\\"",
+        "pt": "Caminho para o ponto de dados \\ \"atualmente presente \\\"",
+        "nl": "Pad naar gegevenspunt \\ \"momenteel aanwezig \\\"",
+        "fr": "Chemin vers le point de données \\ \"actuellement présent \\\"",
+        "it": "Percorso al punto dati \\ \"attualmente presente \\\"",
+        "es": "Ruta al punto de datos \\ \"actualmente presente \\\"",
+        "pl": "Ścieżka do punktu danych \\ \"obecnie obecny \\\"",
+        "zh-cn": "数据点“当前存在”的路径"   },
     "Path2PresentDPType": {
-        "en": "Path to data point \"present\"", "de": "Pfad zum Datenpunkt \"anwesend\"", "ru": "Путь к точке данных \"настоящее\"", "pt": "Caminho para o ponto de dados \"presente\"", "nl": "Pad naar gegevenspunt \"aanwezig\"", "fr": "Chemin vers le point de données \"présent\"", "it": "Percorso del punto dati \"presente\"", "es": "Ruta de acceso del punto de datos \"presente\"", "pl": "Droga do punktu danych \"prawdziwe\"", "zh-cn": "路径的数据点的\"存在\""
+        "en": "Type of data point \\\"currently present\\\"",
+        "de": "Art des Datenpunkts \"aktuell anwesend\"",
+        "ru": "Тип точки данных \\ \"в настоящее время \\\"",
+        "pt": "Tipo de ponto de dados \\ \"atualmente presente \\\"",
+        "nl": "Type gegevenspunt \\ \"momenteel aanwezig \\\"",
+        "fr": "Type de point de données \\ \"actuellement présent \\\"",
+        "it": "Tipo di punto dati \\ \"attualmente presente \\\"",
+        "es": "Tipo de punto de datos \\ \"actualmente presente \\\"",
+        "pl": "Typ punktu danych \\ \"obecnie obecny \\\"",
+        "zh-cn": "数据点类型“当前存在”"
     },
     "Path2VacationDP": {
         "en": "Path to data point \"vacation\"", "de": "Pfad zum Datenpunkt \"Urlaub\"", "ru": "Путь к точке данных \"отпуск\"", "pt": "Caminho para o ponto de dados \"férias\"", "nl": "Pad naar gegevenspunt \"vakantie\"", "fr": "Chemin vers le point de données \"vacances\"", "it": "Percorso del punto dati \"ferie\"", "es": "Ruta de acceso del punto de datos \"de vacaciones\"", "pl": "Droga do danych opcji \"urlop\"", "zh-cn": "路径的数据点的\"休假\""
@@ -187,7 +204,7 @@ systemDictionary = {
         "en": "as Override", "de": "als Override", "ru": "как Override", "pt": "como Substituir", "nl": "als Override", "fr": "comme Override", "it": "come Override", "es": "como Reemplazar", "pl": "jak zastąpić", "zh-cn": "作为复盖"
     },
     "deleteall": {
-        "en": "delete all devices when admin opens", "de": "Löschen Sie alle Geräte, wenn der Administrator geöffnet wird", "ru": "удалить все устройства при открытии администратора", "pt": "excluir todos os dispositivos quando o administrador abrir", "nl": "verwijder alle apparaten wanneer de admin wordt geopend", "fr": "supprimer tous les appareils lorsque l'administrateur ouvre", "it": "elimina tutti i dispositivi quando si apre admin", "es": "eliminar todos los dispositivos cuando el administrador abre", "pl": "usuń wszystkie urządzenia, gdy admin otwiera", "zh-cn": "删除所有的设备管理员打开了"
+        "en": "delete all devices when admin opens", "de": "Löschen aller Geräte, wenn der Administrator geöffnet wird", "ru": "удалить все устройства при открытии администратора", "pt": "excluir todos os dispositivos quando o administrador abrir", "nl": "verwijder alle apparaten wanneer de admin wordt geopend", "fr": "supprimer tous les appareils lorsque l'administrateur ouvre", "it": "elimina tutti i dispositivi quando si apre admin", "es": "eliminar todos los dispositivos cuando el administrador abre", "pl": "usuń wszystkie urządzenia, gdy admin otwiera", "zh-cn": "删除所有的设备管理员打开了"
     },
     "devices": {
         "en": "devices", "de": "Geräte", "ru": "приборы", "pt": "dispositivos", "nl": "apparaten", "fr": "dispositifs", "it": "dispositivi", "es": "los dispositivos", "pl": "urządzenia", "zh-cn": "设备"
@@ -232,7 +249,7 @@ systemDictionary = {
         "en": "sensors", "de": "Sensoren", "ru": "датчиков", "pt": "sensores", "nl": "sensoren", "fr": "capteurs", "it": "sensori", "es": "los sensores", "pl": "czujniki", "zh - cn": "传感器" },
     "thermostat": {
         "en": "thermostat", "de": "Thermostat", "ru": "термостат", "pt": "termostato", "nl": "thermostaat", "fr": "thermostat", "it": "termostato", "es": "termostato", "pl": "termostat", "zh-cn": "恒温器"
-},
+    },
     "thermostats": {
         "en": "thermostats", "de": "Thermostate", "ru": "термостаты", "pt": "termostatos", "nl": "thermostaten", "fr": "thermostats", "it": "termostati", "es": "los termostatos", "pl": "regulatory temperatury", "zh-cn": "自动调温器"
     },
@@ -316,6 +333,161 @@ systemDictionary = {
         "es": "ninguna",
         "pl": "Żaden",
         "zh-cn": "没有"
+    },
+    "GeneralSettings": {
+        "en": "General Settings",
+        "de": "Allgemeine Einstellungen",
+        "ru": "общие настройки",
+        "pt": "Configurações Gerais",
+        "nl": "Algemene instellingen",
+        "fr": "réglages généraux",
+        "it": "impostazioni generali",
+        "es": "Configuración general",
+        "pl": "Ustawienia główne",
+        "zh-cn": "通用设置"
+    },
+    "DPSettings": {
+        "en": "Datapoint Settings",
+        "de": "Datenpunkteinstellungen",
+        "ru": "Настройки Datapoint",
+        "pt": "Configurações de Datapoint",
+        "nl": "Datapunt-instellingen",
+        "fr": "Paramètres de point de données",
+        "it": "Impostazioni datapoint",
+        "es": "Configuración de puntos de datos",
+        "pl": "Ustawienia punktu danych",
+        "zh-cn": "数据点设置"
+    },
+    "ThermostatSettings": {
+        "en": "Thermostat Settings",
+        "de": "Thermostateinstellungen",
+        "ru": "Настройки термостата",
+        "pt": "Configurações do termostato",
+        "nl": "Thermostaatinstellingen",
+        "fr": "Paramètres du thermostat",
+        "it": "Impostazioni del termostato",
+        "es": "Configuración del termostato",
+        "pl": "Ustawienia termostatu",
+        "zh-cn": "温控器设置"
+    },
+    "SensorSettings": {
+        "en": "Sensor Settings",
+        "de": "Sensoreinstellungen",
+        "ru": "Настройки датчика",
+        "pt": "Configurações do sensor",
+        "nl": "Sensor instellingen",
+        "fr": "Paramètres du capteur",
+        "it": "Impostazioni del sensore",
+        "es": "Configuración del sensor",
+        "pl": "Ustawienia czujnika",
+        "zh-cn": "传感器设定"
+    },
+    "ActorSettings": {
+        "en": "Actuator Settings",
+        "de": "Aktoreinstellungen",
+        "ru": "Настройки привода",
+        "pt": "Configurações do atuador",
+        "nl": "Actuatorinstellingen",
+        "fr": "Paramètres de l'actionneur",
+        "it": "Impostazioni dell'attuatore",
+        "es": "Configuración del actuador",
+        "pl": "Ustawienia siłownika",
+        "zh-cn": "执行器设置"
+    },
+    "VisSettings": {
+        "en": "Visualisation Settings",
+        "de": "Visualisierungseinstellungen",
+        "ru": "Настройки визуализации",
+        "pt": "Configurações de visualização",
+        "nl": "Visualisatie-instellingen",
+        "fr": "Paramètres de visualisation",
+        "it": "Impostazioni di visualizzazione",
+        "es": "Configuración de visualización",
+        "pl": "Ustawienia wizualizacji",
+        "zh-cn": "可视化设置"
+    },
+    "GeneralProfileSettings": {
+        "en": "General Profile Settings",
+        "de": "Allgemeine Profileinstellungen",
+        "ru": "Общие настройки профиля",
+        "pt": "Configurações gerais do perfil",
+        "nl": "Algemene profielinstellingen",
+        "fr": "Paramètres généraux du profil",
+        "it": "Impostazioni generali del profilo",
+        "es": "Configuración de perfil general",
+        "pl": "Ogólne ustawienia profilu",
+        "zh-cn": "常规配置文件设置"
+    },
+    "HeatingperiodSettings": {
+        "en": "Heatingperiod Settings",
+        "de": "Heizperiodeneinstellungen",
+        "ru": "Настройки периода нагрева",
+        "pt": "Configurações de período de aquecimento",
+        "nl": "Instellingen verwarmingsperiode",
+        "fr": "Paramètres de la période de chauffage",
+        "it": "Impostazioni periodo di riscaldamento",
+        "es": "Configuración del período de calefacción",
+        "pl": "Ustawienia okresu ogrzewania",
+        "zh-cn": "加热时间设置"
+    },
+    "ActorBeforeOnDelay": {
+        "en": "Delay Before On",
+        "de": "Verzögerung vor dem Einschalten",
+        "ru": "Задержка привода перед включением",
+        "pt": "Atraso do atuador antes de ligar",
+        "nl": "Actuatorvertraging vóór aan",
+        "fr": "Retard de l'actionneur avant la mise en marche",
+        "it": "Ritardo dell'attuatore prima dell'accensione",
+        "es": "Retardo del actuador antes de encendido",
+        "pl": "Opóźnienie siłownika przed włączeniem",
+        "zh-cn": "执行器延时"
+    },
+    "ActorBeforeOffDelay": {
+        "en": "Delay Before Off",
+        "de": "Verzögerung vor dem Ausschalten",
+        "ru": "Задержка привода перед выключением",
+        "pt": "Atraso do atuador antes de desligar",
+        "nl": "Actuatorvertraging vóór uit",
+        "fr": "Retard de l'actionneur avant l'arrêt",
+        "it": "Ritardo dell'attuatore prima dello spegnimento",
+        "es": "Retardo del actuador antes del apagado",
+        "pl": "Opóźnienie siłownika przed wyłączeniem",
+        "zh-cn": "执行器关闭前延迟"
+    },
+    "Path2GuestsPresentDPType": {
+        "en": "Type of data point \\\"guests present\\\"",
+        "de": "Art des Datenpunkts \"Gäste anwesend\"",
+        "ru": "Тип точки данных \\ \"присутствуют гости \\\"",
+        "pt": "Tipo de ponto de dados \\ \"convidados presentes \\\"",
+        "nl": "Type gegevenspunt \\ \"aanwezige gasten \\\"",
+        "fr": "Type de point de données \\ \"invités présents \\\"",
+        "it": "Tipo di punto dati \\ \"ospiti presenti \\\"",
+        "es": "Tipo de punto de datos \\ \"invitados presentes \\\"",
+        "pl": "Typ punktu danych \\ \"obecni goście \\\"",
+        "zh-cn": "数据点类型“有客人”"
+    },
+    "Path2GuestsPresentDPLimit": {
+        "en": "Limit for data point \\\"guests present\\\"",
+        "de": "Limit für Datenpunkt \"Gäste anwesend\"",
+        "ru": "Ограничение для точки данных \\ \"присутствующие гости \\\"",
+        "pt": "Limite para ponto de dados \\ \"convidados presentes \\\"",
+        "nl": "Limiet voor datapunt \\ \"aanwezige gasten \\\"",
+        "fr": "Limite pour le point de données \\ \"invités présents \\\"",
+        "it": "Limite per punto dati \\ \"ospiti presenti \\\"",
+        "es": "Límite de puntos de datos \\ \"invitados presentes \\\"",
+        "pl": "Limit dla punktu danych \\ \"obecni goście \\\"",
+        "zh-cn": "数据点“来宾人数”的限制"
+    },
+    "Path2PresentDPLimit": {
+        "en": "Limit for data point \\\"currently present\\\"",
+        "de": "Limit für Datenpunkt \"aktuell anwesend\"",
+        "ru": "Предел для точки данных \\ \"в настоящее время \\\"",
+        "pt": "Limite para ponto de dados \\ \"atualmente presente \\\"",
+        "nl": "Limiet voor gegevenspunt \\ \"momenteel aanwezig \\\"",
+        "fr": "Limite pour le point de données «actuellement présent»",
+        "it": "Limite per il punto dati \\ \"attualmente presente \\\"",
+        "es": "Límite para el punto de datos \\ \"actualmente presente \\\"",
+        "pl": "Limit dla punktu danych \\ \"obecnie obecny \\\"",
+        "zh-cn": "数据点“当前存在”的限制"
     }
-
 };

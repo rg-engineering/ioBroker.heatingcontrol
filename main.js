@@ -2947,7 +2947,7 @@ async function HandleStateChange(id, state) {
 
                         //adapter.log.debug("ZZZ check number " + JSON.stringify(nTemp));
 
-                        if (nTemp.val > 0) {
+                        if (nTemp.val > adapter.config.Path2PresentDPLimit) {
                             present = true;
                         }
 
@@ -2983,10 +2983,31 @@ async function HandleStateChange(id, state) {
             if (adapter.config.Path2GuestsPresentDP.length > 0) {
 
                 if (id.includes(adapter.config.Path2GuestsPresentDP)) {
-                    const guestpresent = await adapter.getForeignStateAsync(id);
+                    //const guestpresent = await adapter.getForeignStateAsync(id);
+
+                    let guestpresent = false;
+                    if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
+
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        adapter.log.debug("ZZZ check bool " + JSON.stringify(nTemp));
+
+                        guestpresent = nTemp.val;
+                    }
+                    else {
+
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        adapter.log.debug("ZZZ check number " + JSON.stringify(nTemp) + " limit " + adapter.config.Path2GuestsPresentDPLimit);
+
+                        if (nTemp.val > adapter.config.Path2GuestsPresentDPLimit) {
+                            guestpresent = true;
+                        }
+
+                    }
 
                     //heatingcontrol.0.GuestsPresent
-                    await adapter.setStateAsync("GuestsPresent", { val: guestpresent.val, ack: true });
+                    await adapter.setStateAsync("GuestsPresent", { val: guestpresent, ack: true });
                     bHandled = true;
                 }
             }
@@ -5557,7 +5578,7 @@ async function CheckAllExternalStates() {
                 adapter.log.debug("got Present (2) " + JSON.stringify(nTemp));
 
                 if (nTemp !== null && typeof nTemp !== undefined) {
-                    if (nTemp.val > 0) {
+                    if (nTemp.val > adapter.config.Path2PresentDPLimit) {
                         present = true;
                     }
                 }
@@ -5609,12 +5630,38 @@ async function CheckAllExternalStates() {
         adapter.log.debug("checking Path2GuestsPresentDP");
         if (adapter.config.Path2GuestsPresentDP.length > 0) {
 
-            const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
+            //const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
+
+            let guestspresent = null;
+            if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
+
+                const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
+
+                adapter.log.debug("got GuestPresent (1) " + JSON.stringify(nTemp));
+
+                if (nTemp !== null && typeof nTemp !== undefined) {
+                    guestspresent = nTemp.val;
+                }
+            }
+            else {
+
+                const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
+
+                adapter.log.debug("got GuestPresent (2) " + JSON.stringify(nTemp));
+
+                if (nTemp !== null && typeof nTemp !== undefined) {
+                    if (nTemp.val > adapter.config.Path2GuestsPresentDPLimit) {
+                        guestspresent = true;
+                    }
+                }
+            }
+
+
 
             if (guestspresent !== null && typeof guestspresent !== undefined) {
                 //heatingcontrol.0.GuestsPresent
                 adapter.log.info("setting GuestsPresent to " + guestspresent.val);
-                await adapter.setStateAsync("GuestsPresent", { val: guestspresent.val, ack: true });
+                await adapter.setStateAsync("GuestsPresent", { val: guestspresent, ack: true });
             }
             else {
                 adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2GuestsPresentDP + " not found");

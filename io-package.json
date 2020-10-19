@@ -205,6 +205,10 @@
     "PittiniPathImageWindowOpen": "",
     "PittiniPathImageWindowClosed": "",
     "ActorBeforeOnDelay": 0,
-    "ActorBeforeOffDelay": 0
+    "ActorBeforeOffDelay": 0,
+    "Path2PresentDPLimit": 0,
+    "Path2GuestsPresentDPType": 1,
+    "Path2GuestsPresentDPLimit": 0
+
   }
 }
