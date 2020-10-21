@@ -291,7 +291,7 @@ class HeatingControlVis {
             else {
                 this.ChoosenRoom = dummy; //Wenn nur ein Raum in Raumliste, diesen verwenden
             }
-            await this.adapter.setStateAsync(this.praefix + "ChoosenRoom", this.ChoosenRoom); //Bei Erststart ChoosenRoom auf default= erster in der Raumliste setzen
+            await this.adapter.setStateAsync(this.praefix + "ChoosenRoom", { ack: true, val: this.ChoosenRoom }); //Bei Erststart ChoosenRoom auf default= erster in der Raumliste setzen
         }
         this.log("D","InitRoom done, choosen room is " + this.ChoosenRoom);
     }
@@ -358,8 +358,8 @@ class HeatingControlVis {
         HtmlTable = HtmlTable + "</table></div>"
         log(HtmlTable)
     
-        setState(praefix + "OpenWindowRoomCount", OpenWindowRoomCount);
-        setState(praefix + "WindowStatesHtmlTable", HtmlTable)
+        setState(praefix + "OpenWindowRoomCount", { ack: true, val: OpenWindowRoomCount});
+        setState(praefix + "WindowStatesHtmlTable",{ ack: true, val: HtmlTable})
     
     }
     */
@@ -379,8 +379,8 @@ class HeatingControlVis {
             }
             HtmlTable = HtmlTable + '<div class="mdui-label">' + this.Rooms[x] + '<div class="mdui-subtitle">seit ' + this.WindowStateTimeStamp[x] + "</div></div></div>";
         }
-        await this.adapter.setStateAsync(this.praefix + "WindowStatesHtmlTable", HtmlTable);
-        await this.adapter.setStateAsync(this.praefix + "OpenWindowRoomCount", this.OpenWindowRoomCount);
+        await this.adapter.setStateAsync(this.praefix + "WindowStatesHtmlTable", { ack: true, val: HtmlTable });
+        await this.adapter.setStateAsync(this.praefix + "OpenWindowRoomCount", { ack: true, val: this.OpenWindowRoomCount });
         this.log("D",HtmlTable);
 
         this.log("D","CreateWindowStatesTable done ");
@@ -391,9 +391,10 @@ class HeatingControlVis {
         if (this.RefreshingVis === false) {
             this.log("D",typeof (ScriptDpVal));
             //this.log("Reaching SetTimeTempValue");
-            this.log("D","SetTimeTempValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What + " set to " + ScriptDpVal);
+            const id = this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What; 
+            this.log("D","SetTimeTempValue: " + id + " set to " + ScriptDpVal);
 
-            await this.adapter.setStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + ProfileDays + ".Periods." + Period + "." + What, ScriptDpVal);
+            await this.adapter.setStateAsync(id, { ack: true, val: ScriptDpVal });
         }
     }
 
@@ -401,8 +402,9 @@ class HeatingControlVis {
     async SetDecreaseValue(What, ScriptDpVal) {//Werte vom Vis, Bereich Absenkungen, in AdapterDPs schreiben
         if (this.RefreshingVis === false) {
             //this.log("Reaching SetDecreaseValue");
-            this.log("D","SetDecreaseValue: " + this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What + " set to " + ScriptDpVal);
-            await this.adapter.setStateAsync(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What, ScriptDpVal);
+            const id = this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + What;
+            this.log("D","SetDecreaseValue: " +  + " set to " + ScriptDpVal);
+            await this.adapter.setStateAsync(id, { ack: true, val: ScriptDpVal });
         }
     }
 
@@ -420,7 +422,7 @@ class HeatingControlVis {
         const state = this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen";
         this.log("D","Reaching SetWindowState for " + state);
         const temp = await this.GetValue(state);
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", temp);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", { ack: true, val: temp });
     }
 
     //==========================================================================================================================
@@ -468,86 +470,86 @@ class HeatingControlVis {
             case "Mo - Su":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Su.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Su.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Su.Periods." + x + ".time", { ack: true, val: temp });
                 }
                 break;
             case "Mo - Fr / Sa - Su":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Fr.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mo-Fr.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mo-Fr.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sa-So.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sa-So.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sa-So.Periods." + x + ".time", { ack: true, val: temp });
                 }
                 break;
             case "every Day":
                 for (let x = 0; x <= this.NumberOfPeriods - 1; x++) {
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mon.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mon.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mon.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Mon.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mon.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Mon.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Tue.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Tue.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Tue.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Tue.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Tue.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Tue.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Wed.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Wed.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Wed.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Wed.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Wed.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Wed.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Thu.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Thu.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Thu.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Thu.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Thu.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Thu.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Fri.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Fri.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Fri.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Fri.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Fri.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Fri.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sat.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sat.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sat.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sat.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sat.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sat.Periods." + x + ".time", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sun.Periods." + x + ".Temperature");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sun.Periods." + x + ".Temperature", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sun.Periods." + x + ".Temperature", { ack: true, val: temp });
                     temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + "Sun.Periods." + x + ".time");
-                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sun.Periods." + x + ".time", temp);
+                    await this.adapter.setStateAsync(this.praefix + "ProfileTypes.Sun.Periods." + x + ".time", { ack: true, val: temp });
                 }
                 break;
         }
         //DecreaseMode Werte setzen
         temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + "AbsentDecrease");
-        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "AbsentDecrease", temp);
+        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "AbsentDecrease", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + "GuestIncrease");
-        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "GuestIncrease", temp);
+        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "GuestIncrease", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + "PartyDecrease");
-        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "PartyDecrease", temp);
+        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "PartyDecrease", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + "VacationAbsentDecrease");
-        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "VacationAbsentDecrease", temp);
+        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "VacationAbsentDecrease", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Profiles." + this.CurrentProfile + "." + this.ChoosenRoom + "." + this.TempDecreaseMode + "." + "WindowOpenDecrease");
-        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "WindowOpenDecrease", temp);
+        await this.adapter.setStateAsync(this.praefix + "TempDecreaseValues." + "WindowOpenDecrease", { ack: true, val: temp });
 
         //Raum Werte setzen
         if (this.MinimumTemperatureUsed) {
             temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "MinimumTemperature");
-            await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", temp);
+            await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", { ack: true, val: temp });
         }
         else {
-            await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", 0);
+            await this.adapter.setStateAsync(this.praefix + "RoomValues." + "MinimumTemperature", { ack: true, val: 0 });
             this.log("D","MinimumTemp skipping entry and showing 0");
         }
 
         temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "TemperaturOverride");
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "TemperaturOverride", temp);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "TemperaturOverride", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "TemperaturOverrideTime");
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "TemperaturOverrideTime", temp);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "TemperaturOverrideTime", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "WindowIsOpen");
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", temp);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "WindowIsOpen", { ack: true, val: temp });
         temp = await this.GetValue(this.hcpraefix + "Rooms." + this.ChoosenRoom + "." + "ActiveTimeSlot");
-        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", temp);
+        await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", { ack: true, val: temp });
 
 
         this.RefreshingVis = false;
@@ -566,14 +568,14 @@ class HeatingControlVis {
 
         switch (this.TempDecreaseMode) {
             case "relative":
-                await this.adapter.setStateAsync(this.praefix + "TempValueListValue", this.RelTempValueListValue);
-                await this.adapter.setStateAsync(this.praefix + "TempAddValueListText", this.RelTempAddValueListText);
-                await this.adapter.setStateAsync(this.praefix + "TempDivValueListText", this.RelTempDivValueListText);
+                await this.adapter.setStateAsync(this.praefix + "TempValueListValue", { ack: true, val: this.RelTempValueListValue });
+                await this.adapter.setStateAsync(this.praefix + "TempAddValueListText", { ack: true, val: this.RelTempAddValueListText });
+                await this.adapter.setStateAsync(this.praefix + "TempDivValueListText", { ack: true, val: this.RelTempDivValueListText });
                 break;
             case "absolute":
-                await this.adapter.setStateAsync(this.praefix + "TempValueListValue", this.AbsTempValueListValue);
-                await this.adapter.setStateAsync(this.praefix + "TempAddValueListText", this.AbsTempValueListText);
-                await this.adapter.setStateAsync(this.praefix + "TempDivValueListText", this.AbsTempValueListText);
+                await this.adapter.setStateAsync(this.praefix + "TempValueListValue", { ack: true, val: this.AbsTempValueListValue });
+                await this.adapter.setStateAsync(this.praefix + "TempAddValueListText", { ack: true, val: this.AbsTempValueListText });
+                await this.adapter.setStateAsync(this.praefix + "TempDivValueListText", { ack: true, val: this.AbsTempValueListText });
                 break;
         }
         this.log("D","SetTempDecreaseModeValueLists done");
@@ -597,8 +599,8 @@ class HeatingControlVis {
         ProfileValueListValue = ProfileValueListValue.slice(1);
         ProfileValueListText = ProfileValueListText.slice(1);
 
-        await this.adapter.setStateAsync(this.praefix + "ProfileValueListValue", ProfileValueListValue);
-        await this.adapter.setStateAsync(this.praefix + "ProfileValueListText", ProfileValueListText);
+        await this.adapter.setStateAsync(this.praefix + "ProfileValueListValue", { ack: true, val: ProfileValueListValue });
+        await this.adapter.setStateAsync(this.praefix + "ProfileValueListText", { ack: true, val: ProfileValueListText });
 
         this.log("D","SetProfileValueList done");
     }
@@ -706,7 +708,7 @@ class HeatingControlVis {
         else if (ids[4] === "ActiveTimeSlot") {
             this.log("D","HandleStateChanges ActiveTimeSlot " + state.val);
             if (this.RefreshingVis === false) {
-                await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", state.val);//Wenn Änderung des akuellen Zeitslots im aktuell gewählten Raum
+                await this.adapter.setStateAsync(this.praefix + "RoomValues." + "CurrentTimePeriod", { ack: true, val: state.val });//Wenn Änderung des akuellen Zeitslots im aktuell gewählten Raum
             }
         }
         else if (ids[4] == "WindowIsOpen") {
