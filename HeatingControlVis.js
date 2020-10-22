@@ -240,7 +240,8 @@ class HeatingControlVis {
             await this.adapter.setObjectNotExistsAsync(this.states[i].id, {
                 type: "state",
                 common: this.states[i].common,
-                val: this.states[i].initial
+                val: this.states[i].initial,
+                ack: true
             });
         }
 

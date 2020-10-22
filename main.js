@@ -354,7 +354,8 @@ async function ListRooms(obj) {
                     isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
                     WindowIsOpen: false,
                     TempOverride: false,
-                    TempOverrideDue: ""
+                    TempOverrideDue: "",
+                    ChangeFromThermostateUntilNextProfilepoint: false
                 });
             }
 
