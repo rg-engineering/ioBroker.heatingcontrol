@@ -5068,8 +5068,9 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             daysName = "Mo-Su";
 
         }
+
         if (period >= 0) {
-            ActiveTimeSlot += currentPeriod;
+            ActiveTimeSlot = currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
 

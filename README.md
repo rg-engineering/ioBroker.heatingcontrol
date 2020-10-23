@@ -171,7 +171,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 1.1.0 (2020-10-xx)
 * (René) see issue #132: timer before on and off for actuators 
 * (René) see issue #143: additional checks to avoid unneccessary override 
-* (René) see issue #140: use guests present also as counter like present (as a option); add adjustable limit for present and guest present
+* (René) see issue #140: use guests present and party now DP's also as counter like present (as a option); add adjustable counter limit for present, party now and guest present
 * (René) see issue #145: avoid reset of target temperatur by profile settings in option "until next profil point" when set by thermostat 
 
 ### 1.0.0 (2020-10-09)
