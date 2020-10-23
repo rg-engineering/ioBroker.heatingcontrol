@@ -146,6 +146,14 @@
                 $('.col_Path2GuestsPresentDPLimit').show();
             }
 
+            var TypeDPPartyNow = $('#Path2PartyNowDPType')[0].value
+            if (TypeDPPartyNow == 1) {
+                $('.col_Path2PartyNowDPLimit').hide();
+            }
+            else {
+                $('.col_Path2PartyNowDPLimit').show();
+            }
+
             var ThermostatModeIfNoHeatingperiod = $('#ThermostatModeIfNoHeatingperiod')[0].value;
 
             if (ThermostatModeIfNoHeatingperiod == 2) {
@@ -1031,6 +1039,21 @@
                                     <input type="text" id="Path2PartyNowDP" class="value" />
                                     <label for="Path2PartyNowDP" class="translate">Path2PartyNowDP</label>
                                 </div>
+
+                                <div class="input-field col s3">
+                                    <select id="Path2PartyNowDPType" class="value">
+                                        <option value="1" class="translate">boolean</option>
+                                        <option value="2" class="translate">number</option>
+                                    </select>
+                                    <label for="Path2PartyNowDPType" class="translate">Path2PartyNowDPType</label>
+                                </div>
+
+
+                                <div class="input-field col s3 col_Path2PartyNowDPLimit">
+                                    <input type="number" id="Path2PartyNowDPLimit" class="value" min="0" step="1" />
+                                    <label for="Path2PartyNowDPLimit" class="translate">Path2PartyNowDPLimit</label>
+                                </div>
+
                             </div>
                         </div>
                     </li>

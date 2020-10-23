@@ -1291,11 +1291,19 @@ async function CreateDatepoints() {
 
         //===========================================================
         key = "Present";
+        let DPType = "boolean";
+        if (parseInt(adapter.config.Path2PresentDPType) === 1) {
+            DPType = "boolean";
+        }
+        else {
+            DPType = "number";
+        }
+
         await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "Present",
-                type: "boolean",
+                type: DPType,
                 role: "value",
                 unit: "",
                 read: true,
@@ -1307,9 +1315,10 @@ async function CreateDatepoints() {
 
         if (obj != null) {
 
-            if (obj.common.role != "value") {
+            if (obj.common.role != "value" || obj.common.type != DPType) {
                 await adapter.extendObject(key, {
                     common: {
+                        type: DPType,
                         role: "value",
                     }
                 });
@@ -1318,11 +1327,17 @@ async function CreateDatepoints() {
 
         //===========================================================
         key = "PartyNow";
+        if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
+            DPType = "boolean";
+        }
+        else {
+            DPType = "number";
+        }
         await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "PartyNow",
-                type: "boolean",
+                type: DPType,
                 role: "value",
                 unit: "",
                 read: true,
@@ -1334,9 +1349,10 @@ async function CreateDatepoints() {
 
         if (obj != null) {
 
-            if (obj.common.role != "value") {
+            if (obj.common.role != "value" || obj.common.type != DPType) {
                 await adapter.extendObject(key, {
                     common: {
+                        type: DPType,
                         role: "value",
                     }
                 });
@@ -1345,11 +1361,17 @@ async function CreateDatepoints() {
 
         //===========================================================
         key = "GuestsPresent";
+        if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
+            DPType = "boolean";
+        }
+        else {
+            DPType = "number";
+        }
         await adapter.setObjectNotExistsAsync(key, {
             type: "state",
             common: {
                 name: "GuestsPresent",
-                type: "boolean",
+                type: DPType,
                 role: "value",
                 unit: "",
                 read: true,
@@ -1361,9 +1383,10 @@ async function CreateDatepoints() {
 
         if (obj != null) {
 
-            if (obj.common.role != "value") {
+            if (obj.common.role != "value" || obj.common.type != DPType) {
                 await adapter.extendObject(key, {
                     common: {
+                        type: DPType,
                         role: "value",
                     }
                 });
@@ -2991,7 +3014,7 @@ async function HandleStateChange(id, state) {
 
                         const nTemp = await adapter.getForeignStateAsync(id);
 
-                        adapter.log.debug("ZZZ check bool " + JSON.stringify(nTemp));
+                        adapter.log.debug("guest present check bool " + JSON.stringify(nTemp));
 
                         guestpresent = nTemp.val;
                     }
@@ -2999,7 +3022,7 @@ async function HandleStateChange(id, state) {
 
                         const nTemp = await adapter.getForeignStateAsync(id);
 
-                        adapter.log.debug("ZZZ check number " + JSON.stringify(nTemp) + " limit " + adapter.config.Path2GuestsPresentDPLimit);
+                        adapter.log.debug("guest present check number " + JSON.stringify(nTemp) + " limit " + adapter.config.Path2GuestsPresentDPLimit);
 
                         if (nTemp.val > adapter.config.Path2GuestsPresentDPLimit) {
                             guestpresent = true;
@@ -3016,10 +3039,33 @@ async function HandleStateChange(id, state) {
             if (adapter.config.Path2PartyNowDP.length > 0) {
 
                 if (id.includes(adapter.config.Path2PartyNowDP)) {
-                    const partynow = await adapter.getForeignStateAsync(id);
+                    //const partynow = await adapter.getForeignStateAsync(id);
+
+                    let partynow = false;
+                    if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
+
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        adapter.log.debug("party now check bool " + JSON.stringify(nTemp));
+
+                        partynow = nTemp.val;
+                    }
+                    else {
+
+                        const nTemp = await adapter.getForeignStateAsync(id);
+
+                        adapter.log.debug("party now check number " + JSON.stringify(nTemp) + " limit " + adapter.config.Path2PartyNowDPLimit);
+
+                        if (nTemp.val > adapter.config.Path2PartyNowDPLimit) {
+                            partynow = true;
+                        }
+
+                    }
+
+
 
                     //heatingcontrol.0.PartyNow
-                    await adapter.setStateAsync("PartyNow", { val: partynow.val, ack: true });
+                    await adapter.setStateAsync("PartyNow", { val: partynow, ack: true });
                     bHandled = true;
                 }
             }
@@ -5561,7 +5607,7 @@ async function CheckAllExternalStates() {
         adapter.log.debug("checking Path2PresentDP");
         if (adapter.config.Path2PresentDP.length > 0) {
 
-            let present = null;
+            let present = false;
             if (parseInt(adapter.config.Path2PresentDPType) === 1) {
 
                 const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2PresentDP);
@@ -5570,6 +5616,9 @@ async function CheckAllExternalStates() {
 
                 if (nTemp !== null && typeof nTemp !== undefined) {
                     present = nTemp.val;
+                }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PresentDP + " not found");
                 }
             }
             else {
@@ -5583,17 +5632,16 @@ async function CheckAllExternalStates() {
                         present = true;
                     }
                 }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PresentDP + " not found");
+                }
             }
 
-            if (present !== null && typeof present !== undefined) {
-                //heatingcontrol.0.Present
-                adapter.log.info("setting Present to " + present);
-                await adapter.setStateAsync("Present", { val: present, ack: true });
-            }
-            else {
-                adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PresentDP + " not found");
-                await adapter.setStateAsync("Present", { val: false, ack: true });
-            }
+            //heatingcontrol.0.Present
+            adapter.log.info("setting Present to " + present);
+            await adapter.setStateAsync("Present", { val: present, ack: true });
+
+
         }
         else {
             const present = await adapter.getStateAsync("Present");
@@ -5633,7 +5681,7 @@ async function CheckAllExternalStates() {
 
             //const guestspresent = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
 
-            let guestspresent = null;
+            let guestspresent = false;
             if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
 
                 const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2GuestsPresentDP);
@@ -5642,6 +5690,9 @@ async function CheckAllExternalStates() {
 
                 if (nTemp !== null && typeof nTemp !== undefined) {
                     guestspresent = nTemp.val;
+                }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2GuestsPresentDP + " not found");
                 }
             }
             else {
@@ -5655,19 +5706,15 @@ async function CheckAllExternalStates() {
                         guestspresent = true;
                     }
                 }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2GuestsPresentDP + " not found");
+                }
             }
 
+            //heatingcontrol.0.GuestsPresent
+            adapter.log.info("setting GuestsPresent to " + guestspresent);
+            await adapter.setStateAsync("GuestsPresent", { val: guestspresent, ack: true });
 
-
-            if (guestspresent !== null && typeof guestspresent !== undefined) {
-                //heatingcontrol.0.GuestsPresent
-                adapter.log.info("setting GuestsPresent to " + guestspresent.val);
-                await adapter.setStateAsync("GuestsPresent", { val: guestspresent, ack: true });
-            }
-            else {
-                adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2GuestsPresentDP + " not found");
-                await adapter.setStateAsync("GuestsPresent", { val: false, ack: true });
-            }
         }
         else {
             const guestspresent = await adapter.getStateAsync("GuestsPresent");
@@ -5681,17 +5728,41 @@ async function CheckAllExternalStates() {
         adapter.log.debug("checking Path2PartyNowDP");
         if (adapter.config.Path2PartyNowDP.length > 0) {
 
-            const partynow = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
+            //const partynow = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
 
-            if (partynow !== null && typeof partynow !== undefined) {
-                //heatingcontrol.0.PartyNow
-                adapter.log.info("setting PartyNow to " + partynow.val);
-                await adapter.setStateAsync("PartyNow", { val: partynow.val, ack: true });
+            let partynow = false;
+            if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
+
+                const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
+
+                adapter.log.debug("party now check bool " + JSON.stringify(nTemp));
+                if (nTemp !== null && typeof nTemp !== undefined) {
+                    partynow = nTemp.val;
+                }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PartyNowDP + " not found");
+                }
             }
             else {
-                adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PartyNowDP + " not found");
-                await adapter.setStateAsync("PartyNow", { val: false, ack: true });
+
+                const nTemp = await adapter.getForeignStateAsync(adapter.config.Path2PartyNowDP);
+
+                adapter.log.debug("party now check number " + JSON.stringify(nTemp) + " limit " + adapter.config.Path2PartyNowDPLimit);
+
+                if (nTemp !== null && typeof nTemp !== undefined) {
+                    if (nTemp.val > adapter.config.Path2PartyNowDPLimit) {
+                        partynow = true;
+                    }
+                }
+                else {
+                    adapter.log.warn("CheckAllExternalStates (set default): " + adapter.config.Path2PartyNowDP + " not found");
+                }
             }
+
+            //heatingcontrol.0.PartyNow
+            adapter.log.info("setting PartyNow to " + partynow);
+            await adapter.setStateAsync("PartyNow", { val: partynow, ack: true });
+
         }
         else {
             const partynow = await adapter.getStateAsync("PartyNow");

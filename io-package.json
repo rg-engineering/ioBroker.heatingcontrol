@@ -208,7 +208,9 @@
     "ActorBeforeOffDelay": 0,
     "Path2PresentDPLimit": 0,
     "Path2GuestsPresentDPType": 1,
-    "Path2GuestsPresentDPLimit": 0
+    "Path2GuestsPresentDPLimit": 0,
+    "Path2PartyNowDPType": 1,
+    "Path2PartyNowDPLimit": 0
 
   }
 }
