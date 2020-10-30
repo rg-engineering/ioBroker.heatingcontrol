@@ -259,35 +259,10 @@
         }
 
 
-        var timeout1;
-        var DeviceList = [];
-        function getDevices(onChange, instance) {
-            timeout1 = setTimeout(function () {
-                getDevices(onChange, instance);
-            }, 4000);
-
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listDevices', null, function (list) {
-                if (timeout1) {
-                    clearTimeout(timeout1);
-                    timeout1 = null;
-                }
-
-                DeviceList = list;
-
-                console.log('got devices ' + JSON.stringify(DeviceList));
-
-            });
-        }
-
-
-
-
-
         var timeout3;
         function getNewRooms(onChange, instance) {
             timeout3 = setTimeout(function () {
-                getNewRooms(onChange, instance);
+                console.log('timeout in getNewRooms');
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
@@ -299,18 +274,70 @@
 
                 console.log('got new rooms ' + JSON.stringify(obj));
 
-
-
-
-
                 onChange(true);
-
-
-
 
             });
         }
 
+        var timeout4;
+        function getNewThermostats(onChange, instance, room) {
+            timeout4 = setTimeout(function () {
+                console.log('timeout in getNewThermostats');
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listNewThermostats', room, function (obj) {
+                if (timeout4) {
+                    clearTimeout(timeout4);
+                    timeout4 = null;
+                }
+
+                console.log('got new thermostats ' + JSON.stringify(obj));
+
+                onChange(true);
+
+            });
+        }
+
+        var timeout5;
+        function getNewActors(onChange, instance, room) {
+            timeout5 = setTimeout(function () {
+                console.log('timeout in getNewActors');
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listNewActors', room, function (obj) {
+                if (timeout5) {
+                    clearTimeout(timeout5);
+                    timeout5 = null;
+                }
+
+                console.log('got new actors ' + JSON.stringify(obj));
+
+                onChange(true);
+
+            });
+        }
+
+        var timeout6;
+        function getNewSensors(onChange, instance,room) {
+            timeout6 = setTimeout(function () {
+                console.log('timeout in getNewSensors');
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listNewSensors', room, function (obj) {
+                if (timeout6) {
+                    clearTimeout(timeout6);
+                    timeout6 = null;
+                }
+
+                console.log('got new sensors ' + JSON.stringify(obj));
+
+                onChange(true);
+
+            });
+        }
 
         var myOnChange = null;
         function OnChange() {
@@ -417,8 +444,49 @@
 
                 getNewRooms(onChange, _id);
 
+                console.log('Übernahme neue Räume fehlt noch ' + _id);
 
             });
+
+            var $check4newthermostats = $('#check4newthermostats');
+            $check4newthermostats.click(function () {
+                console.log('check 4 new thermostats');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+                getNewThermostats(onChange, _id);
+
+                console.log('Übernahme neue Thermostate fehlt noch ' + _id);
+
+            });
+
+            var $check4newactors = $('#check4newactors');
+            $check4newactors.click(function () {
+                console.log('check 4 new actors');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+                getNewActors(onChange, _id);
+
+                console.log('Übernahme neue Aktoren fehlt noch ' + _id);
+
+            });
+
+            var $check4newsensors = $('#check4newsensors');
+            $check4newsensors.click(function () {
+                console.log('check 4 new sensors');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+                getNewSensors(onChange, _id);
+
+                console.log('Übernahme neue Sensoren fehlt noch ' + _id);
+
+            });
+
 
             myOnChange = onChange;
             // Signal to admin, that no changes yet
@@ -514,12 +582,6 @@
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
-
-
-
-
-
-
 
                         //now update DeviceList
 
