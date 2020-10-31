@@ -3387,7 +3387,7 @@ async function HandleStateChangeDevices(id, state) {
 
             if (devices[d].type === 1) {//thermostat
 
-                adapter.log.debug("### change from thermostat got " + devicetype);
+                adapter.log.debug("### value from thermostat got " + devicetype);
                 const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
                 //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
@@ -5034,7 +5034,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         adapter.log.error("could not read current active time slot in FindNextPeriod");
     }
 
-    
+
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -5069,7 +5069,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
         }
 
-        if (period >= 0) {
+        if (currentPeriod >= 0) {
             ActiveTimeSlot = currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5129,7 +5129,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 sNextTime = nextTimes;
             }
         }
-        if (period >= 0) {
+        if (currentPeriod >= 0) {
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5219,7 +5219,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             }
 
         }
-        if (period >= 0) {
+        if (currentPeriod >= 0) {
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5231,7 +5231,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     }
 
 
-    if (ActiveTimeSlot > -1 && CurrentActiveTimeSlot > -1 && CurrentActiveTimeSlot != ActiveTimeSlot) {
+    if (currentPeriod > -2 && ActiveTimeSlot > -1 && CurrentActiveTimeSlot > -1 && CurrentActiveTimeSlot != ActiveTimeSlot) {
         adapter.log.debug("we are in new time period");
         isNewPeriod = true;
     }
@@ -5245,7 +5245,14 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         IsNewPeriod: isNewPeriod
     };
 
-    adapter.log.debug(adapter.config.rooms[room].name + " found " + (isNewPeriod ? " new " : " ") + "period  " + currentPeriod + " with target " + nextTemperature + " on " + sNextTime[0] + ":" + sNextTime[1]);
+    const text = adapter.config.rooms[room].name + " found " + (isNewPeriod ? " new " : " ") + "period  " + currentPeriod + " with target " + nextTemperature;
+    if (sNextTime != null) {
+
+        adapter.log.debug(text + " on " + sNextTime[0] + ":" + sNextTime[1]);
+    }
+    else {
+        adapter.log.debug(text + " on undefined next time ");
+    }
 
     return ret;
 }
