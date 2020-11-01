@@ -26,7 +26,7 @@ const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 //======================================
 //V2.x
 //this is just to enable V2.x features for test only
-const UseV2 = false;
+const UseV2 = true;
 let CreateDatapoints = null;
 let SetDefaults = null;
 let CreateDatabase = null;
