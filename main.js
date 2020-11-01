@@ -10,6 +10,10 @@
 /*jslint node: true */
 "use strict";
 
+
+
+
+
 // you have to require the utils module and call adapter function
 const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
@@ -19,6 +23,20 @@ const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
 const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
 const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 
+//======================================
+//V2.x
+//this is just to enable V2.x features for test only
+const UseV2 = false;
+let CreateDatapoints = null;
+let SetDefaults = null;
+let CreateDatabase = null;
+if (UseV2) {
+    CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
+    SetDefaults = require("./lib/datapoints").SetDefaults;
+
+
+    CreateDatabase = require("./lib/database").CreateDatabase;
+}
 
 let vis = null;
 
@@ -212,6 +230,21 @@ async function main() {
         }
 
         await CreateDatepoints();
+
+        //======================================
+        //V2.x
+        if (UseV2) {
+
+            adapter.log.error("V2.x featureas are enabled; please inform developer about ");
+
+            await CreateDatabase(adapter);
+
+            //await CreateDatapoints(adapter);
+            //await SetDefaults(adapter);
+            //await SetInfo();
+            //await SetCurrent();
+        }
+
 
         //SystemDateFormat = await GetSystemDateformat();
 
@@ -785,6 +818,9 @@ async function CreateStates4Period(id, period) {
     //we want to be informed when this is changed by vis or others
     adapter.subscribeStates(id + ".Temperature");
 }
+
+
+
 
 
 //#######################################
