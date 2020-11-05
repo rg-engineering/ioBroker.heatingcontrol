@@ -10,7 +10,6 @@
 /*jslint node: true */
 "use strict";
 
-
 // you have to require the utils module and call adapter function
 const utils = require("@iobroker/adapter-core");
 const CronJob = require("cron").CronJob;
@@ -20,30 +19,6 @@ const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
 const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
 const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 
-const timeConverter = require("./lib/support_tools.js").timeConverter;
-const CheckValidTime = require("./lib/support_tools.js").CheckValidTime;
-
-
-//======================================
-//V2.x
-//this is just to enable V2.x features for test only
-const UseV2 = true;
-let CreateDatapoints = null;
-let SetDefaults = null;
-let CreateDatabase = null;
-let CreateCronJobs = null;
-let ChangeStatus = null;
-
-if (UseV2) {
-    CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
-    SetDefaults = require("./lib/datapoints").SetDefaults;
-
-
-    CreateDatabase = require("./lib/database").CreateDatabase;
-    ChangeStatus = require("./lib/database").ChangeStatus;
-
-    CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
-}
 
 let vis = null;
 
@@ -238,69 +213,47 @@ async function main() {
 
         await CreateDatepoints();
 
-        //======================================
-        //V2.x
-        if (UseV2) {
+        //SystemDateFormat = await GetSystemDateformat();
 
-            adapter.log.error("V2.x featureas are enabled; please inform developer about ");
+        SearchActorsWithoutThermostat();
 
-            await CreateDatabase(adapter);
+        await checkHeatingPeriod();
 
-            await CreateDatapoints(adapter);
-            await SetDefaults(adapter);
-            //await SetInfo();
-            //await SetCurrent();
+        await CalculateNextTime();
 
+        //need to check all WindowSensors per Room
+        await CheckAllWindowSensors();
 
-            const currentProfile = await GetCurrentProfile();
-            await CreateCronJobs(adapter, currentProfile, ChangeStatus);
-            //StartTestCron();
-        }
-        else {
+        await CheckAllActors();
 
-            //SystemDateFormat = await GetSystemDateformat();
+        await CheckAllExternalStates();
 
-            SearchActorsWithoutThermostat();
+        await CheckTemperatureChange();
 
-            await checkHeatingPeriod();
+        await SubscribeStates();
 
-            await CalculateNextTime();
+        SystemLanguage = await GetSystemLanguage();
 
-            //need to check all WindowSensors per Room
-            await CheckAllWindowSensors();
+        if (adapter.config.UseVisFromPittini) {
+            adapter.log.info("starting vis");
 
-            await CheckAllActors();
+            const myVis = require("./HeatingControlVis");
+            adapter.log.info("starting vis part 2");
+            vis = new myVis(adapter);
 
-            await CheckAllExternalStates();
+            
+            vis.SetLanguage(SystemLanguage);
 
-            await CheckTemperatureChange();
-
-            await SubscribeStates();
-
-            SystemLanguage = await GetSystemLanguage();
-
-            if (adapter.config.UseVisFromPittini) {
-                adapter.log.info("starting vis");
-
-                const myVis = require("./HeatingControlVis");
-                adapter.log.info("starting vis part 2");
-                vis = new myVis(adapter);
-
-
-                vis.SetLanguage(SystemLanguage);
-
-                if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
-                    adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
-                    vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
-                }
-                if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
-                    adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
-                    vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
-                }
-
+            if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
+                adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
+                vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
             }
-        }
+            if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
+                adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
+                vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
+            }
 
+        }
     }
     catch (e) {
         adapter.log.error("exception in  main [" + e + "]");
@@ -832,9 +785,6 @@ async function CreateStates4Period(id, period) {
     //we want to be informed when this is changed by vis or others
     adapter.subscribeStates(id + ".Temperature");
 }
-
-
-
 
 
 //#######################################
@@ -3238,7 +3188,7 @@ async function HandleStateChangeGeneral(id, state) {
     //heatingcontrol.0.Profiles.0.Arbeitszimmer.Mo-Fr.Periods.0.time 
     if (ids[8] === "time") {
 
-        if (CheckValidTime(adapter,id, state)) {
+        if (CheckValidTime(id, state)) {
 
             const sTime = ConvertToTime(state.val);
 
@@ -3332,7 +3282,7 @@ async function HandleStateChangeGeneral(id, state) {
     }
     if (ids[4] === "TemperaturOverrideTime" && ids[3] !== "RoomValues") {
 
-        if (CheckValidTime(adapter, id, state)) {
+        if (CheckValidTime(id, state)) {
 
             const sTime = ConvertToTime(state.val);
 
@@ -3437,7 +3387,7 @@ async function HandleStateChangeDevices(id, state) {
 
             if (devices[d].type === 1) {//thermostat
 
-                adapter.log.debug("### value from thermostat got " + devicetype);
+                adapter.log.debug("### change from thermostat got " + devicetype);
                 const HeatingPeriodActive = await adapter.getStateAsync("HeatingPeriodActive");
 
                 //adapter.log.debug("got heatingperiodactivr " + JSON.stringify(HeatingPeriodActive));
@@ -4157,7 +4107,7 @@ function getCronStat() {
             //adapter.log.debug("cron jobs");
             for (n = 0; n < length; n++) {
                 if (typeof cronJobs[n] !== undefined && cronJobs[n] != null) {
-                    adapter.log.debug("cron status = " + cronJobs[n].running + " next event: " + timeConverter(SystemLanguage, cronJobs[n].nextDates()));
+                    adapter.log.debug("cron status = " + cronJobs[n].running + " next event: " + timeConverter(cronJobs[n].nextDates()));
                 }
             }
 
@@ -4190,8 +4140,44 @@ function deleteCronJob(id) {
 }
 
 
+function timeConverter(time, timeonly = false) {
 
+    let a;
+    if (time != null) {
+        a = new Date(time);
+    }
+    else {
+        a = new Date();
+    }
+    let months;
 
+    if (SystemLanguage === "de") {
+        months = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+    }
+    else {
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    }
+    const year = a.getFullYear();
+    const month = months[a.getMonth()];
+    let date = a.getDate();
+    date = date < 10 ? " " + date : date;
+    let hour = a.getHours();
+    hour = hour < 10 ? "0" + hour : hour;
+    let min = a.getMinutes();
+    min = min < 10 ? "0" + min : min;
+    let sec = a.getSeconds();
+    sec = sec < 10 ? "0" + sec : sec;
+
+    let sRet = "";
+    if (timeonly) {
+        sRet = hour + ":" + min + ":" + sec;
+    }
+    else {
+        sRet = date + " " + month + " " + year + " " + hour + ":" + min + ":" + sec;
+    }
+
+    return sRet;
+}
 
 
 //#######################################
@@ -4237,7 +4223,7 @@ async function CalculateNextTime() {
 
 
                         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        if (CheckValidTime(adapter,id, nextTime)) {
+                        if (CheckValidTime(id, nextTime)) {
                             adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
                             const nextTimes = nextTime.val.split(":"); //here we get hour and minute
 
@@ -4301,7 +4287,7 @@ async function CalculateNextTime() {
 
 
                         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        if (CheckValidTime(adapter,id, nextTime)) {
+                        if (CheckValidTime(id, nextTime)) {
                             adapter.log.debug("---1 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
                             const nextTimes = nextTime.val.split(":"); //here we get hour and minute
 
@@ -4353,7 +4339,7 @@ async function CalculateNextTime() {
 
 
                         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        if (CheckValidTime(adapter,id, nextTime)) {
+                        if (CheckValidTime(id, nextTime)) {
                             adapter.log.debug("---2 found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
                             const nextTimes = nextTime.val.split(":"); //here we get hour and minute
 
@@ -4425,7 +4411,7 @@ async function CalculateNextTime() {
 
 
                             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            if (CheckValidTime(adapter,id, nextTime)) {
+                            if (CheckValidTime(id, nextTime)) {
                                 adapter.log.debug("---found time for " + adapter.config.rooms[room].name + " at " + JSON.stringify(nextTime) + " " + nextTime.val);
                                 const nextTimes = nextTime.val.split(":"); //here we get hour and minute
 
@@ -4488,7 +4474,40 @@ async function CalculateNextTime() {
     }
 }
 
+function CheckValidTime(id, nextTime) {
 
+    let bRet = true;
+    try {
+        if (nextTime === "null" || typeof nextTime === undefined) {
+            adapter.log.error("nextTime not found for " + id);
+            bRet = false;
+        }
+        else if (typeof nextTime !== "object") {
+            adapter.log.error("nextTime  should be a object but is " + typeof nextTime + " for " + id);
+            bRet = false;
+        }
+        else if (typeof nextTime.val !== "string") {
+            adapter.log.error("nextTime.val  should be a string but is " + typeof nextTime.val + " for " + id);
+            bRet = false;
+        }
+        else if (nextTime.val.length < 3) {
+            adapter.log.error("nextTime not long enough for " + id);
+            bRet = false;
+        }
+        else if (!nextTime.val.includes(":")) {
+            adapter.log.error("nextTime ':' missing for " + id);
+            bRet = false;
+        }
+
+
+    }
+    catch (e) {
+        adapter.log.error("exception in CheckValidTime [" + e + "] for " + id + " " + JSON.stringify(nextTime));
+        bRet = false;
+    }
+    return bRet;
+
+}
 
 
 async function GetCurrentProfile() {
@@ -5015,7 +5034,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         adapter.log.error("could not read current active time slot in FindNextPeriod");
     }
 
-
+    
 
     if (parseInt(adapter.config.ProfileType, 10) === 1) {
 
@@ -5050,7 +5069,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
         }
 
-        if (currentPeriod >= 0) {
+        if (period >= 0) {
             ActiveTimeSlot = currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5110,7 +5129,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
                 sNextTime = nextTimes;
             }
         }
-        if (currentPeriod >= 0) {
+        if (period >= 0) {
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5200,7 +5219,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
             }
 
         }
-        if (currentPeriod >= 0) {
+        if (period >= 0) {
             ActiveTimeSlot += currentPeriod;
             adapter.log.debug("### set ActiveTimeSlot to   " + ActiveTimeSlot + " period " + currentPeriod);
         }
@@ -5212,7 +5231,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
     }
 
 
-    if (currentPeriod > -2 && ActiveTimeSlot > -1 && CurrentActiveTimeSlot > -1 && CurrentActiveTimeSlot != ActiveTimeSlot) {
+    if (ActiveTimeSlot > -1 && CurrentActiveTimeSlot > -1 && CurrentActiveTimeSlot != ActiveTimeSlot) {
         adapter.log.debug("we are in new time period");
         isNewPeriod = true;
     }
@@ -5226,14 +5245,7 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
         IsNewPeriod: isNewPeriod
     };
 
-    const text = adapter.config.rooms[room].name + " found " + (isNewPeriod ? " new " : " ") + "period  " + currentPeriod + " with target " + nextTemperature;
-    if (sNextTime != null) {
-
-        adapter.log.debug(text + " on " + sNextTime[0] + ":" + sNextTime[1]);
-    }
-    else {
-        adapter.log.debug(text + " on undefined next time ");
-    }
+    adapter.log.debug(adapter.config.rooms[room].name + " found " + (isNewPeriod ? " new " : " ") + "period  " + currentPeriod + " with target " + nextTemperature + " on " + sNextTime[0] + ":" + sNextTime[1]);
 
     return ret;
 }
@@ -5918,31 +5930,8 @@ function SearchActorsWithoutThermostat() {
     }
 }
 
-/*
-function StartTestCron() {
-
-    adapter.log.warn("create test cron ");
 
 
-    const cronString =  "* * * * *";
-
-    const nextCron = cronJobs.length;
-
-    //details see https://www.npmjs.com/package/cron
-    cronJobs[nextCron] = new CronJob(cronString,
-        () => TestCron("WoZi"),
-        () => adapter.log.debug("cron job stopped"), // This function is executed when the job stops
-        true,
-        adapter.config.timezone
-    );
-
-    getCronStat();
-}
-
-function TestCron(room) {
-    adapter.log.warn("cron from " + room);
-}
-*/
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {

@@ -298,6 +298,8 @@ class HeatingControlVis {
     }
 
     //==========================================================================================================================
+
+    //better to use the one from support_tools.js
     TimeConverter(UNIX_timestamp) {
 
         const a = new Date(UNIX_timestamp * 1000);

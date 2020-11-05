@@ -129,7 +129,7 @@
                 $('.col-adapternotonline').hide();
             }
 
-
+            
             var TypeDPPresent = $('#Path2PresentDPType')[0].value
             if (TypeDPPresent == 1) {
                 $('.col_Path2PresentDPLimit').hide();
@@ -259,85 +259,96 @@
         }
 
 
-        var timeout3;
-        function getNewRooms(onChange, instance) {
-            timeout3 = setTimeout(function () {
-                console.log('timeout in getNewRooms');
+        var timeout1;
+        var DeviceList = [];
+        function getDevices(onChange, instance) {
+            timeout1 = setTimeout(function () {
+                getDevices(onChange, instance);
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listNewRooms', null, function (obj) {
+            sendTo(instance, 'listDevices', null, function (list) {
+                if (timeout1) {
+                    clearTimeout(timeout1);
+                    timeout1 = null;
+                }
+
+                DeviceList = list;
+
+                console.log('got devices ' + JSON.stringify(DeviceList));
+
+            });
+        }
+
+        var timeout2;
+        function getFunctions(actualValue, onChange, instance) {
+            timeout2 = setTimeout(function () {
+                getFunctions(actualValue, onChange, instance);
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listFunctions', null, function (list) {
+                if (timeout2) {
+                    clearTimeout(timeout2);
+                    timeout2 = null;
+                }
+
+                AdapterIsOnline = true;
+
+                console.log('got functions ' + JSON.stringify(list));
+
+                var $sel = $('#Gewerk');
+                for (var i = 0; i < list.length; i++) {
+                    $sel.append('<option value="' + list[i].name + '" ' + ((actualValue == list[i].name) ? 'selected' : '') + '>' + list[i].name + '</option>');
+                }
+                $sel.select();
+
+
+                showHideSettings()
+
+            });
+        }
+
+
+        var timeout3;
+        function getRooms(onChange, instance, SearchNew) {
+            timeout3 = setTimeout(function () {
+                getRooms(onChange, instance, SearchNew);
+            }, 4000);
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listRooms', SearchNew, function (obj) {
                 if (timeout3) {
                     clearTimeout(timeout3);
                     timeout3 = null;
                 }
 
-                console.log('got new rooms ' + JSON.stringify(obj));
+                console.log('got rooms ' + JSON.stringify(obj));
 
-                onChange(true);
+                values2table('rooms', obj.list, onChange, tableRoomsOnReady);
 
-            });
-        }
+                if (SearchNew) {
+                    newRooms = obj.newRooms;
 
-        var timeout4;
-        function getNewThermostats(onChange, instance, room) {
-            timeout4 = setTimeout(function () {
-                console.log('timeout in getNewThermostats');
-            }, 4000);
+                    $('#checkResult').html(newRooms + ' new room(s) ');
 
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listNewThermostats', room, function (obj) {
-                if (timeout4) {
-                    clearTimeout(timeout4);
-                    timeout4 = null;
+                    if (newRooms > 0) {
+                        onChange(true);
+                    }
                 }
 
-                console.log('got new thermostats ' + JSON.stringify(obj));
+                //and reset deleteall
 
-                onChange(true);
+                var $deleteAll = $('#deleteall');
 
-            });
-        }
-
-        var timeout5;
-        function getNewActors(onChange, instance, room) {
-            timeout5 = setTimeout(function () {
-                console.log('timeout in getNewActors');
-            }, 4000);
-
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listNewActors', room, function (obj) {
-                if (timeout5) {
-                    clearTimeout(timeout5);
-                    timeout5 = null;
+                if ($deleteAll.prop('checked')) {
+                    console.log('### reset deleteAll');
+                    $deleteAll.prop('checked', false);
                 }
 
-                console.log('got new actors ' + JSON.stringify(obj));
-
-                onChange(true);
-
             });
         }
 
-        var timeout6;
-        function getNewSensors(onChange, instance,room) {
-            timeout6 = setTimeout(function () {
-                console.log('timeout in getNewSensors');
-            }, 4000);
-
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listNewSensors', room, function (obj) {
-                if (timeout6) {
-                    clearTimeout(timeout6);
-                    timeout6 = null;
-                }
-
-                console.log('got new sensors ' + JSON.stringify(obj));
-
-                onChange(true);
-
-            });
-        }
 
         var myOnChange = null;
         function OnChange() {
@@ -442,51 +453,10 @@
                 var _id = 'heatingcontrol.' + instance;
                 console.log('my instance ' + _id);
 
-                getNewRooms(onChange, _id);
+                getRooms(onChange, _id, true);
 
-                console.log('Übernahme neue Räume fehlt noch ' + _id);
-
-            });
-
-            var $check4newthermostats = $('#check4newthermostats');
-            $check4newthermostats.click(function () {
-                console.log('check 4 new thermostats');
-
-                var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
-
-                getNewThermostats(onChange, _id);
-
-                console.log('Übernahme neue Thermostate fehlt noch ' + _id);
 
             });
-
-            var $check4newactors = $('#check4newactors');
-            $check4newactors.click(function () {
-                console.log('check 4 new actors');
-
-                var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
-
-                getNewActors(onChange, _id);
-
-                console.log('Übernahme neue Aktoren fehlt noch ' + _id);
-
-            });
-
-            var $check4newsensors = $('#check4newsensors');
-            $check4newsensors.click(function () {
-                console.log('check 4 new sensors');
-
-                var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
-
-                getNewSensors(onChange, _id);
-
-                console.log('Übernahme neue Sensoren fehlt noch ' + _id);
-
-            });
-
 
             myOnChange = onChange;
             // Signal to admin, that no changes yet
@@ -502,19 +472,23 @@
 
             var _id = 'heatingcontrol.' + instance;
             console.log('my instance ' + _id);
-
+            getFunctions(settings.Gewerk, onChange, _id);
 
             if (typeof settings.devices !== 'undefined' && settings.devices != null && settings.devices.length > 0) {
                 DeviceList = settings.devices;
                 console.log('using devices from settings ' + JSON.stringify(DeviceList));
             }
-
+            else {
+                getDevices(onChange, _id);
+            }
 
             if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
             }
-
+            else {
+                getRooms(onChange, _id, false);
+            }
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
@@ -525,7 +499,7 @@
                     case "#tab-main":
                         loadOptions();
                         break;
-
+                    
                 }
             }
 
@@ -582,6 +556,12 @@
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
+
+
+
+
+
+
 
                         //now update DeviceList
 
@@ -947,9 +927,14 @@
                         <div class="collapsible-body">
                             <div class="row">
 
+                                <div class="input-field col s6">
+                                    <select id="Gewerk" class="value">
+                                        <option value="1" class="translate">nothing</option>
+                                    </select>
+                                    <label for="Gewerk" class="translate">Gewerk</label>
+                                </div>
 
-
-
+                                
 
 
 
@@ -962,7 +947,12 @@
                                 </div>
                             </div>
 
-
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="deleteall" class="value" />
+                                    <label for="deleteall" class="translate">deleteall</label>
+                                </div>
+                            </div>
 
 
 
@@ -995,12 +985,12 @@
                                     <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
                                 </div>
 
-
+                                
                                 <div class="input-field col s3 col_Path2PresentDPLimit">
                                     <input type="number" id="Path2PresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2PresentDPLimit" class="translate">Path2PresentDPLimit</label>
                                 </div>
-
+                               
 
                             </div>
 
@@ -1032,12 +1022,12 @@
                                     <label for="Path2GuestsPresentDPType" class="translate">Path2GuestsPresentDPType</label>
                                 </div>
 
-
+                                
                                 <div class="input-field col s3 col_Path2GuestsPresentDPLimit">
                                     <input type="number" id="Path2GuestsPresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2GuestsPresentDPLimit" class="translate">Path2GuestsPresentDPLimit</label>
                                 </div>
-
+                               
 
                             </div>
 
@@ -1302,15 +1292,17 @@
             <!-- tab "devices" -->
             <div id="tab-devices" class="col s12 page">
 
-                <div class="input-field col s3">
-                    <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
-                    <div id="checkResult"></div>
+                <div class="row">
+                    <div class="input-field col s3">
+                        <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
+                        <div id="checkResult"></div>
+                    </div>
                 </div>
 
-
-
                 <div class="col s12" id="rooms">
+
                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+
                     <div class="table-values-div">
                         <table id="table_rooms" class="table-values" style="width: 100%;">
                             <thead>
@@ -1367,13 +1359,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s3">
-                                    <a class="waves-effect waves-light btn" id="check4newthermostats"><span class="translate">Check4NewThermostats</span></a>
-                                    <div id="checkResult"></div>
-                                </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col s12" id="thermostats">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
 
@@ -1407,12 +1392,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s3">
-                                    <a class="waves-effect waves-light btn" id="check4newactors"><span class="translate">Check4NewActors</span></a>
-                                    <div id="checkResult"></div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col s12" id="actors">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                     <div class="table-values-div">
@@ -1437,12 +1416,6 @@
                             <div class="row">
                                 <div class="col s12 ">
                                     <span class="translate">hint_sensors</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s3">
-                                    <a class="waves-effect waves-light btn" id="check4newsensors"><span class="translate">Check4NewSensors</span></a>
-                                    <div id="checkResult"></div>
                                 </div>
                             </div>
                             <div class="row">

@@ -1,13 +1,31 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.0.0",
+    "version": "1.1.1",
     "news": {
-      "2.0.0": {
-
+      "1.1.1": {
+        "en": "bug fix: calculate current period",
+        "de": "Fehlerbehebung: Aktuelle Periode berechnen",
+        "ru": "исправление ошибки: рассчитать текущий период",
+        "pt": "correção de bug: calcular o período atual",
+        "nl": "bug fix: bereken huidige periode",
+        "fr": "correction de bogue: calculer la période actuelle",
+        "it": "correzione bug: calcola il periodo corrente",
+        "es": "corrección de errores: calcular el período actual",
+        "pl": "poprawka błędu: oblicz bieżący okres",
+        "zh-cn": "错误修复：计算当前期间"
       },
       "1.1.0": {
-
+        "en": "timer before on and off for actuators",
+        "de": "Timer vor dem Ein- und Ausschalten für Stellantriebe",
+        "ru": "таймер перед включением и выключением для приводов",
+        "pt": "cronômetro antes de ligar e desligar para atuadores",
+        "nl": "timer voor aan en uit voor actuatoren",
+        "fr": "minuterie avant marche et arrêt pour les actionneurs",
+        "it": "timer prima dell'accensione e dello spegnimento per gli attuatori",
+        "es": "temporizador antes de encendido y apagado para actuadores",
+        "pl": "timer przed włączeniem i wyłączeniem siłowników",
+        "zh-cn": "促动器开启和关闭之前的计时器"
       },
       "1.0.0": {
         "en": "bug fix for string / number conversions",
@@ -44,78 +62,6 @@
         "es": "Temperatura mínima para vis solo si está habilitado",
         "pl": "Minimalna temperatura dla vis tylko, jeśli jest włączona",
         "zh-cn": "vis的MinimumTemperature仅在启用时"
-      },
-      "0.5.6": {
-        "en": "bug fix: window overview",
-        "de": "Fehlerbehebung: Fensterübersicht",
-        "ru": "исправление ошибки: обзор окна",
-        "pt": "correção de bug: visão geral da janela",
-        "nl": "bugfix: vensteroverzicht",
-        "fr": "correction de bogue: aperçu de la fenêtre",
-        "it": "correzione bug: panoramica della finestra",
-        "es": "corrección de errores: descripción general de la ventana",
-        "pl": "naprawa błędu: przegląd okna",
-        "zh-cn": "错误修复：窗口概述"
-      },
-      "0.5.4": {
-        "en": "HeatingControlVis: avoid exception ",
-        "de": "HeatingControlVis: Ausnahme vermeiden",
-        "ru": "HeatingControlVis: избежать исключения",
-        "pt": "HeatingControlVis: evite exceção",
-        "nl": "HeatingControlVis: vermijd uitzonderingen",
-        "fr": "HeatingControlVis: éviter les exceptions",
-        "it": "HeatingControlVis: evitare eccezioni",
-        "es": "HeatingControlVis: evitar excepciones",
-        "pl": "HeatingControlVis: unikaj wyjątku",
-        "zh-cn": "HeatingControlVis：避免异常"
-      },
-      "0.5.3": {
-        "en": "new temperatures set when current profile is changed",
-        "de": "Neue Temperaturen werden eingestellt, wenn das aktuelle Profil geändert wird",
-        "ru": "новые температуры устанавливаются при изменении текущего профиля",
-        "pt": "novas temperaturas definidas quando o perfil atual é alterado",
-        "nl": "nieuwe temperaturen ingesteld wanneer het huidige profiel wordt gewijzigd",
-        "fr": "nouvelles températures définies lorsque le profil actuel est modifié",
-        "it": "nuove temperature impostate quando si cambia il profilo corrente",
-        "es": "nuevas temperaturas establecidas cuando se cambia el perfil actual",
-        "pl": "nowe temperatury ustawione po zmianie bieżącego profilu",
-        "zh-cn": "更改电流曲线时设置的新温度"
-      },
-      "0.5.2": {
-        "en": "bug fix: log a warning if sensors are configured but UseSensors is off",
-        "de": "Fehlerbehebung: Protokollieren Sie eine Warnung, wenn Sensoren konfiguriert sind, UseSensors jedoch deaktiviert ist",
-        "ru": "исправление ошибки: регистрируйте предупреждение, если датчики настроены, но UseSensors выключен",
-        "pt": "correção de bug: registre um aviso se os sensores estiverem configurados, mas o UseSensors estiver desativado",
-        "nl": "bugfix: log een waarschuwing als sensoren zijn geconfigureerd maar UseSensors is uitgeschakeld",
-        "fr": "correction de bogue: consigner un avertissement si les capteurs sont configurés mais UseSensors est désactivé",
-        "it": "correzione bug: registra un avviso se i sensori sono configurati ma UseSensors è disattivato",
-        "es": "corrección de errores: registre una advertencia si los sensores están configurados pero UseSensors está desactivado",
-        "pl": "naprawa błędu: zaloguj ostrzeżenie, jeśli czujniki są skonfigurowane, ale UseSensors jest wyłączony",
-        "zh-cn": "错误修复：如果配置了传感器但UseSensors已关闭，则记录警告"
-      },
-      "0.5.1": {
-        "en": "log a warning if actuators are configured but UseActors are off / Sentry added",
-        "de": "Protokollieren Sie eine Warnung, wenn Aktoren konfiguriert sind, UseActors jedoch deaktiviert sind / Sentry hinzugefügt",
-        "ru": "протоколировать предупреждение, если приводы настроены, но UseActors выключены / добавлен Sentry",
-        "pt": "registre um aviso se os atuadores estiverem configurados, mas o UseActors estiver desativado / o Sentry foi adicionado",
-        "nl": "log een waarschuwing als actuatoren zijn geconfigureerd maar UseActors zijn uitgeschakeld / Sentry toegevoegd",
-        "fr": "enregistrer un avertissement si les actionneurs sont configurés mais que UseActors est désactivé / Sentry ajouté",
-        "it": "registra un avviso se gli attuatori sono configurati ma UseActors è disattivato / Sentry aggiunto",
-        "es": "registrar una advertencia si los actuadores están configurados pero UseActors están desactivados / Sentry agregado",
-        "pl": "zaloguj ostrzeżenie, jeśli siłowniki są skonfigurowane, ale UseActors są wyłączone / Dodano Sentry",
-        "zh-cn": "如果配置了执行器但UseActors已关闭/已添加Sentry，则记录警告"
-      },
-      "0.5.0": {
-        "en": "sensor close delay added",
-        "de": "Verzögerung beim Schließen des Sensors hinzugefügt",
-        "ru": "добавлена задержка закрытия датчика",
-        "pt": "atraso de fechamento do sensor adicionado",
-        "nl": "sensor sluitvertraging toegevoegd",
-        "fr": "délai de fermeture du capteur ajouté",
-        "it": "ritardo chiusura sensore aggiunto",
-        "es": "retardo de cierre del sensor agregado",
-        "pl": "dodano opóźnienie zamknięcia czujnika",
-        "zh-cn": "添加了传感器关闭延迟"
       }
     },
     "title": "HeatingControl",
