@@ -33,11 +33,14 @@ let SetDefaults = null;
 let CreateDatabase = null;
 let CreateCronJobs = null;
 let ChangeStatus = null;
+let SetCurrent = null;
+let SetInfo = null;
 
 if (UseV2) {
     CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
     SetDefaults = require("./lib/datapoints").SetDefaults;
-
+    SetCurrent = require("./lib/datapoints").SetCurrent;
+    SetInfo = require("./lib/datapoints").SetInfo;
 
     CreateDatabase = require("./lib/database").CreateDatabase;
     ChangeStatus = require("./lib/database").ChangeStatus;
@@ -232,24 +235,23 @@ async function main() {
     try {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
 
-        for (let room = 0; room < adapter.config.rooms.length; room++) {
-            WindowOpenTimerId[room] = null;
-        }
-
-        await CreateDatepoints();
-
         //======================================
         //V2.x
         if (UseV2) {
 
             adapter.log.error("V2.x featureas are enabled; please inform developer about ");
 
+            SystemLanguage = await GetSystemLanguage();
+
             await CreateDatabase(adapter);
 
             await CreateDatapoints(adapter);
-            await SetDefaults(adapter);
-            //await SetInfo();
-            //await SetCurrent();
+            await SetDefaults();
+            await SetInfo();
+            await SetCurrent();
+
+
+            //await SubscribeStates();
 
 
             const currentProfile = await GetCurrentProfile();
@@ -257,6 +259,12 @@ async function main() {
             //StartTestCron();
         }
         else {
+
+            for (let room = 0; room < adapter.config.rooms.length; room++) {
+                WindowOpenTimerId[room] = null;
+            }
+
+            await CreateDatepoints();
 
             //SystemDateFormat = await GetSystemDateformat();
 
@@ -4493,17 +4501,17 @@ async function CalculateNextTime() {
 
 async function GetCurrentProfile() {
 
-    adapter.log.debug("get profile");
+    adapter.log.debug("get current profile");
 
     const id = "CurrentProfile";
     const curProfile = await adapter.getStateAsync(id);
     let currentProfile = curProfile.val;
 
     if (currentProfile > 0 && currentProfile <= parseInt(adapter.config.NumberOfProfiles, 10)) {
-        currentProfile--; //zero based!!
+        // currentProfile--; //zero based!! -> nicht mehr!!
     }
     else {
-        currentProfile = 0;
+        currentProfile = 1;
     }
     adapter.log.debug("profile " + currentProfile);
     return currentProfile;
