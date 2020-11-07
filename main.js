@@ -35,15 +35,21 @@ let CreateCronJobs = null;
 let ChangeStatus = null;
 let SetCurrent = null;
 let SetInfo = null;
+let SubscribeAllStates = null;
+let SubscribeDevices = null;
+let CheckConfiguration = null;
 
 if (UseV2) {
     CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
     SetDefaults = require("./lib/datapoints").SetDefaults;
     SetCurrent = require("./lib/datapoints").SetCurrent;
     SetInfo = require("./lib/datapoints").SetInfo;
+    SubscribeAllStates = require("./lib/datapoints").SubscribeAllStates;
+    CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
 
     CreateDatabase = require("./lib/database").CreateDatabase;
     ChangeStatus = require("./lib/database").ChangeStatus;
+    SubscribeDevices = require("./lib/database").SubscribeDevices;
 
     CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 }
@@ -249,9 +255,9 @@ async function main() {
             await SetDefaults();
             await SetInfo();
             await SetCurrent();
-
-
-            //await SubscribeStates();
+            await SubscribeAllStates();
+            await SubscribeDevices();
+            await CheckConfiguration();
 
 
             const currentProfile = await GetCurrentProfile();
