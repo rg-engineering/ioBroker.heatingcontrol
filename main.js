@@ -38,6 +38,7 @@ let SetInfo = null;
 let SubscribeAllStates = null;
 let SubscribeDevices = null;
 let CheckConfiguration = null;
+let CheckStateChangeDevice = null;
 
 if (UseV2) {
     CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
@@ -50,6 +51,7 @@ if (UseV2) {
     CreateDatabase = require("./lib/database").CreateDatabase;
     ChangeStatus = require("./lib/database").ChangeStatus;
     SubscribeDevices = require("./lib/database").SubscribeDevices;
+    CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
 
     CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 }
@@ -192,7 +194,12 @@ function startAdapter(options) {
         // is called if a subscribed state changes
         stateChange: function (id, state) {
             //adapter.log.debug("[STATE CHANGE] ==== " + id + " === " + JSON.stringify(state));
-            HandleStateChange(id, state);
+            if (UseV2) {
+                HandleStateChange(id, state);
+            }
+            else {
+                HandleStateChange_V1(id, state);
+            }
         },
         //#######################################
         //
@@ -2983,6 +2990,45 @@ function UnSubscribeStates4ChangesFromThermostat(idx) {
 
 }
 
+async function HandleStateChange(id, state) {
+    try {
+        if (state && state.ack !== true) {
+            //handle only, if not ack'ed
+            adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
+
+            let handled = false;
+            const ids = id.split("."); //
+
+            //my own datapoints?
+            if (ids[0] == "heatingcontrol") {
+                handled = await HandleStateChangeGeneral(id, state);
+            }
+
+            //external datapoints (e.g. present)
+            if (!handled) {
+                handled = await HandleStateChangeExternal(id, state);
+            }
+
+            //devices
+            if (!handled) {
+                handled = await HandleStateChangeDevices(id, state);
+            }
+
+            if (!handled) {
+                adapter.log.warn("Statechange " + id + " not handled");
+            }
+            else {
+                await adapter.setStateAsync(id, { val: state.val, ack: true });
+            }
+
+        }
+    }
+    catch (e) {
+        adapter.log.error("exception in HandleStateChange [" + e + "]");
+    }
+}
+
+
 //*******************************************************************
 //
 // handles state changes of subscribed states
@@ -2990,7 +3036,7 @@ function UnSubscribeStates4ChangesFromThermostat(idx) {
 let LastStateChangeID = "";
 let LastStateVal = 1;
 
-async function HandleStateChange(id, state) {
+async function HandleStateChange_V1(id, state) {
 
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
@@ -3151,7 +3197,7 @@ async function HandleStateChange(id, state) {
 
             //## handle state change heatingcontrol.0.GuestsPresent {"val":false,"ack":false,"ts":1568137512204,"q":0,"from":"system.adapter.admin.0","user":"system.user.admin","lc":1568137512204}
             if (!bHandled) {
-                ret = await HandleStateChangeGeneral(id, state);
+                ret = await HandleStateChangeGeneral_V1(id, state);
                 if (ret) {
                     bHandled = true;
                     adapter.log.debug("### 111 handled");
@@ -3162,7 +3208,7 @@ async function HandleStateChange(id, state) {
             }
             if (!bHandled) {
                 //## handle state change hm - rpc.0.IEQ0067581.1.TEMPERATURE { "val": 23.4, "ack": true, "ts": 1568137725283, "q": 0, "from": "system.adapter.hm-rpc.0", "user": "system.user.admin", "lc": 1568137443749 }
-                ret = await HandleStateChangeDevices(id, state);
+                ret = await HandleStateChangeDevices_V1(id, state);
                 if (ret) {
                     bHandled = true;
                     adapter.log.debug("### 222 handled");
@@ -3191,10 +3237,170 @@ async function HandleStateChange(id, state) {
     }
 }
 
+
+async function HandleStateChangeGeneral(id, state) {
+    let bRet = false;
+    adapter.log.debug("HandleStateChangeGeneral " + id);
+
+
+    const ids = id.split("."); 
+    //heatingcontrol.0.GuestsPresent
+    if (ids[2] == "HeatingPeriodActive") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "PublicHolidyToday") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "Present") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "PartyNow") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "GuestsPresent") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "HolidayPresent") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    else if (ids[2] == "VacationAbsent") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+    }
+    //heatingcontrol.0.Rooms.Küche.TemperaturOverride
+    else if (ids[4] == "TemperaturOverride") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[2], state.val);
+    }
+    else if (ids[4] == "TemperaturOverrideTime") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[2], state.val);
+    }
+    else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[2], state.val);
+    }
+    else if (ids[4] == "MinimumTemperature") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[2], state.val);
+    }
+    else if (ids[4] == "ChangesFromThermostatMode") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[2], state.val);
+    }
+    //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
+    else if (ids[2] == "Profiles") {
+        bRet = true;
+        ChangeStatus(ids[2], ids[4], state.val);
+    }
+
+    return bRet;
+}
+
+async function HandleStateChangeExternal(id, state) {
+    let bRet = false;
+    adapter.log.debug("HandleStateChangeExternal " + id);
+    
+    if (adapter.config.Path2PresentDP.length > 0) {
+        if (id.includes(adapter.config.Path2PresentDP)) {
+            let present = false;
+            if (parseInt(adapter.config.Path2PresentDPType) === 1) {
+                present = state;
+            }
+            else {
+                if (state > adapter.config.Path2PresentDPLimit) {
+                    present = true;
+                }
+            }
+            //heatingcontrol.0.Present
+            await adapter.setStateAsync("Present", { val: present, ack: false });
+            bRet = true;
+        }
+    }
+
+    if (adapter.config.Path2VacationDP.length > 0) {
+        if (id.includes(adapter.config.Path2VacationDP)) {
+            //heatingcontrol.0.VacationAbsent
+            await adapter.setStateAsync("VacationAbsent", { val: state, ack: false });
+            bRet = true;
+        }
+    }
+
+    if (adapter.config.Path2HolidayPresentDP.length > 0) {
+        if (id.includes(adapter.config.Path2HolidayPresentDP)) {
+            //heatingcontrol.0.HolidayPresent
+            await adapter.setStateAsync("HolidayPresent", { val: state, ack: false });
+            bRet = true;
+        }
+    }
+
+    if (adapter.config.Path2GuestsPresentDP.length > 0) {
+        if (id.includes(adapter.config.Path2GuestsPresentDP)) {
+            let guestpresent = false;
+            if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
+                guestpresent = state;
+            }
+            else {
+                if (state > adapter.config.Path2GuestsPresentDPLimit) {
+                    guestpresent = true;
+                }
+            }
+            //heatingcontrol.0.GuestsPresent
+            await adapter.setStateAsync("GuestsPresent", { val: guestpresent, ack: false });
+            bRet = true;
+        }
+    }
+
+    if (adapter.config.Path2PartyNowDP.length > 0) {
+        if (id.includes(adapter.config.Path2PartyNowDP)) {
+            let partynow = false;
+            if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
+                partynow = state;
+            }
+            else {
+                if (state > adapter.config.Path2PartyNowDPLimit) {
+                    partynow = true;
+                }
+            }
+            //heatingcontrol.0.PartyNow
+            await adapter.setStateAsync("PartyNow", { val: partynow, ack: false });
+            bRet = true;
+        }
+    }
+
+    if (adapter.config.Path2FeiertagAdapter.length > 0) {
+        if (id.includes(adapter.config.Path2FeiertagAdapter)) {
+            //heatingcontrol.0.PublicHolidyToday
+            await adapter.setStateAsync("PublicHolidyToday", { val: state, ack: true });
+            bRet = true;
+        }
+    }
+    return bRet;
+}
+
+
+async function HandleStateChangeDevices(id, state) {
+    let bRet = false;
+    adapter.log.debug("HandleStateChangeDevices " + id);
+
+    bRet = CheckStateChangeDevice(id, state);
+
+    return bRet;
+}
+
+
+
+
 //*******************************************************************
 //
 // handles state changes of subscribed states
-async function HandleStateChangeGeneral(id, state) {
+async function HandleStateChangeGeneral_V1(id, state) {
     let bRet = false;
 
 
@@ -3421,7 +3627,7 @@ function ConvertToTime(value) {
 // handles state changes of subscribed states
 // * find the room
 // * check if with actor handling; if so then check if target is different to current
-async function HandleStateChangeDevices(id, state) {
+async function HandleStateChangeDevices_V1(id, state) {
 
     let bRet = false;
 
