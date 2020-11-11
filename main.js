@@ -39,6 +39,7 @@ let SubscribeAllStates = null;
 let SubscribeDevices = null;
 let CheckConfiguration = null;
 let CheckStateChangeDevice = null;
+let StartStatemachine = null;
 
 if (UseV2) {
     CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
@@ -52,6 +53,7 @@ if (UseV2) {
     ChangeStatus = require("./lib/database").ChangeStatus;
     SubscribeDevices = require("./lib/database").SubscribeDevices;
     CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
+    StartStatemachine = require("./lib/database").StartStatemachine;
 
     CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 }
@@ -270,6 +272,11 @@ async function main() {
             const currentProfile = await GetCurrentProfile();
             await CreateCronJobs(adapter, currentProfile, ChangeStatus);
             //StartTestCron();
+
+            await checkHeatingPeriod();
+
+            await StartStatemachine();
+
         }
         else {
 
@@ -356,10 +363,12 @@ async function ListRooms(obj) {
 
     adapter.log.debug("ListRooms " + JSON.stringify(obj));
 
+    /*
     if (adapter.config.deleteall) {
         adapter.log.info("ListRooms: delete all rooms and start new search");
         adapter.config.rooms.length = 0;
     }
+    */
 
     let search4new = false;
 
@@ -485,7 +494,9 @@ async function ListFunctions(obj) {
 // used as interface to admin
 async function ListDevices(obj) {
 
-    if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0 || adapter.config.deleteall) {
+    //if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0 || adapter.config.deleteall) {
+
+    if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0 ) {
 
         adapter.log.info("create new device list " + JSON.stringify(adapter.config.devices));
 
@@ -3305,7 +3316,7 @@ async function HandleStateChangeGeneral(id, state) {
 
 async function HandleStateChangeExternal(id, state) {
     let bRet = false;
-    adapter.log.debug("HandleStateChangeExternal " + id);
+    //adapter.log.debug("HandleStateChangeExternal " + id);
     
     if (adapter.config.Path2PresentDP.length > 0) {
         if (id.includes(adapter.config.Path2PresentDP)) {
@@ -3387,7 +3398,7 @@ async function HandleStateChangeExternal(id, state) {
 
 async function HandleStateChangeDevices(id, state) {
     let bRet = false;
-    adapter.log.debug("HandleStateChangeDevices " + id);
+    //adapter.log.debug("HandleStateChangeDevices " + id);
 
     bRet = CheckStateChangeDevice(id, state);
 
@@ -5691,29 +5702,36 @@ async function checkHeatingPeriod() {
         const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
         const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
-        const StartMonth = HeatingPeriodStart[1] - 1;
-        const StartDay = HeatingPeriodStart[0];
-        const EndMonth = HeatingPeriodEnd[1] - 1;
-        const EndDay = HeatingPeriodEnd[0];
-
-        const Today = new Date();
-
         let isHeatingPeriod = false;
+        if (HeatingPeriodStart.length >= 2 && HeatingPeriodEnd.length >= 2) {
 
-        //somewhere in spring 
-        if (Today.getMonth() > EndMonth || (Today.getMonth() === EndMonth && Today.getDate() > EndDay)) {
-            isHeatingPeriod = false;
-        }
-        else {
-            isHeatingPeriod = true;
-        }
+            let StartDate = new Date();
+            StartDate.setDate(parseInt(HeatingPeriodStart[0]));
+            StartDate.setMonth(parseInt(HeatingPeriodStart[1]) - 1);
+            adapter.log.debug('Start ' + StartDate.toDateString());
 
-        if (isHeatingPeriod === false) {
-            //somewhere in autumn
-            if (Today.getMonth() > StartMonth || (Today.getMonth() === StartMonth && Today.getDate() > StartDay)) {
+            let EndDate = new Date();
+            EndDate.setDate(parseInt(HeatingPeriodEnd[0]));
+            EndDate.setMonth(parseInt(HeatingPeriodEnd[1]) - 1);
+            adapter.log.debug('End ' + EndDate.toDateString());
+
+            if (EndDate < StartDate) {
+                EndDate.setFullYear(EndDate.getFullYear() + 1);
+                adapter.log.debug('corrected End ' + EndDate.toDateString());
+            }
+
+            const now = new Date();
+
+            if (now >= StartDate && now <= EndDate) {
+                adapter.log.debug('we are in period');
                 isHeatingPeriod = true;
             }
+            else {
+                adapter.log.debug('we are not in period, after start ' + StartDate.toDateString() + " and before end " + EndDate.toDateString());
+                isHeatingPeriod = false;
+            }
         }
+
         adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
 
         await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: isHeatingPeriod });

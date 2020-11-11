@@ -1,8 +1,11 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "1.1.1",
+    "version": "2.0.0",
     "news": {
+      "2.0.0": {
+        "en": "internal redesign, some breaking changes, read release notes"
+      }
       "1.1.1": {
         "en": "bug fix: calculate current period",
         "de": "Fehlerbehebung: Aktuelle Periode berechnen",
@@ -129,7 +132,6 @@
     "NumberOfProfiles": 1,
     "NumberOfPeriods": 5,
     "timezone": "Europe/Berlin",
-    "deleteall": false,
     "UseActorsIfNotHeating": 1,
     "UseActorsIfNoThermostat": 1,
     "Path2FeiertagAdapter": "",
