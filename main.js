@@ -23,20 +23,7 @@ const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
 const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
 const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 
-//======================================
-//V2.x
-//this is just to enable V2.x features for test only
-const UseV2 = true;
-let CreateDatapoints = null;
-let SetDefaults = null;
-let CreateDatabase = null;
-if (UseV2) {
-    CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
-    SetDefaults = require("./lib/datapoints").SetDefaults;
 
-
-    CreateDatabase = require("./lib/database").CreateDatabase;
-}
 
 let vis = null;
 
@@ -231,19 +218,7 @@ async function main() {
 
         await CreateDatepoints();
 
-        //======================================
-        //V2.x
-        if (UseV2) {
-
-            adapter.log.error("V2.x featureas are enabled; please inform developer about ");
-
-            await CreateDatabase(adapter);
-
-            //await CreateDatapoints(adapter);
-            //await SetDefaults(adapter);
-            //await SetInfo();
-            //await SetCurrent();
-        }
+        
 
 
         //SystemDateFormat = await GetSystemDateformat();
@@ -4959,6 +4934,8 @@ async function CheckTemperatureChange(room2check=null) {
 
         await HandleActorsGeneral(HeatingPeriodActive.val);
 
+        await HandleActorsAfterTempChange();
+
         getCronStat();
     }
     catch (e) {
@@ -4966,6 +4943,26 @@ async function CheckTemperatureChange(room2check=null) {
     }
 }
 
+
+async function HandleActorsAfterTempChange() {
+
+    for (let room = 0; room < adapter.config.rooms.length; room++) {
+        if (adapter.config.rooms[room].isActive) {
+
+            for (let ii = 0; ii < adapter.config.devices.length; ii++) {
+
+                if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
+                    const target = await adapter.getForeignStateAsync(adapter.config.devices[ii].OID_Target);
+                    const current = await adapter.getForeignStateAsync(adapter.config.devices[ii].OID_Current);
+                    //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
+                    if (target != null && typeof target != undefined && current != null && typeof current != undefined) {
+                        await HandleActors(adapter.config.rooms[room].name, parseFloat(current.val), parseFloat(target.val));
+                    }
+                }
+            }
+        }
+    }
+}
 
 async function SetTarget4NoHeatingPeriod(roomId) {
 
