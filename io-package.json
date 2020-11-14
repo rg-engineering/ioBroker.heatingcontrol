@@ -5,7 +5,7 @@
     "news": {
       "2.0.0": {
         "en": "internal redesign, some breaking changes, read release notes"
-      }
+      },
       "1.1.1": {
         "en": "bug fix: calculate current period",
         "de": "Fehlerbehebung: Aktuelle Periode berechnen",
@@ -146,7 +146,7 @@
     "Path2GuestsPresentDP": "",
     "Path2PresentDPType": 1,
     "Path2PartyNowDP": "",
-    "SensorDelay": 0,
+    "SensorOpenDelay": 0,
     "UseMinTempPerRoom": false,
     "ThermostatModeIfNoHeatingperiod": 3,
     "FixTempIfNoHeatingPeriod": "15;",
