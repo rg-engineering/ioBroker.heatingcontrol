@@ -23,6 +23,8 @@ const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 const timeConverter = require("./lib/support_tools.js").timeConverter;
 const CheckValidTime = require("./lib/support_tools.js").CheckValidTime;
 
+const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
+
 
 //======================================
 //V2.x
@@ -3287,24 +3289,24 @@ async function HandleStateChangeGeneral(id, state) {
     //heatingcontrol.0.Rooms.Küche.TemperaturOverride
     else if (ids[4] == "TemperaturOverride") {
         bRet = true;
-        ChangeStatus(ids[4], ids[2], state.val);
+        ChangeStatus(ids[4], ids[3], state.val);
     }
     else if (ids[4] == "TemperaturOverrideTime") {
         bRet = true;
-        ChangeStatus(ids[4], ids[2], state.val);
+        ChangeStatus(ids[4], ids[3], state.val);
     }
     else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
         bRet = true;
-        ChangeStatus(ids[4], ids[2], state.val);
+        ChangeStatus(ids[4], ids[3], state.val);
     }
     else if (ids[4] == "MinimumTemperature") {
         bRet = true;
-        ChangeStatus(ids[4], ids[2], state.val);
+        ChangeStatus(ids[4], ids[3], state.val);
     }
-    else if (ids[4] == "ChangesFromThermostatMode") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[2], state.val);
-    }
+    //else if (ids[4] == "ChangesFromThermostatMode") {
+    //    bRet = true;
+    //    ChangeStatus(ids[4], ids[2], state.val);
+    //}
     //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
     else if (ids[2] == "Profiles") {
         bRet = true;
@@ -4722,23 +4724,7 @@ async function CalculateNextTime() {
 
 
 
-async function GetCurrentProfile() {
 
-    adapter.log.debug("get current profile");
-
-    const id = "CurrentProfile";
-    const curProfile = await adapter.getStateAsync(id);
-    let currentProfile = curProfile.val;
-
-    if (currentProfile > 0 && currentProfile <= parseInt(adapter.config.NumberOfProfiles, 10)) {
-        // currentProfile--; //zero based!! -> nicht mehr!!
-    }
-    else {
-        currentProfile = 1;
-    }
-    adapter.log.debug("profile " + currentProfile);
-    return currentProfile;
-}
 
 //#######################################
 //
