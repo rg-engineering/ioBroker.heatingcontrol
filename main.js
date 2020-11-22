@@ -13,15 +13,15 @@
 
 // you have to require the utils module and call adapter function
 const utils = require("@iobroker/adapter-core");
-const CronJob = require("cron").CronJob;
+//const CronJob = require("cron").CronJob;
 
 const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
 const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
-const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
-const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
+//const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
+//const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 
-const timeConverter = require("./lib/support_tools.js").timeConverter;
-const CheckValidTime = require("./lib/support_tools.js").CheckValidTime;
+//const timeConverter = require("./lib/support_tools.js").timeConverter;
+//const CheckValidTime = require("./lib/support_tools.js").CheckValidTime;
 
 const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
@@ -115,10 +115,14 @@ ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature",
 //id ist ham.0.RaumName.ThermostatName.
 //const MaxTadoThermostatType = 20;
 
+/*
 const WindowOpenTimerId = [];
 const WindowCloseTimerId = [];
+*/
+/*
 const ActorOffTimerId = [];
 const ActorOnTimerId = [];
+*/
 
 const ActorTypeTab = [];
 const MinHomematicActorType = 0;
@@ -149,8 +153,8 @@ DefaultTargets[4] = ["21:00", 21];
 //let SystemDateFormat = "DD.MM.YYYY";
 
 
-const ActorsWithoutThermostat = [];
-const lastSetTemperature = [];
+//const ActorsWithoutThermostat = [];
+//const lastSetTemperature = [];
 let SystemLanguage;
 
 let adapter;
@@ -202,7 +206,7 @@ function startAdapter(options) {
                 HandleStateChange(id, state);
             }
             else {
-                HandleStateChange_V1(id, state);
+                // HandleStateChange_V1(id, state);
             }
         },
         //#######################################
@@ -282,53 +286,53 @@ async function main() {
         }
         else {
 
-            for (let room = 0; room < adapter.config.rooms.length; room++) {
-                WindowOpenTimerId[room] = null;
-            }
+            // for (let room = 0; room < adapter.config.rooms.length; room++) {
+            //     WindowOpenTimerId[room] = null;
+            // }
 
-            await CreateDatepoints();
+            // await CreateDatepoints();
 
             //SystemDateFormat = await GetSystemDateformat();
 
-            SearchActorsWithoutThermostat();
+            // SearchActorsWithoutThermostat();
 
-            await checkHeatingPeriod();
+            // await checkHeatingPeriod();
 
-            await CalculateNextTime();
+            // await CalculateNextTime();
 
             //need to check all WindowSensors per Room
-            await CheckAllWindowSensors();
+            // await CheckAllWindowSensors();
 
-            await CheckAllActors();
+            // await CheckAllActors();
 
-            await CheckAllExternalStates();
+            //  await CheckAllExternalStates();
 
-            await CheckTemperatureChange();
+            //  await CheckTemperatureChange();
 
-            await SubscribeStates();
+            //  await SubscribeStates();
 
-            SystemLanguage = await GetSystemLanguage();
+            //  SystemLanguage = await GetSystemLanguage();
 
-            if (adapter.config.UseVisFromPittini) {
-                adapter.log.info("starting vis");
+            //  if (adapter.config.UseVisFromPittini) {
+            //      adapter.log.info("starting vis");
 
-                const myVis = require("./HeatingControlVis");
-                adapter.log.info("starting vis part 2");
-                vis = new myVis(adapter);
+            //      const myVis = require("./HeatingControlVis");
+            //      adapter.log.info("starting vis part 2");
+            //      vis = new myVis(adapter);
 
 
-                vis.SetLanguage(SystemLanguage);
+            //     vis.SetLanguage(SystemLanguage);
 
-                if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
-                    adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
-                    vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
-                }
-                if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
-                    adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
-                    vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
-                }
+            //      if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
+            //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
+            //          vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
+            //      }
+            //      if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
+            //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
+            //          vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
+            //      }
 
-            }
+            //   }
         }
 
     }
@@ -766,6 +770,7 @@ function AddTestData() {
  * @param {string} id
  * @param {number} period
  */
+/*
 async function CreateStates4Period(id, period) {
 
     await adapter.setObjectNotExistsAsync(id, {
@@ -875,6 +880,7 @@ async function CreateStates4Period(id, period) {
 //
 // create all necessary datapaoints
 // will be called at ecery start of adapter
+/*
 async function CreateDatepoints() {
 
     adapter.log.debug("start CreateDatepoints");
@@ -2786,10 +2792,11 @@ async function CreateDatepoints() {
 
     adapter.log.debug("CreateDatepoints done");
 }
-
+*/
 //#######################################
 //
 // subscribe thermostate states to be informed when target or current is changed
+/*
 function SubscribeStates(callback) {
 
     //if we need to handle actors, then subscribe on current and target temperature
@@ -2963,8 +2970,9 @@ function SubscribeStates(callback) {
     }
     if (callback) callback();
 }
+*/
 
-
+/*
 function SubscribeStates4ChangesFromThermostat(idx) {
 
     if (adapter.config.UseChangesFromThermostat > 1) {
@@ -2984,7 +2992,9 @@ function SubscribeStates4ChangesFromThermostat(idx) {
         }
     }
 }
+*/
 
+/*
 function UnSubscribeStates4ChangesFromThermostat(idx) {
 
 
@@ -3002,6 +3012,8 @@ function UnSubscribeStates4ChangesFromThermostat(idx) {
     }
 
 }
+*/
+
 
 async function HandleStateChange(id, state) {
     try {
@@ -3045,10 +3057,11 @@ async function HandleStateChange(id, state) {
 //*******************************************************************
 //
 // handles state changes of subscribed states
-
+/*
 let LastStateChangeID = "";
 let LastStateVal = 1;
-
+*/
+/*
 async function HandleStateChange_V1(id, state) {
 
     adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
@@ -3249,7 +3262,7 @@ async function HandleStateChange_V1(id, state) {
         adapter.log.error("exception in HandleStateChange [" + e + "]");
     }
 }
-
+*/
 
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
@@ -3413,6 +3426,7 @@ async function HandleStateChangeDevices(id, state) {
 //*******************************************************************
 //
 // handles state changes of subscribed states
+/*
 async function HandleStateChangeGeneral_V1(id, state) {
     let bRet = false;
 
@@ -3589,8 +3603,9 @@ async function HandleStateChangeGeneral_V1(id, state) {
 
     return bRet;
 }
+*/
 
-
+/*
 function ConvertToTime(value) {
     const values = value.split(":");
 
@@ -3985,10 +4000,12 @@ async function wait(ms) {
 */
 
 
+
 //*******************************************************************
 //
 //handles actors based on current and target temperature
 //to do: better control; right now it's just on / off without hystheresis or similar
+/*
 async function HandleActors(room, current, target) {
 
     try {
@@ -4101,7 +4118,8 @@ async function HandleActors(room, current, target) {
         adapter.log.error("exception in HandleActors [" + e + "]");
     }
 }
-
+*/
+/*
 async function ActorOnTimeout(OID_Target, room, toUpdate) {
 
     //const roomID = adapter.config.rooms.filter(d => d.name == room);
@@ -4120,7 +4138,9 @@ async function ActorOnTimeout(OID_Target, room, toUpdate) {
         await CheckAllActors();
     }
 }
+*/
 
+/*
 async function ActorOffTimeout(OID_Target, room, toUpdate) {
 
     const roomID = adapter.config.rooms.filter(d => d.name == room);
@@ -4137,7 +4157,9 @@ async function ActorOffTimeout(OID_Target, room, toUpdate) {
         await CheckAllActors();
     }
 }
+*/
 
+/*
 async function CheckMinTemp(roomId, target) {
 
     try {
@@ -4160,8 +4182,9 @@ async function CheckMinTemp(roomId, target) {
     }
     return target;
 }
+*/
 
-
+/*
 async function HandleThermostat(oid, temperature) {
 
     try {
@@ -4198,7 +4221,7 @@ async function HandleThermostat(oid, temperature) {
     }
 }
 
-
+*/
 
 
 
@@ -4219,7 +4242,7 @@ function CronStop() {
     }
 }
 
-
+/*
 function CreateCron4HeatingPeriod() {
 
     if (adapter.config.UseFixHeatingPeriod) {
@@ -4268,8 +4291,9 @@ function CreateCron4HeatingPeriod() {
     }
 
 }
+*/
 
-
+/*
 function CreateCron4ResetTempOverride(due, roomID) {
     const timezone = adapter.config.timezone || "Europe/Berlin";
 
@@ -4299,7 +4323,10 @@ function CreateCron4ResetTempOverride(due, roomID) {
     }
 
 }
+*/
 
+
+/*
 
 function StopTempOverride(roomID, cronjobID) {
     adapter.log.info("Stop Temperatur Override " + adapter.config.rooms[roomID].name);
@@ -4328,15 +4355,22 @@ function StopTempOverride(roomID, cronjobID) {
         }
     });
 }
+*/
 
+/*
 function StartHeatingPeriod() {
     adapter.setState("HeatingPeriodActive", { ack: true, val: true });
 }
+*/
+
+/*
 function StopHeatingPeriod() {
     adapter.setState("HeatingPeriodActive", { ack: true, val: false });
 }
-let cronJobs = [];
+*/
 
+let cronJobs = [];
+/*
 function CronCreate(Hour, Minute, day) {
 
     try {
@@ -4378,8 +4412,9 @@ function CronCreate(Hour, Minute, day) {
         adapter.log.error("exception in CronCreate [" + e + "]");
     }
 }
+*/
 
-
+/*
 function getCronStat() {
     let n = 0;
     let length = 0;
@@ -4406,7 +4441,9 @@ function getCronStat() {
         adapter.log.error("exception in getCronStat [" + e + "] : " + n + " of " + length);
     }
 }
+*/
 
+/*
 function deleteCronJob(id) {
 
     cronJobs[id].stop();
@@ -4421,7 +4458,7 @@ function deleteCronJob(id) {
 
 
 }
-
+*/
 
 
 
@@ -4434,6 +4471,9 @@ function deleteCronJob(id) {
 //  * adapter starts
 //  * everytime a time value is changed
 //  
+
+/*
+
 async function CalculateNextTime() {
 
     try {
@@ -4722,7 +4762,7 @@ async function CalculateNextTime() {
 }
 
 
-
+*/
 
 
 
@@ -4731,6 +4771,9 @@ async function CalculateNextTime() {
 // this is called by cron
 // so we need to find out what needs to be changed and change it
 //normally it's a temperature target value
+
+/*
+
 async function CheckTemperatureChange(room2check=null) {
 
     if (adapter.config.devices === null || typeof adapter.config.devices === undefined) {
@@ -5128,7 +5171,9 @@ async function CheckTemperatureChange(room2check=null) {
     }
 }
 
+*/
 
+/*
 async function SetTarget4NoHeatingPeriod(roomId) {
 
     if (adapter.config.ThermostatModeIfNoHeatingperiod == 1) {
@@ -5155,9 +5200,11 @@ async function SetTarget4NoHeatingPeriod(roomId) {
     }
 
 }
+*/
 
-let IgnoreStateChangeTimer = -1;
+//let IgnoreStateChangeTimer = -1;
 
+/*
 async function SetNextTemperatureTarget(roomID, TargetTemperature) {
 
     //we need to ignore all state changes when we set from here, otherwise we create override or similar
@@ -5207,7 +5254,9 @@ async function SetNextTemperatureTarget(roomID, TargetTemperature) {
         }
     }
 }
+*/
 
+/*
 async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, HolidayPresent, RoomState) {
     adapter.log.debug("FindNextPeriod for " + now.toLocaleString() + " in " + adapter.config.rooms[room].name);
 
@@ -5454,8 +5503,9 @@ async function FindNextPeriod(room, now, currentProfile, PublicHolidyToday, Holi
 
     return ret;
 }
+*/
 
-
+/*
 async function StartTemperaturOverride(room) {
 
     adapter.log.info("change temperature override for room " + room);
@@ -5557,8 +5607,9 @@ async function StartTemperaturOverride(room) {
     }
 
 }
+*/
 
-
+/*
 async function HandleActorsGeneral(HeatingPeriodActive) {
 
     try {
@@ -5654,7 +5705,9 @@ async function HandleActorsGeneral(HeatingPeriodActive) {
         adapter.log.error("exception in HandleActorsGeneral [" + e + "]");
     }
 }
+*/
 
+/*
 function Check4ValidTemperature(temperature) {
 
     try {
@@ -5679,6 +5732,8 @@ function Check4ValidTemperature(temperature) {
     }
 
 }
+*/
+
 
 async function checkHeatingPeriod() {
 
@@ -5691,29 +5746,29 @@ async function checkHeatingPeriod() {
         let isHeatingPeriod = false;
         if (HeatingPeriodStart.length >= 2 && HeatingPeriodEnd.length >= 2) {
 
-            let StartDate = new Date();
+            const StartDate = new Date();
             StartDate.setDate(parseInt(HeatingPeriodStart[0]));
             StartDate.setMonth(parseInt(HeatingPeriodStart[1]) - 1);
-            adapter.log.debug('Start ' + StartDate.toDateString());
+            adapter.log.debug("Start " + StartDate.toDateString());
 
-            let EndDate = new Date();
+            const EndDate = new Date();
             EndDate.setDate(parseInt(HeatingPeriodEnd[0]));
             EndDate.setMonth(parseInt(HeatingPeriodEnd[1]) - 1);
-            adapter.log.debug('End ' + EndDate.toDateString());
+            adapter.log.debug("End " + EndDate.toDateString());
 
             if (EndDate < StartDate) {
                 EndDate.setFullYear(EndDate.getFullYear() + 1);
-                adapter.log.debug('corrected End ' + EndDate.toDateString());
+                adapter.log.debug("corrected End " + EndDate.toDateString());
             }
 
             const now = new Date();
 
             if (now >= StartDate && now <= EndDate) {
-                adapter.log.debug('we are in period');
+                adapter.log.debug("we are in period");
                 isHeatingPeriod = true;
             }
             else {
-                adapter.log.debug('we are not in period, after start ' + StartDate.toDateString() + " and before end " + EndDate.toDateString());
+                adapter.log.debug("we are not in period, after start " + StartDate.toDateString() + " and before end " + EndDate.toDateString());
                 isHeatingPeriod = false;
             }
         }
@@ -5723,7 +5778,7 @@ async function checkHeatingPeriod() {
         await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: isHeatingPeriod });
     }
 }
-
+/*
 async function CheckAllWindowSensors() {
 
     if (adapter.config.UseSensors) {
@@ -5736,7 +5791,9 @@ async function CheckAllWindowSensors() {
         }
     }
 }
+*/
 
+/*
 async function CheckAllActors() {
 
     try {
@@ -5769,9 +5826,9 @@ async function CheckAllActors() {
     }
 
 }
+*/
 
-
-
+/*
 async function CheckAllExternalStates() {
 
     adapter.log.info("checking all external states");
@@ -6017,9 +6074,9 @@ async function CheckAllExternalStates() {
     }
 }
 
+*/
 
-
-
+/*
 async function CheckWindowSensors(roomID) {
 
     let state2Set = false;
@@ -6091,6 +6148,10 @@ async function CheckWindowSensors(roomID) {
     return ret;
 }
 
+*/
+
+
+/*
 function SearchActorsWithoutThermostat() {
     //ActorsWithoutThermostat
     try {
@@ -6141,6 +6202,9 @@ function SearchActorsWithoutThermostat() {
         adapter.log.error("exception in SearchActorsWithoutThermostat [" + e + "]");
     }
 }
+*/
+
+
 
 /*
 function StartTestCron() {
