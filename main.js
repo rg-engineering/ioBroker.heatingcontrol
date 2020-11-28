@@ -27,38 +27,24 @@ const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
 
 //======================================
-//V2.x
-//this is just to enable V2.x features for test only
-const UseV2 = true;
-let CreateDatapoints = null;
-let SetDefaults = null;
-let CreateDatabase = null;
-let CreateCronJobs = null;
-let ChangeStatus = null;
-let SetCurrent = null;
-let SetInfo = null;
-let SubscribeAllStates = null;
-let SubscribeDevices = null;
-let CheckConfiguration = null;
-let CheckStateChangeDevice = null;
-let StartStatemachine = null;
 
-if (UseV2) {
-    CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
-    SetDefaults = require("./lib/datapoints").SetDefaults;
-    SetCurrent = require("./lib/datapoints").SetCurrent;
-    SetInfo = require("./lib/datapoints").SetInfo;
-    SubscribeAllStates = require("./lib/datapoints").SubscribeAllStates;
-    CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
 
-    CreateDatabase = require("./lib/database").CreateDatabase;
-    ChangeStatus = require("./lib/database").ChangeStatus;
-    SubscribeDevices = require("./lib/database").SubscribeDevices;
-    CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
-    StartStatemachine = require("./lib/database").StartStatemachine;
 
-    CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
-}
+const CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
+const SetDefaults = require("./lib/datapoints").SetDefaults;
+const SetCurrent = require("./lib/datapoints").SetCurrent;
+const SetInfo = require("./lib/datapoints").SetInfo;
+const SubscribeAllStates = require("./lib/datapoints").SubscribeAllStates;
+const CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
+
+const CreateDatabase = require("./lib/database").CreateDatabase;
+const ChangeStatus = require("./lib/database").ChangeStatus;
+const SubscribeDevices = require("./lib/database").SubscribeDevices;
+const CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
+const StartStatemachine = require("./lib/database").StartStatemachine;
+
+const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
+
 
 let vis = null;
 
@@ -202,12 +188,12 @@ function startAdapter(options) {
         // is called if a subscribed state changes
         stateChange: function (id, state) {
             //adapter.log.debug("[STATE CHANGE] ==== " + id + " === " + JSON.stringify(state));
-            if (UseV2) {
-                HandleStateChange(id, state);
-            }
-            else {
-                // HandleStateChange_V1(id, state);
-            }
+            //if (UseV2) {
+            HandleStateChange(id, state);
+            //}
+            //else {
+            // HandleStateChange_V1(id, state);
+            //}
         },
         //#######################################
         //
@@ -258,82 +244,82 @@ async function main() {
 
         //======================================
         //V2.x
-        if (UseV2) {
+        //if (UseV2) {
 
-            adapter.log.error("V2.x featureas are enabled; please inform developer about ");
+        //adapter.log.error("V2.x featureas are enabled; please inform developer about ");
 
-            SystemLanguage = await GetSystemLanguage();
+        SystemLanguage = await GetSystemLanguage();
 
-            await CreateDatabase(adapter);
+        await CreateDatabase(adapter);
 
-            await CreateDatapoints(adapter);
-            await SetDefaults();
-            await SetInfo();
-            await SetCurrent();
-            await SubscribeAllStates();
-            await SubscribeDevices();
-            await CheckConfiguration();
-
-
-            const currentProfile = await GetCurrentProfile();
-            await CreateCronJobs(adapter, currentProfile, ChangeStatus);
-            //StartTestCron();
-
-            await checkHeatingPeriod();
-
-            await StartStatemachine();
-
-        }
-        else {
-
-            // for (let room = 0; room < adapter.config.rooms.length; room++) {
-            //     WindowOpenTimerId[room] = null;
-            // }
-
-            // await CreateDatepoints();
-
-            //SystemDateFormat = await GetSystemDateformat();
-
-            // SearchActorsWithoutThermostat();
-
-            // await checkHeatingPeriod();
-
-            // await CalculateNextTime();
-
-            //need to check all WindowSensors per Room
-            // await CheckAllWindowSensors();
-
-            // await CheckAllActors();
-
-            //  await CheckAllExternalStates();
-
-            //  await CheckTemperatureChange();
-
-            //  await SubscribeStates();
-
-            //  SystemLanguage = await GetSystemLanguage();
-
-            //  if (adapter.config.UseVisFromPittini) {
-            //      adapter.log.info("starting vis");
-
-            //      const myVis = require("./HeatingControlVis");
-            //      adapter.log.info("starting vis part 2");
-            //      vis = new myVis(adapter);
+        await CreateDatapoints(adapter);
+        await SetDefaults();
+        await SetInfo();
+        await SetCurrent();
+        await SubscribeAllStates();
+        await SubscribeDevices();
+        await CheckConfiguration();
 
 
-            //     vis.SetLanguage(SystemLanguage);
+        const currentProfile = await GetCurrentProfile();
+        await CreateCronJobs(adapter, currentProfile, ChangeStatus);
+        //StartTestCron();
 
-            //      if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
-            //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
-            //          vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
-            //      }
-            //      if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
-            //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
-            //          vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
-            //      }
+        await checkHeatingPeriod();
 
-            //   }
-        }
+        await StartStatemachine();
+
+        // }
+        //else {
+
+        // for (let room = 0; room < adapter.config.rooms.length; room++) {
+        //     WindowOpenTimerId[room] = null;
+        // }
+
+        // await CreateDatepoints();
+
+        //SystemDateFormat = await GetSystemDateformat();
+
+        // SearchActorsWithoutThermostat();
+
+        // await checkHeatingPeriod();
+
+        // await CalculateNextTime();
+
+        //need to check all WindowSensors per Room
+        // await CheckAllWindowSensors();
+
+        // await CheckAllActors();
+
+        //  await CheckAllExternalStates();
+
+        //  await CheckTemperatureChange();
+
+        //  await SubscribeStates();
+
+        //  SystemLanguage = await GetSystemLanguage();
+
+        //  if (adapter.config.UseVisFromPittini) {
+        //      adapter.log.info("starting vis");
+
+        //      const myVis = require("./HeatingControlVis");
+        //      adapter.log.info("starting vis part 2");
+        //      vis = new myVis(adapter);
+
+
+        //     vis.SetLanguage(SystemLanguage);
+
+        //      if (adapter.config.PittiniPathImageWindowOpen.length != null && adapter.config.PittiniPathImageWindowOpen.length > 0) {
+        //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowOpen);
+        //          vis.SetPathImageWindowOpen(adapter.config.PittiniPathImageWindowOpen);
+        //      }
+        //      if (adapter.config.PittiniPathImageWindowClosed != null && adapter.config.PittiniPathImageWindowClosed.length > 0) {
+        //          adapter.log.debug("set image path " + adapter.config.PittiniPathImageWindowClosed);
+        //          vis.SetPathImageWindowClose(adapter.config.PittiniPathImageWindowClosed);
+        //      }
+
+        //   }
+        //  }
 
     }
     catch (e) {
