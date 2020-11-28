@@ -168,6 +168,16 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.0.0 (2020-12-xx)
+* (René) internal refactoring
+
+<span style="color:red"> breaking changes: </span>
+* Periods and Profils count from 1 instead 0
+* ChangesFromThermostat adjustable per room is removed
+* recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
+* SensorOpenDelay / SensorCloseDelay renamed
+
+
 ### 1.1.0 (2020-11-01)
 * (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
 
