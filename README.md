@@ -140,7 +140,7 @@ Just configure events from ical in admin. Supported are
 * heatingcontrol.0.PartyNow
 
 ## use changes from thermostat
-Many user asked for an option to take over changes from thermostat into adapter. Now a thre options are implemented:
+Many user asked for an option to take over changes from thermostat into adapter. Now a four options are implemented:
 
 | option                   | description                                                
 |--------------------------|---------------------------------------------------------------------------------------
@@ -148,11 +148,9 @@ Many user asked for an option to take over changes from thermostat into adapter.
 | as override              | changes from thermostat are taken as override; override time must be set in advance in heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime
 |                          | if override time is not set, than override is not executed
 | as new profile setting   | changes from thermostat are taken as target temperature for current profile period
-| adjustable per room      | above options can be configured per room. datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode defines the mode:
-|                          |               1 - no
-|                          |               2 - as override 
-|                          |               3 -  as new profile setting 
-|                          | a warning will appear in log if values lower then 0 or higher then 3 are used
+| until next profile point | changes from thermostat are taken as target temperature until next profile point. This is a manual mode, so Window sensors or other 
+|                          | increases / decreases are ignored. There is a datapoint in every room to disable manual mode before reaching next profile point.
+
 
 
 ## Requirements
@@ -161,8 +159,12 @@ Many user asked for an option to take over changes from thermostat into adapter.
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
-### What is Sentry.io and what is reported to the servers of that company?
-Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+## known issues
+
+### Adapter with Homematic IP Fußbodenheizungsaktor HmIP-FAL230-C10 – 10fach, 230 V 
+It seems that HmIP-FAL230-C10 can not be used directly as an actuator in combination with that adapter. If you use HmIP-FAL230-C10 together with Homematic thermostats it should work.
+see also [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
+
 
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.  All of this helps me to provide error free adapters that basically never crashs.
 

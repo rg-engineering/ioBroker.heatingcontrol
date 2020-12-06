@@ -3302,10 +3302,11 @@ async function HandleStateChangeGeneral(id, state) {
         bRet = true;
         ChangeStatus(ids[4], ids[3], state.val);
     }
-    //else if (ids[4] == "ChangesFromThermostatMode") {
-    //    bRet = true;
-    //    ChangeStatus(ids[4], ids[2], state.val);
-    //}
+    //heatingcontrol.0.Rooms.Wohnzimmer.ResetManual
+    else if (ids[4] == "ResetManual") {
+        bRet = true;
+        ChangeStatus(ids[4], ids[3], state.val);
+    }
     //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
     else if (ids[2] == "Profiles") {
         bRet = true;
