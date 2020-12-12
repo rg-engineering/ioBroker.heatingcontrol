@@ -43,10 +43,13 @@ const SubscribeDevices = require("./lib/database").SubscribeDevices;
 const CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
 const StartStatemachine = require("./lib/database").StartStatemachine;
 
+const StartVis = require("./lib/vis").StartVis;
+const HandleStateChangeVis = require("./lib/vis").HandleStateChangeVis;
+
 const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 
 
-let vis = null;
+//let vis = null;
 
 
 //========================================================================
@@ -266,6 +269,8 @@ async function main() {
         //StartTestCron();
 
         await checkHeatingPeriod();
+
+        await StartVis(adapter);
 
         await StartStatemachine();
 
@@ -3015,6 +3020,8 @@ async function HandleStateChange(id, state) {
                 handled = await HandleStateChangeGeneral(id, state);
             }
 
+            
+
             //external datapoints (e.g. present)
             if (!handled) {
                 handled = await HandleStateChangeExternal(id, state);
@@ -3252,12 +3259,22 @@ async function HandleStateChange_V1(id, state) {
 
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
-    adapter.log.debug("HandleStateChangeGeneral " + id);
-
+    adapter.log.warn("HandleStateChangeGeneral " + id);
 
     const ids = id.split("."); 
+
+    //heatingcontrol.0.vis.ChoosenRoom 
+    if (ids[2] === "vis"
+        || ids[4] === "ActiveTimeSlot"
+        //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
+        || ids[4] === "WindowIsOpen"
+        || ids[3] === "ProfileTypes"
+        || ids[3] === "RoomValues"
+        || ids[3] === "TempDecreaseValues") {
+        bRet = await HandleStateChangeVis(id, state);
+    }
     //heatingcontrol.0.GuestsPresent
-    if (ids[2] == "HeatingPeriodActive") {
+    else if (ids[2] == "HeatingPeriodActive") {
         bRet = true;
         ChangeStatus(ids[2], "all", state.val);
     }
