@@ -3020,8 +3020,6 @@ async function HandleStateChange(id, state) {
                 handled = await HandleStateChangeGeneral(id, state);
             }
 
-            
-
             //external datapoints (e.g. present)
             if (!handled) {
                 handled = await HandleStateChangeExternal(id, state);
@@ -3036,9 +3034,8 @@ async function HandleStateChange(id, state) {
                 adapter.log.warn("Statechange " + id + " not handled");
             }
             else {
-                await adapter.setStateAsync(id, { val: state.val, ack: true });
+                await adapter.setStateAsync(id, { ack: true });
             }
-
         }
     }
     catch (e) {
@@ -3259,7 +3256,7 @@ async function HandleStateChange_V1(id, state) {
 
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
-    adapter.log.warn("HandleStateChangeGeneral " + id);
+    adapter.log.debug("HandleStateChangeGeneral " + id);
 
     const ids = id.split("."); 
 
