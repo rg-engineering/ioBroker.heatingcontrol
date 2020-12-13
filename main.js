@@ -253,7 +253,7 @@ async function main() {
 
         SystemLanguage = await GetSystemLanguage();
 
-        await CreateDatabase(adapter);
+        await CreateDatabase(adapter, SystemLanguage );
 
         await CreateDatapoints(adapter);
         await SetDefaults();
@@ -270,7 +270,7 @@ async function main() {
 
         await checkHeatingPeriod();
 
-        await StartVis(adapter);
+        await StartVis(adapter, SystemLanguage);
 
         await StartStatemachine();
 
