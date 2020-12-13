@@ -3270,6 +3270,12 @@ async function HandleStateChangeGeneral(id, state) {
         || ids[3] === "TempDecreaseValues") {
         bRet = await HandleStateChangeVis(id, state);
     }
+    //heatingcontrol.0.CurrentProfile
+    else if (ids[2] == "CurrentProfile") {
+        bRet = true;
+        ChangeStatus(ids[2], "all", state.val);
+        HandleStateChangeVis(id, state);
+    }
     //heatingcontrol.0.GuestsPresent
     else if (ids[2] == "HeatingPeriodActive") {
         bRet = true;
