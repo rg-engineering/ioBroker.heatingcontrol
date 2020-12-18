@@ -55,6 +55,73 @@
 
     <script type="text/javascript">
 
+        //==========================================================================
+        //load / save profile
+        function SaveProfile(instance) {
+            console.log('SaveProfile called ');
+
+            sendTo(instance, 'saveProfile', null, function (result) {
+
+                generateFile('heatingcontrol_profile.json', result);
+
+                console.log('profile saved ');
+            });
+
+            
+        }
+
+
+        function generateFile(filename, obj) {
+            var el = document.createElement('a');
+            el.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(obj, null, 2)));
+            el.setAttribute('download', filename);
+
+            el.style.display = 'none';
+            document.body.appendChild(el);
+
+            el.click();
+
+            document.body.removeChild(el);
+        }
+
+
+
+        function LoadProfile(instance) {
+            console.log('Load profile called');
+
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('id', 'files');
+            input.setAttribute('opacity', 0);
+            input.addEventListener('change', function (e) {
+                handleFileSelect(e, instance, function () { });
+            }, false);
+            (input.click)();
+        }
+
+        function handleFileSelect(evt, instance) {
+
+            console.log('handleFileSelect ' + instance);
+
+            var f = evt.target.files[0];
+
+            if (f) {
+                var r = new FileReader();
+                r.onload = function (e) {
+                    var contents = e.target.result;
+
+                    sendTo(instance, 'loadProfile', contents, function (result) {
+                        
+                        console.log('profile loaded with ' + result);
+                    });
+                }
+
+                r.readAsText(f);
+            }
+        }
+
+        //==========================================================================
+
         function findObjectIdByKey(array, key, value) {
 
             //Achtung: key wird auf int geparsed!!
@@ -329,7 +396,7 @@
                 if (SearchNew) {
                     newRooms = obj.newRooms;
 
-                    $('#checkResult').html(newRooms + ' new room(s) ');
+                    $('#checkResultRooms').html(newRooms + ' new room(s) ');
 
                     if (newRooms > 0) {
                         onChange(true);
@@ -438,17 +505,39 @@
                 }
             }
 
-            var $check4newrooms = $('#check4newrooms');
-            $check4newrooms.click(function () {
+            var $btn_check4newrooms = $('#btn_check4newrooms');
+            $btn_check4newrooms.click(function () {
                 console.log('check 4 new rooms');
 
                 var _id = 'heatingcontrol.' + instance;
                 console.log('my instance ' + _id);
 
                 getRooms(onChange, _id, true);
+            });
 
+            
+
+
+            var $btnsave_profile = $('#btn_save_profile');
+            $btnsave_profile.click(function () {
+                console.log('btn save profile');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+                SaveProfile(_id);
 
             });
+
+            var $btnload_profile = $('#btn_load_profile');
+            $btnload_profile.click(function () {
+                console.log('btn load profile');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+                LoadProfile(_id);
+
+            });
+
 
             myOnChange = onChange;
             // Signal to admin, that no changes yet
@@ -693,6 +782,37 @@
                     });
                 }, 20)
             });
+
+            var $btn_check4newThermostats = $('#btn_check4newThermostats');
+            $btn_check4newThermostats.click(function () {
+                console.log('check 4 new Thermostats');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+
+            });
+
+            var $btn_check4newActors = $('#btn_check4newActors');
+            $btn_check4newActors.click(function () {
+                console.log('check 4 new Actors');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+
+            });
+
+            var $btn_check4newSensors = $('#btn_check4newSensors');
+            $btn_check4newSensors.click(function () {
+                console.log('check 4 new Sensors');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+
+
+            });
+
 
             showHideSettings();
         }
@@ -1173,6 +1293,18 @@
                         <div class="collapsible-body">
 
                             <div class="row">
+                                <div class="input-field col s1">
+                                    <a class="btn-floating btn-small translateT" title="save profile" id="btn_save_profile"><i class="material-icons">file_download</i></a>
+                                    
+                                </div>
+                                <div class="input-field col s1">
+                                    <a class="btn-floating btn-small translateT" title="load profile" id="btn_load_profile"><i class="material-icons">file_upload</i></a>
+                                    
+                                </div>
+                            </div>
+
+
+                            <div class="row">
                                 <div class="input-field col s4">
                                     <select id="ProfileType" class="value">
                                         <option value="1" class="translate">Mo-So</option>
@@ -1270,8 +1402,8 @@
 
                 <div class="row">
                     <div class="input-field col s3">
-                        <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
-                        <div id="checkResult"></div>
+                        <a class="waves-effect waves-light btn" id="btn_check4newrooms"><span class="translate">Check4NewRooms</span></a>
+                        <div id="checkResultRooms"></div>
                     </div>
                 </div>
 
@@ -1332,6 +1464,15 @@
                                     <span class="translate">hint_thermostats</span>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="input-field col s3">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newThermostats"><span class="translate">Check4NewThermostats</span></a>
+                                    <div id="checkResultThermostats"></div>
+                                </div>
+                            </div>
+
+
                             <div class="row">
                                 <div class="col s12" id="thermostats">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1366,6 +1507,12 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="input-field col s3">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newActors"><span class="translate">Check4NewActors</span></a>
+                                    <div id="checkResultActors"></div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col s12" id="actors">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                     <div class="table-values-div">
@@ -1392,6 +1539,14 @@
                                     <span class="translate">hint_sensors</span>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="input-field col s3">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newSensors"><span class="translate">Check4NewSensors</span></a>
+                                    <div id="checkResultSensors"></div>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col s12" id="sensors">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
