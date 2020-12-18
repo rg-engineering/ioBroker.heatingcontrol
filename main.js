@@ -3266,162 +3266,172 @@ async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
     adapter.log.debug("HandleStateChangeGeneral " + id);
 
-    const ids = id.split("."); 
+    try {
+        const ids = id.split(".");
 
-    //heatingcontrol.0.vis.ChoosenRoom 
-    if (ids[2] === "vis"
-        || ids[4] === "ActiveTimeSlot"
-        //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
-        || ids[4] === "WindowIsOpen"
-        || ids[3] === "ProfileTypes"
-        || ids[3] === "RoomValues"
-        || ids[3] === "TempDecreaseValues") {
-        bRet = await HandleStateChangeVis(id, state);
+        //heatingcontrol.0.vis.ChoosenRoom 
+        if (ids[2] === "vis"
+            || ids[4] === "ActiveTimeSlot"
+            //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
+            || ids[4] === "WindowIsOpen"
+            || ids[3] === "ProfileTypes"
+            || ids[3] === "RoomValues"
+            || ids[3] === "TempDecreaseValues") {
+            bRet = await HandleStateChangeVis(id, state);
+        }
+        //heatingcontrol.0.CurrentProfile
+        else if (ids[2] == "CurrentProfile") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+            HandleStateChangeVis(id, state);
+        }
+        //heatingcontrol.0.GuestsPresent
+        else if (ids[2] == "HeatingPeriodActive") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "PublicHolidyToday") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "Present") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "PartyNow") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "GuestsPresent") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "HolidayPresent") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        else if (ids[2] == "VacationAbsent") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
+        //heatingcontrol.0.Rooms.Küche.TemperaturOverride
+        else if (ids[4] == "TemperaturOverride") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
+        else if (ids[4] == "TemperaturOverrideTime") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
+        else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
+        else if (ids[4] == "MinimumTemperature") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
+        //heatingcontrol.0.Rooms.Wohnzimmer.ResetManual
+        else if (ids[4] == "ResetManual") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
+        //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
+        else if (ids[2] == "Profiles") {
+            bRet = true;
+            ChangeStatus(ids[2], ids[4], state.val);
+        }
     }
-    //heatingcontrol.0.CurrentProfile
-    else if (ids[2] == "CurrentProfile") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-        HandleStateChangeVis(id, state);
+    catch (e) {
+        adapter.log.error("exception in HandleStateChangeGeneral [" + e + "]");
     }
-    //heatingcontrol.0.GuestsPresent
-    else if (ids[2] == "HeatingPeriodActive") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "PublicHolidyToday") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "Present") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "PartyNow") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "GuestsPresent") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "HolidayPresent") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    else if (ids[2] == "VacationAbsent") {
-        bRet = true;
-        ChangeStatus(ids[2], "all", state.val);
-    }
-    //heatingcontrol.0.Rooms.Küche.TemperaturOverride
-    else if (ids[4] == "TemperaturOverride") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[3], state.val);
-    }
-    else if (ids[4] == "TemperaturOverrideTime") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[3], state.val);
-    }
-    else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[3], state.val);
-    }
-    else if (ids[4] == "MinimumTemperature") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[3], state.val);
-    }
-    //heatingcontrol.0.Rooms.Wohnzimmer.ResetManual
-    else if (ids[4] == "ResetManual") {
-        bRet = true;
-        ChangeStatus(ids[4], ids[3], state.val);
-    }
-    //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
-    else if (ids[2] == "Profiles") {
-        bRet = true;
-        ChangeStatus(ids[2], ids[4], state.val);
-    }
-
     return bRet;
 }
 
 async function HandleStateChangeExternal(id, state) {
     let bRet = false;
     //adapter.log.debug("HandleStateChangeExternal " + id);
-    
-    if (adapter.config.Path2PresentDP.length > 0) {
-        if (id.includes(adapter.config.Path2PresentDP)) {
-            let present = false;
-            if (parseInt(adapter.config.Path2PresentDPType) === 1) {
-                present = state;
-            }
-            else {
-                if (state > adapter.config.Path2PresentDPLimit) {
-                    present = true;
+
+    try {
+        if (adapter.config.Path2PresentDP.length > 0) {
+            if (id.includes(adapter.config.Path2PresentDP)) {
+                let present = false;
+                if (parseInt(adapter.config.Path2PresentDPType) === 1) {
+                    present = state;
                 }
-            }
-            //heatingcontrol.0.Present
-            await adapter.setStateAsync("Present", { val: present, ack: false });
-            bRet = true;
-        }
-    }
-
-    if (adapter.config.Path2VacationDP.length > 0) {
-        if (id.includes(adapter.config.Path2VacationDP)) {
-            //heatingcontrol.0.VacationAbsent
-            await adapter.setStateAsync("VacationAbsent", { val: state, ack: false });
-            bRet = true;
-        }
-    }
-
-    if (adapter.config.Path2HolidayPresentDP.length > 0) {
-        if (id.includes(adapter.config.Path2HolidayPresentDP)) {
-            //heatingcontrol.0.HolidayPresent
-            await adapter.setStateAsync("HolidayPresent", { val: state, ack: false });
-            bRet = true;
-        }
-    }
-
-    if (adapter.config.Path2GuestsPresentDP.length > 0) {
-        if (id.includes(adapter.config.Path2GuestsPresentDP)) {
-            let guestpresent = false;
-            if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
-                guestpresent = state;
-            }
-            else {
-                if (state > adapter.config.Path2GuestsPresentDPLimit) {
-                    guestpresent = true;
+                else {
+                    if (state > adapter.config.Path2PresentDPLimit) {
+                        present = true;
+                    }
                 }
+                //heatingcontrol.0.Present
+                await adapter.setStateAsync("Present", { val: present, ack: false });
+                bRet = true;
             }
-            //heatingcontrol.0.GuestsPresent
-            await adapter.setStateAsync("GuestsPresent", { val: guestpresent, ack: false });
-            bRet = true;
         }
-    }
 
-    if (adapter.config.Path2PartyNowDP.length > 0) {
-        if (id.includes(adapter.config.Path2PartyNowDP)) {
-            let partynow = false;
-            if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
-                partynow = state;
+        if (adapter.config.Path2VacationDP.length > 0) {
+            if (id.includes(adapter.config.Path2VacationDP)) {
+                //heatingcontrol.0.VacationAbsent
+                await adapter.setStateAsync("VacationAbsent", { val: state, ack: false });
+                bRet = true;
             }
-            else {
-                if (state > adapter.config.Path2PartyNowDPLimit) {
-                    partynow = true;
+        }
+
+        if (adapter.config.Path2HolidayPresentDP.length > 0) {
+            if (id.includes(adapter.config.Path2HolidayPresentDP)) {
+                //heatingcontrol.0.HolidayPresent
+                await adapter.setStateAsync("HolidayPresent", { val: state, ack: false });
+                bRet = true;
+            }
+        }
+
+        if (adapter.config.Path2GuestsPresentDP.length > 0) {
+            if (id.includes(adapter.config.Path2GuestsPresentDP)) {
+                let guestpresent = false;
+                if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
+                    guestpresent = state;
                 }
+                else {
+                    if (state > adapter.config.Path2GuestsPresentDPLimit) {
+                        guestpresent = true;
+                    }
+                }
+                //heatingcontrol.0.GuestsPresent
+                await adapter.setStateAsync("GuestsPresent", { val: guestpresent, ack: false });
+                bRet = true;
             }
-            //heatingcontrol.0.PartyNow
-            await adapter.setStateAsync("PartyNow", { val: partynow, ack: false });
-            bRet = true;
         }
+
+        if (adapter.config.Path2PartyNowDP.length > 0) {
+            if (id.includes(adapter.config.Path2PartyNowDP)) {
+                let partynow = false;
+                if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
+                    partynow = state;
+                }
+                else {
+                    if (state > adapter.config.Path2PartyNowDPLimit) {
+                        partynow = true;
+                    }
+                }
+                //heatingcontrol.0.PartyNow
+                await adapter.setStateAsync("PartyNow", { val: partynow, ack: false });
+                bRet = true;
+            }
+        }
+
+        if (adapter.config.Path2FeiertagAdapter.length > 0) {
+            if (id.includes(adapter.config.Path2FeiertagAdapter)) {
+                //heatingcontrol.0.PublicHolidyToday
+                await adapter.setStateAsync("PublicHolidyToday", { val: state, ack: true });
+                bRet = true;
+            }
+        }
+    }
+    catch (e) {
+        adapter.log.error("exception in HandleStateChangeExternal [" + e + "]");
     }
 
-    if (adapter.config.Path2FeiertagAdapter.length > 0) {
-        if (id.includes(adapter.config.Path2FeiertagAdapter)) {
-            //heatingcontrol.0.PublicHolidyToday
-            await adapter.setStateAsync("PublicHolidyToday", { val: state, ack: true });
-            bRet = true;
-        }
-    }
     return bRet;
 }
 
@@ -3429,9 +3439,12 @@ async function HandleStateChangeExternal(id, state) {
 async function HandleStateChangeDevices(id, state) {
     let bRet = false;
     //adapter.log.debug("HandleStateChangeDevices " + id);
-
-    bRet = CheckStateChangeDevice(id, state);
-
+    try {
+        bRet = CheckStateChangeDevice(id, state);
+    }
+    catch (e) {
+        adapter.log.error("exception in HandleStateChangeDevices [" + e + "]");
+    }
     return bRet;
 }
 
