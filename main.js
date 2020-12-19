@@ -3014,9 +3014,10 @@ function UnSubscribeStates4ChangesFromThermostat(idx) {
 */
 
 
+
 async function HandleStateChange(id, state) {
     try {
-        if (state && state.ack !== true) {
+        if ( state && state.ack !== true) {
             //handle only, if not ack'ed
             adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
@@ -3341,6 +3342,9 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[2], ids[4], state.val);
         }
+
+        
+
     }
     catch (e) {
         adapter.log.error("exception in HandleStateChangeGeneral [" + e + "]");
@@ -6275,15 +6279,17 @@ async function SaveProfile(obj) {
         };
         //adapter.log.debug("profile2Save " + JSON.stringify(profile2Save));
 
-        const room2Save = {
-            profiles: {}
-        };
+       
         //adapter.log.debug("room2Save " + JSON.stringify(room2Save));
 
         for (let room = 0; room < adapter.config.rooms.length; room++) {
             if (adapter.config.rooms[room].isActive) {
 
                 const roomName = adapter.config.rooms[room].name;
+
+                const room2Save = {
+                    profiles: {}
+                };
 
                 for (let profile = 1; profile <= parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
                     const key = "Profiles." + profile;
@@ -6493,16 +6499,17 @@ async function SaveProfile(obj) {
                             AbsentDecrease: AbsentDecrease.val,
                             VacationAbsentDecrease: VacationAbsentDecrease.val
                         };
-                        //adapter.log.debug("decrease " + JSON.stringify(decrease));
+                        adapter.log.debug("decrease " + JSON.stringify(decrease));
                         room2Save.profiles[profile].decrease = decrease;
+                        adapter.log.debug("room2Save " + JSON.stringify(room2Save));
 
                     }
                 }
-                //adapter.log.debug("room2Save " + JSON.stringify(room2Save));
+                
 
                 profile2Save.Rooms[roomName] = room2Save;
 
-                //adapter.log.debug("profile2Save " + JSON.stringify(profile2Save));
+                adapter.log.debug("profile2Save " + JSON.stringify(profile2Save));
             }
 
         }
@@ -6518,8 +6525,205 @@ async function SaveProfile(obj) {
 async function LoadProfile(obj) {
     adapter.log.warn("LoadProfile called " + JSON.stringify(obj));
 
-    adapter.sendTo(obj.from, obj.command, "test", obj.callback);
+    let retText = "successfully loaded";
+    try {
+        const profile2Load = JSON.parse(obj.message);
+
+        adapter.log.debug("got data " + JSON.stringify(profile2Load));
+
+        //first do some checks
+        let ready2load = true;
+        
+        if (profile2Load.ProfileType != adapter.config.ProfileType) {
+            ready2load = false;
+            retText += " Profile type " + profile2Load.ProfileType + " not equal to " + adapter.config.ProfileType;
+        }
+        if (profile2Load.NumberOfProfiles != adapter.config.NumberOfProfiles) {
+            ready2load = false;
+            retText += " number of profiles  " + profile2Load.NumberOfProfiles + " not equal to " + adapter.config.NumberOfProfiles;
+        }
+        if (profile2Load.NumberOfPeriods != adapter.config.NumberOfPeriods) {
+            ready2load = false;
+            retText += " number of periods  " + profile2Load.NumberOfPeriods + " not equal to " + adapter.config.NumberOfPeriods;
+        }
+        if (profile2Load.TemperatureDecrease != adapter.config.TemperatureDecrease) {
+            ready2load = false;
+            retText += " TemperatureDecrease  " + profile2Load.TemperatureDecrease + " not equal to " + adapter.config.TemperatureDecrease;
+        }
+        if (!ready2load) {
+            adapter.log.error("could not load profile " + retText);
+        }
+        else {
+            //load now
+
+
+
+            for (let room = 0; room < adapter.config.rooms.length; room++) {
+                if (adapter.config.rooms[room].isActive) {
+
+                    const roomName = adapter.config.rooms[room].name;
+
+                    for (let profile = 1; profile <= parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
+                        const key = "Profiles." + profile;
+
+                        const id = key + "." + roomName;
+
+                        let id1 = id;
+
+                        if (parseInt(adapter.config.ProfileType, 10) === 1) {
+
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Mo-Su.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Mo_Su[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Su[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+                            }
+                        }
+                        else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Mo-Fr.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Mo_Fr[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Fr[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Sa-Su.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Sa_Su[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sa_Su[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+                            }
+                        }
+                        else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Mon.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Mon[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mon[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Tue.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Tue[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Tue[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Wed.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Wed[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Wed[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Thu.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Thu[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Thu[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Fri.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Fri[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Fri[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Sat.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Sat[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sat[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+                            for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
+                                const id = id1 + ".Sun.Periods." + period;
+
+                                const Time = profile2Load.Rooms[roomName].profiles[profile].Sun[period].time;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sun[period].temperature;
+
+                                await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
+                                await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
+
+                            }
+
+                        }
+                        let decreaseMode = false;
+                        if (parseInt(adapter.config.TemperatureDecrease) === 1) {// relative
+                            id1 += ".relative";
+                            decreaseMode = true;
+                        }
+                        else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
+                            id1 += ".absolute";
+                            decreaseMode = true;
+                        }
+
+
+                        if (decreaseMode) {
+
+                            const GuestIncrease = profile2Load.Rooms[roomName].profiles[profile].decrease.GuestIncrease;
+                            const PartyDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.PartyDecrease;
+                            const WindowOpenDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.WindowOpenDecrease;
+                            const AbsentDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.AbsentDecrease;
+                            const VacationAbsentDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.VacationAbsentDecrease;
+
+                            await adapter.setStateAsync(id1 + ".GuestIncrease", { ack: true, val: GuestIncrease });
+                            await adapter.setStateAsync(id1 + ".PartyDecrease", { ack: true, val: PartyDecrease });
+                            await adapter.setStateAsync(id1 + ".WindowOpenDecrease", { ack: true, val: WindowOpenDecrease });
+                            await adapter.setStateAsync(id1 + ".AbsentDecrease", { ack: true, val: AbsentDecrease });
+                            await adapter.setStateAsync(id1 + ".VacationAbsentDecrease", { ack: true, val: VacationAbsentDecrease });
+
+                        }
+                    }
+                }
+            }
+
+
+
+            adapter.log.warn("LoadProfile done " + retText);
+
+
+            //ChangeStatus("Profiles", "all", null);
+        }
+    }
+    catch (e) {
+        retText = "exception in LoadProfile [" + e + "]";
+        adapter.log.error(retText);
+
+    }
+
+    adapter.sendTo(obj.from, obj.command, retText, obj.callback);
 }
+    
 
 
 // If started as allInOne/compact mode => return function to create instance
