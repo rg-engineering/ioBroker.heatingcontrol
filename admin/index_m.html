@@ -69,7 +69,7 @@
                 $('#checkResultSaveProfile').html("profile saved");
             });
 
-            
+
         }
 
 
@@ -113,7 +113,7 @@
                     var contents = e.target.result;
 
                     sendTo(instance, 'loadProfile', contents, function (result) {
-                        
+
                         console.log('profile loaded with ' + result);
 
                         $('#checkResultLoadProfile').html(result);
@@ -200,7 +200,7 @@
                 $('.col-adapternotonline').hide();
             }
 
-            
+
             var TypeDPPresent = $('#Path2PresentDPType')[0].value
             if (TypeDPPresent == 1) {
                 $('.col_Path2PresentDPLimit').hide();
@@ -669,7 +669,7 @@
                 getRooms(onChange, _id, true);
             });
 
-            
+
 
 
             var $btnsave_profile = $('#btn_save_profile');
@@ -713,13 +713,74 @@
                 DeviceList = settings.devices;
                 console.log('using devices from settings ' + JSON.stringify(DeviceList));
             }
-            
+
 
             if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
             }
+
+            //===========================================
+            //OID selecters
+            $('#OID_Path2FeiertagAdapter').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2FeiertagAdapter').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2FeiertagAdapter').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2PresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2PresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2PresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2VacationDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2VacationDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2VacationDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2HolidayPresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2HolidayPresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2HolidayPresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2GuestsPresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2GuestsPresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2GuestsPresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2PartyNowDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2PartyNowDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2PartyNowDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
             
+            
+            
+            
+
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
@@ -730,7 +791,7 @@
                     case "#tab-main":
                         loadOptions();
                         break;
-                    
+
                 }
             }
 
@@ -927,7 +988,7 @@
                 }, 20)
             });
 
-           
+
             var $btn_check4newThermostats = $('#btn_check4newThermostats');
             $btn_check4newThermostats.click(function () {
                 console.log('check 4 new Thermostats');
@@ -1212,16 +1273,24 @@
                         </div>
                         <div class="collapsible-body">
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2FeiertagAdapter" class="value" />
                                     <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
+                                    
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2FeiertagAdapter" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2PresentDP" class="value" />
                                     <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
+                                    
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2PresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -1232,33 +1301,46 @@
                                     <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
                                 </div>
 
-                                
+
                                 <div class="input-field col s3 col_Path2PresentDPLimit">
                                     <input type="number" id="Path2PresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2PresentDPLimit" class="translate">Path2PresentDPLimit</label>
+
                                 </div>
-                               
+
 
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2VacationDP" class="value" />
                                     <label for="Path2VacationDP" class="translate">Path2VacationDP</label>
+                                    
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2VacationDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2HolidayPresentDP" class="value" />
                                     <label for="Path2HolidayPresentDP" class="translate">Path2HolidayPresentDP</label>
+                                    
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2HolidayPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2GuestsPresentDP" class="value" />
                                     <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
+                                    
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2GuestsPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -1269,19 +1351,23 @@
                                     <label for="Path2GuestsPresentDPType" class="translate">Path2GuestsPresentDPType</label>
                                 </div>
 
-                                
+
                                 <div class="input-field col s3 col_Path2GuestsPresentDPLimit">
                                     <input type="number" id="Path2GuestsPresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2GuestsPresentDPLimit" class="translate">Path2GuestsPresentDPLimit</label>
                                 </div>
-                               
+
 
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2PartyNowDP" class="value" />
                                     <label for="Path2PartyNowDP" class="translate">Path2PartyNowDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2PartyNowDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -1551,9 +1637,12 @@
             <div id="tab-devices" class="col s12 page">
 
                 <div class="row">
-                    <div class="input-field col s3">
+                    <div class="input-field col s4">
                         <a class="waves-effect waves-light btn" id="btn_check4newrooms"><span class="translate">Check4NewRooms</span></a>
                         <div id="checkResultRooms"></div>
+                    </div>
+                    <div class="input-field col s4">
+                        <span class="translate">Check4NewRooms_hint</span>
                     </div>
                 </div>
 
@@ -1616,9 +1705,12 @@
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s3">
+                                <div class="input-field col s4">
                                     <a class="waves-effect waves-light btn" id="btn_check4newThermostats"><span class="translate">Check4NewThermostats</span></a>
                                     <div id="checkResultThermostats"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewThermostats_hint</span>
                                 </div>
                             </div>
 
@@ -1657,9 +1749,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s3">
+                                <div class="input-field col s4">
                                     <a class="waves-effect waves-light btn" id="btn_check4newActors"><span class="translate">Check4NewActors</span></a>
                                     <div id="checkResultActors"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewActors_hint</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -1691,9 +1786,12 @@
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s3">
+                                <div class="input-field col s4">
                                     <a class="waves-effect waves-light btn" id="btn_check4newSensors"><span class="translate">Check4NewSensors</span></a>
                                     <div id="checkResultSensors"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewSensors_hint</span>
                                 </div>
                             </div>
 

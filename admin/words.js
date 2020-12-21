@@ -24,18 +24,6 @@ systemDictionary = {
         "pl": "anuluj",
         "zh-cn": "取消"
     },
-    "Check4NewRooms": {
-        "en": "check for new rooms",
-        "de": "auf neue Zimmer prüfen",
-        "ru": "проверить наличие новых номеров",
-        "pt": "verifique se há novos quartos",
-        "nl": "controleer op nieuwe kamers",
-        "fr": "vérifier les nouvelles chambres",
-        "it": "verifica la presenza di nuove camere",
-        "es": "comprobar las habitaciones nuevas",
-        "pl": "rejestracja dla nowych pokoi",
-        "zh-cn": "检查新的房间"
-    },
     "Edit Room": {
         "en": "edit the room", "de": "Bearbeiten Sie den Raum", "ru": "редактировать комнату", "pt": "editar a sala", "nl": "bewerk de kamer", "fr": "modifier la pièce", "it": "modifica la stanza", "es": "edición de la habitación", "pl": "edytować numer", "zh-cn": "编辑室"
     },
@@ -513,5 +501,101 @@ systemDictionary = {
         "es": "Límite para el punto de datos \"fiesta ahora\"",
         "pl": "Limit dla punktu danych „dołącz teraz”",
         "zh-cn": "数据点“现在参加聚会”的限制"
+    },
+    "Check4NewRooms": {
+        "en": "check for new rooms",
+        "de": "auf neue Zimmer prüfen",
+        "ru": "проверить наличие новых номеров",
+        "pt": "verifique se há novos quartos",
+        "nl": "controleer op nieuwe kamers",
+        "fr": "vérifier les nouvelles chambres",
+        "it": "verifica la presenza di nuove camere",
+        "es": "comprobar las habitaciones nuevas",
+        "pl": "rejestracja dla nowych pokoi",
+        "zh-cn": "检查新的房间"
+    },
+    "Check4NewRooms_hint": {
+        "en": "A search is made for new rooms in the enum list. You cab add rooms manually too.",
+        "de": "Es wird nach neuen Räumen in der Aufzählungsliste gesucht. Sie können Räume auch manuell hinzufügen.",
+        "ru": "Выполняется поиск новых помещений в списке перечислений. Вы также можете добавлять комнаты вручную.",
+        "pt": "Uma pesquisa é feita por novas salas na lista de enum. Você também pode adicionar salas manualmente.",
+        "nl": "Er wordt gezocht naar nieuwe kamers in de enumlijst. U kunt ook handmatig kamers toevoegen.",
+        "fr": "Une recherche est effectuée pour les nouvelles salles dans la liste d'énumération. Vous pouvez également ajouter des pièces manuellement.",
+        "it": "Viene eseguita una ricerca di nuove stanze nell'elenco enum. Puoi anche aggiungere le stanze manualmente.",
+        "es": "Se realiza una búsqueda de nuevas habitaciones en la lista de enumeración. También puede agregar habitaciones manualmente.",
+        "pl": "Wyszukiwanie nowych pomieszczeń na liście wyliczeń. Dodajesz również pokoje ręcznie.",
+        "zh-cn": "在枚举列表中搜索新房间。您也可以手动添加房间。"
+    },
+    "Check4NewThermostats": {
+        "en": "check for new thermostats",
+        "de": "nach neuen Thermostaten suchen",
+        "ru": "проверьте новые термостаты",
+        "pt": "verifique se há novos termostatos",
+        "nl": "controleer op nieuwe thermostaten",
+        "fr": "vérifier les nouveaux thermostats",
+        "it": "verificare la presenza di nuovi termostati",
+        "es": "comprobar si hay termostatos nuevos",
+        "pl": "sprawdź, czy są nowe termostaty",
+        "zh-cn": "检查新的恒温器"
+    },
+    "Check4NewThermostats_hint": {
+        "en": "Known thermostats are searched for. The room and the function are used. If the automatic detection does not find the thermostats, they can also be added manually.",
+        "de": "Es wird nach bekannten Thermostaten gesucht. Der Raum und die Funktion werden genutzt. Wenn die automatische Erkennung die Thermostate nicht findet, können sie auch manuell hinzugefügt werden.",
+        "ru": "Ищутся известные термостаты. Используется комната и функция. Если автоматическое обнаружение не обнаруживает термостаты, их также можно добавить вручную.",
+        "pt": "Termostatos conhecidos são pesquisados. O quarto e a função são usados. Se a detecção automática não encontrar os termostatos, eles também podem ser adicionados manualmente.",
+        "nl": "Er wordt gezocht naar bekende thermostaten. De kamer en de functie worden gebruikt. Als de automatische detectie de thermostaten niet vindt, kunnen ze ook handmatig worden toegevoegd.",
+        "fr": "Les thermostats connus sont recherchés. La pièce et la fonction sont utilisées. Si la détection automatique ne trouve pas les thermostats, ils peuvent également être ajoutés manuellement.",
+        "it": "Vengono cercati termostati noti. La stanza e la funzione vengono utilizzate. Se il rilevamento automatico non trova i termostati, è possibile aggiungerli anche manualmente.",
+        "es": "Se buscan termostatos conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los termostatos, también se pueden agregar manualmente.",
+        "pl": "Poszukiwane są znane termostaty. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie termostatów, można je również dodać ręcznie.",
+        "zh-cn": "搜索已知的恒温器。使用房间和功能。如果自动检测未找到恒温器，则也可以手动添加它们。"
+    },
+    "Check4NewActors": {
+        "en": "check for new actuators",
+        "de": "nach neuen Aktoren suchen",
+        "ru": "проверьте наличие новых приводов",
+        "pt": "verificar se há novos atuadores",
+        "nl": "controleer op nieuwe actuatoren",
+        "fr": "vérifier les nouveaux actionneurs",
+        "it": "verificare la presenza di nuovi attuatori",
+        "es": "comprobar si hay nuevos actuadores",
+        "pl": "sprawdź, czy są nowe siłowniki",
+        "zh-cn": "检查是否有新的执行器"
+    },
+    "Check4NewActors_hint": {
+        "en": "Known actuators are searched for. The room and the function are used. If the automatic detection does not find the actuators, they can also be added manually.",
+        "de": "Es wird nach bekannten Aktoren gesucht. Der Raum und die Funktion werden genutzt. Wenn die automatische Erkennung die Aktoren nicht findet, können sie auch manuell hinzugefügt werden.",
+        "ru": "Ищутся известные исполнительные механизмы. Используется комната и функция. Если автоматическое обнаружение не обнаруживает исполнительные механизмы, их также можно добавить вручную.",
+        "pt": "Os atuadores conhecidos são pesquisados. O quarto e a função são usados. Se a detecção automática não encontrar os atuadores, eles também podem ser adicionados manualmente.",
+        "nl": "Er wordt gezocht naar bekende actuatoren. De kamer en de functie worden gebruikt. Als de automatische detectie de actuatoren niet vindt, kunnen ze ook handmatig worden toegevoegd.",
+        "fr": "Les actionneurs connus sont recherchés. La pièce et la fonction sont utilisées. Si la détection automatique ne trouve pas les actionneurs, ils peuvent également être ajoutés manuellement.",
+        "it": "Vengono cercati attuatori noti. La stanza e la funzione vengono utilizzate. Se il rilevamento automatico non trova gli attuatori, è possibile aggiungerli anche manualmente.",
+        "es": "Se buscan actuadores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los actuadores, también se pueden agregar manualmente.",
+        "pl": "Poszukiwane są znane siłowniki. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie siłowników, można je również dodać ręcznie.",
+        "zh-cn": "搜索已知的执行器。使用房间和功能。如果自动检测未找到执行器，也可以手动添加。"
+    },
+    "Check4NewSensors": {
+        "en": "check for new sensors",
+        "de": "nach neuen Sensoren suchen",
+        "ru": "проверьте наличие новых датчиков",
+        "pt": "verifique se há novos sensores",
+        "nl": "controleer op nieuwe sensoren",
+        "fr": "rechercher de nouveaux capteurs",
+        "it": "verificare la presenza di nuovi sensori",
+        "es": "comprobar si hay nuevos sensores",
+        "pl": "sprawdź nowe czujniki",
+        "zh-cn": "检查新的传感器"
+    },
+    "Check4NewSensors_hint": {
+        "en": "Known sensors are searched for. The room and the function are used. If the automatic detection does not find the sensors, they can also be added manually.",
+        "de": "Es wird nach bekannten Sensoren gesucht. Der Raum und die Funktion werden genutzt. Wenn die automatische Erkennung die Sensoren nicht findet, können sie auch manuell hinzugefügt werden.",
+        "ru": "Ищутся известные датчики. Используется комната и функция. Если автоматическое обнаружение не обнаруживает датчики, их также можно добавить вручную.",
+        "pt": "Sensores conhecidos são pesquisados. O quarto e a função são usados. Se a detecção automática não encontrar os sensores, eles também podem ser adicionados manualmente.",
+        "nl": "Er wordt gezocht naar bekende sensoren. De kamer en de functie worden gebruikt. Als de automatische detectie de sensoren niet vindt, kunnen ze ook handmatig worden toegevoegd.",
+        "fr": "Les capteurs connus sont recherchés. La pièce et la fonction sont utilisées. Si la détection automatique ne trouve pas les capteurs, ils peuvent également être ajoutés manuellement.",
+        "it": "Vengono cercati sensori noti. La stanza e la funzione vengono utilizzate. Se il rilevamento automatico non trova i sensori, è possibile aggiungerli anche manualmente.",
+        "es": "Se buscan sensores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los sensores, también se pueden agregar manualmente.",
+        "pl": "Wyszukiwanie znanych czujników. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie czujników, można je również dodać ręcznie.",
+        "zh-cn": "搜索已知的传感器。使用房间和功能。如果自动检测未找到传感器，则也可以手动添加它们。"
     }
 };
