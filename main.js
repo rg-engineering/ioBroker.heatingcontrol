@@ -16,7 +16,7 @@ const utils = require("@iobroker/adapter-core");
 //const CronJob = require("cron").CronJob;
 
 const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
-const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
+//const findObjectIdByKey = require("./lib/support_tools.js").findObjectIdByKey;
 //const findObjectsByKey = require("./lib/support_tools.js").findObjectsByKey;
 //const findObjectsIdByKey = require("./lib/support_tools.js").findObjectsIdByKey;
 
@@ -48,6 +48,10 @@ const HandleStateChangeVis = require("./lib/vis").HandleStateChangeVis;
 
 const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 
+const Check4Thermostat = require("./lib/devicedetect").Check4Thermostat;
+const Check4Actor = require("./lib/devicedetect").Check4Actor;
+const Check4Sensor = require("./lib/devicedetect").Check4Sensor;
+
 
 //let vis = null;
 
@@ -57,87 +61,21 @@ const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 //const bDebug = false;
 //========================================================================
 
-//structure for devices:
-//    * RoomName
-//    * IsActive
-//    * List of Thermostats
-//    * List of Actors
-//    * List of Sensors
 
 
-//structure for hardware (thermostats, sensors, actors):
-//    * Name
-//    * IsActive
-//    * getValueID
-//    * setValueID
 
 
-// Die ThermostatTypeTab definiert die Thermostat Typen.
-// used for known hardware, all others can be set manually
-const ThermostatTypeTab = [];
-//Homematic
-ThermostatTypeTab[0] = ["HM-TC-IT-WM-W-EU", "Wandthermostat (neu)", ".2.SET_TEMPERATURE", ".1.TEMPERATURE", "2.CONTROL_MODE"];
-ThermostatTypeTab[1] = ["HM-CC-TC", "Wandthermostat (alt)", ".2.SETPOINT", ".1.TEMPERATURE", false];
-ThermostatTypeTab[2] = ["HM-CC-RT-DN", "Heizkoerperthermostat(neu)", ".4.SET_TEMPERATURE", ".4.ACTUAL_TEMPERATURE", "4.CONTROL_MODE"];
-ThermostatTypeTab[3] = ["HMIP-eTRV", "Heizkoerperthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[4] = ["HMIP-WTH", "Wandthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[5] = ["HMIP-WTH-2", "Wandthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[6] = ["HMIP-STH", "Wandthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[7] = ["HMIP-STHD", "Wandthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[8] = ["HMIP-eTRV-2", "Heizkoerperthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.CONTROL_MODE"];
-ThermostatTypeTab[9] = ["HMIP-eTRV-B", "Heizkoerperthermostat(HMIP)", ".1.SET_POINT_TEMPERATURE", ".1.ACTUAL_TEMPERATURE", "1.SET_POINT_MODE"];
-const MaxHomematicThermostatType = 9;
-//MaxCube
-//const MinMaxcubeThermostatType = 10;
-ThermostatTypeTab[10] = ["max! Thermostat", "Thermostat", ".setpoint", ".temp", ".mode"];
-/*
-MAX! Heizkörperthermostat basic
-MAX! Heizkörperthermostat
-MAX! Heizkörperthermostat +
-MAX! Wandthermostat +
-*/
-//const MaxMaxcubeThermostatType = 10;
 
-//tado with Homebridge accessories manager
-//const MinTadoThermostatType = 20;
-ThermostatTypeTab[20] = ["tado Thermostat", "Thermostat", ".Target-Temperature", ".Current-Temperature", ".mode"];
-//id ist ham.0.RaumName.ThermostatName.
-//const MaxTadoThermostatType = 20;
+
 
 /*
-const WindowOpenTimerId = [];
-const WindowCloseTimerId = [];
-*/
-/*
-const ActorOffTimerId = [];
-const ActorOnTimerId = [];
-*/
-
-const ActorTypeTab = [];
-const MinHomematicActorType = 0;
-ActorTypeTab[0] = ["HM-LC-Sw4-PCB", "Funk-Schaltaktor 4-fach, Platine", ".STATE"];
-ActorTypeTab[1] = ["HM-LC-Sw4-DR", "Funk-Schaltaktor 4-fach, Hutschienenmontage", ".STATE"];
-ActorTypeTab[2] = ["HM-LC-Sw4-SM", "Funk-Schaltaktor 4-fach, Aufputzmontage", ".STATE"];
-const MaxHomematicActorType = 2;
-
-
-const SensorTypeTab = [];
-const MinHomematicSensorType = 0;
-SensorTypeTab[0] = ["HM-Sec-SC-2", "Funk-Tür-/Fensterkontakt", ".STATE"];
-SensorTypeTab[1] = ["HM-Sec-SCo", "Funk-Tür-/Fensterkontakt, optisch", ".STATE"];
-SensorTypeTab[2] = ["HM-Sec-RHS", "Funk-Fenster-Drehgriffkontakt", ".STATE"];
-const MaxHomematicSensorType = 2;
-
-
-
-
 const DefaultTargets = [];
 DefaultTargets[0] = ["05:00", 19];
 DefaultTargets[1] = ["08:00", 21];
 DefaultTargets[2] = ["12:00", 21];
 DefaultTargets[3] = ["16:00", 19];
 DefaultTargets[4] = ["21:00", 21];
-
+*/
 
 //let SystemDateFormat = "DD.MM.YYYY";
 
@@ -210,10 +148,10 @@ function startAdapter(options) {
                         // Send response in callback if required
                         if (obj.callback) adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
                         break;
-                    case "listDevices":
+                    //case "listDevices":
                         //adapter.log.debug("got list devices");
-                        await ListDevices(obj);
-                        break;
+                        //await ListDevices(obj);
+                        //break;
                     case "listRooms":
                         //adapter.log.debug("got list rooms");
                         await ListRooms(obj);
@@ -222,6 +160,19 @@ function startAdapter(options) {
                         //adapter.log.debug("got list rooms");
                         await ListFunctions(obj);
                         break;
+                    case "listThermostats":
+                        //adapter.log.debug("got list thermostats");
+                        await ListThermostats(obj);
+                        break;
+                    case "listActors":
+                        //adapter.log.debug("got list actors");
+                        await ListActors(obj);
+                        break;
+                    case "listSensors":
+                        //adapter.log.debug("got list sensors");
+                        await ListSensors(obj);
+                        break;
+
                     case "saveProfile":
                         //adapter.log.debug("got save profile");
                         await SaveProfile(obj);
@@ -364,92 +315,347 @@ async function GetSystemDateformat() {
 */
 
 
+async function SearchRoomAndFunction(roomName, gewerk) {
+
+    let status = "to do";
+    const devices = [];
+
+    let allRooms = {};
+    //get room enums first; this includes members as well
+    const AllRoomsEnum = await adapter.getEnumAsync("rooms");
+    allRooms = AllRoomsEnum.result;
+
+
+    //find the right room with members
+    let roomMembers = {};
+    let roomFound = false;
+    for (const e in allRooms) {
+
+        let name = undefined;
+
+        if (typeof allRooms[e].common.name === "string") {
+            name = allRooms[e].common.name;
+        }
+        else if (typeof allRooms[e].common.name === "object") {
+            name = allRooms[e].common.name[SystemLanguage];
+        }
+        else {
+            adapter.log.warn("unknown type " + typeof allRooms[e].common.name + " " + JSON.stringify(allRooms[e].common.name));
+        }
+
+        //adapter.log.debug("check room " + name + " =? " + roomName );
+
+
+        if (name === roomName) {
+            adapter.log.debug("### room found with members " + JSON.stringify(allRooms[e].common.members));
+            roomMembers = allRooms[e].common.members;
+            roomFound = true;
+        }
+    }
+
+    if (roomFound && roomMembers != null && roomMembers.length > 0) {
+
+        let allFunctions = {};
+        const AllFunctionsEnum = await adapter.getEnumAsync("functions");
+        allFunctions = AllFunctionsEnum.result;
+
+        //adapter.log.debug("gewerke " + JSON.stringify(allFunctions));
+
+        //find the function / gewerk room with members
+        let functionMembers = {};
+        let functionFound = false;
+        for (const e in allFunctions) {
+
+            let name = undefined;
+
+            if (typeof allFunctions[e].common.name === "string") {
+                name = allFunctions[e].common.name;
+            }
+            else if (typeof allFunctions[e].common.name === "object") {
+                name = allFunctions[e].common.name[SystemLanguage];
+            }
+            else {
+                adapter.log.warn("unknown type " + typeof allFunctions[e].common.name + " " + JSON.stringify(allFunctions[e].common.name));
+            }
+
+            //adapter.log.debug("check function " + name + " =? " + gewerk);
+
+
+            if (name === gewerk) {
+                adapter.log.debug("### function found with members " + JSON.stringify(allFunctions[e].common.members));
+                functionMembers = allFunctions[e].common.members;
+                functionFound = true;
+            }
+        }
+
+        if (functionFound && functionMembers != null && functionMembers.length > 0) {
+
+            //now find devices in both lists (room and gewerk)
+            
+            for (const r in roomMembers) {
+
+                for (const d in functionMembers) {
+
+                    if (roomMembers[r] == functionMembers[d]) {
+
+                        //look for it in adapter.config.devices
+
+                        let found = findObjectByKey(adapter.config.devices, "OID_Target", roomMembers[r]);
+                        adapter.log.debug("found " + JSON.stringify(found));
+
+                        if (found ==null) {
+
+                            found = findObjectByKey(adapter.config.devices, "OID_Current", roomMembers[r]);
+                            adapter.log.debug("found " + JSON.stringify(found));
+
+                            if (found == null) {
+
+                                const deviceObj = await adapter.getForeignObjectAsync(roomMembers[r]);
+
+                                devices.push({
+                                    name: roomMembers[r],
+                                    obj: deviceObj
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            status = " room and function found " + JSON.stringify(devices);
+        }
+        else {
+            if (!functionFound) {
+                status = "function " + gewerk + " not found found in enum ";
+            }
+            else {
+                status = "function " + gewerk + " has no devices ";
+            }
+            adapter.log.debug(status);
+        }
+    }
+    else {
+        if (!roomFound) {
+            status = "room " + roomName + " not found found in enum ";
+        }
+        else {
+            status = "room " + roomName + " has no devices ";
+        }
+        adapter.log.debug(status);
+
+    }
+
+    const returnObject = {
+        devices:devices,
+        status:status
+    };
+
+    return returnObject;
+
+
+}
+
+
+async function ListThermostats(obj) {
+    adapter.log.debug("ListThermostats " + JSON.stringify(obj));
+
+    const roomName = obj.message.room;
+    const gewerk = obj.message.gewerk;
+
+    const result = await SearchRoomAndFunction(roomName, gewerk);
+    let status = "";
+    const devices = [];
+
+    if (result.devices.length > 0) {
+        adapter.log.debug("ListThermostats " + JSON.stringify(result));
+
+        for (const d in result.devices) {
+
+            const resultCheck = await Check4Thermostat(adapter, result.devices[d].obj);
+
+            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+
+            if (resultCheck.found) {
+
+                const found = findObjectByKey(devices, "OID_Target", resultCheck.device.OID_Target);
+                adapter.log.debug("found " + JSON.stringify(found));
+                if (found == null) {
+                    devices.push(resultCheck.device);
+                }
+               
+            }
+        }
+
+        if (devices.length > 0) {
+            status = devices.length + " devices found";
+        }
+        else {
+            status = "unknown devices found, please add it manually";
+        }
+    }
+    else {
+        status = result.status;
+    }
+
+
+    const returnObject = {
+        list: devices,
+        status: status
+    };
+    adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
+}
+
+async function ListActors(obj) {
+    adapter.log.debug("ListActors " + JSON.stringify(obj));
+
+    const roomName = obj.message.room;
+    const gewerk = obj.message.gewerk;
+
+    const result = await SearchRoomAndFunction(roomName, gewerk);
+    let status = "";
+    const devices = [];
+
+    if (result.devices.length > 0) {
+        adapter.log.debug("ListActors " + JSON.stringify(result));
+
+        for (const d in result.devices) {
+
+            const resultCheck = await Check4Actor(adapter, result.devices[d].obj);
+
+            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+
+            if (resultCheck.found) {
+                const found = findObjectByKey(devices, "OID", resultCheck.device.OID);
+                adapter.log.debug("found " + JSON.stringify(found));
+                if (found == null) {
+                    devices.push(resultCheck.device);
+                }
+            }
+        }
+
+        if (devices.length > 0) {
+            status = devices.length + " devices found";
+        }
+        else {
+            status = "unknown devices found, please add it manually";
+        }
+    }
+    else {
+        status = result.status;
+    }
+
+
+    const returnObject = {
+        list: devices,
+        status: status
+    };
+
+    adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
+}
+
+async function ListSensors(obj) {
+    adapter.log.debug("ListSensors " + JSON.stringify(obj));
+
+    const roomName = obj.message.room;
+    const gewerk = obj.message.gewerk;
+
+    const result = await SearchRoomAndFunction(roomName, gewerk);
+    let status = "";
+    const devices = [];
+
+    if (result.devices.length > 0) {
+        adapter.log.debug("ListSensors " + JSON.stringify(result));
+
+        for (const d in result.devices) {
+
+            const resultCheck = await Check4Sensor(adapter, result.devices[d].obj);
+
+            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+
+            if (resultCheck.found) {
+                const found = findObjectByKey(devices, "OID", resultCheck.device.OID);
+
+                adapter.log.debug("found " + JSON.stringify(found));
+
+                if (found == null) {
+                    devices.push(resultCheck.device);
+                }
+            }
+        }
+
+        if (devices.length > 0) {
+            status = devices.length + " devices found";
+        }
+        else {
+            status = "unknown devices found, please add it manually";
+        }
+    }
+    else {
+        status = result.status;
+    }
+
+
+    const returnObject = {
+        list: devices,
+        status: status,
+        room: roomName
+    };
+
+    adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
+}
+
 async function ListRooms(obj) {
 
     adapter.log.debug("ListRooms " + JSON.stringify(obj));
 
-    /*
-    if (adapter.config.deleteall) {
-        adapter.log.info("ListRooms: delete all rooms and start new search");
-        adapter.config.rooms.length = 0;
-    }
-    */
+    let rooms = {};
+    //get room enums first; this includes members as well
+    const AllRoomsEnum = await adapter.getEnumAsync("rooms");
+    rooms = AllRoomsEnum.result;
+    adapter.log.debug("rooms " + JSON.stringify(rooms));
 
-    let search4new = false;
-
-    if (obj.message) { //search4new
-        adapter.log.info("ListRooms: search for new rooms");
-        search4new = true;
-    }
-
-
+    const language = await GetSystemLanguage();
     let newRooms = 0;
+    for (const e in rooms) {
 
-    if (adapter.config.rooms.length === 0 || search4new) {
+        let name = undefined;
 
+        if (typeof rooms[e].common.name === "string") {
+            name = rooms[e].common.name;
+        }
+        else if (typeof rooms[e].common.name === "object") {
+            name = rooms[e].common.name.de;
 
-        let rooms = {};
-        //get room enums first; this includes members as well
-        const AllRoomsEnum = await adapter.getEnumAsync("rooms");
-        rooms = AllRoomsEnum.result;
-        adapter.log.debug("rooms " + JSON.stringify(rooms));
+            name = rooms[e].common.name[language];
+            //adapter.log.warn("room name " + name + " " + JSON.stringify(rooms[e].common.name));
+        }
+        else {
+            adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
+        }
 
-        const language = await GetSystemLanguage();
+        const roomdata = findObjectByKey(adapter.config.rooms, "name", name);
 
-        for (const e in rooms) {
+        if (roomdata !== null) {
+           
+            adapter.log.debug("Listrooms room " + name + " already exist");
+        }
+        else {
+            adapter.log.debug("Listrooms found new room " + name);
 
-            let name = undefined;
-
-            if (typeof rooms[e].common.name === "string") {
-                name = rooms[e].common.name;
-            }
-            else if (typeof rooms[e].common.name === "object") {
-                name = rooms[e].common.name.de;
-
-                name = rooms[e].common.name[language];
-                //adapter.log.warn("room name " + name + " " + JSON.stringify(rooms[e].common.name));
-            }
-            else {
-                adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
-            }
-
-            let AlreadyExist = false;
-
-            if (search4new) { //check already exist
-
-                const roomdata = findObjectByKey(adapter.config.rooms, "name", name);
-
-                if (roomdata !== null) {
-                    AlreadyExist = true;
-                    adapter.log.debug("Listrooms room " + name + " already exist");
-                }
-                else {
-
-                    adapter.log.debug("Listrooms found new room " + name);
-                }
-            }
-
-            if (!AlreadyExist) {
-                newRooms++;
-                adapter.config.rooms.push({
-                    name: name,
-                    isActive: false,    //must be enabled manually, otherwise we create too many datapoints for unused rooms
-                    WindowIsOpen: false,
-                    TempOverride: false,
-                    TempOverrideDue: "",
-                    ChangeFromThermostateUntilNextProfilepoint: false
-                });
-            }
-
+            newRooms++;
+            adapter.config.rooms.push({
+                name: name,
+                isActive: false    //must be enabled manually, otherwise we create too many datapoints for unused rooms 
+            });
         }
     }
+
     adapter.log.debug("all rooms done with " + newRooms + " new rooms :" + JSON.stringify(adapter.config.rooms));
 
     const returnObject = {
         list: adapter.config.rooms,
         newRooms: newRooms
     };
-
 
     adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
 }
@@ -459,13 +665,13 @@ async function ListRooms(obj) {
 
 async function ListFunctions(obj) {
 
-    const enumFunctions = [];
     adapter.log.debug("### start ListFunctions");
-    const AllFunctionsEnum = await adapter.getEnumAsync("functions");
-    adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
-    const functions = AllFunctionsEnum.result;
 
-    const language = await GetSystemLanguage();
+    const enumFunctions = [];
+    
+    const AllFunctionsEnum = await adapter.getEnumAsync("functions");
+    //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
+    const functions = AllFunctionsEnum.result;
 
     for (const e1 in functions) {
 
@@ -475,7 +681,7 @@ async function ListFunctions(obj) {
             name = functions[e1].common.name;
         }
         else if (typeof functions[e1].common.name === "object") {
-            name = functions[e1].common.name[language];
+            name = functions[e1].common.name[SystemLanguage];
         }
         else {
             adapter.log.warn("unknown type " + typeof functions[e1].common.name + " " + JSON.stringify(functions[e1].common.name));
@@ -497,6 +703,7 @@ async function ListFunctions(obj) {
 //#######################################
 //
 // used as interface to admin
+/*
 async function ListDevices(obj) {
 
     //if (adapter.config.devices === null || typeof adapter.config.devices === undefined || adapter.config.devices.length === 0 || adapter.config.deleteall) {
@@ -566,9 +773,9 @@ async function ListDevices(obj) {
 
                                 adapter.log.debug("Thermostat found " + JSON.stringify(adapterObj));
 
-                                /*
-                                 * heatingcontrol.0 Thermostat found {"_id":"hm-rpc.0.JEQ0080886.1","type":"channel","common":{"name":"RT_Gaeste:1"},"native":{"ADDRESS":"JEQ0080886:1","AES_ACTIVE":0,"DIRECTION":1,"FLAGS":1,"INDEX":1,"LINK_SOURCE_ROLES":"WEATHER_TH","LINK_TARGET_ROLES":"","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"JEQ0080886","PARENT_TYPE":"HM-CC-TC","TYPE":"WEATHER","VERSION":15},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456984587,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
-                                 */
+                                
+                                 // heatingcontrol.0 Thermostat found {"_id":"hm-rpc.0.JEQ0080886.1","type":"channel","common":{"name":"RT_Gaeste:1"},"native":{"ADDRESS":"JEQ0080886:1","AES_ACTIVE":0,"DIRECTION":1,"FLAGS":1,"INDEX":1,"LINK_SOURCE_ROLES":"WEATHER_TH","LINK_TARGET_ROLES":"","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"JEQ0080886","PARENT_TYPE":"HM-CC-TC","TYPE":"WEATHER","VERSION":15},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456984587,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+                                 
 
                                 const sName = adapterObj.common.name.split(":")[0];
 
@@ -602,9 +809,9 @@ async function ListDevices(obj) {
 
                                 adapter.log.debug("Actor found " + JSON.stringify(adapterObj));
 
-                                /*
-                                 * Actor found {"_id":"hm-rpc.0.LEQ0900578.3","type":"channel","common":{"name":"HK_Aktor_KG_Gast","role":"switch"},"native":{"ADDRESS":"LEQ0900578:3","AES_ACTIVE":0,"DIRECTION":2,"FLAGS":1,"INDEX":3,"LINK_SOURCE_ROLES":"","LINK_TARGET_ROLES":"SWITCH WCS_TIPTRONIC_SENSOR WEATHER_CS","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"LEQ0900578","PARENT_TYPE":"HM-LC-Sw4-DR","TYPE":"SWITCH","VERSION":26},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456990633,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
-                                 */
+                                
+                                 // Actor found {"_id":"hm-rpc.0.LEQ0900578.3","type":"channel","common":{"name":"HK_Aktor_KG_Gast","role":"switch"},"native":{"ADDRESS":"LEQ0900578:3","AES_ACTIVE":0,"DIRECTION":2,"FLAGS":1,"INDEX":3,"LINK_SOURCE_ROLES":"","LINK_TARGET_ROLES":"SWITCH WCS_TIPTRONIC_SENSOR WEATHER_CS","PARAMSETS":["LINK","MASTER","VALUES"],"PARENT":"LEQ0900578","PARENT_TYPE":"HM-LC-Sw4-DR","TYPE":"SWITCH","VERSION":26},"from":"system.adapter.hm-rega.0","user":"system.user.admin","ts":1565456990633,"acl":{"object":1636,"owner":"system.user.admin","ownerGroup":"system.group.administrator"}}
+                                 
                                 const sName = adapterObj.common.name;
                                 //adapter.log.debug("#111");
                                 IsInDeviceList = findObjectIdByKey(adapter.config.devices, "name", sName);
@@ -690,6 +897,8 @@ async function ListDevices(obj) {
 
     adapter.sendTo(obj.from, obj.command, adapter.config.devices, obj.callback);
 }
+
+*/
 
 
 //#######################################
@@ -6707,12 +6916,9 @@ async function LoadProfile(obj) {
                 }
             }
 
-
-
             adapter.log.warn("LoadProfile done " + retText);
 
-
-            //ChangeStatus("Profiles", "all", null);
+            ChangeStatus("Profiles", "all", null);
         }
     }
     catch (e) {

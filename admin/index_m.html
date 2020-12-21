@@ -65,6 +65,8 @@
                 generateFile('heatingcontrol_profile.json', result);
 
                 console.log('profile saved ');
+
+                $('#checkResultSaveProfile').html("profile saved");
             });
 
             
@@ -113,6 +115,8 @@
                     sendTo(instance, 'loadProfile', contents, function (result) {
                         
                         console.log('profile loaded with ' + result);
+
+                        $('#checkResultLoadProfile').html(result);
                     });
                 }
 
@@ -324,7 +328,7 @@
 
         }
 
-
+        /*
         var timeout1;
         var DeviceList = [];
         function getDevices(onChange, instance) {
@@ -345,6 +349,8 @@
 
             });
         }
+*/
+
 
         var timeout2;
         function getFunctions(actualValue, onChange, instance) {
@@ -377,13 +383,13 @@
 
 
         var timeout3;
-        function getRooms(onChange, instance, SearchNew) {
+        function getRooms(onChange, instance) {
             timeout3 = setTimeout(function () {
-                getRooms(onChange, instance, SearchNew);
+                getRooms(onChange, instance);
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listRooms', SearchNew, function (obj) {
+            sendTo(instance, 'listRooms', true, function (obj) {
                 if (timeout3) {
                     clearTimeout(timeout3);
                     timeout3 = null;
@@ -393,20 +399,168 @@
 
                 values2table('rooms', obj.list, onChange, tableRoomsOnReady);
 
-                if (SearchNew) {
-                    newRooms = obj.newRooms;
+                newRooms = obj.newRooms;
 
-                    $('#checkResultRooms').html(newRooms + ' new room(s) ');
+                $('#checkResultRooms').html(newRooms + ' new room(s) ');
 
-                    if (newRooms > 0) {
-                        onChange(true);
-                    }
+                if (newRooms > 0) {
+                    onChange(true);
+                }
+            });
+        }
+
+        var timeout4;
+        function getThermostats(onChange, instance, room) {
+            timeout4 = setTimeout(function () {
+                getThermostats(onChange, instance, room);
+            }, 4000);
+
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get thermostats for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listThermostats', data, function (result) {
+                if (timeout4) {
+                    clearTimeout(timeout4);
+                    timeout4 = null;
                 }
 
-                
+                console.log('got thermostats for  ' + room + " " + JSON.stringify(result));
+
+                if (result.list.length > 0) {
+
+                    var newThermostats = table2values('thermostats');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Current: result.list[i].OID_Current,
+                            OID_Target: result.list[i].OID_Target,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newThermostats.push(device);
+                        console.log('newThermostats  ' + JSON.stringify(newThermostats));
+                    }
+                    values2table('thermostats', newThermostats, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultThermostats').html(result.status);
 
             });
         }
+
+        var timeout5;
+        function getActors(onChange, instance, room) {
+            timeout5 = setTimeout(function () {
+                getActors(onChange, instance, room);
+            }, 4000);
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get actors for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listActors', data, function (result) {
+                if (timeout5) {
+                    clearTimeout(timeout5);
+                    timeout5 = null;
+                }
+
+                console.log('got actors for  ' + room + " " + JSON.stringify(result));
+                if (result.list.length > 0) {
+
+                    var newActors = table2values('actors');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Target: result.list[i].OID,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newActors.push(device);
+                        console.log('newActors  ' + JSON.stringify(newActors));
+                    }
+                    values2table('actors', newActors, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultActors').html(result.status);
+
+            });
+        }
+
+        var timeout6;
+        function getSensors(onChange, instance, room) {
+            timeout6 = setTimeout(function () {
+                getSensors(onChange, instance, room);
+            }, 4000);
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get sensors for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listSensors', data, function (result) {
+                if (timeout6) {
+                    clearTimeout(timeout6);
+                    timeout6 = null;
+                }
+
+                console.log('got sensors for  ' + room + " " + JSON.stringify(result));
+                if (result.list.length > 0) {
+
+                    var newSensors = table2values('sensors');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Current: result.list[i].OID,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newSensors.push(device);
+                        console.log('newSensors  ' + JSON.stringify(newSensors));
+                    }
+                    values2table('sensors', newSensors, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultSensors').html(result.status);
+
+            });
+        }
+
 
 
         var myOnChange = null;
@@ -559,17 +713,13 @@
                 DeviceList = settings.devices;
                 console.log('using devices from settings ' + JSON.stringify(DeviceList));
             }
-            else {
-                getDevices(onChange, _id);
-            }
+            
 
             if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
             }
-            else {
-                getRooms(onChange, _id, false);
-            }
+            
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
@@ -637,12 +787,6 @@
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
-
-
-
-
-
-
 
                         //now update DeviceList
 
@@ -783,14 +927,17 @@
                 }, 20)
             });
 
+           
             var $btn_check4newThermostats = $('#btn_check4newThermostats');
             $btn_check4newThermostats.click(function () {
                 console.log('check 4 new Thermostats');
 
                 var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
+                let room = $('#dialogDeviceEditRoom').html();
 
+                console.log('my instance ' + _id + " in " + room);
 
+                getThermostats(myOnChange, _id, room);
             });
 
             var $btn_check4newActors = $('#btn_check4newActors');
@@ -798,9 +945,11 @@
                 console.log('check 4 new Actors');
 
                 var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
+                let room = $('#dialogDeviceEditRoom').html();
 
+                console.log('my instance ' + _id + " in " + room);
 
+                getActors(myOnChange, _id, room);
             });
 
             var $btn_check4newSensors = $('#btn_check4newSensors');
@@ -808,11 +957,12 @@
                 console.log('check 4 new Sensors');
 
                 var _id = 'heatingcontrol.' + instance;
-                console.log('my instance ' + _id);
+                let room = $('#dialogDeviceEditRoom').html();
 
+                console.log('my instance ' + _id + " in " + room);
 
+                getSensors(myOnChange, _id, room);
             });
-
 
             showHideSettings();
         }
@@ -1295,12 +1445,12 @@
                             <div class="row">
                                 <div class="input-field col s1">
                                     <a class="btn-floating btn-small translateT" title="save profile" id="btn_save_profile"><i class="material-icons">file_download</i></a>
-                                    
                                 </div>
                                 <div class="input-field col s1">
                                     <a class="btn-floating btn-small translateT" title="load profile" id="btn_load_profile"><i class="material-icons">file_upload</i></a>
-                                    
                                 </div>
+                                <div id="checkResultSaveProfile"></div>
+                                <div id="checkResultLoadProfile"></div>
                             </div>
 
 
