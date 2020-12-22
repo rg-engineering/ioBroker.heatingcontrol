@@ -126,6 +126,14 @@
 
         //==========================================================================
 
+        function DeleteUnusedConfig() {
+
+
+
+            $('#result_deleteunusedConfig').html("not implemented yet");
+        }
+
+        //==========================================================================
         function findObjectIdByKey(array, key, value) {
 
             //Achtung: key wird auf int geparsed!!
@@ -776,8 +784,27 @@
                     });
                 });
             });
-            
-            
+
+            //===========================================================================
+            //maintanance functions
+
+            $('#btn_deleteunusedDP').on('click', function () {
+
+
+                sendTo(_id, 'deleteUnusedDP', null, function (result) {
+
+                    console.log('deleteUnusedDP done ');
+
+                    $('#result_deleteunusedDP').html(result);
+                });
+            });
+
+            $('#btn_deleteunusedConfig').on('click', function () {
+
+                DeleteUnusedConfig();
+
+               
+            });
             
             
 
@@ -1284,7 +1311,7 @@
                                 <div class="input-field col s4">
                                     <input type="text" id="Path2FeiertagAdapter" class="value" />
                                     <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
-                                    
+
                                 </div>
                                 <div class="col s1 m2 l1">
                                     <a id="OID_Path2FeiertagAdapter" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1295,7 +1322,7 @@
                                 <div class="input-field col s4">
                                     <input type="text" id="Path2PresentDP" class="value" />
                                     <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
-                                    
+
                                 </div>
                                 <div class="col s1 m2 l1">
                                     <a id="OID_Path2PresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1323,7 +1350,7 @@
                                 <div class="input-field col s4">
                                     <input type="text" id="Path2VacationDP" class="value" />
                                     <label for="Path2VacationDP" class="translate">Path2VacationDP</label>
-                                    
+
                                 </div>
                                 <div class="col s1 m2 l1">
                                     <a id="OID_Path2VacationDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1334,7 +1361,7 @@
                                 <div class="input-field col s4">
                                     <input type="text" id="Path2HolidayPresentDP" class="value" />
                                     <label for="Path2HolidayPresentDP" class="translate">Path2HolidayPresentDP</label>
-                                    
+
                                 </div>
                                 <div class="col s1 m2 l1">
                                     <a id="OID_Path2HolidayPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1345,7 +1372,7 @@
                                 <div class="input-field col s4">
                                     <input type="text" id="Path2GuestsPresentDP" class="value" />
                                     <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
-                                    
+
                                 </div>
                                 <div class="col s1 m2 l1">
                                     <a id="OID_Path2GuestsPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1518,12 +1545,23 @@
                         </div>
                     </li>
 
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">Maintenance</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <a class="waves-effect waves-light btn" id="btn_deleteunusedDP"><span class="translate">DeleteUnusedDP</span></a>
+                                <div id="result_deleteunusedDP"></div>
+                            </div>
+                            <div class="row">
+                                <a class="waves-effect waves-light btn" id="btn_deleteunusedConfig"><span class="translate">DeleteUnusedConfig</span></a>
+                                <div id="result_deleteunusedConfig"></div>
+                            </div>
+
+                        </div>
+                    </li>
                 </ul>
-
-
-
-
-
             </div>
 
             <!-- tab "profile - settings"  -->

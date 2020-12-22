@@ -597,5 +597,41 @@ systemDictionary = {
         "es": "Se buscan sensores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los sensores, también se pueden agregar manualmente.",
         "pl": "Wyszukiwanie znanych czujników. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie czujników, można je również dodać ręcznie.",
         "zh-cn": "搜索已知的传感器。使用房间和功能。如果自动检测未找到传感器，则也可以手动添加它们。"
+    },
+    "Maintenance": {
+        "en": "maintenance",
+        "de": "Wartung",
+        "ru": "поддержание",
+        "pt": "manutenção",
+        "nl": "onderhoud",
+        "fr": "entretien",
+        "it": "Manutenzione",
+        "es": "mantenimiento",
+        "pl": "konserwacja",
+        "zh-cn": "保养"
+    },
+    "DeleteUnusedDP": {
+        "en": "delete unused datapoints",
+        "de": "Nicht verwendete Datenpunkte löschen",
+        "ru": "удалить неиспользуемые точки данных",
+        "pt": "apagar pontos de dados não usados",
+        "nl": "verwijder ongebruikte datapunten",
+        "fr": "supprimer les points de données inutilisés",
+        "it": "eliminare i datapoint inutilizzati",
+        "es": "eliminar puntos de datos no utilizados",
+        "pl": "usuń nieużywane punkty danych",
+        "zh-cn": "删除未使用的数据点"
+    },
+    "DeleteUnusedConfig": {
+        "en": "delete unused configuration data",
+        "de": "Nicht verwendete Konfigurationsdaten löschen",
+        "ru": "удалить неиспользуемые данные конфигурации",
+        "pt": "apagar dados de configuração não utilizados",
+        "nl": "verwijder ongebruikte configuratiegegevens",
+        "fr": "supprimer les données de configuration inutilisées",
+        "it": "eliminare i dati di configurazione inutilizzati",
+        "es": "eliminar datos de configuración no utilizados",
+        "pl": "usuń nieużywane dane konfiguracyjne",
+        "zh-cn": "删除未使用的配置数据"
     }
 };

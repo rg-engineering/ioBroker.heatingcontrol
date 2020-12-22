@@ -181,6 +181,10 @@ function startAdapter(options) {
                         //adapter.log.debug("got save profile");
                         await LoadProfile(obj);
                         break;
+                    case "deleteUnusedDP":
+                        //adapter.log.debug("got save profile");
+                        await deleteUnusedDP(obj);
+                        break;
                     case "Test":
                         //adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
                         break;
@@ -6509,6 +6513,17 @@ function TestCron(room) {
     adapter.log.warn("cron from " + room);
 }
 */
+
+//*******************************************************************
+//
+async function deleteUnusedDP(obj) {
+
+    const result = "not implemented yet";
+
+    adapter.sendTo(obj.from, obj.command, result, obj.callback);
+}
+
+
 
 //*******************************************************************
 //
