@@ -819,6 +819,11 @@
 
             obj.rooms = table2values('rooms');
 
+            for (let i = 0; i < obj.rooms.length; i++) {
+                console.log('check room ' + obj.rooms[i].name);
+                obj.rooms[i].name = obj.rooms[i].name.replace('.', '_');
+            }
+
             obj.devices = DeviceList;
 
             callback(obj);
@@ -840,6 +845,9 @@
                         let room = $('#dialogDeviceEditRoom')[0].innerHTML;
 
                         console.log('closing for ' + room);
+
+                        
+
 
                         let thermostats = table2values('thermostats');
                         let actors = table2values('actors');
