@@ -3472,6 +3472,7 @@ async function HandleStateChange_V1(id, state) {
 }
 */
 
+
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
     adapter.log.debug("HandleStateChangeGeneral " + id);
@@ -3482,6 +3483,7 @@ async function HandleStateChangeGeneral(id, state) {
         //heatingcontrol.0.vis.ChoosenRoom 
         if (ids[2] === "vis"
             || ids[4] === "ActiveTimeSlot"
+            || ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
             || ids[4] === "WindowIsOpen"
             || ids[3] === "ProfileTypes"
@@ -6482,8 +6484,8 @@ async function SaveProfile(obj) {
     try {
         const profile2Save = {
             ProfileType: adapter.config.ProfileType,
-            NumberOfProfiles: adapter.config.NumberOfProfiles,
-            NumberOfPeriods: adapter.config.NumberOfPeriods,
+            NumberOfProfiles: parseInt(adapter.config.NumberOfProfiles),
+            NumberOfPeriods: parseInt(adapter.config.NumberOfPeriods),
             Rooms: {}
         };
         //adapter.log.debug("profile2Save " + JSON.stringify(profile2Save));
