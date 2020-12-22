@@ -469,6 +469,7 @@ async function ListThermostats(obj) {
     if (result.devices.length > 0) {
         adapter.log.debug("ListThermostats " + JSON.stringify(result));
 
+        let AlreadyUsed = false;
         for (const d in result.devices) {
 
             const resultCheck = await Check4Thermostat(adapter, result.devices[d].obj);
@@ -477,12 +478,16 @@ async function ListThermostats(obj) {
 
             if (resultCheck.found) {
 
-                const found = findObjectByKey(devices, "OID_Target", resultCheck.device.OID_Target);
+                const found = findObjectByKey(adapter.config.devices, "OID_Target", resultCheck.device.OID_Target);
                 adapter.log.debug("found " + JSON.stringify(found));
                 if (found == null) {
+                    adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
                 }
-               
+                else {
+                    AlreadyUsed = true;
+                    adapter.log.debug("alread used ");
+                }
             }
         }
 
@@ -490,7 +495,13 @@ async function ListThermostats(obj) {
             status = devices.length + " devices found";
         }
         else {
-            status = "unknown devices found, please add it manually";
+            if (AlreadyUsed) {
+                status = "devices found, but already used";
+
+            }
+            else {
+                status = "unknown devices found, please add it manually";
+            }
         }
     }
     else {
@@ -518,6 +529,7 @@ async function ListActors(obj) {
     if (result.devices.length > 0) {
         adapter.log.debug("ListActors " + JSON.stringify(result));
 
+        let AlreadyUsed = false;
         for (const d in result.devices) {
 
             const resultCheck = await Check4Actor(adapter, result.devices[d].obj);
@@ -525,10 +537,15 @@ async function ListActors(obj) {
             adapter.log.debug("got for " + JSON.stringify(resultCheck));
 
             if (resultCheck.found) {
-                const found = findObjectByKey(devices, "OID", resultCheck.device.OID);
+                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
                 adapter.log.debug("found " + JSON.stringify(found));
                 if (found == null) {
+                    adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
+                }
+                else {
+                    AlreadyUsed = true;
+                    adapter.log.debug("alread used ");
                 }
             }
         }
@@ -537,7 +554,13 @@ async function ListActors(obj) {
             status = devices.length + " devices found";
         }
         else {
-            status = "unknown devices found, please add it manually";
+            if (AlreadyUsed) {
+                status = "devices found, but already used";
+
+            }
+            else {
+                status = "unknown devices found, please add it manually";
+            }
         }
     }
     else {
@@ -566,6 +589,7 @@ async function ListSensors(obj) {
     if (result.devices.length > 0) {
         adapter.log.debug("ListSensors " + JSON.stringify(result));
 
+        let AlreadyUsed = false;
         for (const d in result.devices) {
 
             const resultCheck = await Check4Sensor(adapter, result.devices[d].obj);
@@ -573,12 +597,17 @@ async function ListSensors(obj) {
             adapter.log.debug("got for " + JSON.stringify(resultCheck));
 
             if (resultCheck.found) {
-                const found = findObjectByKey(devices, "OID", resultCheck.device.OID);
+                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
 
                 adapter.log.debug("found " + JSON.stringify(found));
 
                 if (found == null) {
+                    adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
+                }
+                else {
+                    AlreadyUsed = true;
+                    adapter.log.debug("alread used ");
                 }
             }
         }
@@ -587,7 +616,13 @@ async function ListSensors(obj) {
             status = devices.length + " devices found";
         }
         else {
-            status = "unknown devices found, please add it manually";
+            if (AlreadyUsed) {
+                status = "devices found, but already used";
+
+            }
+            else {
+                status = "unknown devices found, please add it manually";
+            }
         }
     }
     else {
