@@ -171,7 +171,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 **ATTENTION: breaking changes !!!!**
 * complete internal refactoring (new source files, internal data structures, code review, ...)
-* Periods and Profils count from 1 instead 0
+* **Periods and Profils count from 1 instead 0**
 * ChangesFromThermostat adjustable per room is removed
 * recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
 * SensorOpenDelay / SensorCloseDelay renamed
