@@ -732,10 +732,10 @@ async function HandleStateChangeExternal(id, state) {
             if (id.includes(adapter.config.Path2PresentDP)) {
                 let present = false;
                 if (parseInt(adapter.config.Path2PresentDPType) === 1) {
-                    present = state;
+                    present = state.val;
                 }
                 else {
-                    if (state > adapter.config.Path2PresentDPLimit) {
+                    if (state.val > parseInt(adapter.config.Path2PresentDPLimit)) {
                         present = true;
                     }
                 }
@@ -748,7 +748,7 @@ async function HandleStateChangeExternal(id, state) {
         if (adapter.config.Path2VacationDP.length > 0) {
             if (id.includes(adapter.config.Path2VacationDP)) {
                 //heatingcontrol.0.VacationAbsent
-                await adapter.setStateAsync("VacationAbsent", { val: state, ack: false });
+                await adapter.setStateAsync("VacationAbsent", { val: state.val, ack: false });
                 bRet = true;
             }
         }
@@ -756,19 +756,19 @@ async function HandleStateChangeExternal(id, state) {
         if (adapter.config.Path2HolidayPresentDP.length > 0) {
             if (id.includes(adapter.config.Path2HolidayPresentDP)) {
                 //heatingcontrol.0.HolidayPresent
-                await adapter.setStateAsync("HolidayPresent", { val: state, ack: false });
+                await adapter.setStateAsync("HolidayPresent", { val: state.val, ack: false });
                 bRet = true;
             }
         }
 
         if (adapter.config.Path2GuestsPresentDP.length > 0) {
-            if (id.includes(adapter.config.Path2GuestsPresentDP)) {
+            if (id.includes(adapter.config.Path2GuestsPresentDP)) {  
                 let guestpresent = false;
                 if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
-                    guestpresent = state;
+                    guestpresent = state.val;
                 }
                 else {
-                    if (state > adapter.config.Path2GuestsPresentDPLimit) {
+                    if (state.val > parseInt(adapter.config.Path2GuestsPresentDPLimit)) {
                         guestpresent = true;
                     }
                 }
@@ -782,10 +782,10 @@ async function HandleStateChangeExternal(id, state) {
             if (id.includes(adapter.config.Path2PartyNowDP)) {
                 let partynow = false;
                 if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
-                    partynow = state;
+                    partynow = state.val;
                 }
                 else {
-                    if (state > adapter.config.Path2PartyNowDPLimit) {
+                    if (state.val > parseInt(adapter.config.Path2PartyNowDPLimit)) {
                         partynow = true;
                     }
                 }
@@ -798,7 +798,7 @@ async function HandleStateChangeExternal(id, state) {
         if (adapter.config.Path2FeiertagAdapter.length > 0) {
             if (id.includes(adapter.config.Path2FeiertagAdapter)) {
                 //heatingcontrol.0.PublicHolidyToday
-                await adapter.setStateAsync("PublicHolidyToday", { val: state, ack: true });
+                await adapter.setStateAsync("PublicHolidyToday", { val: state.val, ack: true });
                 bRet = true;
             }
         }
