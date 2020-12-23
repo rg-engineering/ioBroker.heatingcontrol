@@ -144,17 +144,13 @@ Many user asked for an option to take over changes from thermostat into adapter.
 
 | option                   | description                                                
 |--------------------------|---------------------------------------------------------------------------------------
-| no                       | as we have until version 0.3.x, changes from thermostat are ignored
+| no                       | changes from thermostat are ignored
 | as override              | changes from thermostat are taken as override; override time must be set in advance in heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime
 |                          | if override time is not set, than override is not executed
 | as new profile setting   | changes from thermostat are taken as target temperature for current profile period
-| until next profile point | changes from thermostat are taken as target temperature until next profile point. This is a manual mode, so Window sensors or other 
+| until next profile point | changes from thermostat are taken as target temperature until next profile point. This is a manual mode, so only Window sensors are used. All other 
 |                          | increases / decreases are ignored. There is a datapoint in every room to disable manual mode before reaching next profile point.
 
-
-
-## Requirements
-* Node version 8 or higher is required
 
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
@@ -173,12 +169,27 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 2.0.0 (2020-12-xx)
 * (René) internal refactoring
 
-<span style="color:red"> breaking changes: </span>
+**ATTENTION: breaking changes !!!!**
+* complete internal refactoring (new source files, internal data structures, code review, ...)
 * Periods and Profils count from 1 instead 0
 * ChangesFromThermostat adjustable per room is removed
 * recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
 * SensorOpenDelay / SensorCloseDelay renamed
+* ResetButton to disable manual mode (and go back to auto)
+* status log per room
+* complete profile can be saved and loaded in admin
+* datapoint selector for external datapoints added in admin
+* autodectection for thermostats, sensors and actuators completely overworked
+* room detection overworked
+* issues in github: 
+	* #161 Profil springt zur angegebenen Zeit nicht um
+	* #153 cron Probleme beim ändern eines Profils mittels Javascript
+	* #152 Fenstererkennung im manuellen Modus
+	* #148 Bei Änderung vom Thermostat bis zum nächsten Profilpunkt müssen Sensoren berücksichtigt werden
 
+
+### 1.1.2 (2020-11-11)
+* (René) bug fix: activate actors after temperatur change
 
 ### 1.1.0 (2020-11-01)
 * (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
@@ -231,7 +242,6 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #104: bug fix to take over changes from vis
 * (René) see issue #102: bug fix change current time period to be shown on vis
 
-
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
@@ -273,7 +283,6 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 0.3.11 (2019-12-27)
 * (René) option: minimum temperature per room
 * (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
-
 
 ### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0
