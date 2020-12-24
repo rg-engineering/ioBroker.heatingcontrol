@@ -1,12 +1,41 @@
-# no rooms visible
+# Basis-Installation
 
-![add_rooms](add_rooms.PNG)
+## Räume
 
-![check_new_rooms](check_new_rooms.PNG)
-
-# add devices manually
-
-![edit_rooms1](edit_rooms1.PNG)
+### Räume importieren
 
 
-![edit_rooms1](edit_rooms1.PNG)
+### Raum manuell anlegen
+
+
+## Geräte
+
+### Geräte importieren
+
+### Geräte manuell anlegen
+
+## Profil
+
+
+
+
+## externe Datenpunkte 
+
+## Optionen
+
+### Thermostateinstellungen
+
+### Sensoreinstellungen
+
+### Aktoreinstellungen
+
+
+# Visualisierung
+
+# Standard-Anwendungen
+
+## Homematic- Thermostate
+
+
+
+

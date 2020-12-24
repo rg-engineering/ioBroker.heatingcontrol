@@ -55,6 +55,85 @@
 
     <script type="text/javascript">
 
+        //==========================================================================
+        //load / save profile
+        function SaveProfile(instance) {
+            console.log('SaveProfile called ');
+
+            sendTo(instance, 'saveProfile', null, function (result) {
+
+                generateFile('heatingcontrol_profile.json', result);
+
+                console.log('profile saved ');
+
+                $('#checkResultSaveProfile').html("profile saved");
+            });
+
+
+        }
+
+
+        function generateFile(filename, obj) {
+            var el = document.createElement('a');
+            el.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(obj, null, 2)));
+            el.setAttribute('download', filename);
+
+            el.style.display = 'none';
+            document.body.appendChild(el);
+
+            el.click();
+
+            document.body.removeChild(el);
+        }
+
+
+
+        function LoadProfile(instance) {
+            console.log('Load profile called');
+
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('id', 'files');
+            input.setAttribute('opacity', 0);
+            input.addEventListener('change', function (e) {
+                handleFileSelect(e, instance, function () { });
+            }, false);
+            (input.click)();
+        }
+
+        function handleFileSelect(evt, instance) {
+
+            console.log('handleFileSelect ' + instance);
+
+            var f = evt.target.files[0];
+
+            if (f) {
+                var r = new FileReader();
+                r.onload = function (e) {
+                    var contents = e.target.result;
+
+                    sendTo(instance, 'loadProfile', contents, function (result) {
+
+                        console.log('profile loaded with ' + result);
+
+                        $('#checkResultLoadProfile').html(result);
+                    });
+                }
+
+                r.readAsText(f);
+            }
+        }
+
+        //==========================================================================
+
+        function DeleteUnusedConfig() {
+
+
+
+            $('#result_deleteunusedConfig').html("not implemented yet");
+        }
+
+        //==========================================================================
         function findObjectIdByKey(array, key, value) {
 
             //Achtung: key wird auf int geparsed!!
@@ -129,7 +208,7 @@
                 $('.col-adapternotonline').hide();
             }
 
-            
+
             var TypeDPPresent = $('#Path2PresentDPType')[0].value
             if (TypeDPPresent == 1) {
                 $('.col_Path2PresentDPLimit').hide();
@@ -253,12 +332,11 @@
             show_hide_column("table_sensors", "sensor_col_0", 0, false);
 
             //third col of rooms (=WindOwpen)
-            show_hide_column("table_rooms", "rooms_col_3", 2, false);
-            show_hide_column("table_rooms", "rooms_col_4", 3, false);
+
 
         }
 
-
+        /*
         var timeout1;
         var DeviceList = [];
         function getDevices(onChange, instance) {
@@ -279,6 +357,8 @@
 
             });
         }
+*/
+
 
         var timeout2;
         function getFunctions(actualValue, onChange, instance) {
@@ -311,13 +391,13 @@
 
 
         var timeout3;
-        function getRooms(onChange, instance, SearchNew) {
+        function getRooms(onChange, instance) {
             timeout3 = setTimeout(function () {
-                getRooms(onChange, instance, SearchNew);
+                getRooms(onChange, instance);
             }, 4000);
 
             //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listRooms', SearchNew, function (obj) {
+            sendTo(instance, 'listRooms', true, function (obj) {
                 if (timeout3) {
                     clearTimeout(timeout3);
                     timeout3 = null;
@@ -327,27 +407,168 @@
 
                 values2table('rooms', obj.list, onChange, tableRoomsOnReady);
 
-                if (SearchNew) {
-                    newRooms = obj.newRooms;
+                newRooms = obj.newRooms;
 
-                    $('#checkResult').html(newRooms + ' new room(s) ');
+                $('#checkResultRooms').html(newRooms + ' new room(s) ');
 
-                    if (newRooms > 0) {
-                        onChange(true);
+                if (newRooms > 0) {
+                    onChange(true);
+                }
+            });
+        }
+
+        var timeout4;
+        function getThermostats(onChange, instance, room) {
+            timeout4 = setTimeout(function () {
+                getThermostats(onChange, instance, room);
+            }, 4000);
+
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get thermostats for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listThermostats', data, function (result) {
+                if (timeout4) {
+                    clearTimeout(timeout4);
+                    timeout4 = null;
+                }
+
+                console.log('got thermostats for  ' + room + " " + JSON.stringify(result));
+
+                if (result.list.length > 0) {
+
+                    var newThermostats = table2values('thermostats');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Current: result.list[i].OID_Current,
+                            OID_Target: result.list[i].OID_Target,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newThermostats.push(device);
+                        console.log('newThermostats  ' + JSON.stringify(newThermostats));
                     }
+                    values2table('thermostats', newThermostats, OnChange, tableDevicesOnReady);
+                    onChange(true);
                 }
-
-                //and reset deleteall
-
-                var $deleteAll = $('#deleteall');
-
-                if ($deleteAll.prop('checked')) {
-                    console.log('### reset deleteAll');
-                    $deleteAll.prop('checked', false);
-                }
+                $('#checkResultThermostats').html(result.status);
 
             });
         }
+
+        var timeout5;
+        function getActors(onChange, instance, room) {
+            timeout5 = setTimeout(function () {
+                getActors(onChange, instance, room);
+            }, 4000);
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get actors for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listActors', data, function (result) {
+                if (timeout5) {
+                    clearTimeout(timeout5);
+                    timeout5 = null;
+                }
+
+                console.log('got actors for  ' + room + " " + JSON.stringify(result));
+                if (result.list.length > 0) {
+
+                    var newActors = table2values('actors');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Target: result.list[i].OID,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newActors.push(device);
+                        console.log('newActors  ' + JSON.stringify(newActors));
+                    }
+                    values2table('actors', newActors, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultActors').html(result.status);
+
+            });
+        }
+
+        var timeout6;
+        function getSensors(onChange, instance, room) {
+            timeout6 = setTimeout(function () {
+                getSensors(onChange, instance, room);
+            }, 4000);
+
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get sensors for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listSensors', data, function (result) {
+                if (timeout6) {
+                    clearTimeout(timeout6);
+                    timeout6 = null;
+                }
+
+                console.log('got sensors for  ' + room + " " + JSON.stringify(result));
+                if (result.list.length > 0) {
+
+                    var newSensors = table2values('sensors');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Current: result.list[i].OID,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 1
+
+                        }
+                        newSensors.push(device);
+                        console.log('newSensors  ' + JSON.stringify(newSensors));
+                    }
+                    values2table('sensors', newSensors, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultSensors').html(result.status);
+
+            });
+        }
+
 
 
         var myOnChange = null;
@@ -446,17 +667,39 @@
                 }
             }
 
-            var $check4newrooms = $('#check4newrooms');
-            $check4newrooms.click(function () {
+            var $btn_check4newrooms = $('#btn_check4newrooms');
+            $btn_check4newrooms.click(function () {
                 console.log('check 4 new rooms');
 
                 var _id = 'heatingcontrol.' + instance;
                 console.log('my instance ' + _id);
 
                 getRooms(onChange, _id, true);
+            });
 
+
+
+
+            var $btnsave_profile = $('#btn_save_profile');
+            $btnsave_profile.click(function () {
+                console.log('btn save profile');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+                SaveProfile(_id);
 
             });
+
+            var $btnload_profile = $('#btn_load_profile');
+            $btnload_profile.click(function () {
+                console.log('btn load profile');
+
+                var _id = 'heatingcontrol.' + instance;
+                console.log('my instance ' + _id);
+                LoadProfile(_id);
+
+            });
+
 
             myOnChange = onChange;
             // Signal to admin, that no changes yet
@@ -478,17 +721,93 @@
                 DeviceList = settings.devices;
                 console.log('using devices from settings ' + JSON.stringify(DeviceList));
             }
-            else {
-                getDevices(onChange, _id);
-            }
+
 
             if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
             }
-            else {
-                getRooms(onChange, _id, false);
-            }
+
+            //===========================================
+            //OID selecters
+            $('#OID_Path2FeiertagAdapter').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2FeiertagAdapter').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2FeiertagAdapter').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2PresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2PresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2PresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2VacationDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2VacationDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2VacationDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2HolidayPresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2HolidayPresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2HolidayPresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2GuestsPresentDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2GuestsPresentDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2GuestsPresentDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+            $('#OID_Path2PartyNowDP').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#Path2PartyNowDP').val(), function (newId) {
+                        if (newId) {
+                            $('#Path2PartyNowDP').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+
+            //===========================================================================
+            //maintanance functions
+
+            $('#btn_deleteunusedDP').on('click', function () {
+
+
+                sendTo(_id, 'deleteUnusedDP', null, function (result) {
+
+                    console.log('deleteUnusedDP done ');
+
+                    $('#result_deleteunusedDP').html(result);
+                });
+            });
+
+            $('#btn_deleteunusedConfig').on('click', function () {
+
+                DeleteUnusedConfig();
+
+               
+            });
+            
+            
+
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
@@ -499,7 +818,7 @@
                     case "#tab-main":
                         loadOptions();
                         break;
-                    
+
                 }
             }
 
@@ -527,6 +846,11 @@
 
             obj.rooms = table2values('rooms');
 
+            for (let i = 0; i < obj.rooms.length; i++) {
+                console.log('check room ' + obj.rooms[i].name);
+                obj.rooms[i].name = obj.rooms[i].name.replace('.', '_');
+            }
+
             obj.devices = DeviceList;
 
             callback(obj);
@@ -549,6 +873,9 @@
 
                         console.log('closing for ' + room);
 
+                        
+
+
                         let thermostats = table2values('thermostats');
                         let actors = table2values('actors');
                         let sensors = table2values('sensors');
@@ -556,12 +883,6 @@
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
-
-
-
-
-
-
 
                         //now update DeviceList
 
@@ -700,6 +1021,43 @@
                         console.log("new device list " + JSON.stringify(DeviceList));
                     });
                 }, 20)
+            });
+
+
+            var $btn_check4newThermostats = $('#btn_check4newThermostats');
+            $btn_check4newThermostats.click(function () {
+                console.log('check 4 new Thermostats');
+
+                var _id = 'heatingcontrol.' + instance;
+                let room = $('#dialogDeviceEditRoom').html();
+
+                console.log('my instance ' + _id + " in " + room);
+
+                getThermostats(myOnChange, _id, room);
+            });
+
+            var $btn_check4newActors = $('#btn_check4newActors');
+            $btn_check4newActors.click(function () {
+                console.log('check 4 new Actors');
+
+                var _id = 'heatingcontrol.' + instance;
+                let room = $('#dialogDeviceEditRoom').html();
+
+                console.log('my instance ' + _id + " in " + room);
+
+                getActors(myOnChange, _id, room);
+            });
+
+            var $btn_check4newSensors = $('#btn_check4newSensors');
+            $btn_check4newSensors.click(function () {
+                console.log('check 4 new Sensors');
+
+                var _id = 'heatingcontrol.' + instance;
+                let room = $('#dialogDeviceEditRoom').html();
+
+                console.log('my instance ' + _id + " in " + room);
+
+                getSensors(myOnChange, _id, room);
             });
 
             showHideSettings();
@@ -933,11 +1291,6 @@
                                     </select>
                                     <label for="Gewerk" class="translate">Gewerk</label>
                                 </div>
-
-                                
-
-
-
                             </div>
 
                             <div class="row">
@@ -946,16 +1299,6 @@
                                     <label for="timezone" class="translate">timezone</label>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input type="checkbox" id="deleteall" class="value" />
-                                    <label for="deleteall" class="translate">deleteall</label>
-                                </div>
-                            </div>
-
-
-
                         </div>
                     </li>
 
@@ -965,16 +1308,24 @@
                         </div>
                         <div class="collapsible-body">
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2FeiertagAdapter" class="value" />
                                     <label for="Path2FeiertagAdapter" class="translate">Path2FeiertagAdapter</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2FeiertagAdapter" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2PresentDP" class="value" />
                                     <label for="Path2PresentDP" class="translate">Path2PresentDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2PresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -985,33 +1336,46 @@
                                     <label for="Path2PresentDPType" class="translate">Path2PresentDPType</label>
                                 </div>
 
-                                
+
                                 <div class="input-field col s3 col_Path2PresentDPLimit">
                                     <input type="number" id="Path2PresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2PresentDPLimit" class="translate">Path2PresentDPLimit</label>
+
                                 </div>
-                               
+
 
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2VacationDP" class="value" />
                                     <label for="Path2VacationDP" class="translate">Path2VacationDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2VacationDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2HolidayPresentDP" class="value" />
                                     <label for="Path2HolidayPresentDP" class="translate">Path2HolidayPresentDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2HolidayPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2GuestsPresentDP" class="value" />
                                     <label for="Path2GuestsPresentDP" class="translate">Path2GuestsPresentDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2GuestsPresentDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -1022,19 +1386,23 @@
                                     <label for="Path2GuestsPresentDPType" class="translate">Path2GuestsPresentDPType</label>
                                 </div>
 
-                                
+
                                 <div class="input-field col s3 col_Path2GuestsPresentDPLimit">
                                     <input type="number" id="Path2GuestsPresentDPLimit" class="value" min="0" step="1" />
                                     <label for="Path2GuestsPresentDPLimit" class="translate">Path2GuestsPresentDPLimit</label>
                                 </div>
-                               
+
 
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6">
+                                <div class="input-field col s4">
                                     <input type="text" id="Path2PartyNowDP" class="value" />
                                     <label for="Path2PartyNowDP" class="translate">Path2PartyNowDP</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_Path2PartyNowDP" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                 </div>
 
                                 <div class="input-field col s3">
@@ -1068,7 +1436,6 @@
                                         <option value="2" class="translate">as_override</option>
                                         <option value="3" class="translate">as_new_profile_setting</option>
                                         <option value="5" class="translate">until_next_profile_point</option>
-                                        <option value="4" class="translate">adjustable_per_room</option>
                                     </select>
                                     <label for="UseChangesFromThermostat" class="translate">UseChangesFromThermostat</label>
                                 </div>
@@ -1088,8 +1455,8 @@
                                 </div>
 
                                 <div class="input-field col s3 col-SensorOpenDelay">
-                                    <input type="number" id="SensorDelay" class="value" min="0" step="1" />
-                                    <label for="SensorDelay" class="translate">SensorOpenDelay</label>
+                                    <input type="number" id="SensorOpenDelay" class="value" min="0" step="1" />
+                                    <label for="SensorOpenDelay" class="translate">SensorOpenDelay</label>
                                 </div>
 
                                 <div class="input-field col s3 col-SensorCloseDelay">
@@ -1178,12 +1545,23 @@
                         </div>
                     </li>
 
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">Maintenance</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <a class="waves-effect waves-light btn" id="btn_deleteunusedDP"><span class="translate">DeleteUnusedDP</span></a>
+                                <div id="result_deleteunusedDP"></div>
+                            </div>
+                            <div class="row">
+                                <a class="waves-effect waves-light btn" id="btn_deleteunusedConfig"><span class="translate">DeleteUnusedConfig</span></a>
+                                <div id="result_deleteunusedConfig"></div>
+                            </div>
+
+                        </div>
+                    </li>
                 </ul>
-
-
-
-
-
             </div>
 
             <!-- tab "profile - settings"  -->
@@ -1195,6 +1573,18 @@
                             <i class="material-icons">expand_more</i><h6 class="translate">GeneralProfileSettings</h6>
                         </div>
                         <div class="collapsible-body">
+
+                            <div class="row">
+                                <div class="input-field col s1">
+                                    <a class="btn-floating btn-small translateT" title="save profile" id="btn_save_profile"><i class="material-icons">file_download</i></a>
+                                </div>
+                                <div class="input-field col s1">
+                                    <a class="btn-floating btn-small translateT" title="load profile" id="btn_load_profile"><i class="material-icons">file_upload</i></a>
+                                </div>
+                                <div id="checkResultSaveProfile"></div>
+                                <div id="checkResultLoadProfile"></div>
+                            </div>
+
 
                             <div class="row">
                                 <div class="input-field col s4">
@@ -1293,9 +1683,12 @@
             <div id="tab-devices" class="col s12 page">
 
                 <div class="row">
-                    <div class="input-field col s3">
-                        <a class="waves-effect waves-light btn" id="check4newrooms"><span class="translate">Check4NewRooms</span></a>
-                        <div id="checkResult"></div>
+                    <div class="input-field col s4">
+                        <a class="waves-effect waves-light btn" id="btn_check4newrooms"><span class="translate">Check4NewRooms</span></a>
+                        <div id="checkResultRooms"></div>
+                    </div>
+                    <div class="input-field col s4">
+                        <span class="translate">Check4NewRooms_hint</span>
                     </div>
                 </div>
 
@@ -1309,8 +1702,6 @@
                                 <tr>
                                     <th id="rooms_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
                                     <th id="rooms_col_2" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
-                                    <th id="rooms_col_3" data-name="WindowIsOpen" data-type="checkbox" style="background: #64b5f6" class="translate">WindowIsOpen</th>
-                                    <th id="rooms_col_4" data-name="ChangeFromThermostateUntilNextProfilepoint" data-type="checkbox" style="background: #64b5f6" class="translate">ChangeFromThermostateUntilNextProfilepoint</th>
                                     <th data-buttons="up down edit delete" style="width: 100px; background: #64b5f6"></th>
 
                                 </tr>
@@ -1358,6 +1749,18 @@
                                     <span class="translate">hint_thermostats</span>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newThermostats"><span class="translate">Check4NewThermostats</span></a>
+                                    <div id="checkResultThermostats"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewThermostats_hint</span>
+                                </div>
+                            </div>
+
+
                             <div class="row">
                                 <div class="col s12" id="thermostats">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
@@ -1392,6 +1795,15 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="input-field col s4">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newActors"><span class="translate">Check4NewActors</span></a>
+                                    <div id="checkResultActors"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewActors_hint</span>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col s12" id="actors">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
                                     <div class="table-values-div">
@@ -1418,6 +1830,17 @@
                                     <span class="translate">hint_sensors</span>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newSensors"><span class="translate">Check4NewSensors</span></a>
+                                    <div id="checkResultSensors"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewSensors_hint</span>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col s12" id="sensors">
                                     <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
