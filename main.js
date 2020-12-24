@@ -915,28 +915,6 @@ async function SaveProfile(obj) {
 
         for (let room = 0; room < adapter.config.rooms.length; room++) {
             if (adapter.config.rooms[room].isActive) {
-        await HandleActorsAfterTempChange();
-
-async function HandleActorsAfterTempChange() {
-
-    for (let room = 0; room < adapter.config.rooms.length; room++) {
-        if (adapter.config.rooms[room].isActive) {
-
-            for (let ii = 0; ii < adapter.config.devices.length; ii++) {
-
-                if (adapter.config.devices[ii].type === 1 && adapter.config.devices[ii].room === adapter.config.rooms[room].name && adapter.config.devices[ii].isActive) {
-                    const target = await adapter.getForeignStateAsync(adapter.config.devices[ii].OID_Target);
-                    const current = await adapter.getForeignStateAsync(adapter.config.devices[ii].OID_Current);
-                    //adapter.log.debug("we got target " + target.val + " " + JSON.stringify(devices[d]));
-                    if (target != null && typeof target != undefined && current != null && typeof current != undefined) {
-                        await HandleActors(adapter.config.rooms[room].name, parseFloat(current.val), parseFloat(target.val));
-                    }
-                }
-            }
-        }
-    }
-}
-
 
                 const roomName = adapter.config.rooms[room].name;
 
@@ -1030,10 +1008,7 @@ async function HandleActorsAfterTempChange() {
                             const id = id1 + ".Mon.Periods." + period;
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
-    }
-    else {
-        adapter.log.debug(text + " on undefined next time ");
-    }
+    
 
 
                             const period2Save = {

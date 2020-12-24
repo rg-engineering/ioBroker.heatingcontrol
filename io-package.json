@@ -15,66 +15,19 @@
         "pl": "wewnętrzne przeprojektowanie, kilka przełomowych zmian, przeczytaj informacje o wydaniu",
         "zh-cn": "内部重新设计，一些重大更改，阅读发行说明"
       },
-      "1.1.1": {
-        "en": "bug fix: calculate current period",
-        "de": "Fehlerbehebung: Aktuelle Periode berechnen",
-        "ru": "исправление ошибки: рассчитать текущий период",
-        "pt": "correção de bug: calcular o período atual",
-        "nl": "bug fix: bereken huidige periode",
-        "fr": "correction de bogue: calculer la période actuelle",
-        "it": "correzione bug: calcola il periodo corrente",
-        "es": "corrección de errores: calcular el período actual",
-        "pl": "poprawka błędu: oblicz bieżący okres",
-        "zh-cn": "错误修复：计算当前期间"
-      },
-      "1.1.0": {
-        "en": "timer before on and off for actuators",
-        "de": "Timer vor dem Ein- und Ausschalten für Stellantriebe",
-        "ru": "таймер перед включением и выключением для приводов",
-        "pt": "cronômetro antes de ligar e desligar para atuadores",
-        "nl": "timer voor aan en uit voor actuatoren",
-        "fr": "minuterie avant marche et arrêt pour les actionneurs",
-        "it": "timer prima dell'accensione e dello spegnimento per gli attuatori",
-        "es": "temporizador antes de encendido y apagado para actuadores",
-        "pl": "timer przed włączeniem i wyłączeniem siłowników",
-        "zh-cn": "促动器开启和关闭之前的计时器"
-      },
-      "1.0.0": {
-        "en": "bug fix for string / number conversions",
-        "de": "Fehlerbehebung für Zeichenfolgen- / Zahlenkonvertierungen",
-        "ru": "исправление ошибки при преобразовании строки / числа",
-        "pt": "correção de bug para conversões de string / número",
-        "nl": "bug fix voor string / number conversies",
-        "fr": "correction de bogue pour les conversions chaîne / nombre",
-        "it": "correzione di bug per conversioni stringa / numero",
-        "es": "corrección de errores para conversiones de cadenas / números",
-        "pl": "poprawka błędu konwersji ciągów / liczb",
-        "zh-cn": "字符串/数字转换的错误修复"
-      },
-      "0.6.0": {
-        "en": "some optimisations",
-        "de": "einige Optimierungen",
-        "ru": "некоторые оптимизации",
-        "pt": "algumas otimizações",
-        "nl": "enkele optimalisaties",
-        "fr": "quelques optimisations",
-        "it": "alcune ottimizzazioni",
-        "es": "algunas optimizaciones",
-        "pl": "pewne optymalizacje",
-        "zh-cn": "一些优化"
-      },
-      "0.5.7": {
-        "en": "MinimumTemperature for vis only if enabled",
-        "de": "MinimumTemperature für vis nur wenn aktiviert",
-        "ru": "Минимальная температура для виз только если включена",
-        "pt": "MinimumTemperature for vis apenas se ativado",
-        "nl": "Minimumtemperatuur voor vis alleen indien ingeschakeld",
-        "fr": "Température minimale pour vis uniquement si activée",
-        "it": "Temperatura minima per vis solo se abilitata",
-        "es": "Temperatura mínima para vis solo si está habilitado",
-        "pl": "Minimalna temperatura dla vis tylko, jeśli jest włączona",
-        "zh-cn": "vis的MinimumTemperature仅在启用时"
+      "1.1.2": {
+        "en": "bug fix: activate aktuators after temperatur change",
+        "de": "Fehlerbehebung: Aktuatoren nach Temperaturänderung aktivieren",
+        "ru": "исправление ошибки: активация актуаторов после изменения температуры",
+        "pt": "correção de bug: ative aktuators após a mudança de temperatura",
+        "nl": "bugfix: activeer actoren na temperatuurwijziging",
+        "fr": "correction de bogue: activer les aktuators après le changement de température",
+        "it": "correzione bug: attiva gli attuatori dopo il cambio di temperatura",
+        "es": "corrección de errores: activar aktuators después del cambio de temperatura",
+        "pl": "poprawka: aktywuj aktuatory po zmianie temperatury",
+        "zh-cn": "错误修复：温度变化后激活用户"
       }
+      
     },
     "title": "HeatingControl",
     "titleLang": {
