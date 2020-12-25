@@ -123,7 +123,11 @@
     "Path2GuestsPresentDPType": 1,
     "Path2GuestsPresentDPLimit": 0,
     "Path2PartyNowDPType": 1,
-    "Path2PartyNowDPLimit": 0
+    "Path2PartyNowDPLimit": 0,
+    "VisMinProfilTemp": 12,
+    "VisMaxProfilTemp": 30,
+    "VisStepWidthProfilTemp": 1
+
 
   }
 }

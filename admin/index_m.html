@@ -318,11 +318,21 @@
                 console.log('show settings for Pittini vis');
                 $('.col-PittiniPathImageWindowOpen').show();
                 $('.col-PittiniPathImageWindowClosed').show();
+
+                $('.col-VisMinProfilTemp').show();
+                $('.col-VisMaxProfilTemp').show();
+                $('.col-VisStepWidthProfilTemp').show();
+
+
             }
             else {
                 console.log('hide settings for Pittini vis');
                 $('.col-PittiniPathImageWindowOpen').hide();
                 $('.col-PittiniPathImageWindowClosed').hide();
+
+                $('.col-VisMinProfilTemp').hide();
+                $('.col-VisMaxProfilTemp').hide();
+                $('.col-VisStepWidthProfilTemp').hide();
             }
 
 
@@ -1541,7 +1551,34 @@
                                     <input type="text" id="PittiniPathImageWindowClosed" class="value" />
                                     <label for="PittiniPathImageWindowClosed" class="translate">PittiniPathImageWindowClosed</label>
                                 </div>
+
+
+
                             </div>
+
+                                                       
+                            <div class="row">
+                                <div class="input-field col s3 col-VisMinProfilTemp">
+                                    <input type="number" id="VisMinProfilTemp" min="0" max="20" class="value" />
+                                    <label for="VisMinProfilTemp" class="translate">VisMinProfilTemp</label>
+                                </div>
+                                <div class="input-field col s3 col-VisMaxProfilTemp">
+                                    <input type="number" id="VisMaxProfilTemp" min="10" max="30" class="value" />
+                                    <label for="VisMaxProfilTemp" class="translate">VisMaxProfilTemp</label>
+                                </div>
+
+                                <div class="input-field col s6 col-VisStepWidthProfilTemp">
+                                    <select id="VisStepWidthProfilTemp" class="value">
+                                        <option value="0.5" class="translate">0.5 °C</option>
+                                        <option value="1" class="translate">1 °C</option>
+                                        <option value="2" class="translate">2 °C</option>
+                                    </select>
+                                    <label for="VisStepWidthProfilTemp" class="translate">VisStepWidthProfilTemp</label>
+                                </div>
+
+                            </div>
+
+
                         </div>
                     </li>
 

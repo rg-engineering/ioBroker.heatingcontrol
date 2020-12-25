@@ -724,7 +724,22 @@ async function HandleStateChangeGeneral(id, state) {
         //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
         else if (ids[2] == "Profiles") {
             bRet = true;
-            ChangeStatus(ids[2], ids[4], state.val);
+
+            //heatingcontrol.0.Profiles.1.CopyProfile
+            //heatingcontrol.0.Profiles.1.Wohnzimmer.CopyProfile
+            //heatingcontrol.0.Profiles.1.Wohnzimmer.Fri.CopyPeriods
+            if (ids[4] == "CopyProfile")  {
+                ChangeStatus(ids[4], "all", ids[3]);
+            }
+            else if (ids[5] == "CopyProfile") {
+                ChangeStatus(ids[5], ids[4], ids[3]);
+            }
+            else if (ids[6] == "CopyPeriods") {
+                ChangeStatus(ids[6], ids[4], ids[5]);
+            }
+            else {
+                ChangeStatus(ids[2], ids[4], state.val);
+            }
         }
     }
     catch (e) {
