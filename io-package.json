@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.0.0 alpha",
+    "version": "2.0.0",
     "news": {
       "2.0.0": {
         "en": "internal redesign, some breaking changes, read release notes",
@@ -126,7 +126,8 @@
     "Path2PartyNowDPLimit": 0,
     "VisMinProfilTemp": 12,
     "VisMaxProfilTemp": 30,
-    "VisStepWidthProfilTemp": 1
+    "VisStepWidthProfilTemp": 1,
+    "VisUseSimple": false
 
 
   }

@@ -633,5 +633,55 @@ systemDictionary = {
         "es": "eliminar datos de configuración no utilizados",
         "pl": "usuń nieużywane dane konfiguracyjne",
         "zh-cn": "删除未使用的配置数据"
+    },
+    "VisUseSimple": {
+        "en": "simple version used",
+        "de": "einfache Version verwendet",
+        "ru": "использовалась простая версия",
+        "pt": "versão simples usada",
+        "nl": "eenvoudige gebruikte versie",
+        "fr": "version simple utilisée",
+        "it": "versione semplice utilizzata",
+        "es": "versión simple utilizada",
+        "pl": "używana wersja prosta",
+        "zh-cn": "简单版本使用"
+    },
+    "VisMinProfilTemp": {
+        "en": "minimum temperature for profile settings",
+        "de": "Mindesttemperatur für Profileinstellungen",
+        "ru": "минимальная температура для настройки профиля",
+        "pt": "temperatura mínima para configurações de perfil",
+        "nl": "minimumtemperatuur voor profielinstellingen",
+        "fr": "température minimale pour les réglages de profil",
+        "it": "temperatura minima per le impostazioni del profilo",
+        "es": "temperatura mínima para la configuración del perfil",
+        "pl": "minimalna temperatura dla ustawień profilu",
+        "zh-cn": "配置文件设置的最低温度"
+    },
+    "VisMaxProfilTemp": {
+        "en": "maximum temperature for profile settings",
+        "de": "Maximale Temperatur für Profileinstellungen",
+        "ru": "максимальная температура для настроек профиля",
+        "pt": "temperatura máxima para configurações de perfil",
+        "nl": "maximale temperatuur voor profielinstellingen",
+        "fr": "température maximale pour les réglages de profil",
+        "it": "temperatura massima per le impostazioni del profilo",
+        "es": "temperatura máxima para la configuración del perfil",
+        "pl": "maksymalna temperatura dla ustawień profilu",
+        "zh-cn": "配置文件设置的最高温度"
+    },
+    "VisStepWidthProfilTemp": {
+        "en": "step width for temperature profile settings",
+        "de": "Schrittweite für Temperaturprofileinstellungen",
+        "ru": "ширина шага для настройки температурного профиля",
+        "pt": "largura do passo para configurações de perfil de temperatura",
+        "nl": "stapbreedte voor temperatuurprofielinstellingen",
+        "fr": "largeur de pas pour les réglages du profil de température",
+        "it": "larghezza del gradino per le impostazioni del profilo di temperatura",
+        "es": "ancho de paso para la configuración del perfil de temperatura",
+        "pl": "szerokość kroku dla ustawień profilu temperatury",
+        "zh-cn": "温度曲线设置的步长"
     }
+
+
 };
