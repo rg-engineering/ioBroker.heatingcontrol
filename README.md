@@ -182,6 +182,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * autodectection for thermostats, sensors and actuators completely overworked
 * room detection overworked
 * limits and step widh for profil temperatures adjustable in admin for Pittini vis
+* simple window status view (in html) for Pittini vis added
 * issues in github: 
 	* #161 Profil springt zur angegebenen Zeit nicht um
 	* #153 cron Probleme beim ändern eines Profils mittels Javascript
