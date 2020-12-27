@@ -59,6 +59,7 @@
         //load / save profile
         function SaveProfile(instance) {
             console.log('SaveProfile called ');
+            $('#checkResultSaveProfile').html("saving...");
 
             sendTo(instance, 'saveProfile', null, function (result) {
 
@@ -112,11 +113,14 @@
                 r.onload = function (e) {
                     var contents = e.target.result;
 
+                    $('#checkResultLoadProfile').html("loading...");
+
                     sendTo(instance, 'loadProfile', contents, function (result) {
 
                         console.log('profile loaded with ' + result);
 
                         $('#checkResultLoadProfile').html(result);
+                        onChange(true);
                     });
                 }
 
