@@ -99,13 +99,43 @@ systemDictionary = {
         "zh-cn": "数据点类型“当前存在”"
     },
     "Path2VacationDP": {
-        "en": "Path to data point \"vacation\"", "de": "Pfad zum Datenpunkt \"Urlaub\"", "ru": "Путь к точке данных \"отпуск\"", "pt": "Caminho para o ponto de dados \"férias\"", "nl": "Pad naar gegevenspunt \"vakantie\"", "fr": "Chemin vers le point de données \"vacances\"", "it": "Percorso del punto dati \"ferie\"", "es": "Ruta de acceso del punto de datos \"de vacaciones\"", "pl": "Droga do danych opcji \"urlop\"", "zh-cn": "路径的数据点的\"休假\""
+        "en": "Path to data point \"Vacation absent\"",
+        "de": "Pfad zum Datenpunkt \"Urlaub abwesend\"",
+        "ru": "Путь к точке данных \"Отпуск отсутствует\"",
+        "pt": "Caminho para o ponto de dados \"Férias ausentes\"",
+        "nl": "Pad naar gegevenspunt 'Vakantie afwezig'",
+        "fr": "Chemin d'accès au point de données \"Vacances absentes\"",
+        "it": "Percorso al punto dati \"Vacanza assente\"",
+        "es": "Ruta al punto de datos \"Vacaciones ausentes\"",
+        "pl": "Ścieżka do punktu danych „Urlop nieobecny”",
+        "zh-cn": "数据点“缺位”的路径"
     },
     "ProfileType": {
         "en": "Profile Type", "de": "Profiltyp", "ru": "Тип профиля", "pt": "Tipo de perfil", "nl": "Profieltype", "fr": "Type de profil", "it": "Tipo di profilo", "es": "Tipo De Perfil", "pl": "Typ Profilu ", "zh-cn": "配置文件的类型"
     },
     "PublicHolidayLikeSunday": {
-        "en": "public holiday like sunday", "de": "Feiertag wie Sonntag", "ru": "государственный праздник как воскресенье", "pt": "feriado como domingo", "nl": "feestdag zoals zondag", "fr": "jour férié comme dimanche", "it": "festività come la domenica", "es": "día festivo como la del domingo", "pl": "uroczysty dzień jak niedziela", "zh-cn": "公共假期喜欢星期天"
+        "en": "public holiday like sunday",
+        "de": "Feiertag wie Sonntag",
+        "ru": "государственный праздник вроде воскресенья",
+        "pt": "feriado como domingo",
+        "nl": "feestdag zoals zondag",
+        "fr": "jour férié comme dimanche",
+        "it": "giorno festivo come la domenica",
+        "es": "festivo como el domingo",
+        "pl": "święta państwowe jak niedziela",
+        "zh-cn": "像星期天一样的公共假期"
+    },
+    "HolidayPresentLikeSunday": {
+        "en": "holiday at home like sunday",
+        "de": "Urlaub zu Hause wie Sonntag",
+        "ru": "праздник дома как в воскресенье",
+        "pt": "feriado em casa como domingo",
+        "nl": "vakantie thuis zoals op zondag",
+        "fr": "vacances à la maison comme dimanche",
+        "it": "vacanza a casa come domenica",
+        "es": "vacaciones en casa como el domingo",
+        "pl": "wakacje w domu jak w niedzielę",
+        "zh-cn": "像星期天一样在家度假"
     },
     "Search": {
         "en": "Search", "de": "Suche", "ru": "Поиск", "pt": "Procurar", "nl": "Zoeken", "fr": "Chercher", "it": "Ricerca", "es": "Búsqueda", "pl": "Wyszukiwanie", "zh-cn": "搜索"
