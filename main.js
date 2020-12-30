@@ -30,6 +30,9 @@ const SetCurrent = require("./lib/datapoints").SetCurrent;
 const SetInfo = require("./lib/datapoints").SetInfo;
 const SubscribeAllStates = require("./lib/datapoints").SubscribeAllStates;
 const CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
+const CopyProfileAll = require("./lib/datapoints").CopyProfileAll;
+const CopyProfile = require("./lib/datapoints").CopyProfile;
+const CopyPeriods = require("./lib/datapoints").CopyPeriods;
 
 const CronStop = require("./lib/cronjobs").CronStop;
 
@@ -40,6 +43,7 @@ const CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
 const StartStatemachine = require("./lib/database").StartStatemachine;
 
 const StartVis = require("./lib/vis").StartVis;
+const SetVis = require("./lib/vis").SetVis;
 const HandleStateChangeVis = require("./lib/vis").HandleStateChangeVis;
 
 const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
@@ -729,13 +733,30 @@ async function HandleStateChangeGeneral(id, state) {
             //heatingcontrol.0.Profiles.1.Wohnzimmer.CopyProfile
             //heatingcontrol.0.Profiles.1.Wohnzimmer.Fri.CopyPeriods
             if (ids[4] == "CopyProfile")  {
-                ChangeStatus(ids[4], "all", ids[3]);
+
+                await CopyProfileAll( state.val);
+
+                //vis update xxx
+                if (adapter.config.UseVisFromPittini) {
+                    await SetVis();
+                }
             }
             else if (ids[5] == "CopyProfile") {
-                ChangeStatus(ids[5], ids[4], ids[3]);
+                
+                await CopyProfile(ids[4], state.val);
+                //vis update xxx
+                if (adapter.config.UseVisFromPittini) {
+                    await SetVis();
+                }
             }
             else if (ids[6] == "CopyPeriods") {
-                ChangeStatus(ids[6], ids[4], ids[5]);
+
+                const currentProfile = await GetCurrentProfile();
+                await CopyPeriods(ids[4], ids[5], currentProfile);
+                //vis update xxx
+                if (adapter.config.UseVisFromPittini) {
+                    await SetVis();
+                }
             }
             else {
                 ChangeStatus(ids[2], ids[4], state.val);
