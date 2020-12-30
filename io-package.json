@@ -27,7 +27,7 @@
         "pl": "poprawka: aktywuj aktuatory po zmianie temperatury",
         "zh-cn": "错误修复：温度变化后激活用户"
       }
-      
+
     },
     "title": "HeatingControl",
     "titleLang": {
@@ -83,7 +83,10 @@
     ],
     "contributors": [
       "DutchmanNL <rdrozda86@gmail.com>"
-    ]
+    ],
+
+    "connectionType": "local",
+    "dataSource": "push"
   },
   "native": {
     "devices": [],
@@ -127,7 +130,8 @@
     "VisMinProfilTemp": 12,
     "VisMaxProfilTemp": 30,
     "VisStepWidthProfilTemp": 1,
-    "VisUseSimple": false
+    "VisUseSimple": false,
+    "HolidayPresentLikeSunday":  true
 
 
   }
