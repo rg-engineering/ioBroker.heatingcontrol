@@ -178,6 +178,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * ResetButton to disable manual mode (and go back to auto)
 * status log per room
 * complete profile can be saved and loaded in admin
+* copy profile (complete or for a single room) and periods (for a certain profile and room) by button supported
 * datapoint selector for external datapoints added in admin
 * autodectection for thermostats, sensors and actuators completely overworked
 * room detection overworked
