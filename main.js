@@ -615,7 +615,7 @@ async function ListFunctions(obj) {
 
 async function HandleStateChange(id, state) {
     try {
-        if ( state && state.ack !== true) {
+        if (state && state.ack !== true) {
             //handle only, if not ack'ed
             adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
@@ -643,6 +643,9 @@ async function HandleStateChange(id, state) {
             else {
                 await adapter.setStateAsync(id, { ack: true });
             }
+        }
+        else {
+            adapter.log.warn("!!! Statechange not handled" + id + " " + JSON.stringify(state));
         }
     }
     catch (e) {
