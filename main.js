@@ -645,7 +645,16 @@ async function HandleStateChange(id, state) {
             }
         }
         else {
-            adapter.log.warn("!!! Statechange not handled" + id + " " + JSON.stringify(state));
+
+            let handled = false;
+
+            //devices, hm-rpc sends with ack=true
+            if (!handled) {
+                handled = await HandleStateChangeDevices(id, state);
+            }
+            if (!handled) {
+                adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
+            }
         }
     }
     catch (e) {
