@@ -711,6 +711,18 @@ systemDictionary = {
         "es": "ancho de paso para la configuración del perfil de temperatura",
         "pl": "szerokość kroku dla ustawień profilu temperatury",
         "zh-cn": "温度曲线设置的步长"
+    },
+    "ExtendOverride": {
+        "en": "extend override when temperature is changed",
+        "de": "Override verlängern, wenn die Temperatur geändert wird",
+        "ru": "продлить блокировку при изменении температуры",
+        "pt": "estender a sobreposição quando a temperatura for alterada",
+        "nl": "verleng de override wanneer de temperatuur wordt gewijzigd",
+        "fr": "prolonger la dérogation lorsque la température est modifiée",
+        "it": "estendere l'override quando la temperatura viene modificata",
+        "es": "extender anulación cuando se cambia la temperatura",
+        "pl": "przedłużyć nadpisanie po zmianie temperatury",
+        "zh-cn": "温度变化时扩展倍率"
     }
 
 

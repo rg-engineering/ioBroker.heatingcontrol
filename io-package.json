@@ -131,8 +131,7 @@
     "VisMaxProfilTemp": 30,
     "VisStepWidthProfilTemp": 1,
     "VisUseSimple": false,
-    "HolidayPresentLikeSunday":  true
-
-
+    "HolidayPresentLikeSunday": true,
+    "ExtendOverride": false
   }
 }
