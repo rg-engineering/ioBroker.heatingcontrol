@@ -41,6 +41,8 @@ const ChangeStatus = require("./lib/database").ChangeStatus;
 const SubscribeDevices = require("./lib/database").SubscribeDevices;
 const CheckStateChangeDevice = require("./lib/database").CheckStateChangeDevice;
 const StartStatemachine = require("./lib/database").StartStatemachine;
+const GetAllRoomData = require("./lib/database").GetAllRoomData;
+
 
 const StartVis = require("./lib/vis").StartVis;
 const SetVis = require("./lib/vis").SetVis;
@@ -177,9 +179,10 @@ async function main() {
         await SubscribeDevices();
         await CheckConfiguration();
 
-
         const currentProfile = await GetCurrentProfile();
-        await CreateCronJobs(adapter, currentProfile, ChangeStatus);
+
+        const rooms = GetAllRoomData();
+        await CreateCronJobs(adapter, currentProfile, ChangeStatus, rooms);
         //StartTestCron();
 
         await checkHeatingPeriod();
