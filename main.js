@@ -618,42 +618,50 @@ async function ListFunctions(obj) {
 
 async function HandleStateChange(id, state) {
     try {
-        if (state && state.ack !== true) {
-            //handle only, if not ack'ed
-            adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
-            let handled = false;
-            const ids = id.split("."); //
+        let handled = false;
+        const ids = id.split("."); 
 
-            //my own datapoints?
-            if (ids[0] == "heatingcontrol") {
-                handled = await HandleStateChangeGeneral(id, state);
-            }
+        if (state  ) {
 
-            //external datapoints (e.g. present)
-            if (!handled) {
-                handled = await HandleStateChangeExternal(id, state);
-            }
+            if (state.ack !== true) {
+                //handle only, if not ack'ed
+                adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
 
-            //devices
-            if (!handled) {
-                handled = await HandleStateChangeDevices(id, state);
-            }
+                //my own datapoints?
+                if (ids[0] == "heatingcontrol") {
+                    handled = await HandleStateChangeGeneral(id, state);
+                }
 
-            if (!handled) {
-                adapter.log.warn("Statechange " + id + " not handled");
+                //external datapoints (e.g. present)
+                if (!handled) {
+                    handled = await HandleStateChangeExternal(id, state);
+                }
+
+                //devices, hm-rpc sends with ack=true
+                if (!handled) {
+                    handled = await HandleStateChangeDevices(id, state);
+                }
+
+                if (handled) {
+                    await adapter.setStateAsync(id, { ack: true });
+                }
             }
             else {
-                await adapter.setStateAsync(id, { ack: true });
-            }
-        }
-        else {
 
-            let handled = false;
+                if (ids[0] == "heatingcontrol") {
+                    handled = true; //my own are handled only with ack = false
+                }
 
-            //devices, hm-rpc sends with ack=true
-            if (!handled) {
-                handled = await HandleStateChangeDevices(id, state);
+                //external datapoints (e.g. present)
+                if (!handled) {
+                    handled = await HandleStateChangeExternal(id, state);
+                }
+
+                //devices, hm-rpc sends with ack=true
+                if (!handled) {
+                    handled = await HandleStateChangeDevices(id, state);
+                }
             }
             if (!handled) {
                 adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
