@@ -723,6 +723,18 @@ systemDictionary = {
         "es": "extender anulación cuando se cambia la temperatura",
         "pl": "przedłużyć nadpisanie po zmianie temperatury",
         "zh-cn": "温度变化时扩展倍率"
+    },
+    "ThermostatHandlesWindowOpen": {
+        "en": "Thermostat handles \"Window is Open\"",
+        "de": "Thermostat behandelt \"Fenster ist offen\"",
+        "ru": "Термостат ручки \"Окно открыто\"",
+        "pt": "Termostato lida com \"Janela aberta\"",
+        "nl": "Thermostaatgrepen \"Venster is open\"",
+        "fr": "Le thermostat gère \"La fenêtre est ouverte\"",
+        "it": "Maniglie del termostato \"La finestra è aperta\"",
+        "es": "El termostato maneja \"La ventana está abierta\"",
+        "pl": "Termostat obsługuje komunikat „Okno jest otwarte”",
+        "zh-cn": "温控器处理“窗口已打开”"
     }
 
 

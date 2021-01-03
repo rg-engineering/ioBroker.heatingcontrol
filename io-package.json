@@ -84,7 +84,6 @@
     "contributors": [
       "DutchmanNL <rdrozda86@gmail.com>"
     ],
-
     "connectionType": "local",
     "dataSource": "push"
   },
@@ -132,6 +131,7 @@
     "VisStepWidthProfilTemp": 1,
     "VisUseSimple": false,
     "HolidayPresentLikeSunday": true,
-    "ExtendOverride": false
+    "ExtendOverride": false,
+    "ThermostatHandlesWindowOpen":  false
   }
 }
