@@ -685,6 +685,8 @@ async function HandleStateChangeGeneral(id, state) {
             || ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
             || ids[4] === "WindowIsOpen"
+            //heatingcontrol.0.Rooms.Sauna.StatusLog
+            || ids[4] === "StatusLog"
             || ids[3] === "ProfileTypes"
             || ids[3] === "RoomValues"
             || ids[3] === "TempDecreaseValues") {
