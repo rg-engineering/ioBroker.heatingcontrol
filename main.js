@@ -179,13 +179,12 @@ async function main() {
         await SubscribeDevices();
         await CheckConfiguration();
 
-        const currentProfile = await GetCurrentProfile();
+        await checkHeatingPeriod();
 
+        const currentProfile = await GetCurrentProfile();
         const rooms = GetAllRoomData();
         await CreateCronJobs(adapter, currentProfile, ChangeStatus, rooms);
         //StartTestCron();
-
-        await checkHeatingPeriod();
 
         await StartVis(adapter, SystemLanguage);
 
