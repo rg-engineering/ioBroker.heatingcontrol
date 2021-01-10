@@ -860,11 +860,12 @@
 
             obj.rooms = table2values('rooms');
 
-            for (let i = 0; i < obj.rooms.length; i++) {
-                console.log('check room ' + obj.rooms[i].name);
-                obj.rooms[i].name = obj.rooms[i].name.replace('.', '_');
+            if (obj != null && obj.rooms != null) {
+                for (let i = 0; i < obj.rooms.length; i++) {
+                    console.log('check room ' + obj.rooms[i].name);
+                    obj.rooms[i].name = obj.rooms[i].name.replace('.', '_');
+                }
             }
-
             obj.devices = DeviceList;
 
             callback(obj);
