@@ -350,9 +350,10 @@
 
         }
 
+        var DeviceList = [];
         /*
         var timeout1;
-        var DeviceList = [];
+        
         function getDevices(onChange, instance) {
             timeout1 = setTimeout(function () {
                 getDevices(onChange, instance);
@@ -616,23 +617,26 @@
             }
 
             //to do fill table
-            console.log('fill table for ' + room + " " + DeviceList.length);
-
             var ThermostatList4Room = [];
             var ActorList4Room = [];
             var SensorList4Room = [];
-            for (let i = 0; i < DeviceList.length; i++) {
-                //console.log('list entry ' + DeviceList[i].room);
 
-                if (DeviceList[i].room === room) {
-                    if (DeviceList[i].type === 1) {
-                        ThermostatList4Room.push(DeviceList[i]);
-                    }
-                    if (DeviceList[i].type === 2) {
-                        ActorList4Room.push(DeviceList[i]);
-                    }
-                    if (DeviceList[i].type === 3) {
-                        SensorList4Room.push(DeviceList[i]);
+            if (DeviceList != null) {
+                console.log('fill table for ' + room + " " + DeviceList.length);
+
+                for (let i = 0; i < DeviceList.length; i++) {
+                    //console.log('list entry ' + DeviceList[i].room);
+
+                    if (DeviceList[i].room === room) {
+                        if (DeviceList[i].type === 1) {
+                            ThermostatList4Room.push(DeviceList[i]);
+                        }
+                        if (DeviceList[i].type === 2) {
+                            ActorList4Room.push(DeviceList[i]);
+                        }
+                        if (DeviceList[i].type === 3) {
+                            SensorList4Room.push(DeviceList[i]);
+                        }
                     }
                 }
             }
@@ -866,7 +870,10 @@
                     obj.rooms[i].name = obj.rooms[i].name.replace('.', '_');
                 }
             }
-            obj.devices = DeviceList;
+
+            if (DeviceList != null) {
+                obj.devices = DeviceList;
+            }
 
             callback(obj);
         }
@@ -900,63 +907,67 @@
                         console.log('Sensorlist ' + JSON.stringify(sensors));
 
                         //now update DeviceList
-
-                        for (let i = 0; i < thermostats.length; i++) {
-                            //if exist, only update
-                            if (thermostats[i].id > 0) {
-                                console.log("update thermostats " + JSON.stringify(thermostats[i]));
-                                DeviceList[thermostats[i].id - 1].name = thermostats[i].name;
-                                DeviceList[thermostats[i].id - 1].isActive = thermostats[i].isActive;
-                                DeviceList[thermostats[i].id - 1].OID_Target = thermostats[i].OID_Target;
-                                DeviceList[thermostats[i].id - 1].OID_Current = thermostats[i].OID_Current;
-                            }
-                            else {
-                                //if not exist, add at the end of list
-                                thermostats[i].id = DeviceList.length + 1;
-                                thermostats[i].type = 1;
-                                thermostats[i].room = room;
-                                console.log("add thermostats " + JSON.stringify(thermostats[i]));
-                                DeviceList.push(thermostats[i]);
-                            }
-                        }
-
-                        for (let i = 0; i < actors.length; i++) {
-                            //if exist, only update
-                            if (actors[i].id > 0) {
-                                console.log("update actors " + JSON.stringify(actors[i]));
-                                DeviceList[actors[i].id - 1].name = actors[i].name;
-                                DeviceList[actors[i].id - 1].isActive = actors[i].isActive;
-                                DeviceList[actors[i].id - 1].OID_Target = actors[i].OID_Target;
-                            }
-                            else {
-                                //if not exist, add at the end of list
-                                actors[i].id = DeviceList.length + 1;
-                                actors[i].type = 2;
-                                actors[i].room = room;
-                                console.log("add actors " + JSON.stringify(actors[i]));
-                                DeviceList.push(actors[i]);
+                        if (thermostats != null) {
+                            for (let i = 0; i < thermostats.length; i++) {
+                                //if exist, only update
+                                if (thermostats[i].id > 0) {
+                                    console.log("update thermostats " + JSON.stringify(thermostats[i]));
+                                    DeviceList[thermostats[i].id - 1].name = thermostats[i].name;
+                                    DeviceList[thermostats[i].id - 1].isActive = thermostats[i].isActive;
+                                    DeviceList[thermostats[i].id - 1].OID_Target = thermostats[i].OID_Target;
+                                    DeviceList[thermostats[i].id - 1].OID_Current = thermostats[i].OID_Current;
+                                }
+                                else {
+                                    //if not exist, add at the end of list
+                                    thermostats[i].id = DeviceList.length + 1;
+                                    thermostats[i].type = 1;
+                                    thermostats[i].room = room;
+                                    console.log("add thermostats " + JSON.stringify(thermostats[i]));
+                                    DeviceList.push(thermostats[i]);
+                                }
                             }
                         }
 
-                        for (let i = 0; i < sensors.length; i++) {
-                            //if exist, only update
-                            if (sensors[i].id > 0) {
-                                console.log("update sensors " + JSON.stringify(sensors[i]));
-                                DeviceList[sensors[i].id - 1].name = sensors[i].name;
-                                DeviceList[sensors[i].id - 1].isActive = sensors[i].isActive;
-                                DeviceList[sensors[i].id - 1].OID_Current = sensors[i].OID_Current;
-
-                            }
-                            else {
-                                //if not exist, add at the end of list
-                                sensors[i].id = DeviceList.length + 1;
-                                sensors[i].type = 3;
-                                sensors[i].room = room;
-                                console.log("add sensors " + JSON.stringify(sensors[i]));
-                                DeviceList.push(sensors[i]);
+                        if (actors != null) {
+                            for (let i = 0; i < actors.length; i++) {
+                                //if exist, only update
+                                if (actors[i].id > 0) {
+                                    console.log("update actors " + JSON.stringify(actors[i]));
+                                    DeviceList[actors[i].id - 1].name = actors[i].name;
+                                    DeviceList[actors[i].id - 1].isActive = actors[i].isActive;
+                                    DeviceList[actors[i].id - 1].OID_Target = actors[i].OID_Target;
+                                }
+                                else {
+                                    //if not exist, add at the end of list
+                                    actors[i].id = DeviceList.length + 1;
+                                    actors[i].type = 2;
+                                    actors[i].room = room;
+                                    console.log("add actors " + JSON.stringify(actors[i]));
+                                    DeviceList.push(actors[i]);
+                                }
                             }
                         }
 
+                        if (sensors != null) {
+                            for (let i = 0; i < sensors.length; i++) {
+                                //if exist, only update
+                                if (sensors[i].id > 0) {
+                                    console.log("update sensors " + JSON.stringify(sensors[i]));
+                                    DeviceList[sensors[i].id - 1].name = sensors[i].name;
+                                    DeviceList[sensors[i].id - 1].isActive = sensors[i].isActive;
+                                    DeviceList[sensors[i].id - 1].OID_Current = sensors[i].OID_Current;
+
+                                }
+                                else {
+                                    //if not exist, add at the end of list
+                                    sensors[i].id = DeviceList.length + 1;
+                                    sensors[i].type = 3;
+                                    sensors[i].room = room;
+                                    console.log("add sensors " + JSON.stringify(sensors[i]));
+                                    DeviceList.push(sensors[i]);
+                                }
+                            }
+                        }
 
                         //find out if deleted
 
