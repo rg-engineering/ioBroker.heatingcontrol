@@ -1268,7 +1268,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Mo-Su.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Mo_Su[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Su[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Su[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1280,7 +1280,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Mo-Fr.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Mo_Fr[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Fr[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mo_Fr[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1290,7 +1290,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Sa-Su.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Sa_Su[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sa_Su[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sa_Su[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1302,7 +1302,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Mon.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Mon[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mon[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Mon[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1312,7 +1312,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Tue.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Tue[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Tue[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Tue[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1322,7 +1322,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Wed.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Wed[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Wed[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Wed[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1332,7 +1332,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Thu.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Thu[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Thu[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Thu[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1341,7 +1341,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Fri.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Fri[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Fri[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Fri[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1351,7 +1351,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Sat.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Sat[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sat[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sat[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
@@ -1361,7 +1361,7 @@ async function LoadProfile(obj) {
                                 const id = id1 + ".Sun.Periods." + period;
 
                                 const Time = profile2Load.Rooms[roomName].profiles[profile].Sun[period].time;
-                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sun[period].temperature;
+                                const Temperature = profile2Load.Rooms[roomName].profiles[profile].Sun[period].Temperature;
 
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
