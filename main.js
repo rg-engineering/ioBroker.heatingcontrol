@@ -899,43 +899,62 @@ async function checkHeatingPeriod() {
 
     if (adapter.config.UseFixHeatingPeriod) {
         adapter.log.info("initial check for heating period based on settings between " + adapter.config.FixHeatingPeriodStart + " and " + adapter.config.FixHeatingPeriodEnd);
+        try {
+            
+            let isHeatingPeriod = false;
 
-        const HeatingPeriodStart = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
-        const HeatingPeriodEnd = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
+            if (adapter.config.FixHeatingPeriodStart.length > 0 && adapter.config.FixHeatingPeriodEnd.length > 0) {
+                const StartPeriod = adapter.config.FixHeatingPeriodStart.split(/[.,/ -]/);
+                const EndPeriod = adapter.config.FixHeatingPeriodEnd.split(/[.,/ -]/);
 
-        let isHeatingPeriod = false;
-        if (HeatingPeriodStart.length >= 2 && HeatingPeriodEnd.length >= 2) {
 
-            const StartDate = new Date();
-            StartDate.setDate(parseInt(HeatingPeriodStart[0]));
-            StartDate.setMonth(parseInt(HeatingPeriodStart[1]) - 1);
-            adapter.log.debug("Start " + StartDate.toDateString());
+                if (StartPeriod.length >= 2 && EndPeriod.length >= 2) {
 
-            const EndDate = new Date();
-            EndDate.setDate(parseInt(HeatingPeriodEnd[0]));
-            EndDate.setMonth(parseInt(HeatingPeriodEnd[1]) - 1);
-            adapter.log.debug("End " + EndDate.toDateString());
+                    const StartDate = new Date();
+                    StartDate.setDate(parseInt(StartPeriod[0]));
+                    StartDate.setMonth(parseInt(StartPeriod[1]) - 1);
+                    adapter.log.debug("Start " + StartDate.toDateString());
 
-            if (EndDate < StartDate) {
-                EndDate.setFullYear(EndDate.getFullYear() + 1);
-                adapter.log.debug("corrected End " + EndDate.toDateString());
+                    const EndDate = new Date();
+                    EndDate.setDate(parseInt(EndPeriod[0]));
+                    EndDate.setMonth(parseInt(EndPeriod[1]) - 1);
+                    adapter.log.debug("End " + EndDate.toDateString());
+
+                    const now = new Date();
+
+                    //bei Jahreswechsel
+                    if (EndDate < StartDate) {
+                        if (now > EndDate) {
+                            //end already past, increase end year
+                            EndDate.setFullYear(EndDate.getFullYear() + 1);
+                            adapter.log.debug("corrected End " + EndDate.toDateString());
+                        }
+                        else {
+                            //else decrease Start year
+                            StartDate.setFullYear(StartDate.getFullYear() - 1);
+                            adapter.log.debug("corrected Start " + StartDate.toDateString());
+                        }
+                    }
+
+                    if (now >= StartDate && now <= EndDate) {
+                        adapter.log.debug("we are in period");
+                        isHeatingPeriod = true;
+                    }
+                    else {
+                        adapter.log.debug("we are not in period, after start " + StartDate.toDateString() + " and before end " + EndDate.toDateString());
+                        isHeatingPeriod = false;
+                    }
+                }
             }
 
-            const now = new Date();
+            adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
 
-            if (now >= StartDate && now <= EndDate) {
-                adapter.log.debug("we are in period");
-                isHeatingPeriod = true;
-            }
-            else {
-                adapter.log.debug("we are not in period, after start " + StartDate.toDateString() + " and before end " + EndDate.toDateString());
-                isHeatingPeriod = false;
-            }
+            await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: isHeatingPeriod });
         }
 
-        adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
-
-        await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: isHeatingPeriod });
+        catch (e) {
+            adapter.log.error("exception catch in checkHeatingPeriod [" + e + "] ");
+        }
     }
 }
 
