@@ -758,7 +758,7 @@ async function HandleStateChangeGeneral(id, state) {
             //heatingcontrol.0.Profiles.1.Wohnzimmer.Fri.CopyPeriods
             if (ids[4] == "CopyProfile")  {
 
-                await CopyProfileAll( state.val);
+                await CopyProfileAll(parseInt(ids[3]));
 
                 //vis update xxx
                 if (adapter.config.UseVisFromPittini) {
@@ -767,7 +767,7 @@ async function HandleStateChangeGeneral(id, state) {
             }
             else if (ids[5] == "CopyProfile") {
                 
-                await CopyProfile(ids[4], state.val);
+                await CopyProfile(ids[4], parseInt(ids[3]));
                 //vis update xxx
                 if (adapter.config.UseVisFromPittini) {
                     await SetVis();
