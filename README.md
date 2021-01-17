@@ -172,7 +172,6 @@ manual state.
 ## Copy period and copy profile
 ``
 heatingcontrol.0.Profiles.1.CopyProfile
-
 heatingcontrol.0.Profiles.1.Room.CopyProfile
 ``
 
