@@ -135,6 +135,15 @@
     "VisUseSimple": false,
     "HolidayPresentLikeSunday": true,
     "ExtendOverride": false,
-    "ThermostatHandlesWindowOpen":  false
+    "ThermostatHandlesWindowOpen": false,
+    "VisMinDecRelTemp": 1,
+    "VisMaxDecRelTemp": 10,
+    "VisStepWidthDecRelTemp": 1,
+    "VisMinDecAbsTemp": 1,
+    "VisMaxDecAbsTemp": 25,
+    "VisStepWidthDecAbsTemp": 1,
+    "VisMinOverrideTemp": 20,
+    "VisMaxOverrideTemp": 30,
+    "VisStepWidthOverrideTemp": 1
   }
 }
