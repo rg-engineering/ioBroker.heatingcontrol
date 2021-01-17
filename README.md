@@ -205,6 +205,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.1.0 (2021-xx-xx)
+
 ### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 
