@@ -689,6 +689,8 @@ async function HandleStateChangeGeneral(id, state) {
             || ids[4] === "StatusLog"
             || ids[3] === "ProfileTypes"
             || ids[3] === "RoomValues"
+            //heatingcontrol.0.Profiles.1.ProfileName
+            || ids[4] === "ProfileName"
             || ids[3] === "TempDecreaseValues") {
             bRet = await HandleStateChangeVis(id, state);
         }
