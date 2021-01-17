@@ -55,14 +55,38 @@ systemDictionary = {
         "en": "Number Of profiles", "de": "Anzahl der Profile", "ru": "Количество профилей", "pt": "Número de perfis", "nl": "Aantal profielen", "fr": "Nombre de profils", "it": "Numero di profili", "es": "Número De perfiles", "pl": "Ilość profili", "zh-cn": "数概况"
     },
     "OID": {
-        "en": "OID", "de": "OID", "ru": "OID", "pt": "OID", "nl": "OID", "fr": "OID", "it": "OID", "es": "OID", "pl": "ОИД", "zh-cn": "OID"
-    },
+        "en": "object-ID",
+        "de": "Objekt ID",
+        "ru": "объект-ID",
+        "pt": "object-ID",
+        "nl": "object-ID",
+        "fr": "ID d'objet",
+        "it": "ID oggetto",
+        "es": "ID de objeto",
+        "pl": "identyfikator obiektu",
+        "zh-cn": "对象ID"    },
     "OID current": {
-        "en": "OID current value", "de": "OID aktueller Wert", "ru": "Текущее значение OID", "pt": "Valor atual OID", "nl": "OID huidige waarde", "fr": "Valeur actuelle OID", "it": "Valore corrente OID", "es": "OID valor actual", "pl": "ОИД bieżącą wartość", "zh-cn": "OID目前的价值"
-    },
+        "en": "object-ID current temperature",
+        "de": "Objekt-ID aktuelle Temperatur",
+        "ru": "идентификатор объекта текущая температура",
+        "pt": "temperatura atual do ID do objeto",
+        "nl": "object-ID huidige temperatuur",
+        "fr": "température actuelle de l'objet-ID",
+        "it": "temperatura corrente dell'ID oggetto",
+        "es": "ID de objeto temperatura actual",
+        "pl": "bieżąca temperatura ID obiektu",
+        "zh-cn": "对象ID当前温度"    },
     "OID target": {
-        "en": "OID target value", "de": "OID Zielwert", "ru": "Целевое значение OID", "pt": "Valor alvo do OID", "nl": "OID-doelwaarde", "fr": "Valeur cible OID", "it": "Valore target OID", "es": "OID de valor de la meta", "pl": "ОИД wartość docelowa", "zh-cn": "OID目标值"
-    },
+        "en": "object-ID target temperature",
+        "de": "Objekt-ID Zieltemperatur",
+        "ru": "заданная температура объекта ID",
+        "pt": "temperatura alvo object-ID",
+        "nl": "object-ID doeltemperatuur",
+        "fr": "température cible ID objet",
+        "it": "temperatura target ID oggetto",
+        "es": "temperatura objetivo de ID de objeto",
+        "pl": "temperatura docelowa ID obiektu",
+        "zh-cn": "对象ID目标温度"    },
     "Path2FeiertagAdapter": {
         "en": "Path to Feiertag - Adapter or any other datapoint", "de": "Pfad zum Feiertag - Adapter oder einem anderen Datenpunkt", "ru": "Путь к Feiertag - Адаптер или любой другой пункт данных", "pt": "Caminho para Feiertag - Adaptador ou qualquer outro ponto de dados", "nl": "Pad naar Feiertag - Adapter of een ander datapunt", "fr": "Chemin vers Feiertag - Adaptateur ou tout autre point de données", "it": "Path to Feiertag - Adattatore o qualsiasi altro punto dati", "es": "Ruta de acceso a Feiertag - Adaptador o cualquier otro punto de datos", "pl": "Droga do Фейертага - adapter, lub dowolny inny punkt danych", "zh-cn": "路径Feiertag适配器或任何其他数据点"
     },
