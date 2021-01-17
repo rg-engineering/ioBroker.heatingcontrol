@@ -127,7 +127,7 @@ optionally a delay can be used. If window is opened only for a short time sensor
 you can use your calendar or any other datapoint to change datapoints in adapter.
 Just configure events from ical or other datapoints in admin. Supported are
 
-|                                     |
+| datapoint                           | description
 |-------------------------------------|----------------------------------------------------------------------------
 |heatingcontrol.0.Present             | set it to true (in case of boolean) or to a number higher then limit (in case of number)
 |heatingcontrol.0.HolidayPresent      | set it to true when you at home in your holiday
@@ -172,9 +172,12 @@ manual state.
 ## Copy period and copy profile
 ``
 heatingcontrol.0.Profiles.1.CopyProfile
+
 heatingcontrol.0.Profiles.1.Room.CopyProfile
 ``
+
 and
+
 ``
 heatingcontrol.0.Profiles.1.Küche.Fri.CopyPeriods
 ``
