@@ -205,6 +205,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.0.1 (2021-01-18)
+* (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+
 ### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 
