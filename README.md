@@ -209,6 +209,11 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #198: add name to profile as a datapoint, used to be shown in visualisation
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
 
+### 2.0.1 (2021-01-19)
+* (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+* (René) bug fix for issue #203: Warnings "has no existing object, this might lead to an error"
+* (René) bug fix for issue #205: override start
+
 ### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 

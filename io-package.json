@@ -6,6 +6,18 @@
       "2.1.0": {
 
       },
+      "2.0.1": {
+        "en": "bug fix: reduced temperatur in manual mode not used",
+        "de": "Fehlerbehebung: Reduzierte Temperatur im manuellen Modus wird nicht verwendet",
+        "ru": "исправление ошибки: пониженная температура в ручном режиме не используется",
+        "pt": "correção de bug: temperatura reduzida no modo manual não usado",
+        "nl": "bugfix: verlaagde temperatuur in handmatige modus niet gebruikt",
+        "fr": "correction de bogue: température réduite en mode manuel non utilisée",
+        "it": "correzione bug: temperatura ridotta in modalità manuale non utilizzata",
+        "es": "corrección de errores: temperatura reducida en modo manual no utilizada",
+        "pl": "poprawka: obniżona temperatura w trybie ręcznym nie jest używana",
+        "zh-cn": "错误修复：未使用手动模式降低温度"
+      },
       "2.0.0": {
         "en": "internal redesign, some breaking changes, read release notes",
         "de": "Internes Redesign, einige wichtige Änderungen, Versionshinweise lesen",
