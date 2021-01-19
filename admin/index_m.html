@@ -250,6 +250,7 @@
 
             var elementPageActors = document.getElementById("page-actors");
             var elementPageSensors = document.getElementById("page-sensors");
+            var elementPageAddTempSensors = document.getElementById("page-addTempSensors");
 
             var $useActors = $('#UseActors');
             if ($useActors.prop('checked')) {
@@ -302,6 +303,20 @@
                 $('.col-SensorOpenDelay').hide();
                 $('.col-SensorCloseDelay').hide();
             }
+
+            var $UseAddTempSensors = $('#UseAddTempSensors');
+
+            if ($UseAddTempSensors.prop('checked')) {
+                console.log('show additional sensor settings');
+
+                elementPageAddTempSensors.classList.remove("hide");
+            }
+            else {
+                console.log('hide additional sensors settings');
+
+                elementPageAddTempSensors.classList.add("hide");
+            }
+
 
             var $useFixHeatingPeriod = $('#UseFixHeatingPeriod');
 
@@ -1086,6 +1101,19 @@
                 getSensors(myOnChange, _id, room);
             });
 
+
+            $('#OID_AddTempSnsor').on('click', function () {
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#AddTempSensor').val(), function (newId) {
+                        if (newId) {
+                            $('#AddTempSensor').val(newId).trigger('change');
+                        }
+                    });
+                });
+            });
+
+
+
             showHideSettings();
         }
 
@@ -1479,6 +1507,22 @@
                                     <label for="ThermostatHandlesWindowOpen" class="translate">ThermostatHandlesWindowOpen</label>
                                 </div>
                             </div>
+
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">AdditionalTemperatureSensorSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="UseAddTempSensors" class="value" />
+                                    <label for="UseAddTempSensors" class="translate">UseAddTempSensors</label>
+                                </div>
+                            </div>
+
+                            
 
                         </div>
                     </li>
@@ -1884,9 +1928,10 @@
                         </div>
                         <div class="col s12">
                             <ul class="tabs">
-                                <li id="page-thermostats" class="tab col s4"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
-                                <li id="page-actors" class="tab col s4"><a href="#tab-popup_actors" class="translate">actors</a></li>
-                                <li id="page-sensors" class="tab col s4"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
+                                <li id="page-thermostats" class="tab col s3"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
+                                <li id="page-actors" class="tab col s3"><a href="#tab-popup_actors" class="translate">actors</a></li>
+                                <li id="page-sensors" class="tab col s3"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
+                                <li id="page-addTempSensors" class="tab col s3"><a href="#tab-popup_AddTempSensors" class="translate">AddTempSensors</a></li>
                             </ul>
                         </div>
                         <div id="tab-popup_thermostats" class="col s12 page">
@@ -2007,6 +2052,30 @@
                                 </div>
                             </div>
                         </div>
+
+                       
+                        <div id="tab-popup_AddTempSensors" class="col s12 page">
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">hint_AddTempSensors</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input type="text" id="AddTempSensor" class="value" />
+                                    <label for="AddTempSensor" class="translate">AddTempSensor</label>
+
+                                </div>
+                                <div class="col s1 m2 l1">
+                                    <a id="OID_AddTempSensor" class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -144,6 +144,7 @@
     "VisStepWidthDecAbsTemp": 1,
     "VisMinOverrideTemp": 20,
     "VisMaxOverrideTemp": 30,
-    "VisStepWidthOverrideTemp": 1
+    "VisStepWidthOverrideTemp": 1,
+    "UseAddTempSensors":  false
   }
 }

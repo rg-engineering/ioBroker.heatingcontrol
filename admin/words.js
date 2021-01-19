@@ -288,7 +288,17 @@ systemDictionary = {
         "en": "sensor", "de": "Sensor", "ru": "датчик", "pt": "sensor", "nl": "sensor", "fr": "capteur", "it": "sensore", "es": "sensor de", "pl": "czujnik", "zh-cn": "传感器"
     },
     "sensors": {
-        "en": "sensors", "de": "Sensoren", "ru": "датчиков", "pt": "sensores", "nl": "sensoren", "fr": "capteurs", "it": "sensori", "es": "los sensores", "pl": "czujniki", "zh - cn": "传感器" },
+        "en": "Window Sensors",
+        "de": "Fenstersensoren",
+        "ru": "Оконные датчики",
+        "pt": "Sensores de janela",
+        "nl": "Raamsensoren",
+        "fr": "Capteurs de fenêtre",
+        "it": "Sensori per finestre",
+        "es": "Sensores de ventana",
+        "pl": "Czujniki okienne",
+        "zh-cn": "车窗感应器"
+    },
     "thermostat": {
         "en": "thermostat", "de": "Thermostat", "ru": "термостат", "pt": "termostato", "nl": "thermostaat", "fr": "thermostat", "it": "termostato", "es": "termostato", "pl": "termostat", "zh-cn": "恒温器"
     },
@@ -413,16 +423,16 @@ systemDictionary = {
         "zh-cn": "温控器设置"
     },
     "SensorSettings": {
-        "en": "Sensor Settings",
-        "de": "Sensoreinstellungen",
-        "ru": "Настройки датчика",
-        "pt": "Configurações do sensor",
-        "nl": "Sensor instellingen",
-        "fr": "Paramètres du capteur",
-        "it": "Impostazioni del sensore",
-        "es": "Configuración del sensor",
-        "pl": "Ustawienia czujnika",
-        "zh-cn": "传感器设定"
+        "en": "Window Sensor Settings",
+        "de": "Fenstersensoreinstellungen",
+        "ru": "Настройки датчика окна",
+        "pt": "Configurações do sensor da janela",
+        "nl": "Venstersensorinstellingen",
+        "fr": "Paramètres du capteur de fenêtre",
+        "it": "Impostazioni sensore finestra",
+        "es": "Configuración del sensor de ventana",
+        "pl": "Ustawienia czujnika okien",
+        "zh-cn": "车窗感应器设定"
     },
     "ActorSettings": {
         "en": "Actuator Settings",
@@ -867,6 +877,30 @@ systemDictionary = {
         "es": "El termostato maneja \"La ventana está abierta\"",
         "pl": "Termostat obsługuje komunikat „Okno jest otwarte”",
         "zh-cn": "温控器处理“窗口已打开”"
+    },
+    "AdditionalTemperatureSensorSettings": {
+        "en": "Additional Temperature Sensor Settings",
+        "de": "Zusätzliche Temperatursensoreinstellungen",
+        "ru": "Дополнительные настройки датчика температуры",
+        "pt": "Configurações adicionais do sensor de temperatura",
+        "nl": "Aanvullende temperatuursensorinstellingen",
+        "fr": "Paramètres supplémentaires du capteur de température",
+        "it": "Impostazioni aggiuntive del sensore di temperatura",
+        "es": "Configuración adicional del sensor de temperatura",
+        "pl": "Dodatkowe ustawienia czujnika temperatury",
+        "zh-cn": "其他温度传感器设置"
+    },
+    "UseAddTempSensors": {
+        "en": "additional Temperature Sensors used",
+        "de": "Zusätzliche Temperatursensoren werden verwendet",
+        "ru": "используются дополнительные датчики температуры",
+        "pt": "Sensores de temperatura adicionais são usados",
+        "nl": "Er worden extra temperatuursensoren gebruikt",
+        "fr": "des capteurs de température supplémentaires sont utilisés",
+        "it": "vengono utilizzati sensori di temperatura aggiuntivi",
+        "es": "se utilizan sensores de temperatura adicionales",
+        "pl": "stosowane są dodatkowe czujniki temperatury",
+        "zh-cn": "使用了附加的温度传感器"
     }
 
 
