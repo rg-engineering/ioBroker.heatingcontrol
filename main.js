@@ -646,7 +646,8 @@ async function HandleStateChange(id, state) {
                     //adapter.log.debug("### ack for " + id);
                     // ### ack for heatingcontrol.0.Rooms.Wohnzimmer.StatusLog
                     // ### ack for javascript.0.Target1
-                    await adapter.setForeignStateAsync(id, { ack: true });
+                    await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
+                    //await adapter.setForeignStateAsync(id, {  ack: true });
                 }
             }
             else {
