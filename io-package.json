@@ -6,6 +6,18 @@
       "2.1.0": {
 
       },
+      "2.0.2": {
+        "en": "bug fix: exceptions",
+        "de": "Fehlerbehebung: Ausnahmen",
+        "ru": "исправление ошибки: исключения",
+        "pt": "correção de bug: exceções",
+        "nl": "bug fix: uitzonderingen",
+        "fr": "correction de bogue: exceptions",
+        "it": "correzione di bug: eccezioni",
+        "es": "corrección de errores: excepciones",
+        "pl": "poprawka: wyjątki",
+        "zh-cn": "错误修复：异常"
+      },
       "2.0.1": {
         "en": "bug fix: reduced temperatur in manual mode not used",
         "de": "Fehlerbehebung: Reduzierte Temperatur im manuellen Modus wird nicht verwendet",
