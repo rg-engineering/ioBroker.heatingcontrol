@@ -635,6 +635,7 @@
             var ThermostatList4Room = [];
             var ActorList4Room = [];
             var SensorList4Room = [];
+            var AddTempSensorList4Room = [];
 
             if (DeviceList != null) {
                 console.log('fill table for ' + room + " " + DeviceList.length);
@@ -652,6 +653,11 @@
                         if (DeviceList[i].type === 3) {
                             SensorList4Room.push(DeviceList[i]);
                         }
+                        if (DeviceList[i].type === 4) {
+                            AddTempSensorList4Room.push(DeviceList[i]);
+                        }
+
+
                     }
                 }
             }
@@ -662,6 +668,17 @@
             values2table('thermostats', ThermostatList4Room, OnChange, tableDevicesOnReady);
             values2table('actors', ActorList4Room, OnChange, tableDevicesOnReady);
             values2table('sensors', SensorList4Room, OnChange, tableDevicesOnReady);
+
+            $('#AddTempSensor').val("testoid");
+
+            M.updateTextFields();
+
+            /*
+            if (AddTempSensorList4Room.length > 0) {
+               $('#AddTempSensor').val(AddTempSensorList4Room[0].OID);
+            }
+            */
+
 
             $editDialog.data('callback', callback);
             $editDialog.modal('open');
@@ -742,6 +759,7 @@
                 "twelveHour": false
             });
 
+            
 
             showHideSettings();
             M.updateTextFields();
@@ -1102,7 +1120,7 @@
             });
 
 
-            $('#OID_AddTempSnsor').on('click', function () {
+            $('#OID_AddTempSensor').on('click', function () {
                 initSelectId(function (sid) {
                     sid.selectId('show', $('#AddTempSensor').val(), function (newId) {
                         if (newId) {
