@@ -53,6 +53,7 @@ const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
 const Check4Thermostat = require("./lib/devicedetect").Check4Thermostat;
 const Check4Actor = require("./lib/devicedetect").Check4Actor;
 const Check4Sensor = require("./lib/devicedetect").Check4Sensor;
+const Check4TempSensor = require("./lib/devicedetect").Check4TempSensor;
 
 let SystemLanguage;
 
@@ -129,6 +130,10 @@ function startAdapter(options) {
                     case "listSensors":
                         //adapter.log.debug("got list sensors");
                         await ListSensors(obj);
+                        break;
+                    case "listAddTempSensors":
+                        //adapter.log.debug("got list sensors");
+                        await ListAddTempSensors(obj);
                         break;
                     case "saveProfile":
                         //adapter.log.debug("got save profile");
@@ -311,7 +316,7 @@ async function SearchRoomAndFunction(roomName, gewerk) {
         }
         else {
             if (!functionFound) {
-                status = "function " + gewerk + " not found found in enum ";
+                status = "function " + gewerk + " not found in enum ";
             }
 
 
@@ -324,7 +329,7 @@ async function SearchRoomAndFunction(roomName, gewerk) {
     }
     else {
         if (!roomFound) {
-            status = "room " + roomName + " not found found in enum ";
+            status = "room " + roomName + " not found in enum ";
         }
         else {
             status = "room " + roomName + " has no devices ";
@@ -523,6 +528,71 @@ async function ListSensors(obj) {
 
     adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
 }
+
+async function ListAddTempSensors(obj) {
+    adapter.log.debug("ListAddTempSensors " + JSON.stringify(obj));
+
+    const roomName = obj.message.room;
+    const gewerk = obj.message.gewerk;
+
+    const result = await SearchRoomAndFunction(roomName, gewerk);
+    let status = "";
+    const devices = [];
+
+    if (result.devices.length > 0) {
+        adapter.log.debug("ListSensors " + JSON.stringify(result));
+
+        let AlreadyUsed = false;
+        for (const d in result.devices) {
+
+            const resultCheck = await Check4TempSensor(adapter, result.devices[d].obj);
+
+            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+
+            if (resultCheck.found) {
+                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
+
+                adapter.log.debug("found " + JSON.stringify(found));
+
+                if (found == null) {
+                    adapter.log.debug("push to list ");
+                    devices.push(resultCheck.device);
+                }
+                else {
+                    AlreadyUsed = true;
+                    adapter.log.debug("alread used ");
+                }
+            }
+        }
+
+        if (devices.length > 0) {
+            status = devices.length + " devices found";
+        }
+        else {
+            if (AlreadyUsed) {
+                status = "devices found, but already used";
+
+            }
+            else {
+                status = "unknown devices found, please add it manually";
+            }
+        }
+    }
+    else {
+        status = result.status;
+    }
+
+
+    const returnObject = {
+        list: devices,
+        status: status,
+        room: roomName
+    };
+
+    adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
+}
+
+
 
 async function ListRooms(obj) {
 
