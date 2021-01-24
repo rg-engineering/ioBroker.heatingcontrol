@@ -748,7 +748,7 @@ async function HandleStateChange(id, state) {
 
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
-    adapter.log.debug("HandleStateChangeGeneral " + id);
+    //adapter.log.debug("HandleStateChangeGeneral " + id);
 
     try {
         const ids = id.split(".");

@@ -209,6 +209,9 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #198: add name to profile as a datapoint, used to be shown in visualisation
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
 
+### 2.0.3 (2021-01-24)
+* (René) bug fix for issue #211: endless change of temperatures
+
 ### 2.0.2 (2021-01-22)
 * (René) bug fix for issue #208: exception "undefined is not a valid state value"
 * (René) bug fix for issue #209: Not all open windows are recognized

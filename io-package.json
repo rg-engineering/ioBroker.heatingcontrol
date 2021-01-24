@@ -3,8 +3,20 @@
     "name": "heatingcontrol",
     "version": "2.1.0",
     "news": {
-      "2.1.0": {
+     "2.1.0": {
 
+      },
+      "2.0.3": {
+        "en": "bug fix: endless change of temperatures",
+        "de": "Fehlerbehebung: endlose Temperaturänderung",
+        "ru": "исправление ошибки: бесконечная смена температур",
+        "pt": "correção de bug: mudança infinita de temperaturas",
+        "nl": "bugfix: eindeloze temperatuurwisselingen",
+        "fr": "correction de bogue: changement de température sans fin",
+        "it": "correzione bug: variazione infinita delle temperature",
+        "es": "corrección de errores: cambio interminable de temperaturas",
+        "pl": "poprawka błędu: nieskończona zmiana temperatur",
+        "zh-cn": "错误修复：温度变化无穷"
       },
       "2.0.2": {
         "en": "bug fix: exceptions",
