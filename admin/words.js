@@ -901,6 +901,66 @@ systemDictionary = {
         "es": "se utilizan sensores de temperatura adicionales",
         "pl": "stosowane są dodatkowe czujniki temperatury",
         "zh-cn": "使用了附加的温度传感器"
+    },
+    "hint_UseAddTempSensors": {
+        "en": "Additional temperature sensors are used to correct the sensors built into the thermostat. The difference between the built-in sensor and the additional sensor is determined and the target temperature is corrected. Attention: The target temperature is displayed differently than it e.g. was entered in the profile!",
+        "de": "Zusätzliche Temperatursensoren werden verwendet, um die im Thermostat eingebauten Sensoren zu korrigieren. Die Differenz zwischen dem eingebauten Sensor und dem zusätzlichen Sensor wird ermittelt und die Zieltemperatur korrigiert. Achtung: Die Zieltemperatur wird anders angezeigt als sie z.Bspim Profil eingetragen wurde!",
+        "ru": "Дополнительные датчики температуры используются для корректировки датчиков, встроенных в термостат. Определяется разница между встроенным датчиком и дополнительным датчиком и корректируется заданная температура. Внимание: целевая температура отображается иначе, чем, например, был введен в профиль!",
+        "pt": "Sensores de temperatura adicionais são usados para corrigir os sensores embutidos no termostato. A diferença entre o sensor embutido e o sensor adicional é determinada e a temperatura alvo é corrigida. Atenção: A temperatura alvo é exibida de forma diferente, por exemplo, foi inserido no perfil!",
+        "nl": "Extra temperatuursensoren worden gebruikt om de sensoren die in de thermostaat zijn ingebouwd te corrigeren. Het verschil tussen de ingebouwde sensor en de extra sensor wordt bepaald en de doeltemperatuur wordt gecorrigeerd. Let op: de gewenste temperatuur wordt anders weergegeven dan bijv. is ingevoerd in het profiel!",
+        "fr": "Des capteurs de température supplémentaires sont utilisés pour corriger les capteurs intégrés au thermostat. La différence entre le capteur intégré et le capteur supplémentaire est déterminée et la température cible est corrigée. Attention: la température cible est affichée différemment d'elle, par ex. a été inscrit dans le profil!",
+        "it": "Sensori di temperatura aggiuntivi vengono utilizzati per correggere i sensori integrati nel termostato. La differenza tra il sensore integrato e il sensore aggiuntivo viene determinata e la temperatura target viene corretta. Attenzione: la temperatura target viene visualizzata in modo diverso rispetto ad es. è stato inserito nel profilo!",
+        "es": "Se utilizan sensores de temperatura adicionales para corregir los sensores integrados en el termostato. Se determina la diferencia entre el sensor incorporado y el sensor adicional y se corrige la temperatura objetivo. Atención: La temperatura objetivo se muestra de forma diferente a como p. Ej. se ingresó en el perfil!",
+        "pl": "Dodatkowe czujniki temperatury służą do korekcji czujników wbudowanych w termostat. Wyznaczana jest różnica między czujnikiem wbudowanym a czujnikiem dodatkowym i korygowana jest temperatura docelowa. Uwaga: temperatura docelowa jest wyświetlana inaczej niż np. został wpisany do profilu!",
+        "zh-cn": "附加的温度传感器用于校正内置在恒温器中的传感器。确定内置传感器和附加传感器之间的差异，并校正目标温度。注意：目标温度的显示方式与目标温度不同，例如已在个人资料中输入！"
+    },
+    "AddTempSensors": {
+        "en": "additional Temp-Sensors",
+        "de": "zusätzliche Temperatursensoren",
+        "ru": "дополнительные датчики температуры",
+        "pt": "Sensores de temperatura adicionais",
+        "nl": "extra temperatuursensoren",
+        "fr": "Capteurs de température supplémentaires",
+        "it": "sensori di temperatura aggiuntivi",
+        "es": "Sensores de temperatura adicionales",
+        "pl": "dodatkowe czujniki temperatury",
+        "zh-cn": "额外的温度传感器"
+    },
+    "hint_AddTempSensors":{
+        "en": "Please configure here your additional temperature sensors for that room. The list could be empty if you do nat have any additional sensors. ",
+        "de": "Bitte konfigurieren Sie hier Ihre zusätzlichen Temperatursensoren für diesen Raum. Die Liste kann leer sein, wenn Sie keine zusätzlichen Sensoren haben.",
+        "ru": "Пожалуйста, настройте здесь дополнительные датчики температуры для этой комнаты. Список может быть пустым, если у вас есть дополнительные датчики.",
+        "pt": "Configure aqui seus sensores de temperatura adicionais para essa sala. A lista pode estar vazia se você não tiver sensores adicionais.",
+        "nl": "Configureer hier uw extra temperatuursensoren voor die kamer. De lijst kan leeg zijn als je geen extra sensoren hebt.",
+        "fr": "Veuillez configurer ici vos capteurs de température supplémentaires pour cette pièce. La liste pourrait être vide si vous avez des capteurs supplémentaires.",
+        "it": "Configura qui i tuoi sensori di temperatura aggiuntivi per quella stanza. L'elenco potrebbe essere vuoto se non si dispone di sensori aggiuntivi.",
+        "es": "Configure aquí sus sensores de temperatura adicionales para esa habitación. La lista podría estar vacía si no tiene sensores adicionales.",
+        "pl": "Skonfiguruj tutaj dodatkowe czujniki temperatury dla tego pomieszczenia. Lista może być pusta, jeśli nie masz żadnych dodatkowych czujników.",
+        "zh-cn": "请在此处为该房间配置其他温度传感器。如果您没有任何其他传感器，则该列表可能为空。"
+    },
+    "Check4NewAddTempSensors": {
+        "en": "check for new sensors",
+        "de": "nach neuen Sensoren suchen",
+        "ru": "проверьте наличие новых датчиков",
+        "pt": "verifique se há novos sensores",
+        "nl": "controleer op nieuwe sensoren",
+        "fr": "rechercher de nouveaux capteurs",
+        "it": "verificare la presenza di nuovi sensori",
+        "es": "comprobar si hay nuevos sensores",
+        "pl": "sprawdź nowe czujniki",
+        "zh-cn": "检查新的传感器"
+    },
+    "Check4NewAddTempSensors_hint": {
+        "en": "Known sensors are searched for. The room and the function are used. If the automatic detection does not find the sensors, they can also be added manually.",
+        "de": "Es wird nach bekannten Sensoren gesucht. Der Raum und die Funktion werden genutzt. Wenn die automatische Erkennung die Sensoren nicht findet, können sie auch manuell hinzugefügt werden.",
+        "ru": "Ищутся известные датчики. Используется комната и функция. Если автоматическое обнаружение не обнаруживает датчики, их также можно добавить вручную.",
+        "pt": "Sensores conhecidos são pesquisados. O quarto e a função são usados. Se a detecção automática não encontrar os sensores, eles também podem ser adicionados manualmente.",
+        "nl": "Er wordt gezocht naar bekende sensoren. De kamer en de functie worden gebruikt. Als de automatische detectie de sensoren niet vindt, kunnen ze ook handmatig worden toegevoegd.",
+        "fr": "Les capteurs connus sont recherchés. La pièce et la fonction sont utilisées. Si la détection automatique ne trouve pas les capteurs, ils peuvent également être ajoutés manuellement.",
+        "it": "Vengono cercati sensori noti. La stanza e la funzione vengono utilizzate. Se il rilevamento automatico non trova i sensori, è possibile aggiungerli anche manualmente.",
+        "es": "Se buscan sensores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los sensores, también se pueden agregar manualmente.",
+        "pl": "Wyszukiwanie znanych czujników. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie czujników, można je również dodać ręcznie.",
+        "zh-cn": "搜索已知的传感器。使用房间和功能。如果自动检测未找到传感器，则也可以手动添加它们。"
     }
 
 
