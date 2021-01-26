@@ -21,9 +21,9 @@ Bei Verwendung von mehr als einem Sensor wird ein Mittelwert über alle Sensoren
 
 Zunächst muss das Feature aktiviert werden:
 
-![TempOffset_Config1.PNG](images/TempOffset_Config1.PNG)
+![TempOffset_Config1.PNG](../images/TempOffset_Config1.PNG)
 
 Im Konfigurationsmenu des Raumes gibt es dann den Tab "Zusätzliche Temperatursensoren"
-![TempOffset_Config2.PNG](images/TempOffset_Config2.PNG)
+![TempOffset_Config2.PNG](../images/TempOffset_Config2.PNG)
 
 Hier kann entweder nach Sensoren gesucht werden. Alternativ kann der oder die Sensor(en) auch manuell eingetragen werden. 
