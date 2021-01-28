@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "news": {
+      "2.0.4": {
+        "en": "bug fix: warning for target temperature removed",
+        "de": "Fehlerbehebung: Warnung für Zieltemperatur entfernt",
+        "ru": "исправление ошибки: удалено предупреждение о целевой температуре",
+        "pt": "correção de bug: aviso para temperatura alvo removido",
+        "nl": "bugfix: waarschuwing voor doeltemperatuur verwijderd",
+        "fr": "correction de bogue: avertissement pour la température cible supprimé",
+        "it": "correzione bug: avviso per la temperatura target rimosso",
+        "es": "corrección de errores: advertencia para la temperatura objetivo eliminada",
+        "pl": "poprawka błędu: usunięto ostrzeżenie o temperaturze docelowej",
+        "zh-cn": "错误修复：目标温度警告已删除"
+      },
       "2.0.3": {
         "en": "bug fix: endless change of temperatures",
         "de": "Fehlerbehebung: endlose Temperaturänderung",
