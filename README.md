@@ -210,6 +210,9 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
 * (René) see issue #182: Temperatur Offset
 
+### 2.0.4 (2021-01-28)
+* (René) bug fix for issue #213: Warnung "!!! Statechange not handled"
+
 ### 2.0.3 (2021-01-24)
 * (René) bug fix for issue #211: endless change of temperatures
 
