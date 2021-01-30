@@ -716,8 +716,11 @@ async function HandleStateChange(id, state) {
                     //adapter.log.debug("### ack for " + id);
                     // ### ack for heatingcontrol.0.Rooms.Wohnzimmer.StatusLog
                     // ### ack for javascript.0.Target1
-                    await adapter.setForeignStateAsync(id, {val: state.val, ack: true });
+                    await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
                     //await adapter.setForeignStateAsync(id, {  ack: true });
+                }
+                else {
+                    adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
                 }
             }
             else {
@@ -753,8 +756,18 @@ async function HandleStateChangeGeneral(id, state) {
     try {
         const ids = id.split(".");
 
+        //heatingcontrol.0.vis.ProfileTypes.CopyProfile
+        //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.CopyPeriods
+        if (ids[2] === "vis" &&
+            (ids[4] === "CopyProfile" || ids[5] === "CopyPeriods")) {
+
+            adapter.log.error("copy from vis");
+            bRet = true;
+        }
+
+
         //heatingcontrol.0.vis.ChoosenRoom 
-        if (ids[2] === "vis"
+        else if (ids[2] === "vis"
             || ids[4] === "ActiveTimeSlot"
             || ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen

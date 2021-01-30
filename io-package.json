@@ -1,10 +1,22 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "news": {
-     "2.1.0": {
+      "2.2.0": {
 
+      },
+      "2.1.0": {
+        "en": "support of temperature offset and some bug fixes",
+        "de": "Unterstützung des Temperaturversatzes und einiger Fehlerkorrekturen",
+        "ru": "поддержка смещения температуры и некоторые исправления ошибок",
+        "pt": "suporte de compensação de temperatura e algumas correções de bugs",
+        "nl": "ondersteuning van temperatuurcompensatie en enkele bugfixes",
+        "fr": "prise en charge du décalage de température et quelques corrections de bugs",
+        "it": "supporto dell'offset di temperatura e alcune correzioni di bug",
+        "es": "soporte de compensación de temperatura y algunas correcciones de errores",
+        "pl": "wsparcie dla przesunięcia temperatury i kilka poprawek błędów",
+        "zh-cn": "支持温度补偿和一些错误修复"
       },
       "2.0.4": {
         "en": "bug fix: warning for target temperature removed",

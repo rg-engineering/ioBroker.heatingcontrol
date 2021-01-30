@@ -205,12 +205,14 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.1.0 (2021-xx-xx)
+### 2.2.0 (2021-02-xx)
+
+
+### 2.1.0 (2021-01-30)
 * (René) see issue #198: add name to profile as a datapoint, used to be shown in visualisation
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
 * (René) see issue #182: Temperatur Offset
 * (René) see issue #212: ActiveTimeSlot inkorrekt for vis
-
 
 ### 2.0.4 (2021-01-28)
 * (René) bug fix for issue #213: Warnung "!!! Statechange not handled"
