@@ -250,6 +250,7 @@
 
             var elementPageActors = document.getElementById("page-actors");
             var elementPageSensors = document.getElementById("page-sensors");
+            var elementPageAddTempSensors = document.getElementById("page-addTempSensors");
 
             var $useActors = $('#UseActors');
             if ($useActors.prop('checked')) {
@@ -303,6 +304,20 @@
                 $('.col-SensorCloseDelay').hide();
             }
 
+            var $UseAddTempSensors = $('#UseAddTempSensors');
+
+            if ($UseAddTempSensors.prop('checked')) {
+                console.log('show additional sensor settings');
+
+                elementPageAddTempSensors.classList.remove("hide");
+            }
+            else {
+                console.log('hide additional sensors settings');
+
+                elementPageAddTempSensors.classList.add("hide");
+            }
+
+
             var $useFixHeatingPeriod = $('#UseFixHeatingPeriod');
 
             if ($useFixHeatingPeriod.prop('checked')) {
@@ -344,6 +359,7 @@
             show_hide_column("table_thermostats", "thermostat_col_0", 0, false);
             show_hide_column("table_actors", "actor_col_0", 0, false);
             show_hide_column("table_sensors", "sensor_col_0", 0, false);
+            show_hide_column("table_addtempsensors", "addtempsensor_col_0", 0, false);
 
             //third col of rooms (=WindOwpen)
 
@@ -584,7 +600,55 @@
             });
         }
 
+        var timeout7;
+        function getAddTempSensors(onChange, instance, room) {
+            timeout6 = setTimeout(function () {
+                getAddTempSensors(onChange, instance, room);
+            }, 4000);
 
+            var gewerk = $("#Gewerk option:selected").text();
+
+            const data = {
+                room: room,
+                gewerk: gewerk
+            };
+
+            console.log('get add temp sensors for  ' + room + " with " + gewerk + " " + JSON.stringify(data));
+
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'listAddTempSensors', data, function (result) {
+                if (timeout7) {
+                    clearTimeout(timeout7);
+                    timeout7 = null;
+                }
+
+                console.log('got add temp sensors for  ' + room + " " + JSON.stringify(result));
+                if (result.list.length > 0) {
+
+                    var newAddTempSensors = table2values('addtempsensors');
+
+                    for (let i = 0; i < result.list.length; i++) {
+
+                        const device = {
+                            name: result.list[i].Name,
+                            OID_Current: result.list[i].OID,
+                            id: -1, //new
+                            isActive: true,
+                            room: result.room,
+                            type: 4
+
+                        }
+                        newAddTempSensors.push(device);
+                        console.log('newAddTempSensors  ' + JSON.stringify(newAddTempSensors));
+                    }
+                    values2table('addtempsensors', newAddTempSensors, OnChange, tableDevicesOnReady);
+                    onChange(true);
+                }
+                $('#checkResultAddTempSensors').html(result.status);
+
+            });
+        }
 
         var myOnChange = null;
         function OnChange() {
@@ -620,6 +684,7 @@
             var ThermostatList4Room = [];
             var ActorList4Room = [];
             var SensorList4Room = [];
+            var AddTempSensorList4Room = [];
 
             if (DeviceList != null) {
                 console.log('fill table for ' + room + " " + DeviceList.length);
@@ -637,16 +702,23 @@
                         if (DeviceList[i].type === 3) {
                             SensorList4Room.push(DeviceList[i]);
                         }
+                        if (DeviceList[i].type === 4) {
+                            AddTempSensorList4Room.push(DeviceList[i]);
+                        }
+
+
                     }
                 }
             }
             console.log('Thermostatlist ' + JSON.stringify(ThermostatList4Room));
             console.log('Actorlist ' + JSON.stringify(ActorList4Room));
             console.log('Sensorlist ' + JSON.stringify(SensorList4Room));
+            console.log('AddTempSensorlist ' + JSON.stringify(AddTempSensorList4Room));
 
             values2table('thermostats', ThermostatList4Room, OnChange, tableDevicesOnReady);
             values2table('actors', ActorList4Room, OnChange, tableDevicesOnReady);
             values2table('sensors', SensorList4Room, OnChange, tableDevicesOnReady);
+            values2table('addtempsensors', AddTempSensorList4Room, OnChange, tableDevicesOnReady);
 
             $editDialog.data('callback', callback);
             $editDialog.modal('open');
@@ -727,6 +799,7 @@
                 "twelveHour": false
             });
 
+            
 
             showHideSettings();
             M.updateTextFields();
@@ -895,16 +968,17 @@
 
                         console.log('closing for ' + room);
 
-
-
-
                         let thermostats = table2values('thermostats');
                         let actors = table2values('actors');
                         let sensors = table2values('sensors');
+                        let addtempsensors = table2values('addtempsensors');
+
+                        
 
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
                         console.log('Sensorlist ' + JSON.stringify(sensors));
+                        console.log('AddTempSensorlist ' + JSON.stringify(addtempsensors));
 
                         //now update DeviceList
                         if (thermostats != null) {
@@ -969,12 +1043,35 @@
                             }
                         }
 
+                        if (addtempsensors != null) {
+                            for (let i = 0; i < addtempsensors.length; i++) {
+                                //if exist, only update
+                                if (addtempsensors[i].id > 0) {
+                                    console.log("update add temp sensors " + JSON.stringify(addtempsensors[i]));
+                                    DeviceList[addtempsensors[i].id - 1].name = addtempsensors[i].name;
+                                    DeviceList[addtempsensors[i].id - 1].isActive = addtempsensors[i].isActive;
+                                    DeviceList[addtempsensors[i].id - 1].OID_Current = addtempsensors[i].OID_Current;
+
+                                }
+                                else {
+                                    //if not exist, add at the end of list
+                                    addtempsensors[i].id = DeviceList.length + 1;
+                                    addtempsensors[i].type = 4;
+                                    addtempsensors[i].room = room;
+                                    console.log("add add temp sensors " + JSON.stringify(addtempsensors[i]));
+                                    DeviceList.push(addtempsensors[i]);
+                                }
+                            }
+                        }
+                        
+
                         //find out if deleted
 
                         //create org list
                         var ThermostatList4Room = [];
                         var ActorList4Room = [];
                         var SensorList4Room = [];
+                        var AddTempSensorList4Room = [];
                         for (let i = 0; i < DeviceList.length; i++) {
 
                             if (DeviceList[i].room === room) {
@@ -986,6 +1083,9 @@
                                 }
                                 if (DeviceList[i].type === 3) {
                                     SensorList4Room.push(DeviceList[i]);
+                                }
+                                if (DeviceList[i].type === 4) {
+                                    AddTempSensorList4Room.push(DeviceList[i]);
                                 }
                             }
                         }
@@ -1037,6 +1137,26 @@
                             }
                         }
 
+                        if (AddTempSensorList4Room.length > addtempsensors.length) {
+                            let deletedAddTempSensors = AddTempSensorList4Room.length - addtempsensors.length;
+                            console.log("something deleted in add temp sensors " + deletedAddTempSensors);
+
+                            for (let s = 0; s < AddTempSensorList4Room.length; s++) {
+
+                                let id2find = findObjectIdByKey(addtempsensors, 'id', AddTempSensorList4Room[s].id);
+
+                                if (id2find == -1) { //not found
+                                    console.log("deleted " + JSON.stringify(AddTempSensorList4Room[s]));
+                                    let id2delete = findObjectIdByKey(DeviceList, 'id', AddTempSensorList4Room[s].id);
+                                    DeviceList.splice(id2delete, 1);
+                                }
+                            }
+                        }
+
+                        
+
+
+
                         //and finally rearrange id's
                         for (let i = 0; i < DeviceList.length; i++) {
                             //console.log("### " + i + " " + JSON.stringify(DeviceList[i]));
@@ -1085,6 +1205,22 @@
 
                 getSensors(myOnChange, _id, room);
             });
+
+            var $btn_check4newAddTempSensors = $('#btn_check4newAddTempSensors');
+            $btn_check4newAddTempSensors.click(function () {
+                console.log('check 4 new Add Temp Sensors');
+
+                var _id = 'heatingcontrol.' + instance;
+                let room = $('#dialogDeviceEditRoom').html();
+
+                console.log('my instance ' + _id + " in " + room);
+
+                getAddTempSensors(myOnChange, _id, room);
+            });
+
+
+            
+
 
             showHideSettings();
         }
@@ -1231,6 +1367,28 @@
                     });
                 });
             });
+
+            $('#addtempsensors .table-values-div .table-values .values-buttons[data-command="edit"]').on('click', function () {
+
+                let id = $(this).data('index');
+
+                console.log('edit add temp sensors clicked ID=' + id);
+
+                initSelectId(function (sid) {
+                    sid.selectId('show', $('#addtempsensors .values-input[data-name="name"][data-index="' + id + '"]').val(), function (newId) {
+                        if (newId) {
+                            $('#addtempsensors .values-input[data-name="name"][data-index="' + id + '"]').val(newId).trigger('change');
+                            socket.emit('getObject', newId, function (err, obj) {
+                                var name = getName(obj);
+                                var OID_Current = getOID(obj);
+                                $('#addtempsensors .values-input[data-name="name"][data-index="' + id + '"]').val(name).trigger('change');
+                                $('#addtempsensors .values-input[data-name="OID_Current"][data-index="' + id + '"]').val(OID_Current).trigger('change');
+                            });
+                        }
+                    });
+                });
+            });
+
 
             showHideSettings();
 
@@ -1484,6 +1642,23 @@
                     </li>
                     <li>
                         <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">AdditionalTemperatureSensorSettings</h6>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input type="checkbox" id="UseAddTempSensors" class="value" />
+                                    <label for="UseAddTempSensors" class="translate">UseAddTempSensors</label>
+                                </div>
+
+                                <div class="col s6 col-use-custom-path-descr">
+                                    <span class="translate">hint_UseAddTempSensors</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">
                             <i class="material-icons">expand_more</i><h6 class="translate">SensorSettings</h6>
                         </div>
                         <div class="collapsible-body">
@@ -1606,7 +1781,7 @@
                                     <label for="VisMaxProfilTemp" class="translate">VisMaxProfilTemp</label>
                                 </div>
 
-                                <div class="input-field col s6 col-VisStepWidthProfilTemp">
+                                <div class="input-field col s3 col-VisStepWidthProfilTemp">
                                     <select id="VisStepWidthProfilTemp" class="value">
                                         <option value="0.5" class="translate">0.5 °C</option>
                                         <option value="1" class="translate">1 °C</option>
@@ -1617,6 +1792,68 @@
 
                             </div>
 
+                            <div class="row">
+                                <div class="input-field col s3 col-VisMinDecRelTemp">
+                                    <input type="number" id="VisMinDecRelTemp" min="1" max="10" class="value" />
+                                    <label for="VisMinDecRelTemp" class="translate">VisMinDecRelTemp</label>
+                                </div>
+                                <div class="input-field col s3 col-VisMaxDecRelTemp">
+                                    <input type="number" id="VisMaxDecRelTemp" min="2" max="20" class="value" />
+                                    <label for="VisMaxProfilTemp" class="translate">VisMaxDecRelTemp</label>
+                                </div>
+
+                                <div class="input-field col s3 col-VisStepWidthDecRelTemp">
+                                    <select id="VisStepWidthDecRelTemp" class="value">
+                                        <option value="0.5" class="translate">0.5 °C</option>
+                                        <option value="1" class="translate">1 °C</option>
+                                        <option value="2" class="translate">2 °C</option>
+                                    </select>
+                                    <label for="VisStepWidthDecRelTemp" class="translate">VisStepWidthDecRelTemp</label>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s3 col-VisMinDecAbsTemp">
+                                    <input type="number" id="VisMinDecAbsTemp" min="3" max="20" class="value" />
+                                    <label for="VisMinDecAbsTemp" class="translate">VisMinDecAbsTemp</label>
+                                </div>
+                                <div class="input-field col s3 col-VisMaxDecAbsTemp">
+                                    <input type="number" id="VisMaxDecAbsTemp" min="5" max="30" class="value" />
+                                    <label for="VisMaxDecAbsTemp" class="translate">VisMaxDecAbsTemp</label>
+                                </div>
+
+                                <div class="input-field col s3 col-VisStepWidthDecAbsTemp">
+                                    <select id="VisStepWidthDecAbsTemp" class="value">
+                                        <option value="0.5" class="translate">0.5 °C</option>
+                                        <option value="1" class="translate">1 °C</option>
+                                        <option value="2" class="translate">2 °C</option>
+                                    </select>
+                                    <label for="VisStepWidthDecAbsTemp" class="translate">VisStepWidthDecAbsTemp</label>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s3 col-VisMinOverrideTemp">
+                                    <input type="number" id="VisMinOverrideTemp" min="3" max="25" class="value" />
+                                    <label for="VisMinOverrideTemp" class="translate">VisMinOverrideTemp</label>
+                                </div>
+                                <div class="input-field col s3 col-VisMaxOverrideTemp">
+                                    <input type="number" id="VisMaxOverrideTemp" min="5" max="35" class="value" />
+                                    <label for="VisMaxOverrideTemp" class="translate">VisMaxOverrideTemp</label>
+                                </div>
+
+                                <div class="input-field col s3 col-VisStepWidthOverrideTemp">
+                                    <select id="VisStepWidthOverrideTemp" class="value">
+                                        <option value="0.5" class="translate">0.5 °C</option>
+                                        <option value="1" class="translate">1 °C</option>
+                                        <option value="2" class="translate">2 °C</option>
+                                    </select>
+                                    <label for="VisStepWidthOverrideTemp" class="translate">VisStepWidthOverrideTemp</label>
+                                </div>
+
+                            </div>
 
                         </div>
                     </li>
@@ -1822,9 +2059,10 @@
                         </div>
                         <div class="col s12">
                             <ul class="tabs">
-                                <li id="page-thermostats" class="tab col s4"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
-                                <li id="page-actors" class="tab col s4"><a href="#tab-popup_actors" class="translate">actors</a></li>
-                                <li id="page-sensors" class="tab col s4"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
+                                <li id="page-thermostats" class="tab col s3"><a href="#tab-popup_thermostats" class="translate active">thermostats</a></li>
+                                <li id="page-actors" class="tab col s3"><a href="#tab-popup_actors" class="translate">actors</a></li>
+                                <li id="page-sensors" class="tab col s3"><a href="#tab-popup_sensors" class="translate">sensors</a></li>
+                                <li id="page-addTempSensors" class="tab col s3"><a href="#tab-popup_AddTempSensors" class="translate">AddTempSensors</a></li>
                             </ul>
                         </div>
                         <div id="tab-popup_thermostats" class="col s12 page">
@@ -1860,7 +2098,6 @@
                                                     <th id="thermostat_edit1" data-buttons="edit1" style="width: 100px; background: #64b5f6"></th>
                                                     <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
                                                     <th id="thermostat_edit2" data-buttons="edit2" style="width: 100px; background: #64b5f6"></th>
-
                                                     <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
                                                     <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
@@ -1939,6 +2176,45 @@
                                                     <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
                                                     <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <div id="tab-popup_AddTempSensors" class="col s12 page">
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">hint_AddTempSensors</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <a class="waves-effect waves-light btn" id="btn_check4newAddTempSensors"><span class="translate">Check4NewAddTempSensors</span></a>
+                                    <div id="checkResultAddTempSensors"></div>
+                                </div>
+                                <div class="input-field col s4">
+                                    <span class="translate">Check4NewAddTempSensors_hint</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12" id="addtempsensors">
+                                    <a class="btn-floating waves-effect waves-light blue table-button-add"><i class="material-icons">add</i></a>
+                                    <div class="table-values-div">
+                                        <table id="table_addtempsensors" class="table-values" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th id="addtempsensor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
+                                                    <th id="addtempsensor_col_1" data-name="name" style="background: #64b5f6" class="translate">sensor</th>
+                                                    <th id="addtempsensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
+                                                    <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
+                                                    <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                    <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
                                                 </tr>
                                             </thead>
                                         </table>

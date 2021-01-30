@@ -1,18 +1,18 @@
 # Basis-Installation
 
-## R‰ume
+## R√§ume
 
-### R‰ume importieren
+### R√§ume importieren
 
 
 ### Raum manuell anlegen
 
 
-## Ger‰te
+## Ger√§te
 
-### Ger‰te importieren
+### Ger√§te importieren
 
-### Ger‰te manuell anlegen
+### Ger√§te manuell anlegen
 
 ## Profil
 
@@ -35,7 +35,3 @@
 # Standard-Anwendungen
 
 ## Homematic- Thermostate
-
-
-
-

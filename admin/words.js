@@ -55,14 +55,38 @@ systemDictionary = {
         "en": "Number Of profiles", "de": "Anzahl der Profile", "ru": "Количество профилей", "pt": "Número de perfis", "nl": "Aantal profielen", "fr": "Nombre de profils", "it": "Numero di profili", "es": "Número De perfiles", "pl": "Ilość profili", "zh-cn": "数概况"
     },
     "OID": {
-        "en": "OID", "de": "OID", "ru": "OID", "pt": "OID", "nl": "OID", "fr": "OID", "it": "OID", "es": "OID", "pl": "ОИД", "zh-cn": "OID"
-    },
+        "en": "object-ID",
+        "de": "Objekt ID",
+        "ru": "объект-ID",
+        "pt": "object-ID",
+        "nl": "object-ID",
+        "fr": "ID d'objet",
+        "it": "ID oggetto",
+        "es": "ID de objeto",
+        "pl": "identyfikator obiektu",
+        "zh-cn": "对象ID"    },
     "OID current": {
-        "en": "OID current value", "de": "OID aktueller Wert", "ru": "Текущее значение OID", "pt": "Valor atual OID", "nl": "OID huidige waarde", "fr": "Valeur actuelle OID", "it": "Valore corrente OID", "es": "OID valor actual", "pl": "ОИД bieżącą wartość", "zh-cn": "OID目前的价值"
-    },
+        "en": "object-ID current temperature",
+        "de": "Objekt-ID aktuelle Temperatur",
+        "ru": "идентификатор объекта текущая температура",
+        "pt": "temperatura atual do ID do objeto",
+        "nl": "object-ID huidige temperatuur",
+        "fr": "température actuelle de l'objet-ID",
+        "it": "temperatura corrente dell'ID oggetto",
+        "es": "ID de objeto temperatura actual",
+        "pl": "bieżąca temperatura ID obiektu",
+        "zh-cn": "对象ID当前温度"    },
     "OID target": {
-        "en": "OID target value", "de": "OID Zielwert", "ru": "Целевое значение OID", "pt": "Valor alvo do OID", "nl": "OID-doelwaarde", "fr": "Valeur cible OID", "it": "Valore target OID", "es": "OID de valor de la meta", "pl": "ОИД wartość docelowa", "zh-cn": "OID目标值"
-    },
+        "en": "object-ID target temperature",
+        "de": "Objekt-ID Zieltemperatur",
+        "ru": "заданная температура объекта ID",
+        "pt": "temperatura alvo object-ID",
+        "nl": "object-ID doeltemperatuur",
+        "fr": "température cible ID objet",
+        "it": "temperatura target ID oggetto",
+        "es": "temperatura objetivo de ID de objeto",
+        "pl": "temperatura docelowa ID obiektu",
+        "zh-cn": "对象ID目标温度"    },
     "Path2FeiertagAdapter": {
         "en": "Path to Feiertag - Adapter or any other datapoint", "de": "Pfad zum Feiertag - Adapter oder einem anderen Datenpunkt", "ru": "Путь к Feiertag - Адаптер или любой другой пункт данных", "pt": "Caminho para Feiertag - Adaptador ou qualquer outro ponto de dados", "nl": "Pad naar Feiertag - Adapter of een ander datapunt", "fr": "Chemin vers Feiertag - Adaptateur ou tout autre point de données", "it": "Path to Feiertag - Adattatore o qualsiasi altro punto dati", "es": "Ruta de acceso a Feiertag - Adaptador o cualquier otro punto de datos", "pl": "Droga do Фейертага - adapter, lub dowolny inny punkt danych", "zh-cn": "路径Feiertag适配器或任何其他数据点"
     },
@@ -264,7 +288,17 @@ systemDictionary = {
         "en": "sensor", "de": "Sensor", "ru": "датчик", "pt": "sensor", "nl": "sensor", "fr": "capteur", "it": "sensore", "es": "sensor de", "pl": "czujnik", "zh-cn": "传感器"
     },
     "sensors": {
-        "en": "sensors", "de": "Sensoren", "ru": "датчиков", "pt": "sensores", "nl": "sensoren", "fr": "capteurs", "it": "sensori", "es": "los sensores", "pl": "czujniki", "zh - cn": "传感器" },
+        "en": "Window Sensors",
+        "de": "Fenstersensoren",
+        "ru": "Оконные датчики",
+        "pt": "Sensores de janela",
+        "nl": "Raamsensoren",
+        "fr": "Capteurs de fenêtre",
+        "it": "Sensori per finestre",
+        "es": "Sensores de ventana",
+        "pl": "Czujniki okienne",
+        "zh-cn": "车窗感应器"
+    },
     "thermostat": {
         "en": "thermostat", "de": "Thermostat", "ru": "термостат", "pt": "termostato", "nl": "thermostaat", "fr": "thermostat", "it": "termostato", "es": "termostato", "pl": "termostat", "zh-cn": "恒温器"
     },
@@ -389,16 +423,16 @@ systemDictionary = {
         "zh-cn": "温控器设置"
     },
     "SensorSettings": {
-        "en": "Sensor Settings",
-        "de": "Sensoreinstellungen",
-        "ru": "Настройки датчика",
-        "pt": "Configurações do sensor",
-        "nl": "Sensor instellingen",
-        "fr": "Paramètres du capteur",
-        "it": "Impostazioni del sensore",
-        "es": "Configuración del sensor",
-        "pl": "Ustawienia czujnika",
-        "zh-cn": "传感器设定"
+        "en": "Window Sensor Settings",
+        "de": "Fenstersensoreinstellungen",
+        "ru": "Настройки датчика окна",
+        "pt": "Configurações do sensor da janela",
+        "nl": "Venstersensorinstellingen",
+        "fr": "Paramètres du capteur de fenêtre",
+        "it": "Impostazioni sensore finestra",
+        "es": "Configuración del sensor de ventana",
+        "pl": "Ustawienia czujnika okien",
+        "zh-cn": "车窗感应器设定"
     },
     "ActorSettings": {
         "en": "Actuator Settings",
@@ -712,6 +746,114 @@ systemDictionary = {
         "pl": "szerokość kroku dla ustawień profilu temperatury",
         "zh-cn": "温度曲线设置的步长"
     },
+    "VisMinDecRelTemp": {
+        "en": "minimum temperature for relative increase / decrease settings",
+        "de": "Mindesttemperatur für relative Einstellungen zum Erhöhen / Verringern",
+        "ru": "минимальная температура для настройки относительного увеличения / уменьшения",
+        "pt": "temperatura mínima para configurações de aumento / diminuição relativa",
+        "nl": "minimumtemperatuur voor relatieve verhoging / verlagingsinstellingen",
+        "fr": "température minimale pour les réglages d'augmentation / diminution relative",
+        "it": "temperatura minima per impostazioni di incremento / decremento relativo",
+        "es": "temperatura mínima para ajustes relativos de aumento / disminución",
+        "pl": "minimalna temperatura dla ustawień względnego wzrostu / spadku",
+        "zh-cn": "相对增加/减少设置的最低温度"
+    },
+    "VisMaxDecRelTemp": {
+        "en": "maximum temperature for relative increase / decrease settings",
+        "de": "Maximale Temperatur für relative Einstellungen zum Erhöhen / Verringern",
+        "ru": "максимальная температура для относительного увеличения / уменьшения настроек",
+        "pt": "temperatura máxima para configurações de aumento / diminuição relativa",
+        "nl": "maximale temperatuur voor relatieve toename / afname instellingen",
+        "fr": "température maximale pour les réglages d'augmentation / diminution relative",
+        "it": "temperatura massima per le impostazioni di incremento / decremento relativo",
+        "es": "temperatura máxima para ajustes relativos de aumento / disminución",
+        "pl": "maksymalna temperatura dla względnych ustawień zwiększania / zmniejszania",
+        "zh-cn": "相对增加/减少设置的最高温度"
+    },
+    "VisStepWidthDecRelTemp": {
+        "en": "step width for temperature relative increase / descrease settings",
+        "de": "Schrittweite für die Einstellungen für die relative Temperaturerhöhung / -abnahme",
+        "ru": "ширина шага для настроек относительного увеличения / уменьшения температуры",
+        "pt": "largura do passo para configurações de aumento / diminuição relativa de temperatura",
+        "nl": "stapbreedte voor temperatuur relatieve toename / afname instellingen",
+        "fr": "largeur de pas pour les réglages d'augmentation / diminution relative de la température",
+        "it": "larghezza del gradino per le impostazioni di aumento / diminuzione della temperatura",
+        "es": "ancho de paso para ajustes de aumento / disminución relativa de temperatura",
+        "pl": "szerokość kroku dla ustawień względnego wzrostu / spadku temperatury",
+        "zh-cn": "温度相对增加/减少设置的步长"
+    },
+    "VisMinDecAbsTemp": {
+        "en": "minimum temperature for absolute increase / decrease settings",
+        "de": "Mindesttemperatur für absolute Einstellungen zum Erhöhen / Verringern",
+        "ru": "минимальная температура для настройки абсолютного увеличения / уменьшения",
+        "pt": "temperatura mínima para configurações de aumento / diminuição absolutos",
+        "nl": "minimumtemperatuur voor absolute verhoging / verlagingsinstellingen",
+        "fr": "température minimale pour les réglages d'augmentation / diminution absolue",
+        "it": "temperatura minima per impostazioni di aumento / diminuzione assolute",
+        "es": "temperatura mínima para ajustes absolutos de aumento / disminución",
+        "pl": "minimalna temperatura dla bezwzględnych ustawień wzrostu / obniżenia",
+        "zh-cn": "绝对增加/减少设置的最低温度"
+    },
+    "VisMaxDecAbsTemp": {
+        "en": "maximum temperature for absolute increase / decrease settings",
+        "de": "Maximale Temperatur für absolute Einstellungen zum Erhöhen / Verringern",
+        "ru": "максимальная температура для настройки абсолютного увеличения / уменьшения",
+        "pt": "temperatura máxima para configurações de aumento / diminuição absolutos",
+        "nl": "maximale temperatuur voor absolute verhoging / verlagingsinstellingen",
+        "fr": "température maximale pour les réglages d'augmentation / diminution absolue",
+        "it": "temperatura massima per impostazioni assolute di aumento / diminuzione",
+        "es": "temperatura máxima para ajustes absolutos de aumento / disminución",
+        "pl": "maksymalna temperatura dla bezwzględnych ustawień zwiększania / zmniejszania",
+        "zh-cn": "绝对增加/减少设置的最高温度"
+    },
+    "VisStepWidthDecAbsTemp": {
+        "en": "step width for temperature absolute increase / descrease settings",
+        "de": "Schrittweite für die absolute Temperaturerhöhung / -abnahme",
+        "ru": "ширина шага для настроек абсолютного повышения / понижения температуры",
+        "pt": "largura do passo para configurações de aumento / redução absoluto de temperatura",
+        "nl": "stapbreedte voor temperatuur absolute verhoging / verlaging instellingen",
+        "fr": "largeur de pas pour les réglages d'augmentation / diminution absolue de température",
+        "it": "larghezza del gradino per le impostazioni di aumento / diminuzione assoluti della temperatura",
+        "es": "ancho de paso para ajustes de aumento / disminución absolutos de temperatura",
+        "pl": "szerokość kroku dla ustawień bezwzględnego wzrostu / spadku temperatury",
+        "zh-cn": "温度绝对增加/减少设置的步长"
+    },
+    "VisMinOverrideTemp": {
+        "en": "minimum temperature for override",
+        "de": "Mindesttemperatur für Override",
+        "ru": "минимальная температура для блокировки",
+        "pt": "temperatura mínima para substituição",
+        "nl": "minimum temperatuur voor override",
+        "fr": "température minimale pour la dérogation",
+        "it": "temperatura minima per override",
+        "es": "temperatura mínima para anular",
+        "pl": "minimalna temperatura do nadpisania",
+        "zh-cn": "最低控制温度"
+    },
+    "VisMaxOverrideTemp": {
+        "en": "maximum temperature for override",
+        "de": "Maximale Temperatur für Override",
+        "ru": "максимальная температура для блокировки",
+        "pt": "temperatura máxima para substituição",
+        "nl": "maximale temperatuur voor override",
+        "fr": "température maximale pour la dérogation",
+        "it": "temperatura massima per override",
+        "es": "temperatura máxima para anular",
+        "pl": "maksymalna temperatura do nadpisania",
+        "zh-cn": "最高温度"
+    },
+    "VisStepWidthOverrideTemp": {
+        "en": "step width for temperature override settings",
+        "de": "Schrittweite für Einstellungen des Override",
+        "ru": "ширина шага для настроек коррекции температуры",
+        "pt": "largura da etapa para configurações de substituição de temperatura",
+        "nl": "stapbreedte voor instellingen voor temperatuuroverschrijving",
+        "fr": "largeur de pas pour les réglages de remplacement de température",
+        "it": "larghezza del gradino per le impostazioni di override della temperatura",
+        "es": "ancho de paso para ajustes de anulación de temperatura",
+        "pl": "szerokość kroku dla ustawień nadpisania temperatury",
+        "zh-cn": "温度超驰设置的步长"
+    },
     "ExtendOverride": {
         "en": "extend override when temperature is changed",
         "de": "Override verlängern, wenn die Temperatur geändert wird",
@@ -735,6 +877,90 @@ systemDictionary = {
         "es": "El termostato maneja \"La ventana está abierta\"",
         "pl": "Termostat obsługuje komunikat „Okno jest otwarte”",
         "zh-cn": "温控器处理“窗口已打开”"
+    },
+    "AdditionalTemperatureSensorSettings": {
+        "en": "Additional Temperature Sensor Settings",
+        "de": "Zusätzliche Temperatursensoreinstellungen",
+        "ru": "Дополнительные настройки датчика температуры",
+        "pt": "Configurações adicionais do sensor de temperatura",
+        "nl": "Aanvullende temperatuursensorinstellingen",
+        "fr": "Paramètres supplémentaires du capteur de température",
+        "it": "Impostazioni aggiuntive del sensore di temperatura",
+        "es": "Configuración adicional del sensor de temperatura",
+        "pl": "Dodatkowe ustawienia czujnika temperatury",
+        "zh-cn": "其他温度传感器设置"
+    },
+    "UseAddTempSensors": {
+        "en": "additional Temperature Sensors used",
+        "de": "Zusätzliche Temperatursensoren werden verwendet",
+        "ru": "используются дополнительные датчики температуры",
+        "pt": "Sensores de temperatura adicionais são usados",
+        "nl": "Er worden extra temperatuursensoren gebruikt",
+        "fr": "des capteurs de température supplémentaires sont utilisés",
+        "it": "vengono utilizzati sensori di temperatura aggiuntivi",
+        "es": "se utilizan sensores de temperatura adicionales",
+        "pl": "stosowane są dodatkowe czujniki temperatury",
+        "zh-cn": "使用了附加的温度传感器"
+    },
+    "hint_UseAddTempSensors": {
+        "en": "Additional temperature sensors are used to correct the sensors built into the thermostat. The difference between the built-in sensor and the additional sensor is determined and the target temperature is corrected. Attention: The target temperature is displayed differently than it e.g. was entered in the profile!",
+        "de": "Zusätzliche Temperatursensoren werden verwendet, um die im Thermostat eingebauten Sensoren zu korrigieren. Die Differenz zwischen dem eingebauten Sensor und dem zusätzlichen Sensor wird ermittelt und die Zieltemperatur korrigiert. Achtung: Die Zieltemperatur wird anders angezeigt als sie z.Bspim Profil eingetragen wurde!",
+        "ru": "Дополнительные датчики температуры используются для корректировки датчиков, встроенных в термостат. Определяется разница между встроенным датчиком и дополнительным датчиком и корректируется заданная температура. Внимание: целевая температура отображается иначе, чем, например, был введен в профиль!",
+        "pt": "Sensores de temperatura adicionais são usados para corrigir os sensores embutidos no termostato. A diferença entre o sensor embutido e o sensor adicional é determinada e a temperatura alvo é corrigida. Atenção: A temperatura alvo é exibida de forma diferente, por exemplo, foi inserido no perfil!",
+        "nl": "Extra temperatuursensoren worden gebruikt om de sensoren die in de thermostaat zijn ingebouwd te corrigeren. Het verschil tussen de ingebouwde sensor en de extra sensor wordt bepaald en de doeltemperatuur wordt gecorrigeerd. Let op: de gewenste temperatuur wordt anders weergegeven dan bijv. is ingevoerd in het profiel!",
+        "fr": "Des capteurs de température supplémentaires sont utilisés pour corriger les capteurs intégrés au thermostat. La différence entre le capteur intégré et le capteur supplémentaire est déterminée et la température cible est corrigée. Attention: la température cible est affichée différemment d'elle, par ex. a été inscrit dans le profil!",
+        "it": "Sensori di temperatura aggiuntivi vengono utilizzati per correggere i sensori integrati nel termostato. La differenza tra il sensore integrato e il sensore aggiuntivo viene determinata e la temperatura target viene corretta. Attenzione: la temperatura target viene visualizzata in modo diverso rispetto ad es. è stato inserito nel profilo!",
+        "es": "Se utilizan sensores de temperatura adicionales para corregir los sensores integrados en el termostato. Se determina la diferencia entre el sensor incorporado y el sensor adicional y se corrige la temperatura objetivo. Atención: La temperatura objetivo se muestra de forma diferente a como p. Ej. se ingresó en el perfil!",
+        "pl": "Dodatkowe czujniki temperatury służą do korekcji czujników wbudowanych w termostat. Wyznaczana jest różnica między czujnikiem wbudowanym a czujnikiem dodatkowym i korygowana jest temperatura docelowa. Uwaga: temperatura docelowa jest wyświetlana inaczej niż np. został wpisany do profilu!",
+        "zh-cn": "附加的温度传感器用于校正内置在恒温器中的传感器。确定内置传感器和附加传感器之间的差异，并校正目标温度。注意：目标温度的显示方式与目标温度不同，例如已在个人资料中输入！"
+    },
+    "AddTempSensors": {
+        "en": "additional Temp-Sensors",
+        "de": "zusätzliche Temperatursensoren",
+        "ru": "дополнительные датчики температуры",
+        "pt": "Sensores de temperatura adicionais",
+        "nl": "extra temperatuursensoren",
+        "fr": "Capteurs de température supplémentaires",
+        "it": "sensori di temperatura aggiuntivi",
+        "es": "Sensores de temperatura adicionales",
+        "pl": "dodatkowe czujniki temperatury",
+        "zh-cn": "额外的温度传感器"
+    },
+    "hint_AddTempSensors":{
+        "en": "Please configure here your additional temperature sensors for that room. The list could be empty if you do nat have any additional sensors. ",
+        "de": "Bitte konfigurieren Sie hier Ihre zusätzlichen Temperatursensoren für diesen Raum. Die Liste kann leer sein, wenn Sie keine zusätzlichen Sensoren haben.",
+        "ru": "Пожалуйста, настройте здесь дополнительные датчики температуры для этой комнаты. Список может быть пустым, если у вас есть дополнительные датчики.",
+        "pt": "Configure aqui seus sensores de temperatura adicionais para essa sala. A lista pode estar vazia se você não tiver sensores adicionais.",
+        "nl": "Configureer hier uw extra temperatuursensoren voor die kamer. De lijst kan leeg zijn als je geen extra sensoren hebt.",
+        "fr": "Veuillez configurer ici vos capteurs de température supplémentaires pour cette pièce. La liste pourrait être vide si vous avez des capteurs supplémentaires.",
+        "it": "Configura qui i tuoi sensori di temperatura aggiuntivi per quella stanza. L'elenco potrebbe essere vuoto se non si dispone di sensori aggiuntivi.",
+        "es": "Configure aquí sus sensores de temperatura adicionales para esa habitación. La lista podría estar vacía si no tiene sensores adicionales.",
+        "pl": "Skonfiguruj tutaj dodatkowe czujniki temperatury dla tego pomieszczenia. Lista może być pusta, jeśli nie masz żadnych dodatkowych czujników.",
+        "zh-cn": "请在此处为该房间配置其他温度传感器。如果您没有任何其他传感器，则该列表可能为空。"
+    },
+    "Check4NewAddTempSensors": {
+        "en": "check for new sensors",
+        "de": "nach neuen Sensoren suchen",
+        "ru": "проверьте наличие новых датчиков",
+        "pt": "verifique se há novos sensores",
+        "nl": "controleer op nieuwe sensoren",
+        "fr": "rechercher de nouveaux capteurs",
+        "it": "verificare la presenza di nuovi sensori",
+        "es": "comprobar si hay nuevos sensores",
+        "pl": "sprawdź nowe czujniki",
+        "zh-cn": "检查新的传感器"
+    },
+    "Check4NewAddTempSensors_hint": {
+        "en": "Known sensors are searched for. The room and the function are used. If the automatic detection does not find the sensors, they can also be added manually.",
+        "de": "Es wird nach bekannten Sensoren gesucht. Der Raum und die Funktion werden genutzt. Wenn die automatische Erkennung die Sensoren nicht findet, können sie auch manuell hinzugefügt werden.",
+        "ru": "Ищутся известные датчики. Используется комната и функция. Если автоматическое обнаружение не обнаруживает датчики, их также можно добавить вручную.",
+        "pt": "Sensores conhecidos são pesquisados. O quarto e a função são usados. Se a detecção automática não encontrar os sensores, eles também podem ser adicionados manualmente.",
+        "nl": "Er wordt gezocht naar bekende sensoren. De kamer en de functie worden gebruikt. Als de automatische detectie de sensoren niet vindt, kunnen ze ook handmatig worden toegevoegd.",
+        "fr": "Les capteurs connus sont recherchés. La pièce et la fonction sont utilisées. Si la détection automatique ne trouve pas les capteurs, ils peuvent également être ajoutés manuellement.",
+        "it": "Vengono cercati sensori noti. La stanza e la funzione vengono utilizzate. Se il rilevamento automatico non trova i sensori, è possibile aggiungerli anche manualmente.",
+        "es": "Se buscan sensores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los sensores, también se pueden agregar manualmente.",
+        "pl": "Wyszukiwanie znanych czujników. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie czujników, można je również dodać ręcznie.",
+        "zh-cn": "搜索已知的传感器。使用房间和功能。如果自动检测未找到传感器，则也可以手动添加它们。"
     }
 
 
