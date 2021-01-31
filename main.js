@@ -757,13 +757,49 @@ async function HandleStateChangeGeneral(id, state) {
         const ids = id.split(".");
 
         //heatingcontrol.0.vis.ProfileTypes.CopyProfile
+        
+        if (ids[2] === "vis" && ids[4] === "CopyProfile" ) {
+
+            const currentProfile = await GetCurrentProfile();
+            adapter.log.debug("copy profile for vis cur. Profile " + currentProfile);
+
+            await CopyProfileAll(currentProfile);
+
+            //vis update 
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
+            bRet = true;
+        }
+        if (ids[2] === "vis" && ids[4] === "CopyProfileRoom") {
+
+            const currentRoom = await GetCurrentRoom();
+            const currentProfile = await GetCurrentProfile();
+            adapter.log.debug("copy profile for vis " + currentRoom + " cur. Profile " + currentProfile);
+
+            await CopyProfile(currentRoom, currentProfile);
+
+            //vis update 
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
+            bRet = true;
+        }
         //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.CopyPeriods
-        if (ids[2] === "vis" &&
-            (ids[4] === "CopyProfile" || ids[5] === "CopyPeriods")) {
+        else if (ids[2] === "vis" &&  ids[5] === "CopyPeriods") {
+            const currentProfile = await GetCurrentProfile();
+            const currentRoom = await GetCurrentRoom();
+            adapter.log.debug("copy periods for vis " + currentRoom + " cur. Profile " + currentProfile);
+            await CopyPeriods(currentRoom, ids[4], currentProfile);
+            //vis update xxx
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
 
             adapter.log.error("copy from vis");
             bRet = true;
         }
+
 
 
         //heatingcontrol.0.vis.ChoosenRoom 
@@ -886,6 +922,24 @@ async function HandleStateChangeGeneral(id, state) {
     }
     return bRet;
 }
+
+async function GetCurrentRoom() {
+
+    let sRet = "undefined";
+
+    const temp = await adapter.getStateAsync("vis.ChoosenRoom");
+
+    if (temp != null && typeof temp != undefined) {
+        sRet = temp.val;
+    }
+    else {
+        adapter.log.error("could not read vis.ChoosenRoom " + JSON.stringify(temp));
+    }
+
+    return sRet;
+
+}
+
 
 async function HandleStateChangeExternal(id, state) {
     let bRet = false;
