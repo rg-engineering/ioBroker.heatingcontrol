@@ -33,6 +33,7 @@ const CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
 const CopyProfileAll = require("./lib/datapoints").CopyProfileAll;
 const CopyProfile = require("./lib/datapoints").CopyProfile;
 const CopyPeriods = require("./lib/datapoints").CopyPeriods;
+const DeleteUnusedDP = require("./lib/datapoints").DeleteUnusedDP;
 
 const CronStop = require("./lib/cronjobs").CronStop;
 
@@ -1111,14 +1112,6 @@ async function checkHeatingPeriod() {
 
 
 
-//*******************************************************************
-//
-async function deleteUnusedDP(obj) {
-
-    const result = "not implemented yet";
-
-    adapter.sendTo(obj.from, obj.command, result, obj.callback);
-}
 
 
 
@@ -1580,7 +1573,12 @@ async function LoadProfile(obj) {
     adapter.sendTo(obj.from, obj.command, retText, obj.callback);
 }
     
+async function deleteUnusedDP(obj) {
 
+    const result = await DeleteUnusedDP();
+
+    adapter.sendTo(obj.from, obj.command, result, obj.callback);
+}
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {
