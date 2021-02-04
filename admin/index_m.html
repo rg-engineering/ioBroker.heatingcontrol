@@ -132,9 +132,39 @@
 
         function DeleteUnusedConfig() {
 
+            let deleted = 0;
 
+            const RoomList = table2values('rooms');
 
-            $('#result_deleteunusedConfig').html("not implemented yet");
+            for (let d = 0; d < DeviceList.length; d++) {
+
+                const room = DeviceList[d].room;
+
+                let bFound = false;
+                for (r = 0; r < RoomList.length; r++) {
+                    if (room == RoomList[r].name) {
+                        bFound = true;
+                    }
+                }
+                if (!bFound) {
+                    console.log('delete device ' + DeviceList[d].name);
+                    deleted++;
+
+                    DeviceList.splice(d, 1);
+                }
+
+            } 
+
+            //and finally rearrange id's
+            for (let i = 0; i < DeviceList.length; i++) {
+                //console.log("### " + i + " " + JSON.stringify(DeviceList[i]));
+                DeviceList[i].id = i + 1;
+                //console.log("+++ " + i + " " + JSON.stringify(DeviceList[i]));
+            }
+
+            console.log("new device list " + JSON.stringify(DeviceList));
+
+            $('#result_deleteunusedConfig').html(deleted + " unused device deleted");
         }
 
         //==========================================================================
@@ -1218,7 +1248,7 @@
             });
 
 
-            
+           
 
 
             showHideSettings();
