@@ -880,6 +880,11 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
         }
+        //heatingcontrol.0.Rooms.Wohnzimmer.isActive 
+        else if (ids[4] == "isActive") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
         //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
         else if (ids[2] == "Profiles") {
             bRet = true;
