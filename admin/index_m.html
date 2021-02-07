@@ -730,7 +730,22 @@
                             ActorList4Room.push(DeviceList[i]);
                         }
                         if (DeviceList[i].type === 3) {
-                            SensorList4Room.push(DeviceList[i]);
+
+                            const sensor = DeviceList[i];
+                            console.log(JSON.stringify(sensor));
+                            //just make it compatibel
+                            if (typeof sensor.DataType == undefined || sensor.DataType == null) {
+
+                                console.log("change sensor to boolean");
+
+                                sensor.DataType = "boolean";
+                                sensor.valueOpen = true;
+                                sensor.valueClosed = false;
+
+                                console.log(JSON.stringify(sensor));
+                            }
+
+                            SensorList4Room.push(sensor);
                         }
                         if (DeviceList[i].type === 4) {
                             AddTempSensorList4Room.push(DeviceList[i]);
@@ -1060,12 +1075,67 @@
                                     DeviceList[sensors[i].id - 1].isActive = sensors[i].isActive;
                                     DeviceList[sensors[i].id - 1].OID_Current = sensors[i].OID_Current;
 
+                                    if (sensors[i].DataType == "boolean") {
+                                        DeviceList[sensors[i].id - 1].DataType = "boolean";
+
+                                        if (sensors[i].valueClosed.length > 3) {
+                                            DeviceList[sensors[i].id - 1].valueClosed = (sensors[i].valueClosed.toLowerCase() == 'true');
+                                        }
+                                        else {
+                                            DeviceList[sensors[i].id - 1].valueClosed = false;
+                                        }
+                                        if (sensors[i].valueOpen.length > 3) {
+                                            DeviceList[sensors[i].id - 1].valueOpen = (sensors[i].valueOpen.toLowerCase() == 'true');
+                                        }
+                                        else {
+                                            DeviceList[sensors[i].id - 1].valueOpen = true;
+                                        }
+                                    }
+                                    else if (sensors[i].DataType == "number") {
+                                        DeviceList[sensors[i].id - 1].DataType = "number";
+
+                                        DeviceList[sensors[i].id - 1].valueClosed = parseInt(sensors[i].valueClosed);
+                                        DeviceList[sensors[i].id - 1].valueOpen = parseInt(sensors[i].valueOpen);
+                                    }
+                                    else if (sensors[i].DataType == "string") {
+                                        DeviceList[sensors[i].id - 1].DataType = "string";
+                                        DeviceList[sensors[i].id - 1].valueClosed = sensors[i].valueClosed;
+                                        DeviceList[sensors[i].id - 1].valueOpen = sensors[i].valueOpen;
+                                    }
+
+                                    console.log("update sensors " + JSON.stringify(DeviceList[sensors[i].id - 1]));
+
                                 }
                                 else {
                                     //if not exist, add at the end of list
                                     sensors[i].id = DeviceList.length + 1;
                                     sensors[i].type = 3;
                                     sensors[i].room = room;
+
+                                    if (sensors[i].DataType == "boolean") {
+                                        if (sensors[i].valueClosed.length > 3) {
+                                            sensors[i].valueClosed = (sensors[i].valueClosed.toLowerCase() == 'true');
+                                        }
+                                        else {
+                                            sensors[i].valueClosed = false;
+                                        }
+                                        if (sensors[i].valueOpen.length > 3) {
+                                            sensors[i].valueOpen = (sensors[i].valueOpen.toLowerCase() == 'true');
+                                        }
+                                        else {
+                                            sensors[i].valueOpen = true;
+                                        }
+                                    }
+                                    else if (sensors[i].DataType == "number") {
+                                        sensors[i].valueClosed = parseInt(sensors[i].valueClosed);
+                                        sensors[i].valueOpen = parseInt(sensors[i].valueOpen);
+                                    }
+                                    else if (sensors[i].DataType == "string") {
+                                        sensors[i].valueClosed = sensors[i].valueClosed;
+                                        sensors[i].valueOpen = sensors[i].valueOpen;
+                                    }
+
+
                                     console.log("add sensors " + JSON.stringify(sensors[i]));
                                     DeviceList.push(sensors[i]);
                                 }
@@ -2203,6 +2273,9 @@
                                                     <th id="sensor_col_2" data-name="OID_Current" style="background: #64b5f6" class="translate">OID</th>
                                                     <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
                                                     <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                                    <th data-name="DataType" data-options="boolean;number;string" data-type="select" style="background: #64b5f6" class="translate">DataType</th>
+                                                    <th data-name="valueOpen" data-type="text" style="background: #64b5f6" class="translate">valueOpen</th>
+                                                    <th data-name="valueClosed" data-type="text" style="background: #64b5f6" class="translate">ValueClosed</th>
                                                     <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
                                                 </tr>
