@@ -966,7 +966,7 @@ async function HandleStateChangeDevices(id, state) {
     let bRet = false;
     //adapter.log.debug("HandleStateChangeDevices " + id);
     try {
-        bRet = CheckStateChangeDevice(id, state);
+        bRet = await CheckStateChangeDevice(id, state);
     }
     catch (e) {
         adapter.log.error("exception in HandleStateChangeDevices [" + e + "]");
