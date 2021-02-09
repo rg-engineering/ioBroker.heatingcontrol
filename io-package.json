@@ -29,9 +29,6 @@
         "es": "soporte de compensación de temperatura",
         "pl": "wsparcie przesunięcia temperatury",
         "zh-cn": "支持温度补偿"
-        "es": "soporte de compensación de temperatura y algunas correcciones de errores",
-        "pl": "wsparcie dla przesunięcia temperatury i kilka poprawek błędów",
-        "zh-cn": "支持温度补偿和一些错误修复"
       },
       "2.0.4": {
         "en": "bug fix: warning for target temperature removed",
