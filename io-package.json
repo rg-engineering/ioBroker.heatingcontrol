@@ -1,19 +1,34 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.2.0",
+    "version": "2.1.1",
     "news": {
-      "2.2.0": {
+     "2.2.0": {
 
       },
+      "2.1.1": {
+        "en": "bug fix for temperature offset",
+        "de": "Fehlerbehebung für Temperaturversatz",
+        "ru": "исправлена ошибка смещения температуры",
+        "pt": "correção de bug para compensação de temperatura",
+        "nl": "bugfix voor temperatuurcompensatie",
+        "fr": "correction de bogue pour le décalage de température",
+        "it": "correzione di bug per offset di temperatura",
+        "es": "corrección de errores para la compensación de temperatura",
+        "pl": "poprawka błędu dla przesunięcia temperatury",
+        "zh-cn": "错误修正的温度偏移"
+      },
       "2.1.0": {
-        "en": "support of temperature offset and some bug fixes",
-        "de": "Unterstützung des Temperaturversatzes und einiger Fehlerkorrekturen",
-        "ru": "поддержка смещения температуры и некоторые исправления ошибок",
-        "pt": "suporte de compensação de temperatura e algumas correções de bugs",
-        "nl": "ondersteuning van temperatuurcompensatie en enkele bugfixes",
-        "fr": "prise en charge du décalage de température et quelques corrections de bugs",
-        "it": "supporto dell'offset di temperatura e alcune correzioni di bug",
+        "en": "support of temperature offset",
+        "de": "Unterstützung des Temperaturversatzes",
+        "ru": "поддержка температурного смещения",
+        "pt": "suporte de compensação de temperatura",
+        "nl": "ondersteuning van temperatuurcompensatie",
+        "fr": "prise en charge du décalage de température",
+        "it": "supporto dell'offset di temperatura",
+        "es": "soporte de compensación de temperatura",
+        "pl": "wsparcie przesunięcia temperatury",
+        "zh-cn": "支持温度补偿"
         "es": "soporte de compensación de temperatura y algunas correcciones de errores",
         "pl": "wsparcie dla przesunięcia temperatury i kilka poprawek błędów",
         "zh-cn": "支持温度补偿和一些错误修复"
