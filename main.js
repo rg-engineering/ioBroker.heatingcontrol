@@ -98,8 +98,11 @@ function startAdapter(options) {
         //},
         //#######################################
         // is called if a subscribed state changes
-        stateChange: function (id, state) {
-            HandleStateChange(id, state);
+        //stateChange: function (id, state) {
+        //HandleStateChange(id, state);
+        //},
+        stateChange: async (id, state) => {
+            await HandleStateChange(id, state);
         },
         //#######################################
         //
@@ -686,6 +689,8 @@ async function ListFunctions(obj) {
     adapter.sendTo(obj.from, obj.command, enumFunctions, obj.callback);
 }
 
+let lastIdAcked = "";
+
 async function HandleStateChange(id, state) {
     try {
 
@@ -696,7 +701,7 @@ async function HandleStateChange(id, state) {
 
             if (state.ack !== true) {
                 //handle only, if not ack'ed
-                adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
+                adapter.log.debug("### handle state change !ack " + id + " " + JSON.stringify(state));
 
                 //my own datapoints?
                 if (ids[0] == "heatingcontrol") {
@@ -714,11 +719,15 @@ async function HandleStateChange(id, state) {
                 }
 
                 if (handled) {
-                    //adapter.log.debug("### ack for " + id);
+                    //adapter.log.info("### ack for " + id);
+                    lastIdAcked = id;
                     // ### ack for heatingcontrol.0.Rooms.Wohnzimmer.StatusLog
                     // ### ack for javascript.0.Target1
                     await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
                     //await adapter.setForeignStateAsync(id, {  ack: true });
+
+                    
+
                 }
                 else {
                     adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
@@ -726,22 +735,32 @@ async function HandleStateChange(id, state) {
             }
             else {
 
-                if (ids[0] == "heatingcontrol") {
-                    handled = true; //my own are handled only with ack = false
-                }
+                //adapter.log.info("### last id acked " + lastIdAcked);
 
-                //external datapoints (e.g. present)
-                if (!handled) {
-                    handled = await HandleStateChangeExternal(id, state);
-                }
+                if (lastIdAcked != id) {
 
-                //devices, hm-rpc sends with ack=true
-                if (!handled) {
-                    handled = await HandleStateChangeDevices(id, state);
+                    lastIdAcked = "";
+
+                    adapter.log.debug("### handle state change acked " + id + " " + JSON.stringify(state));
+
+                    if (ids[0] == "heatingcontrol") {
+                        handled = true; //my own are handled only with ack = false
+                    }
+
+                    //external datapoints (e.g. present)
+                    if (!handled) {
+                        handled = await HandleStateChangeExternal(id, state);
+                    }
+
+                    //devices, hm-rpc sends with ack=true
+                    if (!handled) {
+                        handled = await HandleStateChangeDevices(id, state);
+                    }
+
+                    if (!handled) {
+                        adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
+                    }
                 }
-            }
-            if (!handled) {
-                adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
             }
         }
     }
@@ -1037,7 +1056,7 @@ async function HandleStateChangeExternal(id, state) {
 
 async function HandleStateChangeDevices(id, state) {
     let bRet = false;
-    //adapter.log.debug("HandleStateChangeDevices " + id);
+    adapter.log.debug("HandleStateChangeDevices " + id);
     try {
         bRet = await CheckStateChangeDevice(id, state);
     }
