@@ -33,6 +33,7 @@ const CheckConfiguration = require("./lib/datapoints").CheckConfiguration;
 const CopyProfileAll = require("./lib/datapoints").CopyProfileAll;
 const CopyProfile = require("./lib/datapoints").CopyProfile;
 const CopyPeriods = require("./lib/datapoints").CopyPeriods;
+const DeleteUnusedDP = require("./lib/datapoints").DeleteUnusedDP;
 
 const CronStop = require("./lib/cronjobs").CronStop;
 
@@ -97,8 +98,11 @@ function startAdapter(options) {
         //},
         //#######################################
         // is called if a subscribed state changes
-        stateChange: function (id, state) {
-            HandleStateChange(id, state);
+        //stateChange: function (id, state) {
+        //HandleStateChange(id, state);
+        //},
+        stateChange: async (id, state) => {
+            await HandleStateChange(id, state);
         },
         //#######################################
         //
@@ -685,6 +689,8 @@ async function ListFunctions(obj) {
     adapter.sendTo(obj.from, obj.command, enumFunctions, obj.callback);
 }
 
+let lastIdAcked = "";
+
 async function HandleStateChange(id, state) {
     try {
 
@@ -695,7 +701,7 @@ async function HandleStateChange(id, state) {
 
             if (state.ack !== true) {
                 //handle only, if not ack'ed
-                adapter.log.debug("### handle state change " + id + " " + JSON.stringify(state));
+                adapter.log.debug("### handle state change !ack " + id + " " + JSON.stringify(state));
 
                 //my own datapoints?
                 if (ids[0] == "heatingcontrol") {
@@ -713,31 +719,48 @@ async function HandleStateChange(id, state) {
                 }
 
                 if (handled) {
-                    //adapter.log.debug("### ack for " + id);
+                    //adapter.log.info("### ack for " + id);
+                    lastIdAcked = id;
                     // ### ack for heatingcontrol.0.Rooms.Wohnzimmer.StatusLog
                     // ### ack for javascript.0.Target1
-                    await adapter.setForeignStateAsync(id, {val: state.val, ack: true });
+                    await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
                     //await adapter.setForeignStateAsync(id, {  ack: true });
+
+                    
+
+                }
+                else {
+                    adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
                 }
             }
             else {
 
-                if (ids[0] == "heatingcontrol") {
-                    handled = true; //my own are handled only with ack = false
-                }
+                //adapter.log.info("### last id acked " + lastIdAcked);
 
-                //external datapoints (e.g. present)
-                if (!handled) {
-                    handled = await HandleStateChangeExternal(id, state);
-                }
+                if (lastIdAcked != id) {
 
-                //devices, hm-rpc sends with ack=true
-                if (!handled) {
-                    handled = await HandleStateChangeDevices(id, state);
+                    lastIdAcked = "";
+
+                    adapter.log.debug("### handle state change acked " + id + " " + JSON.stringify(state));
+
+                    if (ids[0] == "heatingcontrol") {
+                        handled = true; //my own are handled only with ack = false
+                    }
+
+                    //external datapoints (e.g. present)
+                    if (!handled) {
+                        handled = await HandleStateChangeExternal(id, state);
+                    }
+
+                    //devices, hm-rpc sends with ack=true
+                    if (!handled) {
+                        handled = await HandleStateChangeDevices(id, state);
+                    }
+
+                    if (!handled) {
+                        adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
+                    }
                 }
-            }
-            if (!handled) {
-                adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
             }
         }
     }
@@ -753,8 +776,54 @@ async function HandleStateChangeGeneral(id, state) {
     try {
         const ids = id.split(".");
 
+        //heatingcontrol.0.vis.ProfileTypes.CopyProfile
+        
+        if (ids[2] === "vis" && ids[4] === "CopyProfile" ) {
+
+            const currentProfile = await GetCurrentProfile();
+            adapter.log.debug("copy profile for vis cur. Profile " + currentProfile);
+
+            await CopyProfileAll(currentProfile);
+
+            //vis update 
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
+            bRet = true;
+        }
+        if (ids[2] === "vis" && ids[4] === "CopyProfileRoom") {
+
+            const currentRoom = await GetCurrentRoom();
+            const currentProfile = await GetCurrentProfile();
+            adapter.log.debug("copy profile for vis " + currentRoom + " cur. Profile " + currentProfile);
+
+            await CopyProfile(currentRoom, currentProfile);
+
+            //vis update 
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
+            bRet = true;
+        }
+        //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.CopyPeriods
+        else if (ids[2] === "vis" &&  ids[5] === "CopyPeriods") {
+            const currentProfile = await GetCurrentProfile();
+            const currentRoom = await GetCurrentRoom();
+            adapter.log.debug("copy periods for vis " + currentRoom + " cur. Profile " + currentProfile);
+            await CopyPeriods(currentRoom, ids[4], currentProfile);
+            //vis update xxx
+            if (adapter.config.UseVisFromPittini) {
+                await SetVis();
+            }
+
+            adapter.log.error("copy from vis");
+            bRet = true;
+        }
+
+
+
         //heatingcontrol.0.vis.ChoosenRoom 
-        if (ids[2] === "vis"
+        else if (ids[2] === "vis"
             || ids[4] === "ActiveTimeSlot"
             || ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
@@ -830,6 +899,11 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
         }
+        //heatingcontrol.0.Rooms.Wohnzimmer.isActive 
+        else if (ids[4] == "isActive") {
+            bRet = true;
+            ChangeStatus(ids[4], ids[3], state.val);
+        }
         //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
         else if (ids[2] == "Profiles") {
             bRet = true;
@@ -873,6 +947,24 @@ async function HandleStateChangeGeneral(id, state) {
     }
     return bRet;
 }
+
+async function GetCurrentRoom() {
+
+    let sRet = "undefined";
+
+    const temp = await adapter.getStateAsync("vis.ChoosenRoom");
+
+    if (temp != null && typeof temp != undefined) {
+        sRet = temp.val;
+    }
+    else {
+        adapter.log.error("could not read vis.ChoosenRoom " + JSON.stringify(temp));
+    }
+
+    return sRet;
+
+}
+
 
 async function HandleStateChangeExternal(id, state) {
     let bRet = false;
@@ -964,7 +1056,7 @@ async function HandleStateChangeExternal(id, state) {
 
 async function HandleStateChangeDevices(id, state) {
     let bRet = false;
-    //adapter.log.debug("HandleStateChangeDevices " + id);
+    adapter.log.debug("HandleStateChangeDevices " + id);
     try {
         bRet = await CheckStateChangeDevice(id, state);
     }
@@ -1044,14 +1136,6 @@ async function checkHeatingPeriod() {
 
 
 
-//*******************************************************************
-//
-async function deleteUnusedDP(obj) {
-
-    const result = "not implemented yet";
-
-    adapter.sendTo(obj.from, obj.command, result, obj.callback);
-}
 
 
 
@@ -1513,7 +1597,12 @@ async function LoadProfile(obj) {
     adapter.sendTo(obj.from, obj.command, retText, obj.callback);
 }
     
+async function deleteUnusedDP(obj) {
 
+    const result = await DeleteUnusedDP();
+
+    adapter.sendTo(obj.from, obj.command, result, obj.callback);
+}
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {

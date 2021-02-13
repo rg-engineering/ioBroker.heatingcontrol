@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "news": {
+      "2.2.0": {
+        "en": "different type of window sensors and \"no heating\" per room added",
+        "de": "verschiedene Arten von Fenstersensoren und \"keine Heizung\" pro Raum hinzugefügt",
+        "ru": "добавлен другой тип оконных датчиков и добавлено «нет отопления» для каждой комнаты",
+        "pt": "diferentes tipos de sensores de janela e \"sem aquecimento\" por quarto adicionado",
+        "nl": "verschillende soorten raamsensoren en \"geen verwarming\" per kamer toegevoegd",
+        "fr": "différents types de capteurs de fenêtre et \"pas de chauffage\" par pièce ajouté",
+        "it": "diversi tipi di sensori finestra e \"no riscaldamento\" per stanza aggiunti",
+        "es": "Se agregaron diferentes tipos de sensores de ventana y \"sin calefacción\" por habitación",
+        "pl": "dodany inny typ czujników okiennych i „brak ogrzewania” dla każdego pomieszczenia",
+        "zh-cn": "不同类型的窗户传感器，每个房间添加“无暖气”"
+      },
       "2.1.1": {
         "en": "bug fix for temperature offset",
         "de": "Fehlerbehebung für Temperaturversatz",
