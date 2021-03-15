@@ -1,10 +1,10 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "news": {
-      "": {
-        "en": "bug fix to calculate average for temperatur offset"
+      "2.3.0": {
+        "en": "to do"
       },
       "2.2.0": {
         "en": "different type of window sensors and \"no heating\" per room added",

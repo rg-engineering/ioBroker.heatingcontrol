@@ -205,6 +205,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.3.0 (2021-04-xx)
+
 ### 2.2.1 (2021-02-xx)
 * (René) bug fix to calculate average for temperatur offset
 
