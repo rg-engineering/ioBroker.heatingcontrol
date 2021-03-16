@@ -961,7 +961,30 @@ systemDictionary = {
         "es": "Se buscan sensores conocidos. Se utilizan la sala y la función. Si la detección automática no encuentra los sensores, también se pueden agregar manualmente.",
         "pl": "Wyszukiwanie znanych czujników. Pomieszczenie i funkcja są używane. Jeśli automatyczne wykrywanie nie znajdzie czujników, można je również dodać ręcznie.",
         "zh-cn": "搜索已知的传感器。使用房间和功能。如果自动检测未找到传感器，则也可以手动添加它们。"
+    },
+    "timer": {
+        "en": "timer controled",
+        "de": "Timer gesteuert",
+        "ru": "таймер управляется",
+        "pt": "temporizador controlado",
+        "nl": "timer gecontroleerd",
+        "fr": "minuterie contrôlée",
+        "it": "timer controllato",
+        "es": "temporizador controlado",
+        "pl": "sterowany czasomierzem",
+        "zh-cn": "计时器控制"
+    },
+    "OverrideMode": {
+        "en": "Override-Mode",
+        "de": "Override-Modus",
+        "ru": "Режим переопределения",
+        "pt": "Modo de Substituição",
+        "nl": "Override-modus",
+        "fr": "Mode de remplacement",
+        "it": "Modalità override",
+        "es": "Modo de anulación",
+        "pl": "Tryb zastępowania",
+        "zh-cn": "覆写模式"
     }
-
 
 };

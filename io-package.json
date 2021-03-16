@@ -4,7 +4,16 @@
     "version": "2.3.0",
     "news": {
       "2.3.0": {
-        "en": "to do"
+        "en": "some changes relatest to 'override' and Pittini-vis translation",
+        "de": "Einige Änderungen beziehen sich auf \"Überschreiben\" und Pittini-vis-Übersetzung",
+        "ru": "некоторые изменения касаются 'переопределения' и перевода Питтини на язык",
+        "pt": "algumas mudanças referem-se a 'substituir' e tradução Pittini-vis",
+        "nl": "sommige wijzigingen hebben betrekking op 'overschrijven' en Pittini-vis-vertaling",
+        "fr": "quelques changements relatifs à 'override' et à la traduction Pittini-vis",
+        "it": "alcune modifiche relative a 'override' e alla traduzione Pittini-vis",
+        "es": "algunos cambios se relacionan con 'anular' y la traducción de Pittini-vis",
+        "pl": "niektóre zmiany dotyczą „override” i tłumaczenia Pittini-vis",
+        "zh-cn": "与“ override”和Pittini-vis翻译有关的一些更改"
       },
       "2.2.0": {
         "en": "different type of window sensors and \"no heating\" per room added",
@@ -229,6 +238,7 @@
     "VisMinOverrideTemp": 20,
     "VisMaxOverrideTemp": 30,
     "VisStepWidthOverrideTemp": 1,
-    "UseAddTempSensors":  false
+    "UseAddTempSensors": false,
+    "OverrideMode": 1
   }
 }
