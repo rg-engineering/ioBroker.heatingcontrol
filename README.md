@@ -212,12 +212,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.3.0 (2021-04-xx)
+### 2.3.0 (2021-03-20)
 * (René) see issue #187: show remaining override timeConverter
 * (René) see issue #225: support different languages for vis
 * (René) see issue #223: new overide mode "until next profile point"
-
-### 2.2.1 (2021-02-xx)
 * (René) bug fix to calculate average for temperatur offset
 
 ### 2.2.0 (2021-02-15)
