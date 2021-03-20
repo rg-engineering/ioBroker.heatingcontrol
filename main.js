@@ -180,7 +180,7 @@ async function main() {
 
         await CreateDatabase(adapter, SystemLanguage );
 
-        await CreateDatapoints(adapter);
+        await CreateDatapoints(adapter, SystemLanguage);
         await SetDefaults();
         await SetInfo();
         await SetCurrent();
