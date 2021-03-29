@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "news": {
+      "2.3.1": {
+        "en": "some optimisations for vis translation",
+        "de": "Einige Optimierungen für die visuelle Übersetzung",
+        "ru": "некоторые оптимизации для перевода vis",
+        "pt": "algumas otimizações para tradução vis",
+        "nl": "enkele optimalisaties voor visuele vertaling",
+        "fr": "quelques optimisations pour la traduction vis",
+        "it": "alcune ottimizzazioni per la traduzione vis",
+        "es": "algunas optimizaciones para la traducción visual",
+        "pl": "pewne optymalizacje dla tłumaczenia vis",
+        "zh-cn": "视觉翻译的一些优化"
+      },
       "2.3.0": {
         "en": "some changes relatest to 'override' and Pittini-vis translation",
         "de": "Einige Änderungen beziehen sich auf \"Überschreiben\" und Pittini-vis-Übersetzung",
