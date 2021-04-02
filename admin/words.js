@@ -43,10 +43,10 @@ systemDictionary = {
         "en": "Main settings", "de": "Haupteinstellungen", "ru": "Основные настройки", "pt": "Configurações principais", "nl": "Belangrijkste instellingen", "fr": "Réglages principaux", "it": "Impostazioni principali", "es": "Configuración principal", "pl": "Podstawowe parametry", "zh-cn": "主要设置"
     },
     "Mo-Fr + Sa-So": {
-        "en": "Monday-Friday + Saturday-Sonday", "de": "Montag-Freitag + Samstag-Sonntag", "ru": "Понедельник-пятница + суббота-воскресенье", "pt": "Segunda a sexta + sábado e segunda", "nl": "Maandag-vrijdag + zaterdag-zondag", "fr": "Lundi-vendredi + samedi-dimanche", "it": "Lunedi-Venerdì + Sabato-Sonday", "es": "Lunes-Viernes + Sábado-Sonday", "pl": "Poniedziałek-Piątek + Sobota-Зондой", "zh-cn": "星期一-星期五+星期六-Sonday"
+        "en": "Monday-Friday + Saturday-Sunday", "de": "Montag-Freitag + Samstag-Sonntag", "ru": "Понедельник-пятница + суббота-воскресенье", "pt": "Segunda a sexta + sábado e segunda", "nl": "Maandag-vrijdag + zaterdag-zondag", "fr": "Lundi-vendredi + samedi-dimanche", "it": "Lunedi-Venerdì + Sabato-Sonday", "es": "Lunes-Viernes + Sábado-Sonday", "pl": "Poniedziałek-Piątek + Sobota-Зондой", "zh-cn": "星期一-星期五+星期六-Sonday"
     },
     "Mo-So": {
-        "en": "Monday-Sonday", "de": "Montag-Sonntag", "ru": "Понедельник-Sonday", "pt": "Segunda-feira a segunda-feira", "nl": "Maandag-zondag", "fr": "Lundi-dimanche", "it": "Lunedi-Sonday", "es": "Lunes-Sonday", "pl": "Poniedziałek-Зондой", "zh-cn": "星期一至星期Sonday"
+        "en": "Monday-Sunday", "de": "Montag-Sonntag", "ru": "Понедельник-Sonday", "pt": "Segunda-feira a segunda-feira", "nl": "Maandag-zondag", "fr": "Lundi-dimanche", "it": "Lunedi-Sonday", "es": "Lunes-Sonday", "pl": "Poniedziałek-Зондой", "zh-cn": "星期一至星期Sonday"
     },
     "NumberOfPeriods": {
         "en": "Number Of Periods", "de": "Anzahl der Perioden", "ru": "Количество периодов", "pt": "Número de períodos", "nl": "Aantal periodes", "fr": "Nombre de périodes", "it": "Numero di periodi", "es": "Número De Períodos", "pl": "Liczba Okresów", "zh-cn": "期间数"
