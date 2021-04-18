@@ -843,7 +843,7 @@ async function HandleStateChangeGeneral(id, state) {
             ChangeStatus(ids[2], "all", state.val);
             HandleStateChangeVis(id, state);
         }
-        //heatingcontrol.0.GuestsPresent
+        //heatingcontrol.0.HeatingPeriodActive
         else if (ids[2] == "HeatingPeriodActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
@@ -1122,7 +1122,7 @@ async function checkHeatingPeriod() {
 
             adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
 
-            await adapter.setStateAsync("HeatingPeriodActive", { ack: true, val: isHeatingPeriod });
+            await adapter.setStateAsync("HeatingPeriodActive", { ack: false, val: isHeatingPeriod });
         }
 
         catch (e) {

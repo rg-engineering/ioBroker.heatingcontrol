@@ -1,8 +1,10 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.3.1",
+    "version": "2.3.2",
     "news": {
+      "2.3.2": {
+      },
       "2.3.1": {
         "en": "some optimisations for vis translation",
         "de": "Einige Optimierungen für die visuelle Übersetzung",
