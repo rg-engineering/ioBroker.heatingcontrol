@@ -4,6 +4,16 @@
     "version": "2.3.2",
     "news": {
       "2.3.2": {
+        "en": "bug fix: predefined heating period",
+        "de": "Fehlerbehebung: vordefinierte Heizperiode",
+        "ru": "исправление ошибки: предустановленный период нагрева",
+        "pt": "correção de bug: período de aquecimento predefinido",
+        "nl": "bugfix: voorgedefinieerde verwarmingsperiode",
+        "fr": "correction de bogue: période de chauffage prédéfinie",
+        "it": "correzione bug: periodo di riscaldamento predefinito",
+        "es": "corrección de errores: período de calentamiento predefinido",
+        "pl": "poprawka: predefiniowany okres ogrzewania",
+        "zh-cn": "错误修复：预热时间"
       },
       "2.3.1": {
         "en": "some optimisations for vis translation",
@@ -137,7 +147,6 @@
         "pl": "poprawka: aktywuj aktuatory po zmianie temperatury",
         "zh-cn": "错误修复：温度变化后激活用户"
       }
-
     },
     "title": "HeatingControl",
     "titleLang": {
