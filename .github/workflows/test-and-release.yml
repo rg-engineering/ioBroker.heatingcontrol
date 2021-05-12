@@ -1,3 +1,6 @@
+# This is a composition of lint and test scripts
+# Make sure to update this file along with the others
+
 name: Test and Release
 
 # Run this job on all pushes and pull requests
@@ -48,7 +51,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node-version: [10.x, 12.x, 14.x]
+                node-version: [10.x, 12.x, 14.x, 16.x]
                 os: [ubuntu-latest, windows-latest, macos-latest]
                 exclude:
                     # Don't test Node.js 8 on Windows. npm is weird here

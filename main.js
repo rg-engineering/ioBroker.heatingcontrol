@@ -195,7 +195,7 @@ async function main() {
         await CreateCronJobs(adapter, currentProfile, ChangeStatus, rooms);
         //StartTestCron();
 
-        await StartVis(adapter, SystemLanguage);
+        await StartVis(adapter);
 
         await StartStatemachine();
     }
@@ -824,12 +824,12 @@ async function HandleStateChangeGeneral(id, state) {
 
         //heatingcontrol.0.vis.ChoosenRoom 
         else if (ids[2] === "vis"
-            || ids[4] === "ActiveTimeSlot"
-            || ids[4] === "CurrentTimePeriod"
+            //|| ids[4] === "ActiveTimeSlot"
+            //|| ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
-            || ids[4] === "WindowIsOpen"
+            //|| ids[4] === "WindowIsOpen"
             //heatingcontrol.0.Rooms.Sauna.StatusLog
-            || ids[4] === "StatusLog"
+            //|| ids[4] === "StatusLog"
             || ids[3] === "ProfileTypes"
             || ids[3] === "RoomValues"
             //heatingcontrol.0.Profiles.1.ProfileName
