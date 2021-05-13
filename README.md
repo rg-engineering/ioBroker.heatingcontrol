@@ -224,6 +224,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.4.1 (2021-05-xx)
+
 ### 2.4.0 (2021-05-15)
 * (René) make it ready for js-controller 3.3
 
