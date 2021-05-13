@@ -21,6 +21,13 @@ For more details and for information how to disable the error reporting see [Sen
                                                                           
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url) 
 
+
+## Documentation
+
+**I'm looking for support in creating / updating the user documentation and the FAQ's. If anyone is interested, please contact me...**
+
+
+
 ## Adapter for controlling your heating system.
 
 Features:
