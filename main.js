@@ -1041,7 +1041,7 @@ async function HandleStateChangeExternal(id, state) {
         if (adapter.config.Path2FeiertagAdapter.length > 0) {
             if (id.includes(adapter.config.Path2FeiertagAdapter)) {
                 //heatingcontrol.0.PublicHolidyToday
-                await adapter.setStateAsync("PublicHolidyToday", { val: state.val, ack: true });
+                await adapter.setStateAsync("PublicHolidyToday", { val: state.val, ack: false }); //ack = false!!
                 bRet = true;
             }
         }
