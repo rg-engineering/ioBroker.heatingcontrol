@@ -224,9 +224,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.4.1 (2021-05-xx)
+### 2.4.1 (2021-05-15)
+* (René) see #233: remaining override time set also for choosen room in vis
+* (René) bug fix public holiday detection
 
-### 2.4.0 (2021-05-15)
+### 2.4.0 (2021-05-13)
 * (René) make it ready for js-controller 3.3
 
 ### 2.3.2 (2021-04-18)
