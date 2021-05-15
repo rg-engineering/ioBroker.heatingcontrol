@@ -224,6 +224,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.4.2 (2021-05-17)
+* (René) logging for ActorsOn optimized
+
 ### 2.4.1 (2021-05-15)
 * (René) see #233: remaining override time set also for choosen room in vis
 * (René) bug fix public holiday detection
