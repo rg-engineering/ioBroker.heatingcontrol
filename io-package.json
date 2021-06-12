@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.4.2",
+        "version": "2.4.3",
       "news": {
+        "2.4.3": {
+          "en": "bug fix: heatingPeriods when adapter starts"
+        },
         "2.4.2": {
           "en": "logging for ActorsOn optimized"
         },
