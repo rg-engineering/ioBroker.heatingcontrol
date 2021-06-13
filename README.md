@@ -224,11 +224,15 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+
+### 2.5.0 (2021-06-xx)
+* (René) Kamin-Modus added
+
+
 ### 2.4.3 (2021-06-17)
 * (René) see issue #243: bug fix for HeatingPeriod when adpater starts
 * (René) see issue #245: problem with manual mode when SensorOpenDelay is used
 * (René) see issue #244: bug fix for WindowOpenImg 
-
 
 ### 2.4.2 (2021-05-17)
 * (René) logging for ActorsOn optimized
