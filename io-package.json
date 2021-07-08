@@ -311,7 +311,6 @@
     "VisStepWidthOverrideTemp": 1,
     "UseAddTempSensors": false,
     "OverrideMode": 1,
-    "FireplaceModeType": 1,
-    "FireplaceModeTemperature":  15
+    "UseFireplaceMode": false
   }
 }
