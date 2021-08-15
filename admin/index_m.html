@@ -2017,34 +2017,20 @@
                                     <label for="ProfileType" class="translate">ProfileType</label>
                                 </div>
 
-                                <div class="input-field col s4">
+                                <div class="input-field col s2">
                                     <input type="number" id="NumberOfProfiles" min="1" max="10" class="value" />
                                     <label for="NumberOfProfiles" class="translate">NumberOfProfiles</label>
                                 </div>
 
-                                <div class="input-field col s4">
+                                <div class="input-field col s2">
                                     <input type="number" id="NumberOfPeriods" min="1" max="10" class="value" />
                                     <label for="NumberOfPeriods" class="translate">NumberOfPeriods</label>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s4">
-                                    <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
-                                    <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="input-field col s4">
-                                    <input type="checkbox" id="HolidayPresentLikeSunday" class="value" />
-                                    <label for="HolidayPresentLikeSunday" class="translate">HolidayPresentLikeSunday</label>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s2">
                                     <select id="TemperatureDecrease" class="value">
                                         <option value="1" class="translate">relative</option>
                                         <option value="2" class="translate">absolute</option>
@@ -2052,6 +2038,18 @@
                                     </select>
                                     <label for="TemperatureDecrease" class="translate">TemperatureDecrease</label>
                                 </div>
+
+                                <div class="input-field col s2">
+                                    <input type="checkbox" id="PublicHolidayLikeSunday" class="value" />
+                                    <label for="PublicHolidayLikeSunday" class="translate">PublicHolidayLikeSunday</label>
+                                </div>
+
+                                <div class="input-field col s2">
+                                    <input type="checkbox" id="HolidayPresentLikeSunday" class="value" />
+                                    <label for="HolidayPresentLikeSunday" class="translate">HolidayPresentLikeSunday</label>
+                                </div>
+
+
                             </div>
                             <div class="row">
                                 <div class="input-field col s4">
@@ -2060,9 +2058,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s2">
                                     <input type="checkbox" id="UseFireplaceMode" class="value" />
                                     <label for="UseFireplaceMode" class="translate">UseFireplaceMode</label>
+                                </div>
+                                <div class="input-field col s2 col-UseFireplaceModeResetAt">
+                                    <input type="time" id="UseFireplaceModeResetAt" class="timepicker value" />
+                                    <label for="UseFireplaceModeResetAt" class="translate">UseFireplaceModeResetAt</label>
                                 </div>
                             </div>
 

@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "use atuadores se não houver período de aquecimento",
     "UseAddTempSensors": "Sensores de temperatura adicionais são usados",
     "UseChangesFromThermostat": "uso de alterações do termostato",
+    "UseFireplaceMode": "usar o modo lareira",
+    "UseFireplaceModeResetAt": "redefinir o modo da lareira em",
     "UseFixHeatingPeriod": "Use período de aquecimento predefinido",
     "UseMinTempPerRoom": "use temperatura mínima por quarto",
     "UseVisFromPittini": "uso do projeto de visualização da Pittini",

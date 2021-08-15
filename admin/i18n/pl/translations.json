@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "korzystanie z napędów, jeśli nie ma sezonu grzewczego",
     "UseAddTempSensors": "stosowane są dodatkowe czujniki temperatury",
     "UseChangesFromThermostat": "wykorzystanie zmiany od termostatu",
+    "UseFireplaceMode": "użyj trybu kominka",
+    "UseFireplaceModeResetAt": "zresetuj tryb kominka o",
     "UseFixHeatingPeriod": "Użyć wstępnie zdefiniowany okres ogrzewanie ",
     "UseMinTempPerRoom": "użyj minimalną temperaturę w pokoju",
     "UseVisFromPittini": "korzystanie z projektu wizualizacji od Pittini",

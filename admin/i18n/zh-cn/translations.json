@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "使用致动器如果没有暖气的时期",
     "UseAddTempSensors": "使用了附加的温度传感器",
     "UseChangesFromThermostat": "使用的变化从恒温器",
+    "UseFireplaceMode": "使用壁炉模式",
+    "UseFireplaceModeResetAt": "重置壁炉模式在",
     "UseFixHeatingPeriod": "使用预热的时期",
     "UseMinTempPerRoom": "使用最低温度每间房",
     "UseVisFromPittini": "使用的可视化项目，从Pittini",

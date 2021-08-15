@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "gebruik actuatoren als er geen verwarmingsperiode is",
     "UseAddTempSensors": "Er worden extra temperatuursensoren gebruikt",
     "UseChangesFromThermostat": "gebruik van wijzigingen van thermostaat",
+    "UseFireplaceMode": "gebruik open haard modus",
+    "UseFireplaceModeResetAt": "reset open haard modus op",
     "UseFixHeatingPeriod": "Gebruik vooraf gedefinieerde verwarmingsperiode",
     "UseMinTempPerRoom": "gebruik minimum temperatuur per kamer",
     "UseVisFromPittini": "gebruik van visualisatieproject van Pittini",

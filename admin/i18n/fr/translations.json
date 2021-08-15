@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "utiliser des actionneurs si aucune période de chauffage",
     "UseAddTempSensors": "des capteurs de température supplémentaires sont utilisés",
     "UseChangesFromThermostat": "utilisation des changements du thermostat",
+    "UseFireplaceMode": "utiliser le mode cheminée",
+    "UseFireplaceModeResetAt": "réinitialiser le mode foyer à",
     "UseFixHeatingPeriod": "Utiliser une période de chauffage prédéfinie",
     "UseMinTempPerRoom": "utiliser une température minimale par pièce",
     "UseVisFromPittini": "utilisation du projet de visualisation de Pittini",

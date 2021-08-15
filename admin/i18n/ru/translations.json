@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "используйте приводы, если нет периода нагрева",
     "UseAddTempSensors": "используются дополнительные датчики температуры",
     "UseChangesFromThermostat": "использование изменений от термостата",
+    "UseFireplaceMode": "использовать режим камина",
+    "UseFireplaceModeResetAt": "сбросить режим камина в",
     "UseFixHeatingPeriod": "Использовать предопределенный период нагрева",
     "UseMinTempPerRoom": "используйте минимальную температуру на комнату",
     "UseVisFromPittini": "использование проекта визуализации от Pittini",

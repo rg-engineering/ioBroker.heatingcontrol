@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "el uso de actuadores si no hay tiempo de calentamiento",
     "UseAddTempSensors": "se utilizan sensores de temperatura adicionales",
     "UseChangesFromThermostat": "el uso de los cambios de termostato",
+    "UseFireplaceMode": "usar el modo de chimenea",
+    "UseFireplaceModeResetAt": "restablecer el modo de chimenea en",
     "UseFixHeatingPeriod": "El uso de predefinidos Período de Calefacción",
     "UseMinTempPerRoom": "uso mínimo de la temperatura de la habitación",
     "UseVisFromPittini": "uso de la visualización del proyecto de Pittini",

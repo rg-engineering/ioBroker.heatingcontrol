@@ -225,8 +225,8 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 
-### 2.5.0 (2021-06-xx)
-* (René) Kamin-Modus added
+### 2.5.0 (2021-08-xx)
+* (René) "Kamin-Modus"" added
 
 
 ### 2.4.3 (2021-06-17)

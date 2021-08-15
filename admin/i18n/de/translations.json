@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "Verwendung der Stellantriebe, wenn keine Heizperiode vorliegt",
     "UseAddTempSensors": "Zusätzliche Temperatursensoren werden verwendet",
     "UseChangesFromThermostat": "Verwendung von Änderungen vom Thermostat",
+    "UseFireplaceMode": "Kaminmodus verwenden",
+    "UseFireplaceModeResetAt": "Kaminmodus zurücksetzen um",
     "UseFixHeatingPeriod": "Vordefinierte Heizperiode verwenden",
     "UseMinTempPerRoom": "Mindesttemperatur pro Raum verwenden",
     "UseVisFromPittini": "Verwendung des Visualisierungsprojekts von Pittini",

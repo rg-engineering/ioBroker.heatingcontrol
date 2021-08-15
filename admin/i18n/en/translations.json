@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "use actuators if no heating period",
     "UseAddTempSensors": "additional Temperature Sensors used",
     "UseChangesFromThermostat": "use of changes from thermostat",
+    "UseFireplaceMode": "use fireplace mode",
+    "UseFireplaceModeResetAt": "reset fireplace mode at",
     "UseFixHeatingPeriod": "Use predefined Heating Period",
     "UseMinTempPerRoom": "use minimum temperature per room",
     "UseVisFromPittini": "use of visualisation project from Pittini",

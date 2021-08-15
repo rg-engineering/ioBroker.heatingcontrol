@@ -67,6 +67,8 @@
     "UseActorsIfNotHeating": "utilizzare gli attuatori se non è presente il periodo di riscaldamento",
     "UseAddTempSensors": "vengono utilizzati sensori di temperatura aggiuntivi",
     "UseChangesFromThermostat": "uso delle modifiche dal termostato",
+    "UseFireplaceMode": "usa la modalità camino",
+    "UseFireplaceModeResetAt": "ripristinare la modalità camino su",
     "UseFixHeatingPeriod": "Usa periodo di riscaldamento predefinito",
     "UseMinTempPerRoom": "utilizzare la temperatura minima per stanza",
     "UseVisFromPittini": "utilizzo del progetto di visualizzazione di Pittini",

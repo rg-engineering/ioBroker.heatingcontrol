@@ -36,6 +36,7 @@ const CopyPeriods = require("./lib/datapoints").CopyPeriods;
 const DeleteUnusedDP = require("./lib/datapoints").DeleteUnusedDP;
 
 const CronStop = require("./lib/cronjobs").CronStop;
+const StartTimer2ResetFireplaceMode = require("./lib/cronjobs").StartTimer2ResetFireplaceMode;
 
 const CreateDatabase = require("./lib/database").CreateDatabase;
 const ChangeStatus = require("./lib/database").ChangeStatus;
@@ -872,6 +873,13 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
         }
+        else if (ids[2] == "FireplaceModeActive") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+            if (state.val) {
+                StartTimer2ResetFireplaceMode();
+            }
+        }
         //heatingcontrol.0.Rooms.Küche.TemperaturOverride
         else if (ids[4] == "TemperaturOverride") {
             bRet = true;
@@ -1367,13 +1375,15 @@ async function SaveProfile(obj) {
                         const WindowOpenDecrease = await adapter.getStateAsync(id1 + ".WindowOpenDecrease");
                         const AbsentDecrease = await adapter.getStateAsync(id1 + ".AbsentDecrease");
                         const VacationAbsentDecrease = await adapter.getStateAsync(id1 + ".VacationAbsentDecrease");
+                        const FireplaceModeDecrease = await adapter.getStateAsync(id1 + ".FireplaceModeDecrease");
 
                         const decrease = {
                             GuestIncrease: GuestIncrease.val,
                             PartyDecrease: PartyDecrease.val,
                             WindowOpenDecrease: WindowOpenDecrease.val,
                             AbsentDecrease: AbsentDecrease.val,
-                            VacationAbsentDecrease: VacationAbsentDecrease.val
+                            VacationAbsentDecrease: VacationAbsentDecrease.val,
+                            FireplaceModeDecrease: FireplaceModeDecrease.val
                         };
                         adapter.log.debug("decrease " + JSON.stringify(decrease));
                         room2Save.profiles[profile].decrease = decrease;
@@ -1571,12 +1581,16 @@ async function LoadProfile(obj) {
                             const WindowOpenDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.WindowOpenDecrease;
                             const AbsentDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.AbsentDecrease;
                             const VacationAbsentDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.VacationAbsentDecrease;
+                            const FireplaceModeDecrease = profile2Load.Rooms[roomName].profiles[profile].decrease.FireplaceModeDecrease;
+
+                            
 
                             await adapter.setStateAsync(id1 + ".GuestIncrease", { ack: true, val: GuestIncrease });
                             await adapter.setStateAsync(id1 + ".PartyDecrease", { ack: true, val: PartyDecrease });
                             await adapter.setStateAsync(id1 + ".WindowOpenDecrease", { ack: true, val: WindowOpenDecrease });
                             await adapter.setStateAsync(id1 + ".AbsentDecrease", { ack: true, val: AbsentDecrease });
                             await adapter.setStateAsync(id1 + ".VacationAbsentDecrease", { ack: true, val: VacationAbsentDecrease });
+                            await adapter.setStateAsync(id1 + ".FireplaceModeDecrease", { ack: true, val: FireplaceModeDecrease });
 
                         }
                     }
