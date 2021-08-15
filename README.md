@@ -230,6 +230,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 2.5.0 (2021-08-xx)
 * (René) fireplace mode added
+* (René) see issue #247: disable temp offset calculation when heating is off
 
 
 ### 2.4.3 (2021-06-17)
