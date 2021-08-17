@@ -232,6 +232,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) fireplace mode added
 * (René) see issue #247: disable temp offset calculation when heating is off
 * (René) see issue #223: bug fix to find correct period
+* (René) see issue #194: accept float as minimum / maximum in vis settings; add warning if minumum is lower then 4.5°C
 
 ### 2.4.3 (2021-06-17)
 * (René) see issue #243: bug fix for HeatingPeriod when adpater starts
