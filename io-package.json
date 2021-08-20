@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.5.0",
+        "version": "2.5.1",
         "news": {
+            "2.5.1": {
+                "en": "bug fix: fireplace mode",
+                "de": "Bugfix: Kaminmodus",
+                "ru": "исправление ошибки: режим камина",
+                "pt": "correção de bug: modo lareira",
+                "nl": "bug fix: open haard modus",
+                "fr": "correction de bug : mode cheminée",
+                "it": "correzione bug: modalità camino",
+                "es": "corrección de errores: modo chimenea",
+                "pl": "naprawa błędu: tryb kominka",
+                "zh-cn": "错误修复：壁炉模式"
+            },
             "2.5.0": {
                 "en": "fireplace mode added",
                 "de": "Kaminmodus hinzugefügt",

@@ -227,6 +227,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.5.1 (2021-08-20)
+* (René) see issue #255: bug fix fireplace mode
 
 ### 2.5.0 (2021-08-20)
 * (René) fireplace mode added
