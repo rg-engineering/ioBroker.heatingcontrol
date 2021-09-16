@@ -873,6 +873,10 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
         }
+        else if (ids[2] == "MaintenanceActive") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
         else if (ids[2] == "FireplaceModeActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);

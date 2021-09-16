@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.5.1",
+        "version": "2.6.0",
         "news": {
+            "2.6.0": {
+                "en": "maintenance mode added",
+                "de": "Wartungsmodus hinzugefügt",
+                "ru": "добавлен режим обслуживания",
+                "pt": "modo de manutenção adicionado",
+                "nl": "onderhoudsmodus toegevoegd",
+                "fr": "mode maintenance ajouté",
+                "it": "modalità di manutenzione aggiunta",
+                "es": "modo de mantenimiento agregado",
+                "pl": "dodano tryb konserwacji",
+                "zh-cn": "添加维护模式"
+            },
             "2.5.1": {
                 "en": "bug fix: fireplace mode",
                 "de": "Bugfix: Kaminmodus",
@@ -336,6 +348,7 @@
         "UseAddTempSensors": false,
         "OverrideMode": 1,
         "UseFireplaceMode": false,
-        "UseFireplaceModeResetAt": "22:00"
+        "UseFireplaceModeResetAt": "22:00",
+        "MaintenanceModeTemperature": 32
     }
 }
