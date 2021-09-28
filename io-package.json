@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.6.1",
+        "version": "2.6.2",
         "news": {
+            "2.6.2": {
+                "en": "bug fix isActive not ignored",
+                "de": "Bugfix isActive wird nicht ignoriert",
+                "ru": "исправление ошибки isActive не игнорируется",
+                "pt": "correção de bug isActive not ignore",
+                "nl": "bug fix isActive niet genegeerd",
+                "fr": "correction de bogue isActive non ignoré",
+                "it": "la correzione del bug èAttivo non ignorato",
+                "es": "corrección de errores isActive no ignorado",
+                "pl": "naprawa błędu jest Aktywna nie jest ignorowana",
+                "zh-cn": "错误修复 isActive 未被忽略"
+            },
             "2.6.1": {
                 "en": "bug fix fireplace mode and vis",
                 "de": "Bugfix Kaminmodus und Vis",
