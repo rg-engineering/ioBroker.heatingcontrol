@@ -24,7 +24,7 @@ For more details and for information how to disable the error reporting see [Sen
 
 ## Documentation
 
-**I'm looking for support in creating / updating the user documentation and the FAQ's. If anyone is interested, please contact me...**
+**I'm looking for support in creating / updating the user documentation and the FAQ's. If someone is interested, please contact me...**
 
 
 
