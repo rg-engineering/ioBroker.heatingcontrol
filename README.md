@@ -235,6 +235,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.7.0 (in progress)
+* (René) 
+
 ### 2.6.2 (2021-09-29)
 * (René) see issue #260: bug fix isActive not ignored
 
