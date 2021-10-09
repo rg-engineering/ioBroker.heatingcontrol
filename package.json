@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "2.5.1",
-    "@sentry/node": "6.13.2",
+    "@sentry/node": "6.13.3",
     "cron": "1.8.2"
   },
   "devDependencies": {
