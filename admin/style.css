@@ -14,5 +14,5 @@
 }
 
 .adapter-body {
-	overflow: hidden !important;
+	overflow: auto;
 }
