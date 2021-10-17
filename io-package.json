@@ -84,7 +84,10 @@
             "DutchmanNL <rdrozda86@gmail.com>"
         ],
         "connectionType": "local",
-        "dataSource": "push"
+        "dataSource": "push",
+        "adminUI": {
+            "config": "materialize"
+        }
     },
     "native": {
         "devices": [],
@@ -146,6 +149,7 @@
         "UseFireplaceMode": false,
         "UseFireplaceModeResetAt": "22:00",
         "MaintenanceModeTemperature": 32,
-        "AddTempSensorsTempLimit": 4
+        "AddTempSensorsTempLimit": 4,
+        "AddTempSensorsMaxTimeDiff": 30
     }
 }

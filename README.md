@@ -236,7 +236,8 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 ### 2.7.0 (in progress)
-* (René) 
+* (René) see issue #259: limit for temperature offset added
+* (René) see issue #227: maximum time difference between standard sensor and external sensor added
 
 ### 2.6.2 (2021-09-29)
 * (René) see issue #260: bug fix isActive not ignored
