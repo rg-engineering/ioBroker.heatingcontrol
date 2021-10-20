@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.7.0",
+        "version": "2.7.1",
         "news": {
+            "2.7.1": {
+                "en": "change of override in manual mode is mssing",
+                "de": "Änderung des Overrides im manuellen Modus wird gesendet",
+                "ru": "смена переопределения в ручном режиме не выполняется",
+                "pt": "a mudança de substituição no modo manual está em uso",
+                "nl": "wijziging van opheffing in handmatige modus is mssing",
+                "fr": "le changement d'override en mode manuel est mssing",
+                "it": "la modifica dell'override in modalità manuale sta suonando",
+                "es": "el cambio de anulación en modo manual está fallando",
+                "pl": "brak zmiany nadpisania w trybie ręcznym",
+                "zh-cn": "手动模式下的覆盖更改是 mssing"
+            },
             "2.7.0": {
                 "en": "limit for additional temp sensors added",
                 "de": "Limit für zusätzliche Temperatursensoren hinzugefügt",
