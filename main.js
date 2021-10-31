@@ -1148,7 +1148,15 @@ async function checkHeatingPeriod() {
 
 
 
+/*
+ 
+ exception in SaveProfile [TypeError: Cannot read properties of null (reading 'val')]
+ Mo-Fr / Sa-So
+ absolut
+ 4 Perioden
 
+  
+ */
 
 
 //*******************************************************************
@@ -1170,9 +1178,12 @@ async function SaveProfile(obj) {
         //adapter.log.debug("room2Save " + JSON.stringify(room2Save));
 
         for (let room = 0; room < adapter.config.rooms.length; room++) {
+            
             if (adapter.config.rooms[room].isActive) {
 
                 const roomName = adapter.config.rooms[room].name;
+
+                adapter.log.debug("saving for " + roomName);
 
                 const room2Save = {
                     profiles: {}
@@ -1192,6 +1203,8 @@ async function SaveProfile(obj) {
                         };
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Mo-Su.Periods." + period;
+
+                            adapter.log.debug("saving " + id);
 
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
@@ -1219,6 +1232,8 @@ async function SaveProfile(obj) {
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Mo-Fr.Periods." + period;
 
+                            adapter.log.debug("saving " + id);
+
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
 
@@ -1231,6 +1246,8 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Sa-Su.Periods." + period;
+
+                            adapter.log.debug("saving " + id);
 
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
@@ -1262,6 +1279,7 @@ async function SaveProfile(obj) {
 
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Mon.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
     
@@ -1277,6 +1295,7 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Tue.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
 
@@ -1291,6 +1310,7 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Wed.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
 
@@ -1305,6 +1325,7 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Thu.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
 
@@ -1318,6 +1339,7 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Fri.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
 
@@ -1332,9 +1354,9 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Sat.Periods." + period;
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
-
 
                             const period2Save = {
                                 time: Time.val,
@@ -1346,10 +1368,9 @@ async function SaveProfile(obj) {
                         }
                         for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                             const id = id1 + ".Sun.Periods." + period;
-
+                            adapter.log.debug("saving " + id);
                             const Time = await adapter.getStateAsync(id + ".time");
                             const Temperature = await adapter.getStateAsync(id + ".Temperature");
-
 
                             const period2Save = {
                                 time: Time.val,
@@ -1374,13 +1395,17 @@ async function SaveProfile(obj) {
                     profile2Save.TemperatureDecrease = parseInt(adapter.config.TemperatureDecrease);
                     if (decreaseMode) {
 
+                        adapter.log.debug("saving " + id1);
+
                         const GuestIncrease = await adapter.getStateAsync(id1 + ".GuestIncrease");
                         const PartyDecrease = await adapter.getStateAsync(id1 + ".PartyDecrease");
                         const WindowOpenDecrease = await adapter.getStateAsync(id1 + ".WindowOpenDecrease");
                         const AbsentDecrease = await adapter.getStateAsync(id1 + ".AbsentDecrease");
                         const VacationAbsentDecrease = await adapter.getStateAsync(id1 + ".VacationAbsentDecrease");
-                        const FireplaceModeDecrease = await adapter.getStateAsync(id1 + ".FireplaceModeDecrease");
-
+                        let FireplaceModeDecrease = 0;
+                        if (adapter.config.UseFireplaceMode) {
+                            FireplaceModeDecrease = await adapter.getStateAsync(id1 + ".FireplaceModeDecrease");
+                        }
                         const decrease = {
                             GuestIncrease: GuestIncrease.val,
                             PartyDecrease: PartyDecrease.val,
@@ -1594,8 +1619,9 @@ async function LoadProfile(obj) {
                             await adapter.setStateAsync(id1 + ".WindowOpenDecrease", { ack: true, val: WindowOpenDecrease });
                             await adapter.setStateAsync(id1 + ".AbsentDecrease", { ack: true, val: AbsentDecrease });
                             await adapter.setStateAsync(id1 + ".VacationAbsentDecrease", { ack: true, val: VacationAbsentDecrease });
-                            await adapter.setStateAsync(id1 + ".FireplaceModeDecrease", { ack: true, val: FireplaceModeDecrease });
-
+                            if (adapter.config.UseFireplaceMode) {
+                                await adapter.setStateAsync(id1 + ".FireplaceModeDecrease", { ack: true, val: FireplaceModeDecrease });
+                            }
                         }
                     }
                 }
