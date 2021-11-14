@@ -2,71 +2,80 @@
     "common": {
         "name": "heatingcontrol",
         "version": "2.7.2",
-      "news": {
-        "2.7.2": {
-          "en": "bug fixes"
-        },
-          "2.7.1": {
-            "en": "change of override in manual mode is mssing",
-            "de": "Änderung des Overrides im manuellen Modus wird gesendet",
-            "ru": "смена переопределения в ручном режиме не выполняется",
-            "pt": "a mudança de substituição no modo manual está em uso",
-            "nl": "wijziging van opheffing in handmatige modus is mssing",
-            "fr": "le changement d'override en mode manuel est mssing",
-            "it": "la modifica dell'override in modalità manuale sta suonando",
-            "es": "el cambio de anulación en modo manual está fallando",
-            "pl": "brak zmiany nadpisania w trybie ręcznym",
-            "zh-cn": "手动模式下的覆盖更改是 mssing"
-          },
-          "2.7.0": {
-            "en": "limit for additional temp sensors added",
-            "de": "Limit für zusätzliche Temperatursensoren hinzugefügt",
-            "ru": "добавлен предел для дополнительных датчиков температуры",
-            "pt": "limite para sensores de temperatura adicionais adicionados",
-            "nl": "limiet voor extra temperatuursensoren toegevoegd",
-            "fr": "limite pour les capteurs de température supplémentaires ajoutés",
-            "it": "limite per ulteriori sensori di temperatura aggiunti",
-            "es": "límite para sensores de temperatura adicionales agregado",
-            "pl": "dodano limit dla dodatkowych czujników temperatury",
-            "zh-cn": "添加了额外温度传感器的限制"
-          },
-          "2.6.2": {
-            "en": "bug fix isActive not ignored",
-            "de": "Bugfix isActive wird nicht ignoriert",
-            "ru": "исправление ошибки isActive не игнорируется",
-            "pt": "correção de bug isActive not ignore",
-            "nl": "bug fix isActive niet genegeerd",
-            "fr": "correction de bogue isActive non ignoré",
-            "it": "la correzione del bug èAttivo non ignorato",
-            "es": "corrección de errores isActive no ignorado",
-            "pl": "naprawa błędu jest Aktywna nie jest ignorowana",
-            "zh-cn": "错误修复 isActive 未被忽略"
-          }
+        "news": {
+            "2.7.2": {
+                "en": "some bug fixes, see readme",
+                "de": "einige Fehlerbehebungen, siehe Readme",
+                "ru": "исправления ошибок, см. readme",
+                "pt": "algumas correções de bugs, veja leia-me",
+                "nl": "enkele bugfixes, zie readme",
+                "fr": "quelques corrections de bugs, voir readme",
+                "it": "alcune correzioni di bug, vedere readme",
+                "es": "algunas correcciones de errores, vea el archivo Léame",
+                "pl": "kilka poprawek błędów, zobacz readme",
+                "zh-cn": "一些错误修复，请参阅自述文件"
+            },
+            "2.7.1": {
+                "en": "change of override in manual mode is mssing",
+                "de": "Änderung des Overrides im manuellen Modus wird gesendet",
+                "ru": "смена переопределения в ручном режиме не выполняется",
+                "pt": "a mudança de substituição no modo manual está em uso",
+                "nl": "wijziging van opheffing in handmatige modus is mssing",
+                "fr": "le changement d'override en mode manuel est mssing",
+                "it": "la modifica dell'override in modalità manuale sta suonando",
+                "es": "el cambio de anulación en modo manual está fallando",
+                "pl": "brak zmiany nadpisania w trybie ręcznym",
+                "zh-cn": "手动模式下的覆盖更改是 mssing"
+            },
+            "2.7.0": {
+                "en": "limit for additional temp sensors added",
+                "de": "Limit für zusätzliche Temperatursensoren hinzugefügt",
+                "ru": "добавлен предел для дополнительных датчиков температуры",
+                "pt": "limite para sensores de temperatura adicionais adicionados",
+                "nl": "limiet voor extra temperatuursensoren toegevoegd",
+                "fr": "limite pour les capteurs de température supplémentaires ajoutés",
+                "it": "limite per ulteriori sensori di temperatura aggiunti",
+                "es": "límite para sensores de temperatura adicionales agregado",
+                "pl": "dodano limit dla dodatkowych czujników temperatury",
+                "zh-cn": "添加了额外温度传感器的限制"
+            },
+            "2.6.2": {
+                "en": "bug fix isActive not ignored",
+                "de": "Bugfix isActive wird nicht ignoriert",
+                "ru": "исправление ошибки isActive не игнорируется",
+                "pt": "correção de bug isActive not ignore",
+                "nl": "bug fix isActive niet genegeerd",
+                "fr": "correction de bogue isActive non ignoré",
+                "it": "la correzione del bug èAttivo non ignorato",
+                "es": "corrección de errores isActive no ignorado",
+                "pl": "naprawa błędu jest Aktywna nie jest ignorowana",
+                "zh-cn": "错误修复 isActive 未被忽略"
+            }
         },
         "title": "HeatingControl",
         "titleLang": {
-          "en": "Heating Control",
-          "de": "Heizungsregelung",
-          "ru": "Управление отоплением",
-          "pt": "Controle de aquecimento",
-          "nl": "Verwarmingregeling",
-          "fr": "Contrôle du chauffage",
-          "it": "Controllo del riscaldamento",
-          "es": "Control de calentamiento",
-          "pl": "Kontrola ogrzewania",
-          "zh-cn": "加热控制"
+            "en": "Heating Control",
+            "de": "Heizungsregelung",
+            "ru": "Управление отоплением",
+            "pt": "Controle de aquecimento",
+            "nl": "Verwarmingregeling",
+            "fr": "Contrôle du chauffage",
+            "it": "Controllo del riscaldamento",
+            "es": "Control de calentamiento",
+            "pl": "Kontrola ogrzewania",
+            "zh-cn": "加热控制"
         },
         "desc": {
-          "en": "Heating Control",
-          "de": "Heizungsregelung",
-          "ru": "Управление отоплением",
-          "pt": "Controle de aquecimento",
-          "nl": "Verwarmingregeling",
-          "fr": "Contrôle du chauffage",
-          "it": "Controllo del riscaldamento",
-          "es": "Control de calentamiento",
-          "pl": "Kontrola ogrzewania",
-          "zh-cn": "加热控制"
+            "en": "Heating Control",
+            "de": "Heizungsregelung",
+            "ru": "Управление отоплением",
+            "pt": "Controle de aquecimento",
+            "nl": "Verwarmingregeling",
+            "fr": "Contrôle du chauffage",
+            "it": "Controllo del riscaldamento",
+            "es": "Control de calentamiento",
+            "pl": "Kontrola ogrzewania",
+            "zh-cn": "加热控制"
         },
         "platform": "Javascript/Node.js",
         "mode": "daemon",
@@ -75,7 +84,7 @@
         "messagebox": true,
         "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
         "keywords": [
-          "heating"
+            "heating"
         ],
         "readme": "https://github.com/rg-engineering/ioBroker.heatingcontrol/blob/master/README.md",
         "loglevel": "info",
@@ -84,26 +93,26 @@
         "license": "MIT",
         "materialize": true,
         "plugins": {
-          "sentry": {
-            "dsn": "https://5799cf9f70cb43c7a761192a5f35d419@o390433.ingest.sentry.io/5434781"
-          }
+            "sentry": {
+                "dsn": "https://5799cf9f70cb43c7a761192a5f35d419@o390433.ingest.sentry.io/5434781"
+            }
         },
         "compact": true,
         "authors": [
-          {
-            "name": "René G.",
-            "email": "info@rg-engineering.eu"
-          }
+            {
+                "name": "René G.",
+                "email": "info@rg-engineering.eu"
+            }
         ],
         "contributors": [
-          "DutchmanNL <rdrozda86@gmail.com>"
+            "DutchmanNL <rdrozda86@gmail.com>"
         ],
         "connectionType": "local",
         "dataSource": "push",
         "adminUI": {
-          "config": "materialize"
+            "config": "materialize"
         }
-      },
+    },
     "native": {
         "devices": [],
         "rooms": [],
