@@ -295,6 +295,7 @@
                 $('.col-useactorifnothermostat').show();
                 $('.col-ActorOnDelay').show();
                 $('.col-ActorOffDelay').show();
+                $('.col-regulatortype').show();
 
                 elementPageActors.classList.remove("hide");
 
@@ -304,6 +305,7 @@
 
                 $('.col-useactorifnoheating').hide();
                 $('.col-useactorifnothermostat').hide();
+                $('.col-regulatortype').hide();
 
                 $('.col-ActorOnDelay').hide();
                 $('.col-ActorOffDelay').hide();
@@ -1831,7 +1833,16 @@
 
                             </div>
 
-
+                            <div class="row">
+                                <div class="input-field col s6 col-regulatortype">
+                                    <select id="regulatorType" class="value">
+                                        <option value="1" class="translate">linear</option>
+                                        <option value="2" class="translate">linear Hysteresis</option>
+                                    </select>
+                                    <label for="regulatorType" class="translate">regulatorType</label>
+                                </div>
+                                
+                            </div>
 
                             <div class="row">
                                 <div class="input-field col s6 col-useactorifnoheating">

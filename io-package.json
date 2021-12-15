@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.7.2",
+        "version": "2.8.0",
         "news": {
+            "2.8.0": {
+                "en": "differrent regulators for actor handling added",
+                "de": "verschiedene Regler für Schauspielerhandhabung hinzugefügt",
+                "ru": "добавлены различные регуляторы для работы с актерами",
+                "pt": "reguladores diferentes para manipulação de ator adicionado",
+                "nl": "verschillende regelgevers voor het omgaan met acteurs toegevoegd",
+                "fr": "différents régulateurs pour la gestion des acteurs ajoutés",
+                "it": "aggiunti diversi regolatori per la gestione degli attori",
+                "es": "Se agregaron diferentes reguladores para el manejo de actores.",
+                "pl": "dodano różne regulatory do obsługi aktorów",
+                "zh-cn": "添加了不同的演员处理监管机构"
+            },
             "2.7.2": {
                 "en": "some bug fixes, see readme",
                 "de": "einige Fehlerbehebungen, siehe Readme",
@@ -174,6 +186,7 @@
         "UseFireplaceModeResetAt": "22:00",
         "MaintenanceModeTemperature": 32,
         "AddTempSensorsTempLimit": 4,
-        "AddTempSensorsMaxTimeDiff": 30
+        "AddTempSensorsMaxTimeDiff": 30,
+        "regulatorType": 1
     }
 }
