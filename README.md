@@ -249,6 +249,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 2.8.1 (in progress)
 * (René) see issue #283: show internal and external temperature sensors in room status
 * (René) see issue #272: extend override only if different temperature was sent
+* (René) see issue #278: reset remaining override time to 0 when override is canceled
 
 ### 2.8.0 (2021-12-18)
 * (René) see issue #266: differrent regulators for actor handling added (linear and linear with hysteresis)
