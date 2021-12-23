@@ -246,6 +246,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.8.1 (in progress)
+* (René) see issue #283: show internal and external temperature sensors in room status
 
 ### 2.8.0 (2021-12-18)
 * (René) see issue #266: differrent regulators for actor handling added (linear and linear with hysteresis)
