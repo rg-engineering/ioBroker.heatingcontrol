@@ -724,8 +724,14 @@ async function HandleStateChange(id, state) {
                     lastIdAcked = id;
                     // ### ack for heatingcontrol.0.Rooms.Wohnzimmer.StatusLog
                     // ### ack for javascript.0.Target1
-                    await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
-                    //await adapter.setForeignStateAsync(id, {  ack: true });
+
+                    //see issue 271: give other adapters time for reaction on un-acked DP's
+                    setTimeout(function () {
+                        //await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
+                        adapter.setForeignState(id, {  ack: true });
+                    }, 2000)
+
+                   
 
                     
 
