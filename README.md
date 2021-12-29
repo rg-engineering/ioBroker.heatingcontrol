@@ -246,6 +246,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.8.2 (2021-12-30)
+* (René) see issue #285: absent and VacationAbsent exchanged to check reduced mode
+
 ### 2.8.1 (2021-12-29)
 * (René) see issue #283: show internal and external temperature sensors in room status
 * (René) see issue #272: extend override only if different temperature was sent

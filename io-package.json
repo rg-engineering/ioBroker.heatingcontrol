@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.8.1",
+        "version": "2.8.2",
         "news": {
+            "2.8.2": {
+                "en": "absent and VacationAbsent exchanged to check reduced mode",
+                "de": "abwesend und VacationAbsent ausgetauscht, um den reduzierten Modus zu überprüfen",
+                "ru": "absent и VacationAbsent заменены, чтобы проверить сокращенный режим",
+                "pt": "ausente e VacationAbsent trocados para verificar o modo reduzido",
+                "nl": "afwezig en VakantieAfwezig uitgewisseld om de gereduceerde modus te controleren",
+                "fr": "absent et VacationAbsent échangés pour vérifier le mode réduit",
+                "it": "assente e VacanzaAssente scambiati per verifica modalità ridotta",
+                "es": "ausente y VacationAbsent intercambiado para comprobar el modo reducido",
+                "pl": "nieobecny i VacationAbsent wymienione, aby sprawdzić tryb zredukowany",
+                "zh-cn": "缺席和 VacationAbsent 交换检查减少模式"
+            },
             "2.8.1": {
                 "en": "show internal and external temperature sensors in room status",
                 "de": "interne und externe Temperatursensoren im Raumstatus anzeigen",
