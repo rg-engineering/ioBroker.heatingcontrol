@@ -728,7 +728,8 @@ async function HandleStateChange(id, state) {
                     //see issue 271: give other adapters time for reaction on un-acked DP's
                     setTimeout(function () {
                         //await adapter.setForeignStateAsync(id, { val: state.val, ack: true });
-                        adapter.setForeignState(id, {  ack: true });
+                        //adapter.setForeignState(id, { ack: true });
+                        adapter.log.warn("!!! set ack for " + id  + " fehlt jetzt");
                     }, 2000)
 
                    
