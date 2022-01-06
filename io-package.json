@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.8.2",
+        "version": "2.8.3",
         "news": {
+            "2.8.3": {
+                "en": "Loading the configuration fixed",
+                "de": "Laden der Konfiguration behoben",
+                "ru": "Исправлена ​​загрузка конфигурации",
+                "pt": "Carregando a configuração corrigida",
+                "nl": "Laden van de configuratie vast",
+                "fr": "Chargement de la configuration corrigé",
+                "it": "Caricamento della configurazione risolto",
+                "es": "Cargando la configuración fija",
+                "pl": "Naprawiono ładowanie konfiguracji",
+                "zh-cn": "加载配置固定"
+            },
             "2.8.2": {
                 "en": "absent and VacationAbsent exchanged to check reduced mode",
                 "de": "abwesend und VacationAbsent ausgetauscht, um den reduzierten Modus zu überprüfen",

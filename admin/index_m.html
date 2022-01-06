@@ -97,12 +97,12 @@
             input.setAttribute('id', 'files');
             input.setAttribute('opacity', 0);
             input.addEventListener('change', function (e) {
-                handleFileSelect(e, instance, function () { });
+                hchandleFileSelect(e, instance, function () { });
             }, false);
             (input.click)();
         }
 
-        function handleFileSelect(evt, instance) {
+        function hchandleFileSelect(evt, instance) {
 
             console.log('handleFileSelect ' + instance);
 
@@ -120,7 +120,8 @@
                         console.log('profile loaded with ' + result);
 
                         $('#checkResultLoadProfile').html(result);
-                        onChange(true);
+                        
+                        myOnChange(true)
                     });
                 }
 
