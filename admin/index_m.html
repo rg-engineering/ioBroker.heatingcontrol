@@ -296,6 +296,7 @@
                 $('.col-useactorifnothermostat').show();
                 $('.col-ActorOnDelay').show();
                 $('.col-ActorOffDelay').show();
+                $('.col-InterActorDelay').show();
                 $('.col-regulatortype').show();
 
                 elementPageActors.classList.remove("hide");
@@ -306,10 +307,12 @@
 
                 $('.col-useactorifnoheating').hide();
                 $('.col-useactorifnothermostat').hide();
-                $('.col-regulatortype').hide();
+                
 
                 $('.col-ActorOnDelay').hide();
                 $('.col-ActorOffDelay').hide();
+                $('.col-InterActorDelay').hide();
+                $('.col-regulatortype').hide();
 
                 elementPageActors.classList.add("hide");
 
@@ -1842,7 +1845,13 @@
                                     </select>
                                     <label for="regulatorType" class="translate">regulatorType</label>
                                 </div>
-                                
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s3 .col-InterActorDelay">
+                                    <input type="number" id="InterActorDelay" class="value" min="0" step="1" />
+                                    <label for="InterActorDelay" class="translate">InterActorDelay</label>
+                                </div>
                             </div>
 
                             <div class="row">
