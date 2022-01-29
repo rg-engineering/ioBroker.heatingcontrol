@@ -18,7 +18,7 @@ tslint.json
 desktop.ini
 gulpfile.js
 *.txt
-
+*.njsproj
 
 # npm package files
 package-lock.json

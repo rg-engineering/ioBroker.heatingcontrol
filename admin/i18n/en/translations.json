@@ -1,6 +1,6 @@
 {
-    "ActorBeforeOffDelay": "Delay Before Off",
-    "ActorBeforeOnDelay": "Delay Before On",
+    "ActorBeforeOffDelay": "Delay Before Off [s]",
+    "ActorBeforeOnDelay": "Delay Before On [s]",
     "ActorSettings": "Actuator Settings",
     "AdapterNotOnline": "Adapter Not Online. Please make sure it is running!",
     "AddTempSensors": "additional Temp-Sensors",
@@ -31,6 +31,7 @@
     "Gewerk": "function",
     "HeatingperiodSettings": "Heatingperiod Settings",
     "HolidayPresentLikeSunday": "holiday at home like sunday",
+    "InterActorDelay": "Delay between actor actions[ms]",
     "Main settings": "Main settings",
     "Maintenance": "maintenance",
     "MaintenanceModeTemperature": "target temperature in maintenance mode",
