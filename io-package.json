@@ -238,6 +238,7 @@
     "AddTempSensorsTempLimit": 4,
     "AddTempSensorsMaxTimeDiff": 30,
     "regulatorType": 1,
-    "InterActorDelay": 0
+    "InterActorDelay": 0,
+    "InterThermostatDelay": 0
   }
 }
