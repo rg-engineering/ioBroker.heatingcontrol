@@ -249,6 +249,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 2.8.5 (in progress)
 * (René) sentry: Cannot read property 'PARENT_TYPE' of undefined
 * (René) see issue #291: inter thermostat delay added
+* (René) better logging for timediff measurement with external sensors
 
 ### 2.8.4 (2022-01-29)
 * (René) see issue #289: round offset to 0.5°C instead 0.25°C
