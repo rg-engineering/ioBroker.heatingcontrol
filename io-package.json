@@ -154,6 +154,11 @@
     "type": "climate-control",
     "license": "MIT",
     "materialize": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
     "plugins": {
       "sentry": {
         "dsn": "https://5799cf9f70cb43c7a761192a5f35d419@o390433.ingest.sentry.io/5434781"
