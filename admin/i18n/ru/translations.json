@@ -32,6 +32,7 @@
     "HeatingperiodSettings": "Настройки отопительного периода",
     "HolidayPresentLikeSunday": "праздник дома как воскресенье",
     "InterActorDelay": "Задержка между действиями актера [мс]",
+    "InterThermostatDelay": "Задержка между действиями термостата [мс]",
     "Main settings": "Основные параметры",
     "Maintenance": "поддержание",
     "MaintenanceModeTemperature": "заданная температура в режиме обслуживания",

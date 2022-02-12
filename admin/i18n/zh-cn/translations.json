@@ -32,6 +32,7 @@
     "HeatingperiodSettings": "供暖期设置",
     "HolidayPresentLikeSunday": "像星期天一样在家度假",
     "InterActorDelay": "演员动作之间的延迟[毫秒]",
+    "InterThermostatDelay": "恒温器动作之间的延迟[ms]",
     "Main settings": "主要设置",
     "Maintenance": "维护",
     "MaintenanceModeTemperature": "维护模式下的目标温度",

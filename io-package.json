@@ -3,7 +3,18 @@
     "name": "heatingcontrol",
     "version": "2.8.5",
     "news": {
+
       "2.8.5": {
+        "en": "inter thermostat delay added",
+        "de": "Interthermostatverzögerung hinzugefügt",
+        "ru": "добавлена ​​межтермостатическая задержка",
+        "pt": "atraso entre termostato adicionado",
+        "nl": "inter thermostaat vertraging toegevoegd",
+        "fr": "délai inter thermostat ajouté",
+        "it": "ritardo tra termostato aggiunto",
+        "es": "retardo intertermostato agregado",
+        "pl": "Dodano opóźnienie między termostatem",
+        "zh-cn": "添加了恒温器间延迟"
       },
       "2.8.4": {
         "en": "new datapoint to show current profile temperature; inter actuator delay",

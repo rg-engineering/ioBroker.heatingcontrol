@@ -32,6 +32,7 @@
     "HeatingperiodSettings": "Ustawienia okresu ogrzewania",
     "HolidayPresentLikeSunday": "wakacje w domu jak niedziela",
     "InterActorDelay": "Opóźnienie między działaniami aktora [ms]",
+    "InterThermostatDelay": "Opóźnienie między działaniami termostatu [ms]",
     "Main settings": "Ustawienia główne",
     "Maintenance": "utrzymanie",
     "MaintenanceModeTemperature": "temperatura docelowa w trybie konserwacji",

@@ -32,6 +32,7 @@
     "HeatingperiodSettings": "Einstellungen Heizperiode",
     "HolidayPresentLikeSunday": "urlaub zu hause wie sonntag",
     "InterActorDelay": "Verzögerung zwischen Akteuraktionen [ms]",
+    "InterThermostatDelay": "Verzögerung zwischen Thermostataktionen [ms]",
     "Main settings": "Haupteinstellungen",
     "Maintenance": "Wartung",
     "MaintenanceModeTemperature": "Zieltemperatur im Wartungsmodus",

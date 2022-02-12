@@ -32,6 +32,7 @@
     "HeatingperiodSettings": "Instellingen verwarmingsperiode",
     "HolidayPresentLikeSunday": "vakantie thuis zoals zondag",
     "InterActorDelay": "Vertraging tussen acties van acteurs [ms]",
+    "InterThermostatDelay": "Vertraging tussen thermostaatacties [ms]",
     "Main settings": "Belangrijkste instellingen",
     "Maintenance": "onderhoud",
     "MaintenanceModeTemperature": "doeltemperatuur in onderhoudsmodus",
