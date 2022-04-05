@@ -246,6 +246,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.9.0 (in progress)
+* (René) see issue #302: adjustable info logging for temperature, aktor and window status change
+
 ### 2.8.6 (2022-03-31)
 * (René) see issue #265 and #305: bg fix window handling for rooms with more then one window and sensors with regular status update 
 

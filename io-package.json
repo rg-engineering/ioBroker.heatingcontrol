@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.8.6",
+        "version": "2.9.0",
         "news": {
+            "2.9.0": {
+                "en": ""
+            },
             "2.8.6": {
                 "en": "bug fix window handling",
                 "de": "Fehlerbehebung bei der Fensterbehandlung",
@@ -266,6 +269,9 @@
         "AddTempSensorsMaxTimeDiff": 30,
         "regulatorType": 1,
         "InterActorDelay": 0,
-        "InterThermostatDelay": 0
+        "InterThermostatDelay": 0,
+        "extendedInfoLogTemperature": false,
+        "extendedInfoLogActor": false,
+        "extendedInfoLogWindow": false
     }
 }
