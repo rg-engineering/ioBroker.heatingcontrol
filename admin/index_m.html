@@ -243,7 +243,6 @@
                 $('.col-adapternotonline').hide();
             }
 
-
             var TypeDPPresent = $('#Path2PresentDPType')[0].value
             if (TypeDPPresent == 1) {
                 $('.col_Path2PresentDPLimit').hide();
@@ -278,7 +277,6 @@
                 $('.col-FixTempIfNoHeatingPeriod').hide();
             }
 
-
             var elementPageActors = document.getElementById("page-actors");
             var elementPageSensors = document.getElementById("page-sensors");
             var elementPageAddTempSensors = document.getElementById("page-addTempSensors");
@@ -298,9 +296,11 @@
                 $('.col-ActorOffDelay').show();
                 $('.col-InterActorDelay').show();
                 $('.col-regulatortype').show();
+                $('.col-extendedInfoLogActor').show();
+                $('.col-ExtHandlingAckWaitTime').show();
+                $('.col-ExtHandlingRepTime').show();
 
                 elementPageActors.classList.remove("hide");
-
             }
             else {
                 console.log('hide actor settings');
@@ -313,12 +313,12 @@
                 $('.col-ActorOffDelay').hide();
                 $('.col-InterActorDelay').hide();
                 $('.col-regulatortype').hide();
+                $('.col-extendedInfoLogActor').hide();
+                $('.col-ExtHandlingAckWaitTime').hide();
+                $('.col-ExtHandlingRepTime').hide();
 
                 elementPageActors.classList.add("hide");
-
             }
-
-
             var $useSensors = $('#UseSensors');
 
             if ($useSensors.prop('checked')) {
@@ -326,10 +326,9 @@
 
                 elementPageSensors.classList.remove("hide");
 
-
                 $('.col-SensorOpenDelay').show();
                 $('.col-SensorCloseDelay').show();
-
+                $('.col-extendedInfoLogWindow').show();
             }
             else {
                 console.log('hide sensors settings');
@@ -338,6 +337,7 @@
 
                 $('.col-SensorOpenDelay').hide();
                 $('.col-SensorCloseDelay').hide();
+                $('.col-extendedInfoLogWindow').hide();
             }
 
             var $UseAddTempSensors = $('#UseAddTempSensors');
@@ -346,11 +346,19 @@
                 console.log('show additional sensor settings');
 
                 elementPageAddTempSensors.classList.remove("hide");
+                $('.col-AddTempSensorsTempLimit').show();
+                $('.col-AddTempSensorsTempLimit-descr').show();
+                $('.col-AddTempSensorsMaxTimeDiff').show();
+                $('.col-AddTempSensorsMaxTimeDiff-descr').show();
             }
             else {
                 console.log('hide additional sensors settings');
 
                 elementPageAddTempSensors.classList.add("hide");
+                $('.col-AddTempSensorsTempLimit').hide();
+                $('.col-AddTempSensorsTempLimit-descr').hide();
+                $('.col-AddTempSensorsMaxTimeDiff').hide();
+                $('.col-AddTempSensorsMaxTimeDiff-descr').hide();
             }
 
 
@@ -377,8 +385,6 @@
                 $('.col-VisMinProfilTemp').show();
                 $('.col-VisMaxProfilTemp').show();
                 $('.col-VisStepWidthProfilTemp').show();
-
-
             }
             else {
                 console.log('hide settings for Pittini vis');
@@ -390,7 +396,6 @@
                 $('.col-VisStepWidthProfilTemp').hide();
             }
 
-
             //first col of device tables
             show_hide_column("table_thermostats", "thermostat_col_0", 0, false);
             show_hide_column("table_actors", "actor_col_0", 0, false);
@@ -398,34 +403,9 @@
             show_hide_column("table_addtempsensors", "addtempsensor_col_0", 0, false);
 
             //third col of rooms (=WindOwpen)
-
-
         }
 
         var DeviceList = [];
-        /*
-        var timeout1;
-        
-        function getDevices(onChange, instance) {
-            timeout1 = setTimeout(function () {
-                getDevices(onChange, instance);
-            }, 4000);
-
-            //function sendTo(_adapter_instance, command, message, callback)
-            sendTo(instance, 'listDevices', null, function (list) {
-                if (timeout1) {
-                    clearTimeout(timeout1);
-                    timeout1 = null;
-                }
-
-                DeviceList = list;
-
-                console.log('got devices ' + JSON.stringify(DeviceList));
-
-            });
-        }
-*/
-
 
         var timeout2;
         function getFunctions(actualValue, onChange, instance) {
@@ -449,7 +429,6 @@
                     $sel.append('<option value="' + list[i].name + '" ' + ((actualValue == list[i].name) ? 'selected' : '') + '>' + list[i].name + '</option>');
                 }
                 $sel.select();
-
 
                 showHideSettings()
 
@@ -1060,6 +1039,7 @@
                                     DeviceList[actors[i].id - 1].name = actors[i].name;
                                     DeviceList[actors[i].id - 1].isActive = actors[i].isActive;
                                     DeviceList[actors[i].id - 1].OID_Target = actors[i].OID_Target;
+                                    DeviceList[actors[i].id - 1].useExtHandling = actors[i].useExtHandling;
                                 }
                                 else {
                                     //if not exist, add at the end of list
@@ -1752,36 +1732,37 @@
 
                         </div>
                     </li>
+                    
                     <li>
                         <div class="collapsible-header">
                             <i class="material-icons">expand_more</i><h6 class="translate">AdditionalTemperatureSensorSettings</h6>
                         </div>
                         <div class="collapsible-body">
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s4 col-UseAddTempSensors">
                                     <input type="checkbox" id="UseAddTempSensors" class="value" />
                                     <label for="UseAddTempSensors" class="translate">UseAddTempSensors</label>
                                 </div>
 
-                                <div class="col s6 col-use-custom-path-descr">
+                                <div class="col s6 col-UseAddTempSensors-descr">
                                     <span class="translate">hint_UseAddTempSensors</span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s4 col-AddTempSensorsTempLimit">
                                     <input type="number" id="AddTempSensorsTempLimit" class="value" min="0" max="6" />
                                     <label for="AddTempSensorsTempLimit" class="translate">AddTempSensorsTempLimit</label>
                                 </div>
-                                <div class="col s6 col-use-custom-path-descr">
+                                <div class="col s6 col-AddTempSensorsTempLimit-descr">
                                     <span class="translate">hint_AddTempSensorsTempLimit</span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s4">
+                                <div class="input-field col s4 col-AddTempSensorsMaxTimeDiff">
                                     <input type="number" id="AddTempSensorsMaxTimeDiff" class="value" min="0" max="1000" />
                                     <label for="AddTempSensorsMaxTimeDiff" class="translate">AddTempSensorsMaxTimeDiff</label>
                                 </div>
-                                <div class="col s6 col-use-custom-path-descr">
+                                <div class="col s6 col-AddTempSensorsMaxTimeDiff-descr">
                                     <span class="translate">hint_AddTempSensorsMaxTimeDiff</span>
                                 </div>
                             </div>
@@ -1822,7 +1803,8 @@
                                     <input type="checkbox" id="UseActors" class="value" />
                                     <label for="UseActors" class="translate">use_actors</label>
                                 </div>
-
+                            </div>
+                            <div class="row">
                                 <div class="input-field col s3 col-ActorOnDelay">
                                     <input type="number" id="ActorBeforeOnDelay" class="value" min="0" step="1" />
                                     <label for="ActorBeforeOnDelay" class="translate">ActorBeforeOnDelay</label>
@@ -1833,27 +1815,32 @@
                                     <label for="ActorBeforeOffDelay" class="translate">ActorBeforeOffDelay</label>
                                 </div>
 
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s6 col-regulatortype">
-                                    <select id="regulatorType" class="value">
-                                        <option value="1" class="translate">linear</option>
-                                        <option value="2" class="translate">linear Hysteresis</option>
-                                    </select>
-                                    <label for="regulatorType" class="translate">regulatorType</label>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="input-field col s3 .col-InterActorDelay">
+                                <div class="input-field col s3 col-InterActorDelay">
                                     <input type="number" id="InterActorDelay" class="value" min="0" step="1" />
                                     <label for="InterActorDelay" class="translate">InterActorDelay</label>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="input-field col s6 col-useactorifnoheating">
+                                <div class="input-field col s3 col-regulatortype">
+                                    <select id="regulatorType" class="value">
+                                        <option value="1" class="translate">linear</option>
+                                        <option value="2" class="translate">linear Hysteresis</option>
+                                    </select>
+                                    <label for="regulatorType" class="translate">regulatorType</label>
+                                </div>
+                                <div class="input-field col s3 col-ExtHandlingRepTime">
+                                    <input type="number" id="ExtHandlingRepTime" class="value" min="0" step="1" />
+                                    <label for="ExtHandlingRepTime" class="translate">ExtHandlingRepTime</label>
+                                </div>
+                                <div class="input-field col s3 col-ExtHandlingAckWaitTime">
+                                    <input type="number" id="ExtHandlingAckWaitTime" class="value" min="0" step="1" />
+                                    <label for="ExtHandlingAckWaitTime" class="translate">ExtHandlingAckWaitTime</label>
+                                </div>
+                            </div>
+
+                             <div class="row">
+                                <div class="input-field col s3 col-useactorifnoheating">
                                     <select id="UseActorsIfNotHeating" class="value">
                                         <option value="1" class="translate">nothing</option>
                                         <option value="2" class="translate">off</option>
@@ -1861,7 +1848,7 @@
                                     </select>
                                     <label for="UseActorsIfNotHeating" class="translate">UseActorsIfNotHeating</label>
                                 </div>
-                                <div class="input-field col s6 col-useactorifnothermostat">
+                                <div class="input-field col s3 col-useactorifnothermostat">
                                     <select id="UseActorsIfNoThermostat" class="value">
                                         <option value="1" class="translate">nothing</option>
                                         <option value="2" class="translate">off</option>
@@ -1870,6 +1857,7 @@
                                     <label for="UseActorsIfNoThermostat" class="translate">UseActorsIfNoThermostat</label>
                                 </div>
                             </div>
+
 
 
                         </div>
@@ -2014,11 +2002,11 @@
                                     <input type="checkbox" id="extendedInfoLogTemperature" class="value" />
                                     <label for="extendedInfoLogTemperature" class="translate">extendedInfoLogTemperature</label>
                                 </div>
-                                <div class="input-field col s3">
+                                <div class="input-field col s3 col-extendedInfoLogActor">
                                     <input type="checkbox" id="extendedInfoLogActor" class="value" />
                                     <label for="extendedInfoLogActor" class="translate">extendedInfoLogActor</label>
                                 </div>
-                                <div class="input-field col s3">
+                                <div class="input-field col s3 col-extendedInfoLogWindow">
                                     <input type="checkbox" id="extendedInfoLogWindow" class="value" />
                                     <label for="extendedInfoLogWindow" class="translate">extendedInfoLogWindow</label>
                                 </div>
@@ -2040,7 +2028,7 @@
                                 <div id="result_deleteunusedConfig"></div>
                             </div>
                             <div class="row">
-                                
+
 
                                 <div class="input-field col s2">
                                     <input type="number" id="MaintenanceModeTemperature" min="20" max="40" class="value" />
@@ -2321,6 +2309,7 @@
                                                     <th id="actor_col_0" data-name="id" style="background: #64b5f6;" class="translate">id</th>
                                                     <th id="actor_col_1" data-name="name" style="background: #64b5f6" class="translate">actor</th>
                                                     <th id="actor_col_2" data-name="OID_Target" style="background: #64b5f6" class="translate">OID</th>
+                                                    <th id="actor_col_3" data-name="useExtHandling" data-type="checkbox" style="background: #64b5f6" class="translate">useExtHandling</th>
                                                     <th data-buttons="edit" style="width: 100px; background: #64b5f6"></th>
                                                     <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
                                                     <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
