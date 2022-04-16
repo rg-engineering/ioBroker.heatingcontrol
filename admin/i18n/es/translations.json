@@ -119,12 +119,12 @@
     "linear Hysteresis": "lineal con histéresis",
     "no": "ninguna",
     "no lowering": "sin bajar",
-    "nothing": "nada",
+    "nothing": "ninguna cosa",
     "off": "apagado",
     "on": "sobre",
     "profile": "perfil",
     "regulatorType": "tipo de regulador",
-    "relative": "relativo",
+    "relative": "pariente",
     "room": "habitación",
     "sensor": "sensor",
     "sensors": "Sensores de ventana",
@@ -133,6 +133,8 @@
     "timer": "controlado por temporizador",
     "timezone": "zona horaria",
     "until_next_profile_point": "hasta el próximo punto de perfil",
+    "useExtHandling": "manejo extendido",
+    "useExtHandling_hint": "Con el tratamiento ampliado se comprueba si realmente se ha fijado el valor y si se ha fijado el acuse de recibo.",
     "use_actors": "actuadores utilizados",
     "use_sensors": "sensores utilizados"
 }

@@ -297,8 +297,8 @@
                 $('.col-InterActorDelay').show();
                 $('.col-regulatortype').show();
                 $('.col-extendedInfoLogActor').show();
-                $('.col-ExtHandlingAckWaitTime').show();
-                $('.col-ExtHandlingRepTime').show();
+                $('.col-ExtHandlingActorAckWaitTime').show();
+                $('.col-ExtHandlingActorRepTime').show();
 
                 elementPageActors.classList.remove("hide");
             }
@@ -314,8 +314,8 @@
                 $('.col-InterActorDelay').hide();
                 $('.col-regulatortype').hide();
                 $('.col-extendedInfoLogActor').hide();
-                $('.col-ExtHandlingAckWaitTime').hide();
-                $('.col-ExtHandlingRepTime').hide();
+                $('.col-ExtHandlingActorAckWaitTime').hide();
+                $('.col-ExtHandlingActorRepTime').hide();
 
                 elementPageActors.classList.add("hide");
             }
@@ -1019,6 +1019,7 @@
                                     DeviceList[thermostats[i].id - 1].isActive = thermostats[i].isActive;
                                     DeviceList[thermostats[i].id - 1].OID_Target = thermostats[i].OID_Target;
                                     DeviceList[thermostats[i].id - 1].OID_Current = thermostats[i].OID_Current;
+                                    DeviceList[thermostats[i].id - 1].useExtHandling = thermostats[i].useExtHandling;
                                 }
                                 else {
                                     //if not exist, add at the end of list
@@ -1829,13 +1830,13 @@
                                     </select>
                                     <label for="regulatorType" class="translate">regulatorType</label>
                                 </div>
-                                <div class="input-field col s3 col-ExtHandlingRepTime">
+                                <div class="input-field col s3 col-ExtHandlingActorRepTime">
                                     <input type="number" id="ExtHandlingRepTime" class="value" min="0" step="1" />
-                                    <label for="ExtHandlingRepTime" class="translate">ExtHandlingRepTime</label>
+                                    <label for="ExtHandlingActorRepTime" class="translate">ExtHandlingActorRepTime</label>
                                 </div>
-                                <div class="input-field col s3 col-ExtHandlingAckWaitTime">
-                                    <input type="number" id="ExtHandlingAckWaitTime" class="value" min="0" step="1" />
-                                    <label for="ExtHandlingAckWaitTime" class="translate">ExtHandlingAckWaitTime</label>
+                                <div class="input-field col s3 col-ExtHandlingActorAckWaitTime">
+                                    <input type="number" id="ExtHandlingActorAckWaitTime" class="value" min="0" step="1" />
+                                    <label for="ExtHandlingActorAckWaitTime" class="translate">ExtHandlingActorAckWaitTime</label>
                                 </div>
                             </div>
 
@@ -2273,6 +2274,7 @@
                                                     <th id="thermostat_edit1" data-buttons="edit1" style="width: 100px; background: #64b5f6"></th>
                                                     <th id="thermostat_col_3" data-name="OID_Target" style="background: #64b5f6" class="translate">OID target</th>
                                                     <th id="thermostat_edit2" data-buttons="edit2" style="width: 100px; background: #64b5f6"></th>
+                                                    <th id="thermostat_col_4" data-name="useExtHandling" data-type="checkbox" style="background: #64b5f6" class="translate">useExtHandling</th>
                                                     <th data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
                                                     <th data-buttons="delete" style="width: 100px; background: #64b5f6"></th>
 
@@ -2288,6 +2290,11 @@
                             <div class="row">
                                 <div class="col s12 ">
                                     <span class="translate">hint_actors</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 ">
+                                    <span class="translate">useExtHandling_hint</span>
                                 </div>
                             </div>
                             <div class="row">

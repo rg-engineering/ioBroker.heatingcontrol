@@ -27,7 +27,7 @@
     "FixHeatingPeriodStart": "供暖期开始",
     "FixTempIfNoHeatingPeriod": "如果没有加热期，则固定温度",
     "GeneralProfileSettings": "常规配置文件设置",
-    "GeneralSettings": "常规设置",
+    "GeneralSettings": "通用设置",
     "Gewerk": "功能",
     "HeatingperiodSettings": "供暖期设置",
     "HolidayPresentLikeSunday": "像星期天一样在家度假",
@@ -119,7 +119,7 @@
     "linear Hysteresis": "线性与滞后",
     "no": "没有任何",
     "no lowering": "不降低",
-    "nothing": "没有什么",
+    "nothing": "没有",
     "off": "离开",
     "on": "在",
     "profile": "轮廓",
@@ -133,6 +133,8 @@
     "timer": "定时器控制",
     "timezone": "时区",
     "until_next_profile_point": "直到下一个轮廓点",
+    "useExtHandling": "扩展处理",
+    "useExtHandling_hint": "使用扩展处理，检查是否真的设置了值以及是否设置了确认。",
     "use_actors": "使用的执行器",
     "use_sensors": "使用的传感器"
 }

@@ -105,7 +105,7 @@
     "extendedInfoLogActor": "rozszerzone siłowniki Info Log",
     "extendedInfoLogTemperature": "rozszerzony dziennik informacyjny temperatury",
     "extendedInfoLogWindow": "rozszerzone okno dziennika informacji",
-    "fixTempForAll": "napraw temperaturę we wszystkich pomieszczeniach",
+    "fixTempForAll": "napraw temperaturę dla wszystkich pomieszczeń",
     "fixTempPerRoom": "napraw temperaturę na pomieszczenie",
     "hint_AddTempSensors": "Skonfiguruj tutaj dodatkowe czujniki temperatury dla tego pomieszczenia. ",
     "hint_AddTempSensorsMaxTimeDiff": "określa maksymalną dopuszczalną różnicę czasu między wartościami czujników standardowych i zewnętrznych",
@@ -121,7 +121,7 @@
     "no lowering": "bez obniżania",
     "nothing": "nic",
     "off": "wyłączony",
-    "on": "na",
+    "on": "na ",
     "profile": "profil",
     "regulatorType": "typ regulatora",
     "relative": "względny",
@@ -132,7 +132,9 @@
     "thermostats": "termostaty",
     "timer": "sterowany zegarem",
     "timezone": "strefa czasowa",
-    "until_next_profile_point": "do następnego punktu profilu",
+    "until_next_profile_point": "do następnego punktu w profilu",
+    "useExtHandling": "rozszerzona obsługa",
+    "useExtHandling_hint": "Przy rozszerzonej obsłudze sprawdzane jest, czy wartość została rzeczywiście ustawiona i czy ustawiono potwierdzenie.",
     "use_actors": "zastosowane siłowniki",
     "use_sensors": "używane czujniki"
 }

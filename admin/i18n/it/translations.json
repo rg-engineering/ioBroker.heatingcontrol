@@ -121,11 +121,11 @@
     "no lowering": "nessun abbassamento",
     "nothing": "niente",
     "off": "spento",
-    "on": "in poi",
+    "on": "su",
     "profile": "profilo",
     "regulatorType": "tipo di regolatore",
     "relative": "parente",
-    "room": "Camera",
+    "room": "camera",
     "sensor": "sensore",
     "sensors": "Sensori per finestre",
     "thermostat": "termostato",
@@ -133,6 +133,8 @@
     "timer": "temporizzato",
     "timezone": "fuso orario",
     "until_next_profile_point": "fino al prossimo punto del profilo",
+    "useExtHandling": "manipolazione estesa",
+    "useExtHandling_hint": "Con la gestione estesa viene verificato se il valore è stato effettivamente impostato e se è stata impostata la conferma.",
     "use_actors": "attuatori utilizzati",
     "use_sensors": "sensori utilizzati"
 }

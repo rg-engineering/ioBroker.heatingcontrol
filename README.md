@@ -228,6 +228,13 @@ heatingcontrol.0.Rooms.TestRaum.Regulator.HysteresisOffOffset
 and
 heatingcontrol.0.Rooms.TestRaum.Regulator.HysteresisOnOffset
 
+## extended actuator handling
+
+checks that value was set correctly and ack is set, otherwise retries...
+
+to do
+
+
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
@@ -248,6 +255,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 2.9.0 (in progress)
 * (René) see issue #302: adjustable info logging for temperature, aktor and window status change
+* (René) see issue #306: extended handling to set actuator state and thermostat target temperature added
 
 ### 2.8.6 (2022-03-31)
 * (René) see issue #265 and #305: bg fix window handling for rooms with more then one window and sensors with regular status update 
