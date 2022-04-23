@@ -6,6 +6,18 @@
             "2.9.0": {
                 "en": ""
             },
+            "2.8.7": {
+                "en": "bug fix open window handling if thermostat reduces temperature",
+                "de": "Fehlerbehebung beim Öffnen des Fensters, wenn der Thermostat die Temperatur senkt",
+                "ru": "исправлена ​​ошибка обработки открытого окна, если термостат снижает температуру",
+                "pt": "correção de bug manipulação de janela aberta se o termostato reduzir a temperatura",
+                "nl": "bug fix open raam behandeling als thermostaat de temperatuur verlaagt",
+                "fr": "correction d'un bogue gestion de la fenêtre ouverte si le thermostat réduit la température",
+                "it": "correzione bug gestione finestra aperta se il termostato riduce la temperatura",
+                "es": "corrección de errores manejo de ventanas abiertas si el termostato reduce la temperatura",
+                "pl": "naprawa błędu obsługa otwartego okna, jeśli termostat obniża temperaturę",
+                "zh-cn": "如果恒温器降低温度，则修复打开窗口处理的错误"
+            },
             "2.8.6": {
                 "en": "bug fix window handling",
                 "de": "Fehlerbehebung bei der Fensterbehandlung",
