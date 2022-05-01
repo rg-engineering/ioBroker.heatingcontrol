@@ -19,7 +19,7 @@
   "dependencies": {
     "@iobroker/adapter-core": "2.6.0",
     "@sentry/node": "6.19.3",
-    "cron": "1.8.2"
+    "cron": "1.8.3"
   },
   "devDependencies": {
     "@iobroker/testing": "2.5.6",
