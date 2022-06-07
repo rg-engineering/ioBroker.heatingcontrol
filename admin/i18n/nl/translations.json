@@ -22,6 +22,8 @@
     "DeleteUnusedConfig": "verwijder ongebruikte configuratiegegevens",
     "DeleteUnusedDP": "verwijder ongebruikte datapunten",
     "Edit Room": "bewerk de kamer",
+    "ExtHandlingActorAckWaitTime": "uitgebreide afhandeling: wachttijd",
+    "ExtHandlingActorRepTime": "uitgebreide behandeling: maximale herhaaltijd",
     "ExtendOverride": "override verlengen wanneer de temperatuur wordt gewijzigd",
     "FixHeatingPeriodEnd": "einde van de verwarmingsperiode",
     "FixHeatingPeriodStart": "begin van de verwarmingsperiode",

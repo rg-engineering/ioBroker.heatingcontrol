@@ -22,6 +22,8 @@
     "DeleteUnusedConfig": "删除未使用的配置数据",
     "DeleteUnusedDP": "删除未使用的数据点",
     "Edit Room": "编辑房间",
+    "ExtHandlingActorAckWaitTime": "扩展处理：等待时间",
+    "ExtHandlingActorRepTime": "扩展处理：最大重复时间",
     "ExtendOverride": "温度变化时延长覆盖",
     "FixHeatingPeriodEnd": "供暖期结束",
     "FixHeatingPeriodStart": "供暖期开始",

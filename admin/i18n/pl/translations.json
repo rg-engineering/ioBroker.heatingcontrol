@@ -22,6 +22,8 @@
     "DeleteUnusedConfig": "usuń nieużywane dane konfiguracyjne",
     "DeleteUnusedDP": "usuń nieużywane punkty danych",
     "Edit Room": "edytuj pokój",
+    "ExtHandlingActorAckWaitTime": "rozszerzona obsługa: czas oczekiwania",
+    "ExtHandlingActorRepTime": "rozszerzona obsługa: maksymalny czas powtarzania",
     "ExtendOverride": "przedłużyć nadpisanie przy zmianie temperatury",
     "FixHeatingPeriodEnd": "koniec okresu ogrzewania",
     "FixHeatingPeriodStart": "początek okresu grzewczego",

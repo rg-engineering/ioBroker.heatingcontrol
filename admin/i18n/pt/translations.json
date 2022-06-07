@@ -22,6 +22,8 @@
     "DeleteUnusedConfig": "excluir dados de configuração não utilizados",
     "DeleteUnusedDP": "excluir pontos de dados não utilizados",
     "Edit Room": "editar o quarto",
+    "ExtHandlingActorAckWaitTime": "Manipulação estendida: tempo de espera",
+    "ExtHandlingActorRepTime": "Manipulação estendida: tempo máximo de repetição",
     "ExtendOverride": "estender sobreposição quando a temperatura é alterada",
     "FixHeatingPeriodEnd": "fim do período de aquecimento",
     "FixHeatingPeriodStart": "início do período de aquecimento",
