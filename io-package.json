@@ -314,6 +314,9 @@
     "emailInstance": "email.0",
     "emailNoticeType": "longEmailNotice",
     "emailOnlyError": false,
-    "emailWaitToSend": 0
+    "emailWaitToSend": 0,
+    "notificationsTemperature": false,
+    "notificationsActor": false,
+    "notificationsWindow": false
   }
 }
