@@ -41,6 +41,7 @@
     "MaintenanceModeTemperature": "维护模式下的目标温度",
     "Mo-Fr + Sa-So": "周一至周五 + 周六至周日",
     "Mo-So": "星期一星期天",
+    "Notifications": "通知",
     "NumberOfPeriods": "期数",
     "NumberOfProfiles": "配置文件数量",
     "OID": "对象 ID",
