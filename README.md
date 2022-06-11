@@ -255,6 +255,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 2.9.1 (2022-06-10)
 * (René) bug fix timer id's for extended actor handling
+* (René) bug fix exception in SetRoomTemperature 
 
 ### 2.9.0 (2022-06-09)
 * (René) see issue #302: adjustable info logging for temperature, aktor and window status change
