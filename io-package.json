@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.9.1",
+        "version": "2.9.2",
         "news": {
+            "2.9.2": {
+                "en": "dependencies updated",
+                "de": "Abhängigkeiten aktualisiert",
+                "ru": "зависимости обновлены",
+                "pt": "dependências atualizadas",
+                "nl": "afhankelijkheden bijgewerkt",
+                "fr": "dépendances mises à jour",
+                "it": "dipendenze aggiornate",
+                "es": "dependencias actualizadas",
+                "pl": "zaktualizowano zależności",
+                "zh-cn": "已更新依赖项"
+            },
             "2.9.1": {
                 "en": "some bug fixes after introducing new features",
                 "de": "einige Fehlerbehebungen nach der Einführung neuer Funktionen",

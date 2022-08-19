@@ -253,6 +253,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.9.2 (2022-08-19)
+* (René) update dependencies
+
 ### 2.9.1 (2022-06-10)
 * (René) bug fix timer id's for extended actor handling
 * (René) bug fix exception in SetRoomTemperature 
