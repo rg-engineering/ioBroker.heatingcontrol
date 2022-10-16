@@ -253,6 +253,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.9.3 (in progress)
+* (René) update dependencies
+* (René) see issue #323: add telegram user to select box
+* (René) see issue #325: autodetect for HmIP-WTH-2 changed
+
 ### 2.9.2 (2022-08-19)
 * (René) update dependencies
 

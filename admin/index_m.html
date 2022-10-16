@@ -619,7 +619,7 @@
 
         var timeout7;
         function getAddTempSensors(onChange, instance, room) {
-            timeout6 = setTimeout(function () {
+            timeout7 = setTimeout(function () {
                 getAddTempSensors(onChange, instance, room);
             }, 4000);
 
@@ -666,6 +666,48 @@
 
             });
         }
+
+        var timeout8;
+        function getTelegramUser(onChange, instance) {
+            timeout8 = setTimeout(function () {
+                getTelegramUser(onChange, instance);
+            }, 4000);
+
+            let telegraminstance = $(telegramInstance).val()
+
+            console.log('get TelegramUser ' + telegraminstance + " HC instance " + instance);
+
+            const data = {
+                telegraminstance: telegraminstance
+            };
+
+            //function sendTo(_adapter_instance, command, message, callback)
+            sendTo(instance, 'getTelegramUser', data, function (result) {
+                if (timeout8) {
+                    clearTimeout(timeout8);
+                    timeout8 = null;
+                }
+
+                console.log('got telegram user' + JSON.stringify(result));
+
+                let actualValue = ""; //todo
+
+                //fill select box
+
+                var $sel = $('#telegramUser');
+
+                $sel.append('<option value="All Receiver"  selected>All Receiver</option>');
+
+                for (var i = 0; i < result.length; i++) {
+                    $sel.append('<option value="' + result[i].name + '" ' + ((actualValue == result[i].name) ? 'selected' : '') + '>' + result[i].name + '</option>');
+                }
+                $sel.select();
+
+
+            });
+        }
+
+
 
         var myOnChange = null;
         function OnChange() {
@@ -982,6 +1024,11 @@
                 fillInstances('pushoverInstance', instances, settings['pushoverInstance'], 'pushover');
             });
 
+
+            $('#telegramInstance').on('change', function () {
+                getTelegramUser(onChange, instance);
+
+            });
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
@@ -1597,7 +1644,7 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s2"><a href="#tab-main" class="translate active">Main settings</a></li>
+                    <li class="tab col s2"><a href="#tab-main" class="translate" active>Main settings</a></li>
                     <li class="tab col s2 le-settings"><a href="#tab-profiles" class="translate">profile</a></li>
                     <li class="tab col s2 le-settings"><a href="#tab-devices" class="translate">devices</a></li>
                 </ul>

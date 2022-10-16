@@ -1,8 +1,11 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.9.2",
+        "version": "2.9.3",
         "news": {
+            "2.9.3": {
+                "en": ""
+            },
             "2.9.2": {
                 "en": "dependencies updated",
                 "de": "Abhängigkeiten aktualisiert",
@@ -184,7 +187,6 @@
                 "zh-cn": "错误修复 isActive 未被忽略"
             }
         },
-        "title": "HeatingControl",
         "titleLang": {
             "en": "Heating Control",
             "de": "Heizungsregelung",

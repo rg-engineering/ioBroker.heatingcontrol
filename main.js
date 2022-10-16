@@ -155,6 +155,9 @@ function startAdapter(options) {
                     case "Test":
                         //adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
                         break;
+                    case "getTelegramUser":
+                        await GetTelegramUser(obj);
+                        break;
                     default:
                         adapter.log.error("unknown message " + obj.command);
                         break;
@@ -1660,6 +1663,31 @@ async function deleteUnusedDP(obj) {
 
     adapter.sendTo(obj.from, obj.command, result, obj.callback);
 }
+
+async function GetTelegramUser(obj) {
+    if (obj && obj.message) {
+
+        adapter.log.debug('telegram-instance: ' + JSON.stringify(obj));
+        /*
+        telegram - instance: { "command": "getTelegramUser", "message": { "telegraminstance": "telegram.0" }, "from": "system.adapter.admin.0", "callback": { "message": { "telegraminstance": "telegram.0" }, "id": 144, "ack": false, "time": 1665936632067 }, "_id": 57898782 }
+        */
+
+        const inst = obj.message.telegraminstance ? obj.message.telegraminstance : "telegram.0";
+        adapter.log.debug('telegram-instance: ' + inst)
+        adapter.getForeignState(inst + '.communicate.users', (err, state) => {
+            err && adapter.log.error(err);
+            if (state && state.val) {
+                try {
+                    adapter.sendTo(obj.from, obj.command, state.val, obj.callback);
+                } catch (err) {
+                    err && adapter.log.error(err);
+                    adapter.log.error('Cannot parse stored user IDs from Telegram!');
+                }
+            }
+        });
+    }
+}
+
 
 // If started as allInOne/compact mode => return function to create instance
 if (module && module.parent) {

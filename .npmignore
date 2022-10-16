@@ -39,6 +39,8 @@ obj
 /node_modules
 test
 .vscode
+.settings
+*.org
 
 
 
