@@ -668,7 +668,7 @@
         }
 
         var timeout8;
-        function getTelegramUser(onChange, instance) {
+        function getTelegramUser(onChange, instance, currentVal) {
             timeout8 = setTimeout(function () {
                 getTelegramUser(onChange, instance);
             }, 4000);
@@ -690,19 +690,25 @@
 
                 console.log('got telegram user' + JSON.stringify(result));
 
-                let actualValue = ""; //todo
+                let actualValue = "";
+                if (currentVal != null) {
+                    actualValue = currentVal;
+                }
 
                 //fill select box
 
                 var $sel = $('#telegramUser');
 
-                $sel.append('<option value="All Receiver"  selected>All Receiver</option>');
+                $sel.append('<option value="allTelegramUsers"' + ((actualValue == "allTelegramUsers") ? 'selected' : '') + '>All Receiver</option>');
 
                 for (var i = 0; i < result.length; i++) {
-                    $sel.append('<option value="' + result[i].name + '" ' + ((actualValue == result[i].name) ? 'selected' : '') + '>' + result[i].name + '</option>');
+                    if (result[i].name != null && typeof result[i].name != undefined && result[i].name.length > 1) {
+                        $sel.append('<option value="' + result[i].name + '" ' + ((actualValue == result[i].name) ? 'selected' : '') + '>' + result[i].name + '</option>');
+                    }
                 }
                 $sel.select();
 
+                console.log("12345");
 
             });
         }
@@ -1026,9 +1032,13 @@
 
 
             $('#telegramInstance').on('change', function () {
-                getTelegramUser(onChange, instance);
-
+                getTelegramUser(onChange, instance, "allTelegramUsers");
+               
             });
+            //initil set data
+            console.log("telegram " + settings['telegramUser']);
+            getTelegramUser(onChange, instance, settings['telegramUser'] );
+
 
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
