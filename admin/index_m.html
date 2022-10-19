@@ -698,8 +698,8 @@
                 //fill select box
 
                 var $sel = $('#telegramUser');
-
-                $sel.append('<option value="allTelegramUsers"' + ((actualValue == "allTelegramUsers") ? 'selected' : '') + '>All Receiver</option>');
+                //remove old ones
+                $sel.children().remove().end().append('<option value="allTelegramUsers"' + ((actualValue == "allTelegramUsers") ? 'selected' : '') + '>All Receiver</option>');
 
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].name != null && typeof result[i].name != undefined && result[i].name.length > 1) {
