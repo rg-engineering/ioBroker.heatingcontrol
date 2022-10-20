@@ -1666,7 +1666,35 @@ async function GetTelegramUser(obj) {
             err && adapter.log.error(err);
             if (state && state.val) {
                 try {
-                    adapter.sendTo(obj.from, obj.command, state.val, obj.callback);
+
+                    //just for test
+                    let value = state.val
+                   
+                    let allUsers = [];
+
+                    for (let user in value) {
+
+                        let userID = user;
+                        let userName = "";
+                        let firstName = "";
+                        for (let userdata in value[user]) {
+                            userName = value[user]["userName"];
+                            firstName = value[user]["firstName"];
+                        }
+
+                        let nextUser = {
+                            id: userID,
+                            userName: userName,
+                            firstName: firstName
+                        }
+                        allUsers.push(nextUser);
+
+                    }
+
+
+
+
+                    adapter.sendTo(obj.from, obj.command, allUsers, obj.callback);
                 } catch (err) {
                     err && adapter.log.error(err);
                     adapter.log.error('Cannot parse stored user IDs from Telegram!');

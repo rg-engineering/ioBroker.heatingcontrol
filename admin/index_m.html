@@ -688,7 +688,7 @@
                     timeout8 = null;
                 }
 
-                console.log('got telegram user' + JSON.stringify(result));
+                console.log('got telegram user ' + JSON.stringify(result));
 
                 let actualValue = "";
                 if (currentVal != null) {
@@ -702,8 +702,14 @@
                 $sel.children().remove().end().append('<option value="allTelegramUsers"' + ((actualValue == "allTelegramUsers") ? 'selected' : '') + '>All Receiver</option>');
 
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].name != null && typeof result[i].name != undefined && result[i].name.length > 1) {
-                        $sel.append('<option value="' + result[i].name + '" ' + ((actualValue == result[i].name) ? 'selected' : '') + '>' + result[i].name + '</option>');
+
+                    console.log('user ' + i + " " + JSON.stringify(result[i]));
+
+                    if (result[i].firstName != null && typeof result[i].firstName != undefined && result[i].firstName.length > 1) {
+
+                        console.log('append ' + result[i].id + " " + result[i].firstName);
+
+                        $sel.append('<option value="' + result[i].id + '" ' + ((actualValue == result[i].id) ? 'selected' : '') + '>' + result[i].firstName + '</option>');
                     }
                 }
                 $sel.select();
