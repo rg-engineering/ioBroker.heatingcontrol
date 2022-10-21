@@ -1668,8 +1668,8 @@ async function GetTelegramUser(obj) {
                 try {
 
                     //just for test
-                    let value = state.val
-                   
+                    let value = JSON.parse(state.val);
+                    adapter.log.debug('telegram-instance got: ' + JSON.stringify(value));
                     let allUsers = [];
 
                     for (let user in value) {
@@ -1687,6 +1687,9 @@ async function GetTelegramUser(obj) {
                             userName: userName,
                             firstName: firstName
                         }
+
+                        adapter.log.debug('telegram-instance push: ' + JSON.stringify(nextUser) + " " + JSON.stringify(value[user]));
+
                         allUsers.push(nextUser);
 
                     }
