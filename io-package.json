@@ -4,7 +4,16 @@
         "version": "2.9.3",
         "news": {
             "2.9.3": {
-                "en": ""
+                "en": "add telegram user to select box",
+                "de": "Telegrammbenutzer zum Auswahlfeld hinzufügen",
+                "ru": "добавить пользователя телеграммы, чтобы выбрать поле",
+                "pt": "adicionar usuário de telegrama à caixa de seleção",
+                "nl": "telegramgebruiker toevoegen om box te selecteren",
+                "fr": "ajouter un utilisateur de télégramme à la case de sélection",
+                "it": "aggiungi l'utente del telegramma per selezionare la casella",
+                "es": "agregar usuario de telegram al cuadro de selección",
+                "pl": "dodaj użytkownika telegramu, aby wybrać skrzynkę",
+                "zh-cn": "将电报用户添加到选择框"
             },
             "2.9.2": {
                 "en": "dependencies updated",
