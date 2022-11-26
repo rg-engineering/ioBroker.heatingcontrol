@@ -13,7 +13,8 @@
                 "it": "aggiungi l'utente del telegramma per selezionare la casella",
                 "es": "agregar usuario de telegram al cuadro de selección",
                 "pl": "dodaj użytkownika telegramu, aby wybrać skrzynkę",
-                "zh-cn": "将电报用户添加到选择框"
+                "zh-cn": "将电报用户添加到选择框",
+                "uk": "додати користувача телеграми в поле вибору"
             },
             "2.9.2": {
                 "en": "dependencies updated",
@@ -25,7 +26,8 @@
                 "it": "dipendenze aggiornate",
                 "es": "dependencias actualizadas",
                 "pl": "zaktualizowano zależności",
-                "zh-cn": "已更新依赖项"
+                "zh-cn": "已更新依赖项",
+                "uk": "залежності оновлено"
             },
             "2.9.1": {
                 "en": "some bug fixes after introducing new features",
@@ -37,7 +39,8 @@
                 "it": "alcune correzioni di bug dopo l'introduzione di nuove funzionalità",
                 "es": "algunas correcciones de errores después de introducir nuevas características",
                 "pl": "kilka poprawek błędów po wprowadzeniu nowych funkcji",
-                "zh-cn": "引入新功能后的一些错误修复"
+                "zh-cn": "引入新功能后的一些错误修复",
+                "uk": "деякі виправлення помилок після введення нових функцій"
             },
             "2.9.0": {
                 "en": "notification and extended actor handling added",
@@ -49,7 +52,8 @@
                 "it": "aggiunta la notifica e la gestione estesa dell'attore",
                 "es": "Se agregaron notificaciones y manejo extendido de actores.",
                 "pl": "dodano powiadomienie i rozszerzoną obsługę aktorów",
-                "zh-cn": "添加了通知和扩展的演员处理"
+                "zh-cn": "添加了通知和扩展的演员处理",
+                "uk": "додано сповіщення та розширене керування акторами"
             },
             "2.8.7": {
                 "en": "bug fix open window handling if thermostat reduces temperature",
@@ -61,7 +65,8 @@
                 "it": "correzione bug gestione finestra aperta se il termostato riduce la temperatura",
                 "es": "corrección de errores manejo de ventanas abiertas si el termostato reduce la temperatura",
                 "pl": "naprawa błędu obsługa otwartego okna, jeśli termostat obniża temperaturę",
-                "zh-cn": "如果恒温器降低温度，则修复打开窗口处理的错误"
+                "zh-cn": "如果恒温器降低温度，则修复打开窗口处理的错误",
+                "uk": "виправлено помилку обробки відкритого вікна, якщо термостат знижує температуру"
             },
             "2.8.6": {
                 "en": "bug fix window handling",
@@ -73,7 +78,8 @@
                 "it": "gestione della finestra di correzione dei bug",
                 "es": "manejo de ventanas de corrección de errores",
                 "pl": "naprawa błędów obsługi okien",
-                "zh-cn": "错误修复窗口处理"
+                "zh-cn": "错误修复窗口处理",
+                "uk": "виправлення помилок обробки вікон"
             },
             "2.8.5": {
                 "en": "inter thermostat delay added",
@@ -85,7 +91,8 @@
                 "it": "ritardo tra termostato aggiunto",
                 "es": "retardo intertermostato agregado",
                 "pl": "Dodano opóźnienie między termostatem",
-                "zh-cn": "添加了恒温器间延迟"
+                "zh-cn": "添加了恒温器间延迟",
+                "uk": "додана затримка між термостатами"
             },
             "2.8.4": {
                 "en": "new datapoint to show current profile temperature; inter actuator delay",
@@ -97,7 +104,8 @@
                 "it": "nuovo punto dati per mostrare la temperatura del profilo corrente; ",
                 "es": "nuevo punto de datos para mostrar la temperatura del perfil actual; ",
                 "pl": "nowy punkt danych pokazujący aktualną temperaturę profilu; ",
-                "zh-cn": "显示当前温度曲线的新数据点；"
+                "zh-cn": "显示当前温度曲线的新数据点；",
+                "uk": "нова точка даних для показу поточної температури профілю; затримка між приводом"
             },
             "2.8.3": {
                 "en": "Loading the configuration fixed",
@@ -109,7 +117,8 @@
                 "it": "Caricamento della configurazione risolto",
                 "es": "Cargando la configuración fija",
                 "pl": "Naprawiono ładowanie konfiguracji",
-                "zh-cn": "加载配置固定"
+                "zh-cn": "加载配置固定",
+                "uk": "Виправлено завантаження конфігурації"
             },
             "2.8.2": {
                 "en": "absent and VacationAbsent exchanged to check reduced mode",
@@ -121,7 +130,8 @@
                 "it": "assente e VacanzaAssente scambiati per verifica modalità ridotta",
                 "es": "ausente y VacationAbsent intercambiado para comprobar el modo reducido",
                 "pl": "nieobecny i VacationAbsent wymienione, aby sprawdzić tryb zredukowany",
-                "zh-cn": "缺席和 VacationAbsent 交换检查减少模式"
+                "zh-cn": "缺席和 VacationAbsent 交换检查减少模式",
+                "uk": "відсутній і VacationAbsent замінено на перевірку скороченого режиму"
             },
             "2.8.1": {
                 "en": "show internal and external temperature sensors in room status",
@@ -133,7 +143,8 @@
                 "it": "mostra i sensori di temperatura interna ed esterna nello stato della stanza",
                 "es": "mostrar sensores de temperatura internos y externos en el estado de la habitación",
                 "pl": "pokaż wewnętrzne i zewnętrzne czujniki temperatury w stanie pokoju",
-                "zh-cn": "在房间状态下显示内部和外部温度传感器"
+                "zh-cn": "在房间状态下显示内部和外部温度传感器",
+                "uk": "показувати внутрішні та зовнішні датчики температури в стані кімнати"
             },
             "2.8.0": {
                 "en": "differrent regulators for actor handling added",
@@ -145,7 +156,8 @@
                 "it": "aggiunti diversi regolatori per la gestione degli attori",
                 "es": "Se agregaron diferentes reguladores para el manejo de actores.",
                 "pl": "dodano różne regulatory do obsługi aktorów",
-                "zh-cn": "添加了不同的演员处理监管机构"
+                "zh-cn": "添加了不同的演员处理监管机构",
+                "uk": "додано різні регулятори для обробки акторів"
             },
             "2.7.2": {
                 "en": "some bug fixes, see readme",
@@ -157,7 +169,8 @@
                 "it": "alcune correzioni di bug, vedere readme",
                 "es": "algunas correcciones de errores, vea el archivo Léame",
                 "pl": "kilka poprawek błędów, zobacz readme",
-                "zh-cn": "一些错误修复，请参阅自述文件"
+                "zh-cn": "一些错误修复，请参阅自述文件",
+                "uk": "деякі виправлення помилок, див. readme"
             },
             "2.7.1": {
                 "en": "change of override in manual mode is mssing",
@@ -169,7 +182,8 @@
                 "it": "la modifica dell'override in modalità manuale sta suonando",
                 "es": "el cambio de anulación en modo manual está fallando",
                 "pl": "brak zmiany nadpisania w trybie ręcznym",
-                "zh-cn": "手动模式下的覆盖更改是 mssing"
+                "zh-cn": "手动模式下的覆盖更改是 mssing",
+                "uk": "зміна перевизначення в ручному режимі є повідомленням"
             },
             "2.7.0": {
                 "en": "limit for additional temp sensors added",
@@ -181,7 +195,8 @@
                 "it": "limite per ulteriori sensori di temperatura aggiunti",
                 "es": "límite para sensores de temperatura adicionales agregado",
                 "pl": "dodano limit dla dodatkowych czujników temperatury",
-                "zh-cn": "添加了额外温度传感器的限制"
+                "zh-cn": "添加了额外温度传感器的限制",
+                "uk": "додано обмеження для додаткових датчиків температури"
             },
             "2.6.2": {
                 "en": "bug fix isActive not ignored",
@@ -193,7 +208,8 @@
                 "it": "la correzione del bug èAttivo non ignorato",
                 "es": "corrección de errores isActive no ignorado",
                 "pl": "naprawa błędu jest Aktywna nie jest ignorowana",
-                "zh-cn": "错误修复 isActive 未被忽略"
+                "zh-cn": "错误修复 isActive 未被忽略",
+                "uk": "виправлення помилки isActive не ігнорується"
             }
         },
         "titleLang": {
@@ -206,7 +222,8 @@
             "it": "Controllo del riscaldamento",
             "es": "Control de calentamiento",
             "pl": "Kontrola ogrzewania",
-            "zh-cn": "加热控制"
+            "zh-cn": "加热控制",
+            "uk": "Контроль опалення"
         },
         "desc": {
             "en": "Heating Control",
@@ -218,7 +235,8 @@
             "it": "Controllo del riscaldamento",
             "es": "Control de calentamiento",
             "pl": "Kontrola ogrzewania",
-            "zh-cn": "加热控制"
+            "zh-cn": "加热控制",
+            "uk": "Контроль опалення"
         },
         "platform": "Javascript/Node.js",
         "mode": "daemon",
