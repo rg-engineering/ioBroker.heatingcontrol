@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.9.3",
+        "version": "2.10.0",
         "news": {
+            "2.10.0": {
+                "en": "bug fix: calculate profil points",
+                "de": "Bugfix: Profilpunkte berechnen",
+                "ru": "исправление ошибки: подсчет очков профиля",
+                "pt": "correção de bug: calcular pontos de perfil",
+                "nl": "bugfix: bereken profielpunten",
+                "fr": "correction de bug : calcul des points de profil",
+                "it": "bug fix: calcola i punti del profilo",
+                "es": "corrección de errores: calcular puntos de perfil",
+                "pl": "poprawka błędu: oblicz punkty profilu",
+                "uk": "виправлення помилки: розрахунок балів профілю",
+                "zh-cn": "错误修复：计算个人资料点"
+            },
             "2.9.3": {
                 "en": "add telegram user to select box",
                 "de": "Telegrammbenutzer zum Auswahlfeld hinzufügen",
