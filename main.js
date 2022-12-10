@@ -821,7 +821,7 @@ async function HandleStateChangeGeneral(id, state) {
                 await SetVis();
             }
 
-            adapter.log.error("copy from vis");
+            //adapter.log.error("copy from vis");
             bRet = true;
         }
 
