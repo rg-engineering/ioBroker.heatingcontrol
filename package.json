@@ -1,6 +1,6 @@
 {
   "name": "iobroker.heatingcontrol",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "description": "HeatingControl Adapter",
   "author": {
     "name": "René G.",
