@@ -402,9 +402,17 @@
             show_hide_column("table_sensors", "sensor_col_0", 0, false);
             show_hide_column("table_addtempsensors", "addtempsensor_col_0", 0, false);
 
-            //third col of rooms (=WindOwpen)
-
-
+            var $ThermostatHandlesWindowOpen = $('#ThermostatHandlesWindowOpen');
+            if ($ThermostatHandlesWindowOpen.prop('checked')) {
+                console.log('show settings ThermostatHandlesWindowOpen');
+                $('.col-WaitForTempIfWindowOpen').show();
+            }
+            else {
+                console.log('hide settings ThermostatHandlesWindowOpen');
+                $('.col-WaitForTempIfWindowOpen').hide();
+            }
+            show_hide_column("table_rooms", "rooms_col_3", 2, false);
+ 
         }
 
         var DeviceList = [];
@@ -1119,6 +1127,11 @@
                 let room = $('#rooms .values-input[data-name="name"][data-index="' + id + '"]').val();
                 $('#dialogDeviceEditRoom').html(room);
 
+                let val1 = $('#rooms .values-input[data-name="WaitForTempIfWindowOpen"][data-index="' + id + '"]').val();
+                $('#WaitForTempIfWindowOpen').val(val1);
+                console.log('set val1 ' + val1);
+
+
                 setTimeout(function () {
                     initDialogRoom(room, function () {
 
@@ -1127,6 +1140,13 @@
 
                         console.log('closing for ' + room);
 
+                        //xxx
+                        //find room data in table and update
+                        let WaitForTempIfWindowOpen = $('#WaitForTempIfWindowOpen').val();
+                        console.log('WaitForTempIfWindowOpen ' + WaitForTempIfWindowOpen);
+                        if (WaitForTempIfWindowOpen >= 0) {
+                            $('#rooms .values-input[data-name="WaitForTempIfWindowOpen"][data-index="' + id + '"]').val(WaitForTempIfWindowOpen).trigger('change');
+                        }
                         let thermostats = table2values('thermostats');
                         let actors = table2values('actors');
                         let sensors = table2values('sensors');
@@ -1856,7 +1876,8 @@
                                     <input type="checkbox" id="ThermostatHandlesWindowOpen" class="value" />
                                     <label for="ThermostatHandlesWindowOpen" class="translate">ThermostatHandlesWindowOpen</label>
                                 </div>
-
+                            </div>
+                            <div class="row">
                                 <div class="input-field col s3 .col-InterThermostatDelay">
                                     <input type="number" id="InterThermostatDelay" class="value" min="0" step="1" />
                                     <label for="InterThermostatDelay" class="translate">InterThermostatDelay</label>
@@ -2553,6 +2574,9 @@
                                 <tr>
                                     <th id="rooms_col_1" data-name="name" style="width: 20%; background: #64b5f6 " class="translate">room</th>
                                     <th id="rooms_col_2" data-name="isActive" data-type="checkbox" style="background: #64b5f6" class="translate">active</th>
+                                    <!-- suould be hidden-->
+                                    <th id="rooms_col_3" data-name="WaitForTempIfWindowOpen" data-type="number" style="background: #64b5f6">WaitForTempIfWindowOpen</th>
+
                                     <th data-buttons="up down edit delete" style="width: 100px; background: #64b5f6"></th>
 
                                 </tr>
@@ -2609,6 +2633,13 @@
                                 </div>
                                 <div class="input-field col s4">
                                     <span class="translate">Check4NewThermostats_hint</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s4 col-WaitForTempIfWindowOpen">
+                                    <input type="number" id="WaitForTempIfWindowOpen" class="value" />
+                                    <label for="WaitForTempIfWindowOpen" class="translate">WaitForTempIfWindowOpen</label>
                                 </div>
                             </div>
 

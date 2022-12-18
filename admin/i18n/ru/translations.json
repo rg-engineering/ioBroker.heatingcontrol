@@ -101,6 +101,7 @@
     "VisStepWidthOverrideTemp": "ширина шага для настройки коррекции температуры",
     "VisStepWidthProfilTemp": "ширина шага настройки температурного профиля",
     "VisUseSimple": "используется простая версия",
+    "WaitForTempIfWindowOpen": "время ожидания обновления температуры от термостата, если он обрабатывает «окно открыто» [сек]",
     "Waiting for the send (seconds)": "Ожидание отправки [секунд]",
     "WhatsApp instance": "экземпляр WhatsApp",
     "absolute": "абсолютный",

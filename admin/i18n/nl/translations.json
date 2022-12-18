@@ -101,6 +101,7 @@
     "VisStepWidthOverrideTemp": "stapbreedte voor temperatuuroverschrijvingsinstellingen",
     "VisStepWidthProfilTemp": "stapbreedte voor temperatuurprofielinstellingen",
     "VisUseSimple": "eenvoudige versie gebruikt",
+    "WaitForTempIfWindowOpen": "wachttijd voor temperatuurupdate van thermostaat als deze 'raam is open' afhandelt [sec]",
     "Waiting for the send (seconds)": "Wachten voor verzenden [seconden]",
     "WhatsApp instance": "WhatsApp-instantie",
     "absolute": "absoluut",

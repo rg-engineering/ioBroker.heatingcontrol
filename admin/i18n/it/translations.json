@@ -101,6 +101,7 @@
     "VisStepWidthOverrideTemp": "larghezza del passo per le impostazioni di override della temperatura",
     "VisStepWidthProfilTemp": "larghezza del passo per le impostazioni del profilo di temperatura",
     "VisUseSimple": "versione semplice utilizzata",
+    "WaitForTempIfWindowOpen": "tempo di attesa per l'aggiornamento della temperatura dal termostato se gestisce 'finestra aperta' [sec]",
     "Waiting for the send (seconds)": "In attesa prima dell'invio [secondi]",
     "WhatsApp instance": "Istanza di WhatsApp",
     "absolute": "assoluto",

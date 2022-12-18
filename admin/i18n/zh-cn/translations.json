@@ -101,6 +101,7 @@
     "VisStepWidthOverrideTemp": "温度覆盖设置的步长",
     "VisStepWidthProfilTemp": "温度曲线设置的步长",
     "VisUseSimple": "使用的简单版本",
+    "WaitForTempIfWindowOpen": "如果恒温器处理“窗口打开”[秒]，则等待恒温器更新温度的时间",
     "Waiting for the send (seconds)": "发送前等待 [秒]",
     "WhatsApp instance": "WhatsApp 实例",
     "absolute": "绝对",

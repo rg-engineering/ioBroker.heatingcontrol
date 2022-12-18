@@ -101,6 +101,7 @@
     "VisStepWidthOverrideTemp": "step width for temperature override settings",
     "VisStepWidthProfilTemp": "step width for temperature profile settings",
     "VisUseSimple": "simple version used",
+    "WaitForTempIfWindowOpen": "waiting time for temperature update from thermostat if it handles 'window is open' [sec]",
     "Waiting for the send (seconds)": "Waiting before send [seconds]",
     "WhatsApp instance": "WhatsApp instance",
     "absolute": "absolute",

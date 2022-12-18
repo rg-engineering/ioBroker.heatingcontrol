@@ -253,6 +253,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.10.2 (in progress)
+
+
 ### 2.10.1 (2022-12-10)
 * (René) update dependencies
 * (René) see issue #337: bug fix in calculate profil position

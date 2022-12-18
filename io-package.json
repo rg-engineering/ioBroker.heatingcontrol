@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.10.1",
+        "version": "2.10.2",
         "news": {
-            "2.10.1": {
+            "2.10.2": {
                 "en": "bug fix: calculate profil points",
                 "de": "Bugfix: Profilpunkte berechnen",
                 "ru": "исправление ошибки: подсчет очков профиля",
