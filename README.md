@@ -254,7 +254,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 ### 2.10.2 (in progress)
-
+* (René) see issue #347: waiting time for target temperature update from thermostat adjustable per room
 
 ### 2.10.1 (2022-12-10)
 * (René) update dependencies

@@ -4,6 +4,19 @@
         "version": "2.10.2",
         "news": {
             "2.10.2": {
+                "en": "waiting time for target temperature update from thermostat adjustable per room",
+                "de": "Wartezeit für Solltemperaturaktualisierung vom Thermostat pro Raum einstellbar",
+                "ru": "время ожидания обновления заданной температуры от термостата, регулируемое для каждой комнаты",
+                "pt": "tempo de espera para atualização da temperatura alvo do termostato ajustável por ambiente",
+                "nl": "wachttijd voor doeltemperatuurupdate van thermostaat instelbaar per kamer",
+                "fr": "temps d'attente pour la mise à jour de la température cible du thermostat réglable par pièce",
+                "it": "tempo di attesa per l'aggiornamento della temperatura target da termostato regolabile per stanza",
+                "es": "tiempo de espera para la actualización de la temperatura objetivo desde el termostato ajustable por habitación",
+                "pl": "czas oczekiwania na aktualizację temperatury docelowej z termostatu regulowany dla każdego pomieszczenia",
+                "uk": "час очікування для оновлення цільової температури від термостата, що регулюється для кожної кімнати",
+                "zh-cn": "每个房间可调的恒温器更新目标温度的等待时间"
+            },
+            "2.10.1": {
                 "en": "bug fix: calculate profil points",
                 "de": "Bugfix: Profilpunkte berechnen",
                 "ru": "исправление ошибки: подсчет очков профиля",
