@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.10.2",
+        "version": "2.10.3",
         "news": {
-            "2.10.2": {
+            "2.10.3": {
                 "en": "waiting time for target temperature update from thermostat adjustable per room",
                 "de": "Wartezeit für Solltemperaturaktualisierung vom Thermostat pro Raum einstellbar",
                 "ru": "время ожидания обновления заданной температуры от термостата, регулируемое для каждой комнаты",
