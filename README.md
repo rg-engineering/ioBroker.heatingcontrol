@@ -253,7 +253,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.10.3 (in progress)
+### 2.10.4 (2022-12-21)
+* (René) UTF8 conversion for some files
+* (René) more space for same values in admin
+
+### 2.10.3 (2022-12-19)
 * (René) see issue #347: waiting time for target temperature update from thermostat adjustable per room
 * (René) see issue #348: bug fix to avoid unnecessary error message
 
