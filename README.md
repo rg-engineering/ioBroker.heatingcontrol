@@ -253,6 +253,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.10.5 (in progress)
+
 ### 2.10.4 (2022-12-21)
 * (René) UTF8 conversion for some files
 * (René) more space for same values in admin
@@ -646,7 +648,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) 2019-2022  info@rg-engineering.eu
+Copyright (C) 2019-2023  info@rg-engineering.eu
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
