@@ -201,34 +201,34 @@
 
             //this is only for header
             var element = document.getElementById(col_name);
+            if (element != null) {
+                if (do_show) {
+                    element.classList.remove("hide");
+                }
+                else {
+                    element.classList.add("hide");
+                }
 
-            if (do_show) {
-                element.classList.remove("hide");
-            }
-            else {
-                element.classList.add("hide");
-            }
+                //here we have all other rows
+                var tbl = document.getElementById(table_name);
+                var rows = tbl.getElementsByTagName('tr');
 
-            //here we have all other rows
-            var tbl = document.getElementById(table_name);
-            var rows = tbl.getElementsByTagName('tr');
-
-            for (var row = 0; row < rows.length; row++) {
-                var cols = rows[row].children;
-                if (col_no >= 0 && col_no < cols.length) {
-                    var cell = cols[col_no];
-                    if (cell.tagName == 'TD' || cell.tagName == 'TH') {
-                        if (do_show) {
-                            cell.classList.remove("hide");
-                        }
-                        else {
-                            cell.classList.add("hide");
+                for (var row = 0; row < rows.length; row++) {
+                    var cols = rows[row].children;
+                    if (col_no >= 0 && col_no < cols.length) {
+                        var cell = cols[col_no];
+                        if (cell.tagName == 'TD' || cell.tagName == 'TH') {
+                            if (do_show) {
+                                cell.classList.remove("hide");
+                            }
+                            else {
+                                cell.classList.add("hide");
+                            }
                         }
                     }
                 }
             }
         }
-
 
         var AdapterIsOnline = false;
 
@@ -911,6 +911,12 @@
             if (typeof settings.rooms !== 'undefined' && settings.rooms != null && settings.rooms.length > 0) {
                 values2table('rooms', settings.rooms, onChange, tableRoomsOnReady);
                 console.log('using rooms from settings ' + JSON.stringify(settings.rooms));
+            }
+            else {
+                //see issue #356, no rooms can be added if room list is empty, only after search for rooms it is possible
+                //solution: add a empty list to table
+                values2table('rooms', null, onChange, tableRoomsOnReady);
+                console.log('create an empty list for rooms');
             }
 
             //===========================================
