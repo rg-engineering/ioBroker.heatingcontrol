@@ -697,6 +697,7 @@
                 }
 
                 console.log('got telegram user ' + JSON.stringify(result));
+                //got telegram user "Error: No instanceName provided or not a string"
 
                 let actualValue = "";
                 if (currentVal != null) {
@@ -710,8 +711,7 @@
                 $sel.children().remove().end().append('<option value="allTelegramUsers"' + ((actualValue == "allTelegramUsers") ? 'selected' : '') + '>All Receiver</option>');
 
                 for (var i = 0; i < result.length; i++) {
-
-                    console.log('user ' + i + " " + JSON.stringify(result[i]));
+                    //console.log('user ' + i + " " + JSON.stringify(result[i]));
 
                     if (result[i].firstName != null && typeof result[i].firstName != undefined && result[i].firstName.length > 1) {
 
@@ -978,6 +978,7 @@
 
             //===========================================================================
             //maintanance functions
+            console.log('aaa');
 
             $('#btn_deleteunusedDP').on('click', function () {
 
@@ -995,6 +996,8 @@
 
 
             });
+
+            console.log('bbb');
 
             $('#notificationsType').on('change', function () {
                 if ($(this).val() === 'Telegram') {
@@ -1028,12 +1031,16 @@
                     $('.whatsapp').hide();
                     $('.signal').show();
                 }
-            }).trigger('change');
+                //}).trigger('change');
+            });
+            //see issue  #357: Save / Save & Close is always active also without changes
+
+            console.log('ccc');
 
             getAdapterInstances('telegram', function (instances) {
                 fillInstances('telegramInstance', instances, settings['telegramInstance'], 'telegram');
             });
-            
+            console.log('ddd');
             getAdapterInstances('whatsapp-cmb', function (instances) {
                 fillInstances('whatsappInstance', instances, settings['whatsappInstance'], 'whatsapp-cmb');
             });
