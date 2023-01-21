@@ -4,17 +4,17 @@
         "version": "2.10.5",
         "news": {
             "2.10.5": {
-                "en": "in progress",
-                "de": "in Bearbeitung",
-                "ru": "в ходе выполнения",
-                "pt": "em progresso",
-                "nl": "bezig",
-                "fr": "en cours",
-                "it": "in corso",
-                "es": "en curso",
-                "pl": "w trakcie",
-                "uk": "в процесі",
-                "zh-cn": "进行中"
+                "en": "some minor bug fixes",
+                "de": "einige kleinere Fehlerbehebungen",
+                "ru": "некоторые мелкие исправления ошибок",
+                "pt": "algumas pequenas correções de bugs",
+                "nl": "enkele kleine bugfixes",
+                "fr": "quelques corrections de bugs mineurs",
+                "it": "alcune correzioni di bug minori",
+                "es": "algunas correcciones de errores menores",
+                "pl": "kilka drobnych poprawek błędów",
+                "uk": "деякі незначні виправлення помилок",
+                "zh-cn": "一些小错误修复"
             },
             "2.10.4": {
                 "en": "waiting time for target temperature update from thermostat adjustable per room",

@@ -255,6 +255,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 2.10.5 (in progress)
 * (René) see issue #356: create list if room list is empty
+* (René) see issue #357: remove change event when loading telegram data
 
 ### 2.10.4 (2022-12-21)
 * (René) UTF8 conversion for some files
