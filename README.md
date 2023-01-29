@@ -254,6 +254,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 ### 2.10.6 (in progress)
+* (René) see issue #355: reset override is now also with Button ResetManual possible
 
 ### 2.10.5 (2023-01-21)
 * (René) see issue #356: create list if room list is empty
