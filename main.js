@@ -970,7 +970,7 @@ async function GetCurrentRoom() {
 
     const temp = await adapter.getStateAsync("vis.ChoosenRoom");
 
-    if (temp != null && typeof temp != undefined) {
+    if (temp != null &&  temp !== undefined) {
         sRet = temp.val;
     }
     else {
