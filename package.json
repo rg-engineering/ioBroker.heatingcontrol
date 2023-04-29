@@ -17,7 +17,7 @@
     "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "2.6.7",
+    "@iobroker/adapter-core": "2.6.8",
     "cron": "2.3.0"
   },
   "devDependencies": {
