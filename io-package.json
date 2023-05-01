@@ -1,48 +1,51 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.10.6",
-        "news": {
-            "2.10.6": {
-                "en": "reset override with reset-manuel button",
-                "de": "Reset-Override mit Reset-Manuell-Taste",
-                "ru": "переопределение сброса с помощью кнопки reset-manuel",
-                "pt": "substituição de reset com o botão reset-manuel",
-                "nl": "reset override met reset-handmatige knop",
-                "fr": "réinitialisation prioritaire avec bouton de réinitialisation manuelle",
-                "it": "reset override con pulsante reset-manuel",
-                "es": "Restablecer anulación con el botón de reinicio manual",
-                "pl": "zresetować nadpisanie za pomocą przycisku reset-manuel",
-                "uk": "скинути перевизначення за допомогою кнопки reset-manuel",
-                "zh-cn": "使用重置手动按钮重置覆盖"
-            },
-            "2.10.5": {
-                "en": "some minor bug fixes",
-                "de": "einige kleinere Fehlerbehebungen",
-                "ru": "некоторые мелкие исправления ошибок",
-                "pt": "algumas pequenas correções de bugs",
-                "nl": "enkele kleine bugfixes",
-                "fr": "quelques corrections de bugs mineurs",
-                "it": "alcune correzioni di bug minori",
-                "es": "algunas correcciones de errores menores",
-                "pl": "kilka drobnych poprawek błędów",
-                "uk": "деякі незначні виправлення помилок",
-                "zh-cn": "一些小错误修复"
-            },
-            "2.10.4": {
-                "en": "waiting time for target temperature update from thermostat adjustable per room",
-                "de": "Wartezeit für Solltemperaturaktualisierung vom Thermostat pro Raum einstellbar",
-                "ru": "время ожидания обновления заданной температуры от термостата, регулируемое для каждой комнаты",
-                "pt": "tempo de espera para atualização da temperatura alvo do termostato ajustável por ambiente",
-                "nl": "wachttijd voor doeltemperatuurupdate van thermostaat instelbaar per kamer",
-                "fr": "temps d'attente pour la mise à jour de la température cible du thermostat réglable par pièce",
-                "it": "tempo di attesa per l'aggiornamento della temperatura target da termostato regolabile per stanza",
-                "es": "tiempo de espera para la actualización de la temperatura objetivo desde el termostato ajustable por habitación",
-                "pl": "czas oczekiwania na aktualizację temperatury docelowej z termostatu regulowany dla każdego pomieszczenia",
-                "uk": "час очікування для оновлення цільової температури від термостата, що регулюється для кожної кімнати",
-                "zh-cn": "每个房间可调的恒温器更新目标温度的等待时间"
-            }
+        "version": "2.11.0",
+      "news": {
+        "2.11.0": {
+          "en" :  ""
         },
+        "2.10.6": {
+          "en": "reset override with reset-manuel button",
+          "de": "Reset-Override mit Reset-Manuell-Taste",
+          "ru": "переопределение сброса с помощью кнопки reset-manuel",
+          "pt": "substituição de reset com o botão reset-manuel",
+          "nl": "reset override met reset-handmatige knop",
+          "fr": "réinitialisation prioritaire avec bouton de réinitialisation manuelle",
+          "it": "reset override con pulsante reset-manuel",
+          "es": "Restablecer anulación con el botón de reinicio manual",
+          "pl": "zresetować nadpisanie za pomocą przycisku reset-manuel",
+          "uk": "скинути перевизначення за допомогою кнопки reset-manuel",
+          "zh-cn": "使用重置手动按钮重置覆盖"
+        },
+        "2.10.5": {
+          "en": "some minor bug fixes",
+          "de": "einige kleinere Fehlerbehebungen",
+          "ru": "некоторые мелкие исправления ошибок",
+          "pt": "algumas pequenas correções de bugs",
+          "nl": "enkele kleine bugfixes",
+          "fr": "quelques corrections de bugs mineurs",
+          "it": "alcune correzioni di bug minori",
+          "es": "algunas correcciones de errores menores",
+          "pl": "kilka drobnych poprawek błędów",
+          "uk": "деякі незначні виправлення помилок",
+          "zh-cn": "一些小错误修复"
+        },
+        "2.10.4": {
+          "en": "waiting time for target temperature update from thermostat adjustable per room",
+          "de": "Wartezeit für Solltemperaturaktualisierung vom Thermostat pro Raum einstellbar",
+          "ru": "время ожидания обновления заданной температуры от термостата, регулируемое для каждой комнаты",
+          "pt": "tempo de espera para atualização da temperatura alvo do termostato ajustável por ambiente",
+          "nl": "wachttijd voor doeltemperatuurupdate van thermostaat instelbaar per kamer",
+          "fr": "temps d'attente pour la mise à jour de la température cible du thermostat réglable par pièce",
+          "it": "tempo di attesa per l'aggiornamento della temperatura target da termostato regolabile per stanza",
+          "es": "tiempo de espera para la actualización de la temperatura objetivo desde el termostato ajustable por habitación",
+          "pl": "czas oczekiwania na aktualizację temperatury docelowej z termostatu regulowany dla każdego pomieszczenia",
+          "uk": "час очікування для оновлення цільової температури від термостата, що регулюється для кожної кімнати",
+          "zh-cn": "每个房间可调的恒温器更新目标温度的等待时间"
+        }
+      },
         "titleLang": {
             "en": "Heating Control",
             "de": "Heizungsregelung",

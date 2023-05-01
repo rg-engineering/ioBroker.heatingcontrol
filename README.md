@@ -253,6 +253,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.11.0 (in progress)
+* (René)
+
 ### 2.10.6 (2023-01-31)
 * (René) see issue #355: reset override is now also with Button ResetManual possible
 
