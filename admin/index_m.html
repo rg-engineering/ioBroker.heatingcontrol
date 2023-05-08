@@ -1000,36 +1000,51 @@
             console.log('bbb');
 
             $('#notificationsType').on('change', function () {
+
+                console.log('bbb ' + $(this).val()); 
+
                 if ($(this).val() === 'Telegram') {
                     $('.email').hide();
                     $('.pushover').hide();
                     $('.whatsapp').hide();
                     $('.signal').hide();
                     $('.telegram').show();
+                    $('.discord').hide();
                 } else if ($(this).val() === 'E-Mail') {
                     $('.telegram').hide();
                     $('.pushover').hide();
                     $('.whatsapp').hide();
                     $('.signal').hide();
                     $('.email').show();
+                    $('.discord').hide();
                 } else if ($(this).val() === 'Pushover') {
                     $('.telegram').hide();
                     $('.email').hide();
                     $('.whatsapp').hide();
                     $('.signal').hide();
                     $('.pushover').show();
+                    $('.discord').hide();
                 } else if ($(this).val() === 'WhatsApp') {
                     $('.telegram').hide();
                     $('.email').hide();
                     $('.pushover').hide();
                     $('.signal').hide();
                     $('.whatsapp').show();
+                    $('.discord').hide();
                 } else if ($(this).val() === 'Signal') {
                     $('.telegram').hide();
                     $('.email').hide();
                     $('.pushover').hide();
                     $('.whatsapp').hide();
                     $('.signal').show();
+                    $('.discord').hide();
+                } else if ($(this).val() === 'Discord') {
+                    $('.telegram').hide();
+                    $('.email').hide();
+                    $('.pushover').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').hide();
+                    $('.discord').show();
                 }
                 //}).trigger('change');
             });
@@ -1057,6 +1072,9 @@
                 fillInstances('pushoverInstance', instances, settings['pushoverInstance'], 'pushover');
             });
 
+            getAdapterInstances('discord', function (instances) {
+                fillInstances('discordInstance', instances, settings['discordInstance'], 'discord');
+            });
 
             $('#telegramInstance').on('change', function () {
                 getTelegramUser(onChange, instance, "allTelegramUsers");
@@ -2202,6 +2220,7 @@
                                         <option value="Pushover" class="translate">Pushover</option>
                                         <option value="WhatsApp" class="translate">WhatsApp</option>
                                         <option value="Signal" class="translate">Signal</option>
+                                        <option value="Discord" class="translate">Discord</option>
                                     </select>
                                     <label for="notificationsType" class="translate">notifications type</label>
                                 </div>
@@ -2234,15 +2253,7 @@
                                 </div>
                             </div>
                             <div class="row telegram">
-                                <!--
-    <div class="input-field col s12 m6 l3 telegram">
-        <select class="value" id="telegramNoticeType">
-            <option value="longTelegramNotice" class="translate">Long Notifications</option>
-            <option value="shortTelegramNotice" class="translate">Short Notifications</option>
-        </select>
-        <label class="translate" for="telegramNoticeType">Notification Style</label>
-    </div>
-        -->
+                                
                                 <div class="input-field col s12 m6 l3 telegram">
                                     <input type="number" class="value" id="telegramWaitToSend" min="0" max="20" />
                                     <label for="telegramWaitToSend" class="translate">Waiting for the send (seconds)</label>
@@ -2253,12 +2264,7 @@
                                     <input class="value" id="telegramSilentNotice" type="checkbox" />
                                     <label for="telegramSilentNotice" class="translate">Silent Notice</label>
                                 </div>
-                                <!--
-        <div class="input-field col s12 m6 l3 telegram">
-            <input class="value" id="telegramOnlyError" type="checkbox" />
-            <label for="telegramOnlyError" class="translate">Notification only on errors</label>
-        </div>
-            -->
+                                
                             </div>
 
                             <!-- WhatsApp -->
@@ -2267,15 +2273,7 @@
                                     <select id="whatsappInstance" class="value"></select>
                                     <label for="whatsappInstance" class="translate">WhatsApp instance</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 whatsapp">
-        <select class="value" id="whatsappNoticeType">
-            <option value="longWhatsappNotice" class="translate">Long Notifications</option>
-            <option value="shortWhatsappNotice" class="translate">Short Notifications</option>
-        </select>
-        <label class="translate" for="whatsappNoticeType">Notification Style</label>
-    </div>
-        -->
+                                
                             </div>
                             <div class="row whatsapp">
                                 <div class="input-field col s12 m6 l3 whatsapp">
@@ -2283,29 +2281,14 @@
                                     <label for="whatsappWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
                             </div>
-                            <!--
-    <div class="row whatsapp">
-        <div class="input-field col s12 m6 l3 whatsapp">
-            <input class="value" id="whatsappOnlyError" type="checkbox" />
-            <label for="whatsappOnlyError" class="translate">Notification only on errors</label>
-        </div>
-    </div>
-        -->
+                            
                             <!-- Signal -->
                             <div class="row signal">
                                 <div class="input-field col s12 m6 l3 signal">
                                     <select id="signalInstance" class="value"></select>
                                     <label for="signalInstance" class="translate">Signal instance</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 signal">
-        <select class="value" id="signalNoticeType">
-            <option value="longSignalNotice" class="translate">Long Notifications</option>
-            <option value="shortSignalNotice" class="translate">Short Notifications</option>
-        </select>
-        <label class="translate" for="signalNoticeType">Notification Style</label>
-    </div>
-        -->
+                                
                             </div>
                             <div class="row signal">
                                 <div class="input-field col s12 m6 l3 signal">
@@ -2313,29 +2296,14 @@
                                     <label for="signalWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
                             </div>
-                            <!--
-    <div class="row signal">
-        <div class="input-field col s12 m6 l3 signal">
-            <input class="value" id="signalOnlyError" type="checkbox" />
-            <label for="signalOnlyError" class="translate">Notification only on errors</label>
-        </div>
-    </div>
-        -->
+                            
                             <!-- Pushover -->
                             <div class="row pushover">
                                 <div class="input-field col s12 m6 l3 pushover">
                                     <select id="pushoverInstance" class="value"></select>
                                     <label for="pushoverInstance" class="translate">Pushover instance</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 pushover">
-        <select class="value" id="pushoverNoticeType">
-            <option value="longPushoverNotice" class="translate">Long Notifications</option>
-            <option value="shortPushoverNotice" class="translate">Short Notifications</option>
-        </select>
-        <label class="translate" for="pushoverNoticeType">Notification Style</label>
-    </div>
-        -->
+                                
                             </div>
                             <div class="row pushover">
                                 <div class="input-field col s12 m6 l3 pushover">
@@ -2352,12 +2320,7 @@
                                     <input class="value" id="pushoverSilentNotice" type="checkbox" />
                                     <label for="pushoverSilentNotice" class="translate">Silent Notice</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 pushover">
-        <input class="value" id="pushoverOnlyError" type="checkbox" />
-        <label for="pushoverOnlyError" class="translate">Notification only on errors</label>
-    </div>
-        -->
+                                
                             </div>
                             <!-- email -->
                             <div class="row email">
@@ -2377,28 +2340,33 @@
                                     <select id="emailInstance" class="value"></select>
                                     <label for="emailInstance" class="translate">email instance</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 email">
-        <select class="value" id="emailNoticeType">
-            <option value="longEmailNotice" class="translate">Long Notifications</option>
-            <option value="shortEmailNotice" class="translate">Short Notifications</option>
-        </select>
-        <label class="translate" for="emailNoticeType">Notification Style</label>
-    </div>
-        -->
+                                
                             </div>
                             <div class="row email">
                                 <div class="input-field col s12 m6 l3 email">
                                     <input type="number" class="value" id="emailWaitToSend" min="0" max="20" />
                                     <label for="emailWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
-                                <!--
-    <div class="input-field col s12 m6 l3 email">
-        <input class="value" id="emailOnlyError" type="checkbox" />
-        <label for="emailOnlyError" class="translate">Notification only on errors</label>
-    </div>
-        -->
+                                
                             </div>
+
+
+
+                            <!-- Discord -->
+                            <div class="row discord">
+                                <div class="input-field col s12 m6 l3 discord">
+                                    <select id="discordInstance" class="value"></select>
+                                    <label for="discordInstance" class="translate">Discord instance</label>
+                                </div>
+                               
+                            </div>
+                            <div class="row discord">
+                                <div class="input-field col s12 m6 l3 discord">
+                                    <input type="number" class="value" id="discordWaitToSend" min="0" max="20" />
+                                    <label for="discordWaitToSend" class="translate">Waiting for the send (seconds)</label>
+                                </div>
+                            </div>
+
 
                         </div>
                     </li>
