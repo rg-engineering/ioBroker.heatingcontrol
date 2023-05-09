@@ -21,6 +21,8 @@
     "DPSettings": "数据点设置",
     "DeleteUnusedConfig": "删除未使用的配置数据",
     "DeleteUnusedDP": "删除未使用的数据点",
+    "Discord instance": "Discord实例",
+    "DiscordUserTag": "用户标签",
     "Edit Room": "编辑房间",
     "ExtHandlingActorAckWaitTime": "扩展处理：等待时间",
     "ExtHandlingActorRepTime": "扩展处理：最大重复时间",

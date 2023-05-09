@@ -21,6 +21,8 @@
     "DPSettings": "Datenpunkteinstellungen",
     "DeleteUnusedConfig": "unbenutzte Konfigurationsdaten löschen",
     "DeleteUnusedDP": "unbenutzte Datenpunkte löschen",
+    "Discord instance": "Discord-Instanz",
+    "DiscordUserTag": "Benutzer-Tag",
     "Edit Room": "den Raum bearbeiten",
     "ExtHandlingActorAckWaitTime": "verlängerte Handhabung: Wartezeit",
     "ExtHandlingActorRepTime": "Erweiterte Handhabung: max. Wiederholzeit",

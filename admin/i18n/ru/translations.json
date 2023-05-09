@@ -21,6 +21,8 @@
     "DPSettings": "Настройки точки данных",
     "DeleteUnusedConfig": "удалить неиспользуемые данные конфигурации",
     "DeleteUnusedDP": "удалить неиспользуемые точки данных",
+    "Discord instance": "Дискорд-экземпляр",
+    "DiscordUserTag": "Тег пользователя",
     "Edit Room": "отредактировать комнату",
     "ExtHandlingActorAckWaitTime": "расширенная обработка: время ожидания",
     "ExtHandlingActorRepTime": "расширенная обработка: максимальное время повторения",

@@ -412,8 +412,61 @@
                 $('.col-WaitForTempIfWindowOpen').hide();
             }
             show_hide_column("table_rooms", "rooms_col_3", 2, false);
- 
+
+            ShowHideNotificationSettings($('#notificationsType').val());
+
         }
+
+
+        function ShowHideNotificationSettings(current) {
+
+            console.log("ShowHideNotificationSettings " + current);
+
+            if (current === 'Telegram') {
+                $('.email').hide();
+                $('.pushover').hide();
+                $('.whatsapp').hide();
+                $('.signal').hide();
+                $('.telegram').show();
+                $('.discord').hide();
+            } else if (current === 'E-Mail') {
+                $('.telegram').hide();
+                $('.pushover').hide();
+                $('.whatsapp').hide();
+                $('.signal').hide();
+                $('.email').show();
+                $('.discord').hide();
+            } else if (current === 'Pushover') {
+                $('.telegram').hide();
+                $('.email').hide();
+                $('.whatsapp').hide();
+                $('.signal').hide();
+                $('.pushover').show();
+                $('.discord').hide();
+            } else if (current === 'WhatsApp') {
+                $('.telegram').hide();
+                $('.email').hide();
+                $('.pushover').hide();
+                $('.signal').hide();
+                $('.whatsapp').show();
+                $('.discord').hide();
+            } else if (current === 'Signal') {
+                $('.telegram').hide();
+                $('.email').hide();
+                $('.pushover').hide();
+                $('.whatsapp').hide();
+                $('.signal').show();
+                $('.discord').hide();
+            } else if (current === 'Discord') {
+                $('.telegram').hide();
+                $('.email').hide();
+                $('.pushover').hide();
+                $('.whatsapp').hide();
+                $('.signal').hide();
+                $('.discord').show();
+            }
+        }
+
 
         var DeviceList = [];
 
@@ -997,65 +1050,25 @@
 
             });
 
-            console.log('bbb');
 
             $('#notificationsType').on('change', function () {
 
                 console.log('bbb ' + $(this).val()); 
 
-                if ($(this).val() === 'Telegram') {
-                    $('.email').hide();
-                    $('.pushover').hide();
-                    $('.whatsapp').hide();
-                    $('.signal').hide();
-                    $('.telegram').show();
-                    $('.discord').hide();
-                } else if ($(this).val() === 'E-Mail') {
-                    $('.telegram').hide();
-                    $('.pushover').hide();
-                    $('.whatsapp').hide();
-                    $('.signal').hide();
-                    $('.email').show();
-                    $('.discord').hide();
-                } else if ($(this).val() === 'Pushover') {
-                    $('.telegram').hide();
-                    $('.email').hide();
-                    $('.whatsapp').hide();
-                    $('.signal').hide();
-                    $('.pushover').show();
-                    $('.discord').hide();
-                } else if ($(this).val() === 'WhatsApp') {
-                    $('.telegram').hide();
-                    $('.email').hide();
-                    $('.pushover').hide();
-                    $('.signal').hide();
-                    $('.whatsapp').show();
-                    $('.discord').hide();
-                } else if ($(this).val() === 'Signal') {
-                    $('.telegram').hide();
-                    $('.email').hide();
-                    $('.pushover').hide();
-                    $('.whatsapp').hide();
-                    $('.signal').show();
-                    $('.discord').hide();
-                } else if ($(this).val() === 'Discord') {
-                    $('.telegram').hide();
-                    $('.email').hide();
-                    $('.pushover').hide();
-                    $('.whatsapp').hide();
-                    $('.signal').hide();
-                    $('.discord').show();
-                }
+                ShowHideNotificationSettings($(this).val());
+
+                
+                
                 //}).trigger('change');
             });
             //see issue  #357: Save / Save & Close is always active also without changes
 
-            console.log('ccc');
+
 
             getAdapterInstances('telegram', function (instances) {
                 fillInstances('telegramInstance', instances, settings['telegramInstance'], 'telegram');
             });
-            console.log('ddd');
+
             getAdapterInstances('whatsapp-cmb', function (instances) {
                 fillInstances('whatsappInstance', instances, settings['whatsappInstance'], 'whatsapp-cmb');
             });
@@ -2361,6 +2374,11 @@
                                
                             </div>
                             <div class="row discord">
+                                <div class="input-field col s12 m6 l3 discord">
+                                    <input type="text" class="value" id="discordUserTag" />
+                                    <label for="discordUserTag" class="translate">DiscordUserTag</label>
+                                </div>
+
                                 <div class="input-field col s12 m6 l3 discord">
                                     <input type="number" class="value" id="discordWaitToSend" min="0" max="20" />
                                     <label for="discordWaitToSend" class="translate">Waiting for the send (seconds)</label>
