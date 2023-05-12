@@ -239,7 +239,7 @@ to do
 
 translation to do 
 wenn EVU Sperrzeit erreicht, werden alle Aktoren ausgeschaltet, und am ende der Sperrzeit wieder eingeschaltet.
-Status geht auf "EVU Sperrzeit"
+Status geht auf "EVU Sperrzeit" / "PowerInterruption"
 Ziel: elektrische Heizungen ausschalten und gezielt wieder einschalten, um Belastung der Schütze zu minimieren und Einschlatstromstöße zu minimieren
 Konfiguration: Start / Ende Zeit der EVU Sperrzeit, mehrere Perioden konfigurierbar
 
@@ -268,7 +268,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 2.11.0 (in progress)
 * (René) see issue #368: units added in datapoints
-* (René) see issue #361: EVU Sperrzeit to do, siehe auch oben (not yet finished)
+* (René) see issue #361: EVU Sperrzeit / PowerInterruption (description see above)
 * (René) see issue #359: support of discord added to notifications (not yet finished)
 * (René) see issue #367: wait for set target temperature before checking actor changes
 

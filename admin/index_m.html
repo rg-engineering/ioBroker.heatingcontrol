@@ -1097,7 +1097,10 @@
             console.log("telegram " + settings['telegramUser']);
             getTelegramUser(onChange, instance, settings['telegramUser'] );
 
-
+            //===========================================================================
+            //power interruptions
+            values2table('PowerInterruptions', settings.PowerInterruptions, onChange, tablePowerInterruptionsOnReady);
+   
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
             $('ul.tabs li a').on('click', function () { onTabShow($(this).attr('href')); });
@@ -1111,10 +1114,15 @@
                 }
             }
 
+
             function loadOptions() {
                 $('.collapsible').collapsible();
             }
             loadOptions();
+        }
+
+        function tablePowerInterruptionsOnReady() {
+            console.log('tablePowerInterruptionsOnReady, do nothing');
         }
 
         function fillInstances(id, arr, val, name) {
@@ -1157,7 +1165,9 @@
                 obj.devices = DeviceList;
             }
 
-           
+            //===========================================================================
+            //power interruptions
+            obj.PowerInterruptions = table2values('PowerInterruptions');
 
             callback(obj);
         }
@@ -2545,9 +2555,34 @@
                             </div>
                         </div>
                     </li>
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">expand_more</i><h6 class="translate">Power Interruptions</h6>
+                        </div>
+                        <div class="collapsible-body">
 
+                            <div class="row">
+                                <div class="col s12" id="PowerInterruptions">
+
+                                    <a id="addPowerInterruption" class="btn-floating waves-effect waves-light blue table-button-add" title="add power interruption"><i class="material-icons">add</i></a>
+
+                                    <div class="table-powerinterruptions-div">
+                                        <table id="table-powerinterruptions" class="table-values" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th id="powerinterruptions_col1" data-name="active" data-type="checkbox" style="background: #64b5f6 " class="header translate">PIactive</th>
+                                                    <th id="powerinterruptions_col2" data-name="Start" data-type="text" style="background: #64b5f6 " class="header translate">StartPI</th>
+                                                    <th id="powerinterruptions_col3" data-name="End" data-type="text" style="background: #64b5f6 " class="header translate">EndPI</th>
+                                                    <th id="powerinterruptions_col4" data-buttons="up down delete" style="width: 100px; background: #64b5f6"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
-
             </div>
 
             <!-- tab "devices" -->

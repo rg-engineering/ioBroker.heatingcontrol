@@ -888,6 +888,10 @@ async function HandleStateChangeGeneral(id, state) {
                 StartTimer2ResetFireplaceMode();
             }
         }
+        else if (ids[2] == "PowerInterruptionPeriodActive") {
+            bRet = true;
+            ChangeStatus(ids[2], "all", state.val);
+        }
         //heatingcontrol.0.Rooms.Küche.TemperaturOverride
         else if (ids[4] == "TemperaturOverride") {
             bRet = true;
