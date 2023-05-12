@@ -235,17 +235,12 @@ checks that value was set correctly and ack is set, otherwise retries...
 to do
 
 
-## EVU Sperrzeit
+## EVU Sperrzeit / PowerInterruption
 
-translation to do 
-wenn EVU Sperrzeit erreicht, werden alle Aktoren ausgeschaltet, und am ende der Sperrzeit wieder eingeschaltet.
-Status geht auf "EVU Sperrzeit" / "PowerInterruption"
-Ziel: elektrische Heizungen ausschalten und gezielt wieder einschalten, um Belastung der Schütze zu minimieren und Einschlatstromstöße zu minimieren
-Konfiguration: Start / Ende Zeit der EVU Sperrzeit, mehrere Perioden konfigurierbar
-
--> Alternativ: Temperatur absenken, damit sollten die Aktoren indirekt abschalten
-
-
+when the power supply company blocking time is reached, all actuators are switched off and switched on again at the end of the blocking time.
+Status goes to "EVU Sperrzeit" / "PowerInterruption"
+Aim: switch off electrical heaters and switch them on again in a targeted manner in order to minimize the load on the contactors and to minimize inrush currents
+Configuration: Start / end time of the EVU blocking time, several periods can be configured
 
 
 ## Issues and Feature Requests
