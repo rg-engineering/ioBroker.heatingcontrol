@@ -840,13 +840,20 @@ async function HandleStateChangeGeneral(id, state) {
             //heatingcontrol.0.Profiles.1.ProfileName
             || ids[4] === "ProfileName"
             || ids[3] === "TempDecreaseValues") {
-            bRet = await HandleStateChangeVis(id, state);
+            if (adapter.config.UseVisFromPittini) {
+                bRet = await HandleStateChangeVis(id, state);
+            }
         }
         //heatingcontrol.0.CurrentProfile
         else if (ids[2] == "CurrentProfile") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-            HandleStateChangeVis(id, state);
+
+            handle exception reported by sentry
+            if (adapter.config.UseVisFromPittini) {
+                await HandleStateChangeVis(id, state);
+            }
+            
         }
         //heatingcontrol.0.HeatingPeriodActive
         else if (ids[2] == "HeatingPeriodActive") {

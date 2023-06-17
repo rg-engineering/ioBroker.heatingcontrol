@@ -415,8 +415,32 @@
 
             ShowHideNotificationSettings($('#notificationsType').val());
 
+            ShowHideNotificationDiscordSettings($('#discordTarget').val());
+
         }
 
+
+        function ShowHideNotificationDiscordSettings(current) {
+            console.log("ShowHideNotificationDiscordSettings " + current);
+
+            if (current === 'UserId') {
+                $('.discordUserId').show();
+                $('.discordUserTag').hide();
+                $('.discordServerChannel').hide();
+            }
+            else if (current === 'UserTag') {
+                $('.discordUserId').hide();
+                $('.discordUserTag').show();
+                $('.discordServerChannel').hide();
+            }
+            else if (current === 'ServerChannel') {
+                $('.discordUserId').hide();
+                $('.discordUserTag').hide();
+                $('.discordServerChannel').show();
+            }
+
+
+        }
 
         function ShowHideNotificationSettings(current) {
 
@@ -1044,26 +1068,19 @@
             });
 
             $('#btn_deleteunusedConfig').on('click', function () {
-
                 DeleteUnusedConfig();
-
-
             });
 
 
             $('#notificationsType').on('change', function () {
-
                 console.log('bbb ' + $(this).val()); 
-
                 ShowHideNotificationSettings($(this).val());
-
-                
-                
-                //}).trigger('change');
             });
-            //see issue  #357: Save / Save & Close is always active also without changes
 
-
+            $('#discordTarget').on('change', function () {
+                console.log('b1b1b1 ' + $(this).val());
+                ShowHideNotificationDiscordSettings($(this).val());
+            });
 
             getAdapterInstances('telegram', function (instances) {
                 fillInstances('telegramInstance', instances, settings['telegramInstance'], 'telegram');
@@ -2384,9 +2401,34 @@
                                
                             </div>
                             <div class="row discord">
-                                <div class="input-field col s12 m6 l3 discord">
+
+                                <div class="input-field col s11 m2">
+                                    <select class="value" id="discordTarget">
+                                        <option value="UserTag" class="translate">UserTag</option>
+                                        <option value="UserId" class="translate">UserId</option>
+                                        <option value="ServerChannel" class="translate">ServerChannel</option>
+                                    </select>
+                                    <label for="notificationsType" class="translate">discordTarget</label>
+                                </div>
+
+                                <div class="input-field col s12 m6 l3 discord discordUserTag">
                                     <input type="text" class="value" id="discordUserTag" />
                                     <label for="discordUserTag" class="translate">DiscordUserTag</label>
+                                </div>
+
+                                <div class="input-field col s12 m6 l3 discord discordUserId">
+                                    <input type="text" class="value" id="discordUserId" />
+                                    <label for="discordUserId" class="translate">DiscordUserId</label>
+                                </div>
+
+                                <div class="input-field col s12 m6 l3 discord discordServerChannel">
+                                    <input type="text" class="value" id="discordServerId" />
+                                    <label for="discordServerId" class="translate">DiscordServerId</label>
+                                </div>
+
+                                <div class="input-field col s12 m6 l3 discord discordServerChannel">
+                                    <input type="text" class="value" id="discordChannelId" />
+                                    <label for="discordChannelId" class="translate">DiscordChannelId</label>
                                 </div>
 
                                 <div class="input-field col s12 m6 l3 discord">
