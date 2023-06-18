@@ -849,7 +849,7 @@ async function HandleStateChangeGeneral(id, state) {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
 
-            handle exception reported by sentry
+            //handle exception reported by sentry
             if (adapter.config.UseVisFromPittini) {
                 await HandleStateChangeVis(id, state);
             }
