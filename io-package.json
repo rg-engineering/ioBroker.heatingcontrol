@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "heatingcontrol",
-        "version": "2.11.0",
+        "version": "2.11.1",
         "news": {
+            "2.11.1": {
+                "en": "dependencies updated",
+                "de": "Abhängigkeiten aktualisiert",
+                "ru": "зависимости обновлены",
+                "pt": "dependências atualizadas",
+                "nl": "afhankelijkheden bijgewerkt",
+                "fr": "dépendances mises à jour",
+                "it": "dipendenze aggiornate",
+                "es": "dependencias actualizadas",
+                "pl": "zaktualizowane zależności",
+                "uk": "залежності оновлено",
+                "zh-cn": "依赖项已更新"
+            },
             "2.11.0": {
                 "en": "discord added",
                 "de": "Zwietracht hinzugefügt",
