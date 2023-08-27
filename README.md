@@ -261,6 +261,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+<!--
+  Placeholder for the next version (at the beginning of the line):
+  ### **WORK IN PROGRESS**
+-->
+
 ### 2.11.1 (2023-07-30)
 * (René) dependencies updated
 

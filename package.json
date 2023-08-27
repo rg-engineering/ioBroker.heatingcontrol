@@ -21,6 +21,7 @@
     "cron": "2.4.0"
   },
   "devDependencies": {
+    "@alcalzone/release-script": "^3.6.0",
     "@iobroker/adapter-dev": "1.2.0",
     "@iobroker/testing": "4.1.0",
     "@types/chai": "4.3.5",
@@ -47,12 +48,13 @@
     "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
   },
   "scripts": {
-    "test": "npm run test:package && npm run test:unit",
+    "test": "npm run test:package",
     "test:package": "mocha test/package --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
     "lint": "eslint",
-    "translate": "translate-adapter"
+    "translate": "translate-adapter",
+    "release": "release-script"
   },
   "readmeFilename": "README.md"
 }
