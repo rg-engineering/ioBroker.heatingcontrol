@@ -2,7 +2,8 @@
 # ioBroker.HeatingControl
 
 
-![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) ![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg)
+![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 [![NPM version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 
@@ -10,6 +11,24 @@
 ![GitHub Actions](https://github.com/rg-engineering/ioBroker.heatingcontrol/workflows/Test%20and%20Release/badge.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
+
+
+![node-lts](https://img.shields.io/node/v-lts/iobroker.heatingcontrol?style=flat-square)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/iobroker.heatingcontrol?label=npm%20dependencies&style=flat-square)
+
+![GitHub](https://img.shields.io/github/license/iobroker-community-adapters/iobroker.statistics?style=flat-square)
+![GitHub repo size](https://img.shields.io/github/repo-size/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rg-engineering/ioBroker.heatingcontrol/test-and-release.yml?branch=master&logo=github&style=flat-square)
+
+## Versions
+
+![Beta](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg?color=red&label=beta)
+
+
+
 
 
 
@@ -265,6 +284,10 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) issue #459: show unused datapoints of periods in log
+
 ### 2.12.0 (2023-11-22)
 * (René) dependencies updated
 * (René) fix eslint reported issues
