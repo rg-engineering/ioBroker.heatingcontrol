@@ -21,11 +21,10 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
 ![GitHub issues](https://img.shields.io/github/issues/rg-engineering/ioBroker.heatingcontrol?logo=github&style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rg-engineering/ioBroker.heatingcontrol/test-and-release.yml?branch=master&logo=github&style=flat-square)
 
-## Versions
 
-![Beta](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg?color=red&label=beta)
+
+
 
 
 
