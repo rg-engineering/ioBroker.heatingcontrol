@@ -265,7 +265,8 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### 2.11.2 (2023-11-22)
+
+### **WORK IN PROGRESS**
 * (René) dependencies updated
 * (René) fix eslint reported issues
 * (René) see issue #489: increase limit of status change list to 100
