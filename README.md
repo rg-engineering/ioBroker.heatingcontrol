@@ -268,6 +268,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 2.12.0 (2023-11-22)
 * (René) dependencies updated
 * (René) fix eslint reported issues
+* (René) see issue #486: option to use offset calculation immediately
 * (René) see issue #489: increase limit of status change list to 100
 
 ### 2.11.1 (2023-07-30)

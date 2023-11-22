@@ -1666,40 +1666,40 @@ async function deleteUnusedDP(obj) {
 async function GetTelegramUser(obj) {
     if (obj && obj.message) {
 
-        adapter.log.debug('telegram-instance: ' + JSON.stringify(obj));
+        adapter.log.debug("telegram-instance: " + JSON.stringify(obj));
         /*
         telegram - instance: { "command": "getTelegramUser", "message": { "telegraminstance": "telegram.0" }, "from": "system.adapter.admin.0", "callback": { "message": { "telegraminstance": "telegram.0" }, "id": 144, "ack": false, "time": 1665936632067 }, "_id": 57898782 }
         */
 
         const inst = obj.message.telegraminstance ? obj.message.telegraminstance : "telegram.0";
-        adapter.log.debug('telegram-instance: ' + inst)
-        adapter.getForeignState(inst + '.communicate.users', (err, state) => {
+        adapter.log.debug("telegram-instance: " + inst);
+        adapter.getForeignState(inst + ".communicate.users", (err, state) => {
             err && adapter.log.error(err);
             if (state && state.val) {
                 try {
 
                     //just for test
-                    let value = JSON.parse(state.val);
-                    adapter.log.debug('telegram-instance got: ' + JSON.stringify(value));
-                    let allUsers = [];
+                    const value = JSON.parse(state.val);
+                    adapter.log.debug("telegram-instance got: " + JSON.stringify(value));
+                    const allUsers = [];
 
-                    for (let user in value) {
+                    for (const user in value) {
 
-                        let userID = user;
+                        const userID = user;
                         let userName = "";
                         let firstName = "";
-                        for (let userdata in value[user]) {
+                        for (const userdata in value[user]) {
                             userName = value[user]["userName"];
                             firstName = value[user]["firstName"];
                         }
 
-                        let nextUser = {
+                        const nextUser = {
                             id: userID,
                             userName: userName,
                             firstName: firstName
-                        }
+                        };
 
-                        adapter.log.debug('telegram-instance push: ' + JSON.stringify(nextUser) + " " + JSON.stringify(value[user]));
+                        adapter.log.debug("telegram-instance push: " + JSON.stringify(nextUser) + " " + JSON.stringify(value[user]));
 
                         allUsers.push(nextUser);
 
@@ -1711,7 +1711,7 @@ async function GetTelegramUser(obj) {
                     adapter.sendTo(obj.from, obj.command, allUsers, obj.callback);
                 } catch (err) {
                     err && adapter.log.error(err);
-                    adapter.log.error('Cannot parse stored user IDs from Telegram!');
+                    adapter.log.error("Cannot parse stored user IDs from Telegram!");
                 }
             }
         });
