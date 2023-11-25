@@ -4,17 +4,17 @@
         "version": "2.12.0",
         "news": {
             "2.12.0": {
-                "en": "limit of status change list increased to 100\n option to use offset calculation immediately\nnotification messages customizable",
-                "de": "Limit der Statusänderungsliste auf 100 erhöht\n Möglichkeit, die Offsetberechnung sofort zu verwenden\nBenachrichtigungsnachrichten anpassbar",
-                "ru": "лимит списка изменения статуса увеличен до 100\n возможность немедленно использовать расчет смещения\nнастраиваемые уведомления",
-                "pt": "limite da lista de alteração de status aumentado para 100\n opção para usar o cálculo de compensação imediatamente\nmensagens de notificação personalizáveis",
-                "nl": "limiet van statuswijzigingslijst verhoogd naar 100\n optie om de offsetberekening onmiddellijk te gebruiken\nmeldingsberichten aanpasbaar",
-                "fr": "la limite de la liste de changement de statut est augmentée à 100\n possibilité d'utiliser le calcul de décalage immédiatement\nmessages de notification personnalisables",
-                "it": "il limite dell'elenco di modifiche di stato è stato aumentato a 100\n opzione per utilizzare immediatamente il calcolo dell'offset\nmessaggi di notifica personalizzabili",
-                "es": "El límite de la lista de cambios de estado aumentó a 100.\n Opción de utilizar el cálculo de compensación inmediatamente.\nmensajes de notificación personalizables",
-                "pl": "zwiększono limit listy zmian statusu do 100\n możliwość natychmiastowego zastosowania obliczeń offsetu\nkonfigurowalne powiadomienia",
-                "uk": "ліміт списку змін статусу збільшено до 100\n можливість негайного використання розрахунку зміщення\nнастроювані сповіщення",
-                "zh-cn": "状态变更列表限制增加至 100\n 立即使用偏移计算的选项\n通知消息可定制"
+                "en": "limit of status change list increased to 100\\n option to use offset calculation immediately\\nnotification messages customizable\\Show the number of objects that can be deleted in the log and indicate that they can be deleted in admin ",
+                "de": "Limit der Statusänderungsliste auf 100 erhöht\\n Option zur sofortigen Verwendung der Offset-Berechnung\\nBenachrichtigungsmeldungen anpassbar\\Zeigen Sie die Anzahl der Objekte an, die im Protokoll gelöscht werden können, und geben Sie an, dass sie im Admin gelöscht werden können",
+                "ru": "лимит списка изменений статуса увеличен до 100\\n возможность немедленного использования расчета смещения\\nнастраиваемые сообщения уведомлений\\Показать количество объектов, которые можно удалить в журнале, и указать, что их можно удалить в администраторе",
+                "pt": "limite da lista de alteração de status aumentado para 100\\nopção para usar o cálculo de deslocamento imediatamente\\nmensagens de notificação personalizáveis\\Mostra o número de objetos que podem ser excluídos no log e indicam que eles podem ser excluídos no admin",
+                "nl": "limiet van statuswijzigingslijst verhoogd naar 100\\n optie om offsetberekening onmiddellijk te gebruiken\\nmeldingsberichten aanpasbaar\\Toon het aantal objecten dat kan worden verwijderd in het logboek en geef aan dat ze kunnen worden verwijderd in admin",
+                "fr": "limite de la liste de changement de statut augmentée à 100\\n option pour utiliser le calcul de décalage immédiatement\\nmessages de notification personnalisables\\Afficher le nombre d'objets pouvant être supprimés dans le journal et indiquer qu'ils peuvent être supprimés dans l'administrateur",
+                "it": "limite elenco modifiche stato aumentato a 100\\n opzione per utilizzare immediatamente il calcolo dell'offset\\nmessaggi di notifica personalizzabili\\Mostra il numero di oggetti che possono essere eliminati nel registro e indica che possono essere eliminati in amministrazione",
+                "es": "límite de lista de cambio de estado aumentado a 100\\n opción para usar el cálculo de compensación inmediatamente\\nmensajes de notificación personalizables\\Muestra la cantidad de objetos que se pueden eliminar en el registro e indica que se pueden eliminar en el administrador",
+                "pl": "limit listy zmian statusu zwiększony do 100\\n możliwość natychmiastowego użycia obliczenia offsetu\\nmożliwość dostosowania komunikatów powiadomień\\Pokaż liczbę obiektów, które można usunąć w logu i wskaż, że można je usunąć w panelu administracyjnym",
+                "uk": "ліміт списку змін статусу збільшено до 100\\n можливість негайного використання розрахунку зсуву\\nсповіщення, які можна налаштувати\\Показати кількість об'єктів, які можна видалити в журналі, і вказати, що їх можна видалити в адмін.",
+                "zh-cn": "状态更改列表限制增加到100\\n立即使用偏移计算的选项\\n可自定义通知消息\\在日志中显示可以删除的对象数量，并表明可以在管理中删除它们"
             },
             "2.11.1": {
                 "en": "dependencies updated",
