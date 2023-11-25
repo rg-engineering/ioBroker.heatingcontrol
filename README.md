@@ -286,6 +286,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### **WORK IN PROGRESS**
 * (René) issue #459: show unused datapoints of periods in log
+* (René) issue #376: notification messages customizable
 
 ### 2.12.0 (2023-11-22)
 * (René) dependencies updated
