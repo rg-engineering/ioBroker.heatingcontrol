@@ -1658,7 +1658,7 @@ async function LoadProfile(obj) {
     
 async function deleteUnusedDP(obj) {
 
-    const result = await DeleteUnusedDP();
+    const result = await DeleteUnusedDP(false);
 
     adapter.sendTo(obj.from, obj.command, result, obj.callback);
 }
