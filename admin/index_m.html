@@ -233,6 +233,7 @@
         var AdapterIsOnline = false;
 
         function showHideSettings() {
+            console.log('showHideSettings');
 
             //always hide
 
@@ -422,26 +423,76 @@
 
             ShowHideNotificationDiscordSettings($('#discordTarget').val());
 
+            ShowHideCustumizedNotifications($('#useCustumizedNotifications').prop('checked')); 
+
         }
+
+
+        function ShowHideCustumizedNotifications(current) {
+            console.log("ShowHideCustumizedNotifications " + current);
+
+            if (current) {
+
+                $('.useCustumizedNotificationsWithInstanceName').show();
+                $('.useCustumizedNotificationsNewTargetTemp').show();
+
+                if ($('#UseActors').prop('checked')) {
+                    $('.useCustumizedNotificationsActorOn').show();
+                    $('.useCustumizedNotificationsActorOff').show();
+                }
+                $('.useCustumizedNotificationsWindowOpen').show();
+                $('.useCustumizedNotificationsWindowClose').show();
+
+            }
+            else {
+                $('.useCustumizedNotificationsWithInstanceName').hide();
+                $('.useCustumizedNotificationsNewTargetTemp').hide();
+                $('.useCustumizedNotificationsActorOn').hide();
+                $('.useCustumizedNotificationsActorOff').hide();
+                $('.useCustumizedNotificationsWindowOpen').hide();
+                $('.useCustumizedNotificationsWindowClose').hide();
+
+            }
+
+
+            // alles hide, wenn Benachrichtigung off
+            console.log("ShowHideCustumizedNotifications notification enabled " + $('#notificationEnabled').prop('checked'));
+
+            if ($('#notificationEnabled').prop('checked')) {
+
+                $('.customizedNotifications').show();
+            }
+            else {
+                $('.customizedNotifications').hide();
+            }
+        }
+
 
 
         function ShowHideNotificationDiscordSettings(current) {
             console.log("ShowHideNotificationDiscordSettings " + current);
 
-            if (current === 'UserId') {
-                $('.discordUserId').show();
+            if ($('#notificationEnabled').prop('checked')) {
+                if (current === 'UserId') {
+                    $('.discordUserId').show();
+                    $('.discordUserTag').hide();
+                    $('.discordServerChannel').hide();
+                }
+                else if (current === 'UserTag') {
+                    $('.discordUserId').hide();
+                    $('.discordUserTag').show();
+                    $('.discordServerChannel').hide();
+                }
+                else if (current === 'ServerChannel') {
+                    $('.discordUserId').hide();
+                    $('.discordUserTag').hide();
+                    $('.discordServerChannel').show();
+                }
+            }
+            else {
+                $('.discordUserId').hide();
                 $('.discordUserTag').hide();
                 $('.discordServerChannel').hide();
-            }
-            else if (current === 'UserTag') {
-                $('.discordUserId').hide();
-                $('.discordUserTag').show();
-                $('.discordServerChannel').hide();
-            }
-            else if (current === 'ServerChannel') {
-                $('.discordUserId').hide();
-                $('.discordUserTag').hide();
-                $('.discordServerChannel').show();
             }
 
 
@@ -449,50 +500,75 @@
 
         function ShowHideNotificationSettings(current) {
 
-            console.log("ShowHideNotificationSettings " + current);
+            console.log("ShowHideNotificationSettings " + current + " " + $('#notificationEnabled').prop('checked'));
 
-            if (current === 'Telegram') {
+            if ($('#notificationEnabled').prop('checked')) {
+
+                $('.notificationsType').show();
+                $('.col-notificationsTemperature').show();
+                if ($('#UseActors').prop('checked')) {
+                    $('.col-notificationsActor').show();
+                }
+                $('.col-notificationsWindow').show();
+
+
+                if (current === 'Telegram') {
+                    $('.email').hide();
+                    $('.pushover').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').hide();
+                    $('.telegram').show();
+                    $('.discord').hide();
+                } else if (current === 'E-Mail') {
+                    $('.telegram').hide();
+                    $('.pushover').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').hide();
+                    $('.email').show();
+                    $('.discord').hide();
+                } else if (current === 'Pushover') {
+                    $('.telegram').hide();
+                    $('.email').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').hide();
+                    $('.pushover').show();
+                    $('.discord').hide();
+                } else if (current === 'WhatsApp') {
+                    $('.telegram').hide();
+                    $('.email').hide();
+                    $('.pushover').hide();
+                    $('.signal').hide();
+                    $('.whatsapp').show();
+                    $('.discord').hide();
+                } else if (current === 'Signal') {
+                    $('.telegram').hide();
+                    $('.email').hide();
+                    $('.pushover').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').show();
+                    $('.discord').hide();
+                } else if (current === 'Discord') {
+                    $('.telegram').hide();
+                    $('.email').hide();
+                    $('.pushover').hide();
+                    $('.whatsapp').hide();
+                    $('.signal').hide();
+                    $('.discord').show();
+                }
+            }
+            else {
+
+                $('.notificationsType').hide();
+                $('.col-notificationsTemperature').hide();
+                $('.col-notificationsActor').hide();
+                $('.col-notificationsWindow').hide();
+
+                $('.telegram').hide();
                 $('.email').hide();
                 $('.pushover').hide();
                 $('.whatsapp').hide();
                 $('.signal').hide();
-                $('.telegram').show();
                 $('.discord').hide();
-            } else if (current === 'E-Mail') {
-                $('.telegram').hide();
-                $('.pushover').hide();
-                $('.whatsapp').hide();
-                $('.signal').hide();
-                $('.email').show();
-                $('.discord').hide();
-            } else if (current === 'Pushover') {
-                $('.telegram').hide();
-                $('.email').hide();
-                $('.whatsapp').hide();
-                $('.signal').hide();
-                $('.pushover').show();
-                $('.discord').hide();
-            } else if (current === 'WhatsApp') {
-                $('.telegram').hide();
-                $('.email').hide();
-                $('.pushover').hide();
-                $('.signal').hide();
-                $('.whatsapp').show();
-                $('.discord').hide();
-            } else if (current === 'Signal') {
-                $('.telegram').hide();
-                $('.email').hide();
-                $('.pushover').hide();
-                $('.whatsapp').hide();
-                $('.signal').show();
-                $('.discord').hide();
-            } else if (current === 'Discord') {
-                $('.telegram').hide();
-                $('.email').hide();
-                $('.pushover').hide();
-                $('.whatsapp').hide();
-                $('.signal').hide();
-                $('.discord').show();
             }
         }
 
@@ -919,6 +995,7 @@
                 if ($value.attr('type') === 'checkbox') {
 
                     $value.prop('checked', settings[key]).on('change', function () {
+                        console.log('on change checked');
                         showHideSettings();
                         onChange();
                     });
@@ -2261,14 +2338,13 @@
                         </div>
                         <div class="collapsible-body">
 
-
                             <div class="row">
                                 <div class="input-field col s12 m6 l3">
                                     <input class="value" id="notificationEnabled" type="checkbox" />
                                     <label for="notificationEnabled" class="translate">NotificationEnabled</label>
                                 </div>
 
-                                <div class="input-field col s11 m2">
+                                <div class="input-field col s11 m2 notificationsType">
                                     <select class="value" id="notificationsType">
                                         <option value="Telegram" class="translate">Telegram</option>
                                         <option value="E-Mail" class="translate">E-Mail</option>
@@ -2308,7 +2384,7 @@
                                 </div>
                             </div>
                             <div class="row telegram">
-                                
+
                                 <div class="input-field col s12 m6 l3 telegram">
                                     <input type="number" class="value" id="telegramWaitToSend" min="0" max="20" />
                                     <label for="telegramWaitToSend" class="translate">Waiting for the send (seconds)</label>
@@ -2319,7 +2395,7 @@
                                     <input class="value" id="telegramSilentNotice" type="checkbox" />
                                     <label for="telegramSilentNotice" class="translate">Silent Notice</label>
                                 </div>
-                                
+
                             </div>
 
                             <!-- WhatsApp -->
@@ -2328,7 +2404,7 @@
                                     <select id="whatsappInstance" class="value"></select>
                                     <label for="whatsappInstance" class="translate">WhatsApp instance</label>
                                 </div>
-                                
+
                             </div>
                             <div class="row whatsapp">
                                 <div class="input-field col s12 m6 l3 whatsapp">
@@ -2336,14 +2412,14 @@
                                     <label for="whatsappWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
                             </div>
-                            
+
                             <!-- Signal -->
                             <div class="row signal">
                                 <div class="input-field col s12 m6 l3 signal">
                                     <select id="signalInstance" class="value"></select>
                                     <label for="signalInstance" class="translate">Signal instance</label>
                                 </div>
-                                
+
                             </div>
                             <div class="row signal">
                                 <div class="input-field col s12 m6 l3 signal">
@@ -2351,14 +2427,14 @@
                                     <label for="signalWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
                             </div>
-                            
+
                             <!-- Pushover -->
                             <div class="row pushover">
                                 <div class="input-field col s12 m6 l3 pushover">
                                     <select id="pushoverInstance" class="value"></select>
                                     <label for="pushoverInstance" class="translate">Pushover instance</label>
                                 </div>
-                                
+
                             </div>
                             <div class="row pushover">
                                 <div class="input-field col s12 m6 l3 pushover">
@@ -2375,7 +2451,7 @@
                                     <input class="value" id="pushoverSilentNotice" type="checkbox" />
                                     <label for="pushoverSilentNotice" class="translate">Silent Notice</label>
                                 </div>
-                                
+
                             </div>
                             <!-- email -->
                             <div class="row email">
@@ -2395,14 +2471,14 @@
                                     <select id="emailInstance" class="value"></select>
                                     <label for="emailInstance" class="translate">email instance</label>
                                 </div>
-                                
+
                             </div>
                             <div class="row email">
                                 <div class="input-field col s12 m6 l3 email">
                                     <input type="number" class="value" id="emailWaitToSend" min="0" max="20" />
                                     <label for="emailWaitToSend" class="translate">Waiting for the send (seconds)</label>
                                 </div>
-                                
+
                             </div>
 
 
@@ -2413,7 +2489,7 @@
                                     <select id="discordInstance" class="value"></select>
                                     <label for="discordInstance" class="translate">Discord instance</label>
                                 </div>
-                               
+
                             </div>
                             <div class="row discord">
 
@@ -2452,6 +2528,44 @@
                                 </div>
                             </div>
 
+
+
+                            <!-- customized notifications -->
+                            <div class="row customizedNotifications">
+                                <div class="input-field col s12 m6 l3 useCustomizedNotifications">
+                                    <input type="checkbox" class="value" id="useCustumizedNotifications" />
+                                    <label for="useCustumizedNotifications" class="translate">useCustumizedNotifications</label>
+                                </div>
+                            </div>
+                            <div class="row customizedNotifications">
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsWithInstanceName">
+                                    <input type="checkbox" class="value" id="useCustumizedNotificationsWithInstanceName" />
+                                    <label for="useCustumizedNotificationsWithInstanceName" class="translate">useCustumizedNotificationsWithInstanceName</label>
+                                </div>
+                            </div>
+                            <div class="row customizedNotifications">
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsNewTargetTemp">
+                                    <input type="text" class="value" id="useCustumizedNotificationsNewTargetTemp" />
+                                    <label for="useCustumizedNotificationsNewTargetTemp" class="translate">useCustumizedNotificationsNewTargetTemp</label>
+                                </div>
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsActorOn">
+                                    <input type="text" class="value" id="useCustumizedNotificationsActorOn" />
+                                    <label for="useCustumizedNotificationsActorOn" class="translate">useCustumizedNotificationsActorOn</label>
+                                </div>
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsActorOff">
+                                    <input type="text" class="value" id="useCustumizedNotificationsActorOff" />
+                                    <label for="useCustumizedNotificationsActorOff" class="translate">useCustumizedNotificationsActorOff</label>
+                                </div>
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsWindowOpen">
+                                    <input type="text" class="value" id="useCustumizedNotificationsWindowOpen" />
+                                    <label for="useCustumizedNotificationsWindowOpen" class="translate">useCustumizedNotificationsWindowOpen</label>
+                                </div>
+                                <div class="input-field col s12 m6 l3 useCustumizedNotificationsWindowClose">
+                                    <input type="text" class="value" id="useCustumizedNotificationsWindowClose" />
+                                    <label for="useCustumizedNotificationsWindowClose" class="translate">useCustumizedNotificationsWindowClose</label>
+                                </div>
+
+                            </div>
 
                         </div>
                     </li>
