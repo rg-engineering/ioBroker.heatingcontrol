@@ -289,7 +289,6 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 2.12.1 (2023-11-25)
 * (René) issue #459: Show the number of objects that can be deleted in the log and indicate that they can be deleted in admin
 * (René) issue #376: notification messages customizable
-cm
 
 ### 2.12.0 (2023-11-22)
 * (René) dependencies updated
