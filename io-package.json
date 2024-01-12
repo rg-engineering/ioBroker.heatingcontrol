@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.2",
+    "version": "2.12.3",
     "news": {
+      "2.12.3": {
+        "en": "(René) dependencies updated",
+        "de": "(René)",
+        "ru": "(René)",
+        "pt": "(René) dependências atualizadas",
+        "nl": "(René) bijgewerkte afhankelijkheden",
+        "fr": "(René) dépendances mises à jour",
+        "it": "(René) dipendenze aggiornate",
+        "es": "(René) dependencies updated",
+        "pl": "Aktualizacja zależności (René)",
+        "uk": "(René) залежностей оновлено",
+        "zh-cn": "(René) 更新的依赖关系"
+      },
       "2.12.2": {
         "en": "(René) see issue #491: bug fix in offset calculation (NaN)",
         "de": "(René) siehe Ausgabe #491: Fehlerbehebung bei Offsetberechnung (NaN)",
@@ -80,19 +93,6 @@
         "pl": "zresetować nadpisanie za pomocą przycisku reset-manuel",
         "uk": "скинути перевизначення за допомогою кнопки reset-manuel",
         "zh-cn": "使用重置手动按钮重置覆盖"
-      },
-      "2.10.5": {
-        "en": "some minor bug fixes",
-        "de": "einige kleinere Fehlerbehebungen",
-        "ru": "некоторые мелкие исправления ошибок",
-        "pt": "algumas pequenas correções de bugs",
-        "nl": "enkele kleine bugfixes",
-        "fr": "quelques corrections de bugs mineurs",
-        "it": "alcune correzioni di bug minori",
-        "es": "algunas correcciones de errores menores",
-        "pl": "kilka drobnych poprawek błędów",
-        "uk": "деякі незначні виправлення помилок",
-        "zh-cn": "一些小错误修复"
       }
     },
     "titleLang": {
