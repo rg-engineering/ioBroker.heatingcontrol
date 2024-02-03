@@ -114,8 +114,7 @@ Features:
 | CurrentProfile      | select current profile (1 based, means profile 1 use datapoints under heatingcontrol.0.Profiles.0 ) | 
 | LastProgramRun      | shows last time when adapter run                                                                    | 
 
-### temperature decrease / increase (Datapoints only available if "General Profile Settings, temperature lowering" is set)
-
+### temperature decrease / increase
 | DP name             | description                                                | target temperature for relative decrease                                       | target temperature for absolute decrease                      |
 |---------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
 | GuestsPresent       | increase temperature because guests wants it warmer        | increase current profile temperature by Profiles.0.room.relative.GuestIncrease          | set target to Profiles.0.room.absolute.GuestIncrease          | 
@@ -126,7 +125,7 @@ Features:
 |                     | reseted automatically at adjustable time
 
 
-
+* Datapoints only available if "General Profile Settings, temperature lowering" is set
 * in both szenarious only one lowering is used (in previous version of adapter more then one degreases could be used)
 * in absolute degrease szenario only target values not equal 0°C are used. If you do not need any lowering for a certain room then keep decrease-values at 0°C
 
