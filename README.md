@@ -114,15 +114,15 @@ Features:
 | CurrentProfile      | select current profile (1 based, means profile 1 use datapoints under heatingcontrol.0.Profiles.0 ) | 
 | LastProgramRun      | shows last time when adapter run                                                                    | 
 
-### temperature decrease / increase
+### temperature decrease / increase (Datapoints only available if "General Profile Settings, temperature lowering" is set)
 
 | DP name             | description                                                | target temperature for relative decrease                                       | target temperature for absolute decrease                      |
 |---------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
-| GuestsPresent       | increase temperature because guests wants it warmer        | increase current profile temperature by Profiles.0.room.GuestIncrease          | set target to Profiles.0.room.absolute.GuestIncrease          | 
-| PartyNow            | decrease temperature because it's becoming hot'            | decrease current profile temperature by Profiles.0.room.PartyDecrease          | set target to Profiles.0.room.absolute.PartyDecrease          | 
-| Present             | we are present, if we are not present decrease temperature | decrease current profile temperature by Profiles.0.room.AbsentDecrease         | set target to Profiles.0.room.absolute.AbsentDecrease         | 
-| VacationAbsent	  | we are absent, so decrease also on weekend                 | decrease current profile temperature by Profiles.0.room.VacationAbsentDecrease | set target to Profiles.0.room.absolute.VacationAbsentDecrease | 
-| FireplaceModeActive | decrease temperature bacause you use a fireplace, will be  | decrease current profile temperature by Profiles.0.room.FireplaceModeDecrease  | set target to Profiles.0.room.absolute.FireplaceModeDecrease  | 
+| GuestsPresent       | increase temperature because guests wants it warmer        | increase current profile temperature by Profiles.0.room.relative.GuestIncrease          | set target to Profiles.0.room.absolute.GuestIncrease          | 
+| PartyNow            | decrease temperature because it's becoming hot'            | decrease current profile temperature by Profiles.0.room.relative.PartyDecrease          | set target to Profiles.0.room.absolute.PartyDecrease          | 
+| Present             | we are present, if we are not present decrease temperature | decrease current profile temperature by Profiles.0.room.relative.AbsentDecrease         | set target to Profiles.0.room.absolute.AbsentDecrease         | 
+| VacationAbsent	  | we are absent, so decrease also on weekend                 | decrease current profile temperature by Profiles.0.room.relative.VacationAbsentDecrease | set target to Profiles.0.room.absolute.VacationAbsentDecrease | 
+| FireplaceModeActive | decrease temperature bacause you use a fireplace, will be  | decrease current profile temperature by Profiles.0.room.relative.FireplaceModeDecrease  | set target to Profiles.0.room.absolute.FireplaceModeDecrease  | 
 |                     | reseted automatically at adjustable time
 
 
