@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.3",
+    "version": "2.12.4",
     "news": {
+      "2.12.4": {
+        "en": "(René) dependencies updated\nupdate readme \"temperature decrease / increase\"\n(René) in some cases undefined was sent in notification messages instead of actor name\n(René) bug fix related to cron@3.x.x: show next cron job event in log",
+        "de": "(René)\nupdate readme \"temperatur abnehmen / erhöhen\"\n(René) in einigen Fällen undefiniert wurde in Benachrichtigungsnachrichten anstelle des Schauspielernamens gesendet\nFehlerbehebung im Zusammenhang mit cron@3.x.x: nächste cron Job-Event in log anzeigen",
+        "ru": "(René)\nобновление: \"температурное снижение/увеличение\"\n(René) в некоторых случаях неопределенное было отправлено в уведомлениях вместо имени актера\n(René) исправление ошибок, связанных с cron@3.x.x: показать следующее событие работы корона в журнале",
+        "pt": "(René) dependências atualizadas\natualização readme \"temperatura diminuição / aumento\"\n(René) em alguns casos indefinidos foi enviado em mensagens de notificação em vez do nome do ator\n(René) correção de bugs relacionado ao cron@3.x.x: mostrar próximo evento de trabalho cron em log",
+        "nl": "(René) bijgewerkte afhankelijkheden\nupdate readme \"temperatuurdaling / verhoging\"\n(René) in sommige gevallen ongedefinieerd werd verzonden in notificatieberichten in plaats van actornaam\n(René) bug fix gerelateerd aan cron@3.x.x: volgende cron-taakvenster tonen in log",
+        "fr": "(René) dépendances mises à jour\nupdate readme \"diminution / augmentation de température\"\n(René) dans certains cas indéfini a été envoyé dans des messages de notification au lieu du nom de l'acteur\nCorrection du bug (René) liée à cron@3.x.x : afficher le prochain événement d'emploi cron dans le journal",
+        "it": "(René) dipendenze aggiornate\naggiornamento readme \"riduzione della temperatura / aumento\"\n(René) in alcuni casi non definiti è stato inviato in messaggi di notifica al posto del nome dell'attore\n(René) correzioni di bug relative a cron@3.x.x: mostra il prossimo evento di lavoro cron nel registro",
+        "es": "(René) dependencies updated\nactualización readme \"disminución de la temperatura / aumento\"\n(René) en algunos casos no definido fue enviado en mensajes de notificación en lugar de nombre de actor\n(René) bug fix related to cron@3.x.x: mostrar el próximo evento de trabajo de cron en el registro",
+        "pl": "Aktualizacja zależności (René)\naktualizacja readme \"obniżenie / wzrost temperatury\"\n(René) w niektórych przypadkach nieokreślone zostało wysłane w komunikatach notyfikacyjnych zamiast nazwy aktora\n(René) bug fix related to cron @ 3.x.x: Pokaż następne wydarzenie pracy cron w logu",
+        "uk": "(René) залежностей оновлено\nupdateme \"температурне зниження / збільшення\"\n(René) в деяких випадках, які не визначилися, надсилали повідомлення про повідомлення замість імені актора\n(René) Виправлення помилок, пов'язаних з cron@3.x.x: показати наступний cron події роботи в журналі",
+        "zh-cn": "(René) 更新的依赖关系\n更新读取的“ 温度降低/ 增加 ”\n(René) 在某些情况下,未定义是用通知信息而不是演员名称发送的\n(René) 与 cron 相关的错误修复@ 3.x.x: 在日志中显示下一个 cron 任务事件"
+      },
       "2.12.3": {
         "en": "(René) dependencies updated",
         "de": "(René)",
@@ -80,19 +93,6 @@
         "pl": "dodano niezgodę",
         "uk": "розбрат додав",
         "zh-cn": "添加了不和谐"
-      },
-      "2.10.6": {
-        "en": "reset override with reset-manuel button",
-        "de": "Reset-Override mit Reset-Manuell-Taste",
-        "ru": "переопределение сброса с помощью кнопки reset-manuel",
-        "pt": "substituição de reset com o botão reset-manuel",
-        "nl": "reset override met reset-handmatige knop",
-        "fr": "réinitialisation prioritaire avec bouton de réinitialisation manuelle",
-        "it": "reset override con pulsante reset-manuel",
-        "es": "Restablecer anulación con el botón de reinicio manual",
-        "pl": "zresetować nadpisanie za pomocą przycisku reset-manuel",
-        "uk": "скинути перевизначення за допомогою кнопки reset-manuel",
-        "zh-cn": "使用重置手动按钮重置覆盖"
       }
     },
     "titleLang": {

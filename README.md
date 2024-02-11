@@ -282,8 +282,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 2.12.4 (2024-02-11)
 * (René) dependencies updated
 * (Marc-Berg) update readme "temperature decrease / increase"
 * (René) in some cases undefined was sent in notification messages instead of actor name
