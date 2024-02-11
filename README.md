@@ -282,6 +282,13 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) dependencies updated
+* (Marc-Berg) update readme "temperature decrease / increase"
+* (René) in some cases undefined was sent in notification messages instead of actor name
+* (René) bug fix related to cron@3.x.x: show next cron job event in log
+
 ### 2.12.3 (2024-01-12)
 * (René) dependencies updated
 
