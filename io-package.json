@@ -4,8 +4,8 @@
     "version": "2.12.4",
     "news": {
       "2.12.4": {
-        "en": "(René) dependencies updated\nupdate readme \"temperature decrease / increase\"\n(René) in some cases undefined was sent in notification messages instead of actor name\n(René) bug fix related to cron@3.x.x: show next cron job event in log",
-        "de": "(René)\nupdate readme \"temperatur abnehmen / erhöhen\"\n(René) in einigen Fällen undefiniert wurde in Benachrichtigungsnachrichten anstelle des Schauspielernamens gesendet\nFehlerbehebung im Zusammenhang mit cron@3.x.x: nächste cron Job-Event in log anzeigen",
+        "en": "(René) dependencies updated\n(Marc-Berg) update readme \"temperature decrease / increase\"\n(René) in some cases undefined was sent in notification messages instead of actor name\n(René) bug fix related to cron@3.x.x: show next cron job event in log",
+        "de": "(René)\n(Marc-Berg) update readme \"temperatur abnehmen / erhöhen\"\n(René) in einigen Fällen undefiniert wurde in Benachrichtigungsnachrichten anstelle des Schauspielernamens gesendet\nFehlerbehebung im Zusammenhang mit cron@3.x.x: nächste cron Job-Event in log anzeigen",
         "ru": "(René)\nобновление: \"температурное снижение/увеличение\"\n(René) в некоторых случаях неопределенное было отправлено в уведомлениях вместо имени актера\n(René) исправление ошибок, связанных с cron@3.x.x: показать следующее событие работы корона в журнале",
         "pt": "(René) dependências atualizadas\natualização readme \"temperatura diminuição / aumento\"\n(René) em alguns casos indefinidos foi enviado em mensagens de notificação em vez do nome do ator\n(René) correção de bugs relacionado ao cron@3.x.x: mostrar próximo evento de trabalho cron em log",
         "nl": "(René) bijgewerkte afhankelijkheden\nupdate readme \"temperatuurdaling / verhoging\"\n(René) in sommige gevallen ongedefinieerd werd verzonden in notificatieberichten in plaats van actornaam\n(René) bug fix gerelateerd aan cron@3.x.x: volgende cron-taakvenster tonen in log",

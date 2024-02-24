@@ -21,9 +21,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ioBroker/testing-action-check@v1
+      - uses: rg-engineering/testing-action-check@V2
         with:
-          node-version: '18.x'
+          node-version: '20.x'
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
           # install-command: 'npm install'
           lint: true
@@ -35,11 +35,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
+        node-version: [ 18.x, 20.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: ioBroker/testing-action-adapter@v1
+      - uses: rg-engineering/testing-action-adapter@V2
         with:
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
@@ -59,9 +59,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ioBroker/testing-action-deploy@v1
+      - uses: rg-engineering/testing-action-deploy@V2
         with:
-          node-version: '18.x'
+          node-version: '20.x'
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
           # install-command: 'npm install'
           npm-token: ${{ secrets.NPM_TOKEN }}
