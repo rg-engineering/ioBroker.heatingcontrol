@@ -284,7 +284,9 @@ When the adapter crashes or an other Code error happens, this error message that
 -->
 
 ### **WORK IN PROGRESS**
-* (René) see issue #492: 
+* (René) see issue #492: cron jobs recalculation is necessary after reboot when VacationAtHome and PublicHoliday is active
+* (René) create cron job for PowerInterruption only if feature is active
+* (René) bug fix: with cron 3.x status log of cron jobs were wrong
 
 ### 2.12.4 (2024-02-11)
 * (René) dependencies updated
