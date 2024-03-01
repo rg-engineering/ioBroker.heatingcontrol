@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.4",
+    "version": "2.12.5",
     "news": {
+      "2.12.5": {
+        "en": "(René) see issue #492: cron jobs recalculation is necessary after reboot if VacationAtHome and PublicHoliday is active\n(René) create cron job for PowerInterruption only if feature is active\n(René) bug fix: with cron 3.x status log of cron jobs were wrong",
+        "de": "(René) siehe Ausgabe #492: Cron Jobs Neuberechnung ist nach Neustart erforderlich, wenn VacationAtHome und PublicHoliday aktiv ist\n(René) krönen Job für PowerInterruption nur, wenn Funktion aktiv ist\n(René) Fehlerbehebung: mit cron 3.x Statusprotokoll von cron Jobs waren falsch",
+        "ru": "(René) см. вопрос #492: перерасчет рабочих мест в короне необходим после перезагрузки, если активен VacationAtHome и PublicHoliday\n(René) создать работу корона для PowerInterruption только в том случае, если функция активна\n(René) исправление ошибок: с 3.x журналом состояния кроны были неправы",
+        "pt": "(René) ver edição #492: cron trabalhos recalculação é necessário após reiniciar se VacationAtHome e PublicHoliday está ativo\n(René) criar trabalho cron para PowerInterruption somente se o recurso estiver ativo\n(René) correção de bugs: com registro de status cron 3.x de trabalhos cron foram errados",
+        "nl": "(René) zie nummer #492: herberekening van cron jobs is noodzakelijk na herstart als vakantie bij Home en PublicHoliday actief is\n(René) creëer cron job voor Power Onderbreking alleen als functie actief is\n(René) bug fix: met cron 3.x status log van cron banen waren fout",
+        "fr": "(René) voir le numéro #492 : il est nécessaire de recalculer les emplois cron après le redémarrage si VacationAtHome et PublicHoliday est actif\n(René) créer cron job pour PowerInterruption seulement si la fonctionnalité est active\nCorrection de bug (René) : avec le journal d'état cron 3.x des jobs cron étaient erronés",
+        "it": "(René) vedi numero #492: il ricalcolo dei lavori di cron è necessario dopo il riavvio se VacationAtHome e PublicHoliday è attivo\n(René) creare un lavoro di cron per PowerInterruption solo se la funzione è attiva\n(René) bug fix: con cron 3.x registro di stato dei lavori di cron sbagliato",
+        "es": "(René) ver el número #492: cron empleo recalculación es necesario después del reinicio si VacationAtHome y PublicHoliday es activo\n(René) crear cron trabajo para PowerInterruption sólo si la característica es activa\n(René) corrección de errores: con cron 3.x registro de estado de cron empleos estaban equivocados",
+        "pl": "(René) see issue # 492: cron jobs recalling is necessary after reboot if VacationAtHome and PublicHoliday is active\n(René) tworzyć zadanie cron dla PowerInterruption tylko jeśli funkcja jest aktywna\n(René) błąd naprawić: z cron 3.x dziennik stanu cron zadań były błędne",
+        "uk": "(René) див. питання #492: рекалькуляція коронних робочих місць необхідна після перезавантаження, якщо VacationAtHome і PublicHoliday активний\n(René) створить роботу cron для PowerInterruption тільки якщо функція активна\n(René) Виправлення помилок: з cron 3.x журнал стану cron робочих місць",
+        "zh-cn": "(René)参见第492期:如果VacationAtHome和PublicHoliday活动,在重启后需要重新计算 cron工作\n(René) 仅在特性活动时为 Power Interruption 创建 cron 工作\n(René) bug 修补: cron 3.x 状态日志错误"
+      },
       "2.12.4": {
         "en": "(René) dependencies updated\n(Marc-Berg) update readme \"temperature decrease / increase\"\n(René) in some cases undefined was sent in notification messages instead of actor name\n(René) bug fix related to cron@3.x.x: show next cron job event in log",
         "de": "(René)\n(Marc-Berg) update readme \"temperatur abnehmen / erhöhen\"\n(René) in einigen Fällen undefiniert wurde in Benachrichtigungsnachrichten anstelle des Schauspielernamens gesendet\nFehlerbehebung im Zusammenhang mit cron@3.x.x: nächste cron Job-Event in log anzeigen",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności",
         "uk": "залежності оновлено",
         "zh-cn": "依赖项已更新"
-      },
-      "2.11.0": {
-        "en": "discord added",
-        "de": "Zwietracht hinzugefügt",
-        "ru": "разногласия добавлены",
-        "pt": "discórdia adicionado",
-        "nl": "onenigheid toegevoegd",
-        "fr": "discorde ajoutée",
-        "it": "discordia aggiunta",
-        "es": "discordia añadida",
-        "pl": "dodano niezgodę",
-        "uk": "розбрат додав",
-        "zh-cn": "添加了不和谐"
       }
     },
     "titleLang": {
