@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.5",
+    "version": "2.12.6",
     "news": {
+      "2.12.6": {
+        "en": "(René) see issue #561: change of dependencies",
+        "de": "(René) siehe Ausgabe #561: Änderung der Abhängigkeiten",
+        "ru": "#561: изменение зависимостей",
+        "pt": "(René) veja a questão #561: mudança de dependências",
+        "nl": "(René) zie nummer 561: verandering van afhankelijkheden",
+        "fr": "(René) voir le numéro 561 : changement de dépendance",
+        "it": "(René) vedi numero #561: cambiamento delle dipendenze",
+        "es": "(René) ver número #561: cambio de dependencia",
+        "pl": "(René) zob. numer # 561: zmiana zależności",
+        "uk": "(René) див. питання #561: зміна залежностей",
+        "zh-cn": "(René)参见第561期:属地变更"
+      },
       "2.12.5": {
         "en": "(René) see issue #492: cron jobs recalculation is necessary after reboot if VacationAtHome and PublicHoliday is active\n(René) create cron job for PowerInterruption only if feature is active\n(René) bug fix: with cron 3.x status log of cron jobs were wrong",
         "de": "(René) siehe Ausgabe #492: Cron Jobs Neuberechnung ist nach Neustart erforderlich, wenn VacationAtHome und PublicHoliday aktiv ist\n(René) krönen Job für PowerInterruption nur, wenn Funktion aktiv ist\n(René) Fehlerbehebung: mit cron 3.x Statusprotokoll von cron Jobs waren falsch",
@@ -80,19 +93,6 @@
         "pl": "limit listy zmian statusu zwiększony do 100\\n możliwość natychmiastowego użycia obliczenia offsetu\\nmożliwość dostosowania komunikatów powiadomień\\Pokaż liczbę obiektów, które można usunąć w logu i wskaż, że można je usunąć w panelu administracyjnym",
         "uk": "ліміт списку змін статусу збільшено до 100\\n можливість негайного використання розрахунку зсуву\\nсповіщення, які можна налаштувати\\Показати кількість об'єктів, які можна видалити в журналі, і вказати, що їх можна видалити в адмін.",
         "zh-cn": "状态更改列表限制增加到100\\n立即使用偏移计算的选项\\n可自定义通知消息\\在日志中显示可以删除的对象数量，并表明可以在管理中删除它们"
-      },
-      "2.11.1": {
-        "en": "dependencies updated",
-        "de": "Abhängigkeiten aktualisiert",
-        "ru": "зависимости обновлены",
-        "pt": "dependências atualizadas",
-        "nl": "afhankelijkheden bijgewerkt",
-        "fr": "dépendances mises à jour",
-        "it": "dipendenze aggiornate",
-        "es": "dependencias actualizadas",
-        "pl": "zaktualizowane zależności",
-        "uk": "залежності оновлено",
-        "zh-cn": "依赖项已更新"
       }
     },
     "titleLang": {
