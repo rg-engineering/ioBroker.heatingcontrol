@@ -134,7 +134,11 @@
     "loglevel": "info",
     "stopBeforeUpdate": true,
     "type": "climate-control",
-    "license": "MIT",
+    "tier": 1,
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "materialize": true,
     "dependencies": [
       {
