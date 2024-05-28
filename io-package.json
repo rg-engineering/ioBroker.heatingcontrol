@@ -157,9 +157,6 @@
         "email": "info@rg-engineering.eu"
       }
     ],
-    "contributors": [
-      "DutchmanNL <rdrozda86@gmail.com>"
-    ],
     "connectionType": "local",
     "dataSource": "push",
     "adminUI": {
