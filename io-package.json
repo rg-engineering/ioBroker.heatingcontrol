@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.7",
+    "version": "2.12.8",
     "news": {
+      "2.12.8": {
+        "en": "(René) bug fix heating period: calculation of cron job string fixed",
+        "de": "(René) Bugfix Heizperiode: Berechnung der Cron Job string behoben",
+        "ru": "(René) фиксирующий период нагревания жуков: вычисление фиксированной строки работы крон",
+        "pt": "(René) correção de bugs período de aquecimento: cálculo de cron cadeia de trabalho fixo",
+        "nl": "(René) bug fix verwarmingsperiode: berekening van cron job string vast",
+        "fr": "(René) correction de bug période de chauffage: calcul de la chaîne de travail cron corrigé",
+        "it": "(René) bug fix periodo di riscaldamento: calcolo della stringa di lavoro di cron fisso",
+        "es": "(René) ciclo de calentamiento de fallos: cálculo de cadena de trabajo de cron fijo",
+        "pl": "(René) bug fixed heating period: collection of cron job string fixed",
+        "uk": "(René) термін фіксації опалювальних помилок: розрахунок фіксованої робочої рядки cron",
+        "zh-cn": "(René) bug 固定加热期:计算已固定的 cron 任务串"
+      },
       "2.12.7": {
         "en": "(René) see issue #561: change of dependencies",
         "de": "(René) siehe Ausgabe #561: Änderung der Abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "(René) zobacz numer #491: bug fix in offset calculation (NaN)",
         "uk": "(René) див. питання #491: Виправлення помилок в розрахунку офсету (NaN)",
         "zh-cn": "(René) 见第491号:抵偿计算(NaN)的包装"
-      },
-      "2.12.1": {
-        "en": "notification messages customizable",
-        "de": "Benachrichtigungsnachrichten anpassbar",
-        "ru": "настраиваемые уведомления",
-        "pt": "mensagens de notificação personalizáveis",
-        "nl": "meldingsberichten aanpasbaar",
-        "fr": "messages de notification personnalisables",
-        "it": "messaggi di notifica personalizzabili",
-        "es": "mensajes de notificación personalizables",
-        "pl": "konfigurowalne powiadomienia",
-        "uk": "настроювані сповіщення",
-        "zh-cn": "通知消息可定制"
       }
     },
     "titleLang": {
