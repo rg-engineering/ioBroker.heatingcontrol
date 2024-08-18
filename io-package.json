@@ -1,8 +1,9 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.8",
+    "version": "2.12.9",
     "news": {
+      
       "2.12.8": {
         "en": "(René) bug fix heating period: calculation of cron job string fixed",
         "de": "(René) Bugfix Heizperiode: Berechnung der Cron Job string behoben",
@@ -80,19 +81,6 @@
         "pl": "Aktualizacja zależności (René)",
         "uk": "(René) залежностей оновлено",
         "zh-cn": "(René) 更新的依赖关系"
-      },
-      "2.12.2": {
-        "en": "(René) see issue #491: bug fix in offset calculation (NaN)",
-        "de": "(René) siehe Ausgabe #491: Fehlerbehebung bei Offsetberechnung (NaN)",
-        "ru": "(René) см. номер #491: исправление ошибки в смещенном расчете (NaN)",
-        "pt": "(René) veja a edição #491: correção de bugs no cálculo de deslocamento (NaN)",
-        "nl": "Quality over Quantity (QoQ) Releases Vertaling:",
-        "fr": "(René) voir le numéro #491: correction de bug dans le calcul de décalage (NaN)",
-        "it": "(René) vedi numero #491: correzione bug nel calcolo offset (NaN)",
-        "es": "(René) ver el número #491: corrección de errores en el cálculo de compensación (NaN)",
-        "pl": "(René) zobacz numer #491: bug fix in offset calculation (NaN)",
-        "uk": "(René) див. питання #491: Виправлення помилок в розрахунку офсету (NaN)",
-        "zh-cn": "(René) 见第491号:抵偿计算(NaN)的包装"
       }
     },
     "titleLang": {

@@ -1,6 +1,6 @@
 {
   "name": "iobroker.heatingcontrol",
-  "version": "2.12.8",
+  "version": "2.12.9",
   "description": "HeatingControl Adapter",
   "author": {
     "name": "René G.",
@@ -20,7 +20,7 @@
     "node": ">= 18"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.1.^6",
+    "@iobroker/adapter-core": "^3.1.6",
     "cron": "^3.1.7"
   },
   "devDependencies": {
