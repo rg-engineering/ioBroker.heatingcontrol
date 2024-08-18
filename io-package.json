@@ -1,9 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.9",
+    "version": "2.12.10",
     "news": {
-      
+      "2.12.10": {
+        "en": "(René) update dependencies\n(René) adaption for new Vis-2 widgets (Weather / Heating)\n(René) bug fixes based on adapter checker recommendation",
+        "de": "(René) aktualisieren Abhängigkeiten\n(René) Adaption für neue Vis-2 Widgets (Wetter / Heizung)\n(René) Fehlerbehebungen basierend auf Adapter-Checker Empfehlung",
+        "ru": "(René) обновление зависимостей\n(René) адаптация для новых виджетов Vis-2 (Weather / Отопление)\n(René) исправления ошибок на основе рекомендации адаптера",
+        "pt": "(René) atualizar dependências\n(René) adaptação para novos widgets Vis-2 (Pesca / Aquecimento)\n(René) correções de bugs com base na recomendação do verificador do adaptador",
+        "nl": "(René) update afhankelijkheden\n(René) aanpassing voor nieuwe Vis-2 widgets (Weer / Verwarming)\n(René) bug fixes gebaseerd op adaptercontrole aanbeveling",
+        "fr": "(René) mettre à jour les dépendances\n(René) adaptation pour les nouveaux widgets Vis-2 (Météo / Chauffage)\nCorrections de bugs (René) basées sur la recommandation de l'adaptateur checker",
+        "it": "(René) aggiornamento dipendenze\n(René) adattamento per nuovi widget Vis-2 (Weather / Riscaldamento)\n(René) correzioni di bug in base alla raccomandazione dell'adattatore checker",
+        "es": "(René) dependencias de actualización\n(René) adaptación para nuevos widgets Vis-2 (Weather / Calefacción)\n(René) correcciones de errores basadas en la recomendación de control de adaptador",
+        "pl": "(René) uaktualnianie zależności\n(René) adaptacja dla nowych widżetów Vis-2 (Pogoda / Ogrzewanie)\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
+        "uk": "(René) оновлення залежностей\n(René) адаптація для нових віджетів Vis-2 (Weather / Опалення)\n(René) Виправлення помилок на основі рекомендації адаптера",
+        "zh-cn": "(René) 更新依赖关系\n(René)新 Vis-2 部件的适应(Weather / Heating)\n(René) 根据适配器检查器建议修复错误"
+      },
       "2.12.8": {
         "en": "(René) bug fix heating period: calculation of cron job string fixed",
         "de": "(René) Bugfix Heizperiode: Berechnung der Cron Job string behoben",
