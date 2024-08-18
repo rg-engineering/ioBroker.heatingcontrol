@@ -283,8 +283,11 @@ When the adapter crashes or an other Code error happens, this error message that
   ### **WORK IN PROGRESS**
 -->
 
+
 ### **WORK IN PROGRESS**
+* (René) update dependencies
 * (René) adaption for new Vis-2 widgets (Weather / Heating)
+* (René) bug fixes based on adapter checker recommendation
 
 ### 2.12.8 (2024-06-05)
 * (René) bug fix heating period: calculation of cron job string fixed
