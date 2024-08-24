@@ -30,7 +30,7 @@
     "@alcalzone/release-script-plugin-manual-review": "^3.7.0",
     "@iobroker/adapter-dev": "^1.3.0",
     "@iobroker/testing": "^4.1.3",
-    "chai": "^4.5.0",
+    "chai": "^5.1.1",
     "mocha": "^10.7.3"
   },
   "main": "main.js",
