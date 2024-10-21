@@ -284,6 +284,7 @@ When the adapter crashes or an other Code error happens, this error message that
 -->
 ### **WORK IN PROGRESS**
 * (René) see issue #611: test with nodejs@22
+* (René) see issue #617: bug fix: TemperaturOverrideRemainingTime is not correct after Override interruption
 
 ### 2.12.10 (2024-08-18)
 * (René) update dependencies
