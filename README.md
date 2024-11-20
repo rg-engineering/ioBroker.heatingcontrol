@@ -285,6 +285,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### **WORK IN PROGRESS**
 * (René) see issue #422: bug fix window open/close handling
+* (René) update dependencies
 
 ### 2.12.11 (2024-10-21)
 * (René) see issue #611: test with nodejs@22
