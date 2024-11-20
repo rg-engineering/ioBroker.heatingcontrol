@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.11",
+    "version": "2.12.12",
     "news": {
+      "2.12.12": {
+        "en": "see issue #422: bug fix window open/close handling\nupdate dependencies",
+        "de": "siehe ausgabe #422: bugfix fenster öffnen/schließen handhabung\naktualisierung der abhängigkeiten",
+        "ru": "см. вопрос #422: окно исправления клопа\nобновление зависимостей",
+        "pt": "veja o problema #422: janela de correção de bugs aberta / fechar manipulação\ndependências",
+        "nl": "zie probleem #422: foutherstelvenster open/sluiten\nafhankelijkheden bijwerken",
+        "fr": "voir le problème #422: correction de la fenêtre ouverte/fermer la gestion\nmettre à jour les dépendances",
+        "it": "vedi numero #422: finestra di correzione bug aperta/chiudi gestione\naggiornamento dipendenze",
+        "es": "ver el número #422: corrección de errores ventana abierta / cierre manejo\ndependencias de actualización",
+        "pl": "zobacz numer # 422: błąd naprawić okno otwarte / zamknięcia obsługi\naktualizacji zależności",
+        "uk": "див. питання #422: виправлення помилок вікна відкритим/закриття\nоновлення залежності",
+        "zh-cn": "参见问题422:错误修复窗口打开/关闭处理\n更新依赖关系"
+      },
       "2.12.11": {
         "en": "see issue #611: test with nodejs@22\nsee issue #617: bug fix: TemperaturOverrideRemainingTime is not correct after Override interruption",
         "de": "siehe ausgabe #611: test mit nodejs@22\nsiehe Ausgabe #617: Bugfix: Temperaturüberschreitung Zeit ist nicht korrekt nach Übergeordnete Unterbrechung",
@@ -80,19 +93,6 @@
         "pl": "(René) see issue # 492: cron jobs recalling is necessary after reboot if VacationAtHome and PublicHoliday is active\n(René) tworzyć zadanie cron dla PowerInterruption tylko jeśli funkcja jest aktywna\n(René) błąd naprawić: z cron 3.x dziennik stanu cron zadań były błędne",
         "uk": "(René) див. питання #492: рекалькуляція коронних робочих місць необхідна після перезавантаження, якщо VacationAtHome і PublicHoliday активний\n(René) створить роботу cron для PowerInterruption тільки якщо функція активна\n(René) Виправлення помилок: з cron 3.x журнал стану cron робочих місць",
         "zh-cn": "(René)参见第492期:如果VacationAtHome和PublicHoliday活动,在重启后需要重新计算 cron工作\n(René) 仅在特性活动时为 Power Interruption 创建 cron 工作\n(René) bug 修补: cron 3.x 状态日志错误"
-      },
-      "2.12.4": {
-        "en": "(René) dependencies updated\n(Marc-Berg) update readme \"temperature decrease / increase\"\n(René) in some cases undefined was sent in notification messages instead of actor name\n(René) bug fix related to cron@3.x.x: show next cron job event in log",
-        "de": "(René)\n(Marc-Berg) update readme \"temperatur abnehmen / erhöhen\"\n(René) in einigen Fällen undefiniert wurde in Benachrichtigungsnachrichten anstelle des Schauspielernamens gesendet\nFehlerbehebung im Zusammenhang mit cron@3.x.x: nächste cron Job-Event in log anzeigen",
-        "ru": "(René)\nобновление: \"температурное снижение/увеличение\"\n(René) в некоторых случаях неопределенное было отправлено в уведомлениях вместо имени актера\n(René) исправление ошибок, связанных с cron@3.x.x: показать следующее событие работы корона в журнале",
-        "pt": "(René) dependências atualizadas\natualização readme \"temperatura diminuição / aumento\"\n(René) em alguns casos indefinidos foi enviado em mensagens de notificação em vez do nome do ator\n(René) correção de bugs relacionado ao cron@3.x.x: mostrar próximo evento de trabalho cron em log",
-        "nl": "(René) bijgewerkte afhankelijkheden\nupdate readme \"temperatuurdaling / verhoging\"\n(René) in sommige gevallen ongedefinieerd werd verzonden in notificatieberichten in plaats van actornaam\n(René) bug fix gerelateerd aan cron@3.x.x: volgende cron-taakvenster tonen in log",
-        "fr": "(René) dépendances mises à jour\nupdate readme \"diminution / augmentation de température\"\n(René) dans certains cas indéfini a été envoyé dans des messages de notification au lieu du nom de l'acteur\nCorrection du bug (René) liée à cron@3.x.x : afficher le prochain événement d'emploi cron dans le journal",
-        "it": "(René) dipendenze aggiornate\naggiornamento readme \"riduzione della temperatura / aumento\"\n(René) in alcuni casi non definiti è stato inviato in messaggi di notifica al posto del nome dell'attore\n(René) correzioni di bug relative a cron@3.x.x: mostra il prossimo evento di lavoro cron nel registro",
-        "es": "(René) dependencies updated\nactualización readme \"disminución de la temperatura / aumento\"\n(René) en algunos casos no definido fue enviado en mensajes de notificación en lugar de nombre de actor\n(René) bug fix related to cron@3.x.x: mostrar el próximo evento de trabajo de cron en el registro",
-        "pl": "Aktualizacja zależności (René)\naktualizacja readme \"obniżenie / wzrost temperatury\"\n(René) w niektórych przypadkach nieokreślone zostało wysłane w komunikatach notyfikacyjnych zamiast nazwy aktora\n(René) bug fix related to cron @ 3.x.x: Pokaż następne wydarzenie pracy cron w logu",
-        "uk": "(René) залежностей оновлено\nupdateme \"температурне зниження / збільшення\"\n(René) в деяких випадках, які не визначилися, надсилали повідомлення про повідомлення замість імені актора\n(René) Виправлення помилок, пов'язаних з cron@3.x.x: показати наступний cron події роботи в журналі",
-        "zh-cn": "(René) 更新的依赖关系\n更新读取的“ 温度降低/ 增加 ”\n(René) 在某些情况下,未定义是用通知信息而不是演员名称发送的\n(René) 与 cron 相关的错误修复@ 3.x.x: 在日志中显示下一个 cron 任务事件"
       }
     },
     "titleLang": {
