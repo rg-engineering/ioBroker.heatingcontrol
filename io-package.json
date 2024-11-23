@@ -4,8 +4,8 @@
     "version": "2.12.13",
     "news": {
       "2.12.13": {
-        "en": "see issue #607: minumum length of telegram user reduced to one char",
-        "de": "siehe ausgabe #607: minum länge des telegramm-benutzers reduziert auf eine zeichen",
+        "en": "see issue #607: minimum length of telegram user reduced to one char",
+        "de": "siehe ausgabe #607: minimale Länge des telegramm-Benutzernamens reduziert auf ein Zeichen",
         "ru": "#607: минумная длина пользователя телеграммы уменьшена до одного шара",
         "pt": "veja a edição #607: comprimento do minumum do usuário do telegrama reduzido a um char",
         "nl": "zie nummer 607: minimale lengte van de telegramgebruiker gereduceerd tot één teken",
@@ -18,7 +18,7 @@
       },
       "2.12.12": {
         "en": "see issue #422: bug fix window open/close handling\nupdate dependencies",
-        "de": "siehe ausgabe #422: bugfix fenster öffnen/schließen handhabung\naktualisierung der abhängigkeiten",
+        "de": "siehe ausgabe #422: bugfix Fenster öffnen/schließen-Behandlung\nAktualisierung der Abhängigkeiten",
         "ru": "см. вопрос #422: окно исправления клопа\nобновление зависимостей",
         "pt": "veja o problema #422: janela de correção de bugs aberta / fechar manipulação\ndependências",
         "nl": "zie probleem #422: foutherstelvenster open/sluiten\nafhankelijkheden bijwerken",
