@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.13",
+    "version": "2.12.14",
     "news": {
+      "2.12.14": {
+        "en": "see issue #635: initial values (-99) not to write to object \nchanges requested by adapter checker\ndependencies updated",
+        "de": "siehe ausgabe #635: anfangswerte (-99) nicht zum objekt schreiben\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
+        "ru": "#635: начальные значения (-99), чтобы не писать\nизменения, запрошенные adapter checker\nобновленные зависимости",
+        "pt": "veja a edição #635: valores iniciais (-99) para não escrever para objeto\nalterações solicitadas pelo verificador do adaptador\ndependências atualizadas",
+        "nl": "zie nummer #635: initiële waarden (-99) om niet naar object te schrijven\nwijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
+        "fr": "voir numéro 635: valeurs initiales (-99) à ne pas écrire pour objet\nmodifications demandées par l'adaptateur checker\ndépendances mises à jour",
+        "it": "vedi numero #635: valori iniziali (-99) per non scrivere a oggetto\nmodifiche richieste da adattatore checker\ndipendenze aggiornate",
+        "es": "ver número #635: valores iniciales (-99) para no escribir al objeto\ncambios solicitados por el adaptador\ndependencias actualizadas",
+        "pl": "zobacz numer # 635: wartości początkowe (-99) nie zapisywać do obiektu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
+        "uk": "переглянути проблему #635: початкові значення (-99) не писати на об'єкт\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
+        "zh-cn": "参见第635期: 初始值 (-99) 不写入对象\n适配器检查器要求的更改\n更新依赖关系"
+      },
       "2.12.13": {
         "en": "see issue #607: minimum length of telegram user reduced to one char",
         "de": "siehe ausgabe #607: minimale Länge des telegramm-Benutzernamens reduziert auf ein Zeichen",
@@ -69,19 +82,6 @@
         "zh-cn": "(René) bug 固定加热期:计算已固定的 cron 任务串"
       },
       "2.12.7": {
-        "en": "(René) see issue #561: change of dependencies",
-        "de": "(René) siehe Ausgabe #561: Änderung der Abhängigkeiten",
-        "ru": "#561: изменение зависимостей",
-        "pt": "(René) veja a questão #561: mudança de dependências",
-        "nl": "(René) zie nummer 561: verandering van afhankelijkheden",
-        "fr": "(René) voir le numéro 561 : changement de dépendance",
-        "it": "(René) vedi numero #561: cambiamento delle dipendenze",
-        "es": "(René) ver número #561: cambio de dependencia",
-        "pl": "(René) zob. numer # 561: zmiana zależności",
-        "uk": "(René) див. питання #561: зміна залежностей",
-        "zh-cn": "(René)参见第561期:属地变更"
-      },
-      "2.12.6": {
         "en": "(René) see issue #561: change of dependencies",
         "de": "(René) siehe Ausgabe #561: Änderung der Abhängigkeiten",
         "ru": "#561: изменение зависимостей",
