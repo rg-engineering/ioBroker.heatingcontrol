@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /*
  * heatingcontrol adapter für iobroker
  *
@@ -70,8 +71,7 @@ function startAdapter(options) {
             try {
                 //adapter.log.debug("start");
                 main();
-            }
-            catch (e) {
+            } catch (e) {
                 adapter.log.error("exception catch after ready [" + e + "]");
             }
         },
@@ -83,6 +83,7 @@ function startAdapter(options) {
                 CronStop();
                 callback();
             } catch (e) {
+                adapter.log.error("exception catch after unload [" + e + "]");
                 callback();
             }
         },
@@ -114,7 +115,9 @@ function startAdapter(options) {
                         // e.g. send email or pushover or whatever
                         adapter.log.debug("send command");
                         // Send response in callback if required
-                        if (obj.callback) adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
+                        if (obj.callback) {
+adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
+}
                         break;
                     case "listRooms":
                         //adapter.log.debug("got list rooms");
@@ -202,8 +205,7 @@ async function main() {
         await StartVis(adapter);
 
         await StartStatemachine();
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in  main [" + e + "]");
     }
 }
@@ -236,11 +238,9 @@ async function SearchRoomAndFunction(roomName, gewerk) {
 
         if (typeof allRooms[e].common.name === "string") {
             name = allRooms[e].common.name;
-        }
-        else if (typeof allRooms[e].common.name === "object") {
+        } else if (typeof allRooms[e].common.name === "object") {
             name = allRooms[e].common.name[SystemLanguage];
-        }
-        else {
+        } else {
             adapter.log.warn("unknown type " + typeof allRooms[e].common.name + " " + JSON.stringify(allRooms[e].common.name));
         }
         //adapter.log.debug("check room " + name + " =? " + roomName );
@@ -269,11 +269,9 @@ async function SearchRoomAndFunction(roomName, gewerk) {
 
             if (typeof allFunctions[e].common.name === "string") {
                 name = allFunctions[e].common.name;
-            }
-            else if (typeof allFunctions[e].common.name === "object") {
+            } else if (typeof allFunctions[e].common.name === "object") {
                 name = allFunctions[e].common.name[SystemLanguage];
-            }
-            else {
+            } else {
                 adapter.log.warn("unknown type " + typeof allFunctions[e].common.name + " " + JSON.stringify(allFunctions[e].common.name));
             }
 
@@ -321,25 +319,18 @@ async function SearchRoomAndFunction(roomName, gewerk) {
             }
 
             status = " room and function found " + JSON.stringify(devices);
-        }
-        else {
+        } else {
             if (!functionFound) {
                 status = "function " + gewerk + " not found in enum ";
-            }
-
-
-
-            else {
+            } else {
                 status = "function " + gewerk + " has no devices ";
             }
             adapter.log.debug(status);
         }
-    }
-    else {
+    } else {
         if (!roomFound) {
             status = "room " + roomName + " not found in enum ";
-        }
-        else {
+        } else {
             status = "room " + roomName + " has no devices ";
         }
         adapter.log.debug(status);
@@ -382,8 +373,7 @@ async function ListThermostats(obj) {
                 if (found == null) {
                     adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
-                }
-                else {
+                } else {
                     AlreadyUsed = true;
                     adapter.log.debug("alread used ");
                 }
@@ -392,18 +382,15 @@ async function ListThermostats(obj) {
 
         if (devices.length > 0) {
             status = devices.length + " devices found";
-        }
-        else {
+        } else {
             if (AlreadyUsed) {
                 status = "devices found, but already used";
 
-            }
-            else {
+            } else {
                 status = "unknown devices found, please add it manually";
             }
         }
-    }
-    else {
+    } else {
         status = result.status;
     }
 
@@ -440,8 +427,7 @@ async function ListActors(obj) {
                 if (found == null) {
                     adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
-                }
-                else {
+                } else {
                     AlreadyUsed = true;
                     adapter.log.debug("alread used ");
                 }
@@ -450,18 +436,15 @@ async function ListActors(obj) {
 
         if (devices.length > 0) {
             status = devices.length + " devices found";
-        }
-        else {
+        } else {
             if (AlreadyUsed) {
                 status = "devices found, but already used";
 
-            }
-            else {
+            } else {
                 status = "unknown devices found, please add it manually";
             }
         }
-    }
-    else {
+    } else {
         status = result.status;
     }
 
@@ -502,8 +485,7 @@ async function ListSensors(obj) {
                 if (found == null) {
                     adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
-                }
-                else {
+                } else {
                     AlreadyUsed = true;
                     adapter.log.debug("alread used ");
                 }
@@ -512,18 +494,15 @@ async function ListSensors(obj) {
 
         if (devices.length > 0) {
             status = devices.length + " devices found";
-        }
-        else {
+        } else {
             if (AlreadyUsed) {
                 status = "devices found, but already used";
 
-            }
-            else {
+            } else {
                 status = "unknown devices found, please add it manually";
             }
         }
-    }
-    else {
+    } else {
         status = result.status;
     }
 
@@ -565,8 +544,7 @@ async function ListAddTempSensors(obj) {
                 if (found == null) {
                     adapter.log.debug("push to list ");
                     devices.push(resultCheck.device);
-                }
-                else {
+                } else {
                     AlreadyUsed = true;
                     adapter.log.debug("alread used ");
                 }
@@ -575,18 +553,15 @@ async function ListAddTempSensors(obj) {
 
         if (devices.length > 0) {
             status = devices.length + " devices found";
-        }
-        else {
+        } else {
             if (AlreadyUsed) {
                 status = "devices found, but already used";
 
-            }
-            else {
+            } else {
                 status = "unknown devices found, please add it manually";
             }
         }
-    }
-    else {
+    } else {
         status = result.status;
     }
 
@@ -620,14 +595,12 @@ async function ListRooms(obj) {
 
         if (typeof rooms[e].common.name === "string") {
             name = rooms[e].common.name;
-        }
-        else if (typeof rooms[e].common.name === "object") {
+        } else if (typeof rooms[e].common.name === "object") {
             name = rooms[e].common.name.de;
 
             name = rooms[e].common.name[language];
             //adapter.log.warn("room name " + name + " " + JSON.stringify(rooms[e].common.name));
-        }
-        else {
+        } else {
             adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
         }
 
@@ -636,8 +609,7 @@ async function ListRooms(obj) {
         if (roomdata !== null) {
            
             adapter.log.debug("Listrooms room " + name + " already exist");
-        }
-        else {
+        } else {
             adapter.log.debug("Listrooms found new room " + name);
 
             newRooms++;
@@ -674,11 +646,9 @@ async function ListFunctions(obj) {
 
         if (typeof functions[e1].common.name === "string") {
             name = functions[e1].common.name;
-        }
-        else if (typeof functions[e1].common.name === "object") {
+        } else if (typeof functions[e1].common.name === "object") {
             name = functions[e1].common.name[SystemLanguage];
-        }
-        else {
+        } else {
             adapter.log.warn("unknown type " + typeof functions[e1].common.name + " " + JSON.stringify(functions[e1].common.name));
         }
 
@@ -733,12 +703,10 @@ async function HandleStateChange(id, state) {
                         adapter.setForeignState(id, { ack: true });
                     }
 
-                }
-                else {
+                } else {
                     adapter.log.warn("!!! Statechange not handled " + id + " " + JSON.stringify(state));
                 }
-            }
-            else {
+            } else {
 
                 //adapter.log.info("### last id acked " + lastIdAcked);
 
@@ -768,8 +736,7 @@ async function HandleStateChange(id, state) {
                 }
             }
         }
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in HandleStateChange [" + e + "]");
     }
 }
@@ -782,8 +749,8 @@ async function HandleStateChangeGeneral(id, state) {
         const ids = id.split(".");
 
         //heatingcontrol.0.vis.ProfileTypes.CopyProfile
-        
-        if (ids[2] === "vis" && ids[4] === "CopyProfile" ) {
+
+        if (ids[2] === "vis" && ids[4] === "CopyProfile") {
 
             const currentProfile = await GetCurrentProfile();
             adapter.log.debug("copy profile for vis cur. Profile " + currentProfile);
@@ -809,9 +776,8 @@ async function HandleStateChangeGeneral(id, state) {
                 await SetVis();
             }
             bRet = true;
-        }
-        //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.CopyPeriods
-        else if (ids[2] === "vis" &&  ids[5] === "CopyPeriods") {
+        } else if (ids[2] === "vis" && ids[5] === "CopyPeriods") {
+            //heatingcontrol.0.vis.ProfileTypes.Mo-Fr.CopyPeriods
             const currentProfile = await GetCurrentProfile();
             const currentRoom = await GetCurrentRoom();
             adapter.log.debug("copy periods for vis " + currentRoom + " cur. Profile " + currentProfile);
@@ -823,12 +789,9 @@ async function HandleStateChangeGeneral(id, state) {
 
             //adapter.log.error("copy from vis");
             bRet = true;
-        }
+        } else if (ids[2] === "vis"
+            //heatingcontrol.0.vis.ChoosenRoom 
 
-
-
-        //heatingcontrol.0.vis.ChoosenRoom 
-        else if (ids[2] === "vis"
             //|| ids[4] === "ActiveTimeSlot"
             //|| ids[4] === "CurrentTimePeriod"
             //heatingcontrol.0.Rooms.Wohnzimmer.WindowIsOpen
@@ -843,9 +806,8 @@ async function HandleStateChangeGeneral(id, state) {
             if (adapter.config.UseVisFromPittini) {
                 bRet = await HandleStateChangeVis(id, state);
             }
-        }
-        //heatingcontrol.0.CurrentProfile
-        else if (ids[2] == "CurrentProfile") {
+        } else if (ids[2] == "CurrentProfile") {
+            //heatingcontrol.0.CurrentProfile
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
 
@@ -853,92 +815,75 @@ async function HandleStateChangeGeneral(id, state) {
             if (adapter.config.UseVisFromPittini) {
                 await HandleStateChangeVis(id, state);
             }
-            
-        }
-        //heatingcontrol.0.HeatingPeriodActive
-        else if (ids[2] == "HeatingPeriodActive") {
+
+        } else if (ids[2] == "HeatingPeriodActive") {
+            //heatingcontrol.0.HeatingPeriodActive
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "PublicHolidyToday") {
+        } else if (ids[2] == "PublicHolidyToday") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "Present") {
+        } else if (ids[2] == "Present") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "PartyNow") {
+        } else if (ids[2] == "PartyNow") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "GuestsPresent") {
+        } else if (ids[2] == "GuestsPresent") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "HolidayPresent") {
+        } else if (ids[2] == "HolidayPresent") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "VacationAbsent") {
+        } else if (ids[2] == "VacationAbsent") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "MaintenanceActive") {
+        } else if (ids[2] == "MaintenanceActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        else if (ids[2] == "FireplaceModeActive") {
+        } else if (ids[2] == "FireplaceModeActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
             if (state.val) {
                 StartTimer2ResetFireplaceMode();
             }
-        }
-        else if (ids[2] == "PowerInterruptionPeriodActive") {
+        } else if (ids[2] == "PowerInterruptionPeriodActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
-        }
-        //heatingcontrol.0.Rooms.Küche.TemperaturOverride
-        else if (ids[4] == "TemperaturOverride") {
+        } else if (ids[4] == "TemperaturOverride") {
+            //heatingcontrol.0.Rooms.Küche.TemperaturOverride
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        else if (ids[4] == "TemperaturOverrideTime") {
+        } else if (ids[4] == "TemperaturOverrideTime") {
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
+        } else if (ids[4] == "TemperatureIfNoHeatingPeriod") {
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        else if (ids[4] == "MinimumTemperature") {
+        } else if (ids[4] == "MinimumTemperature") {
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        //heatingcontrol.0.Rooms.Wohnzimmer.ResetManual
-        else if (ids[4] == "ResetManual") {
+        } else if (ids[4] == "ResetManual") {
+            //heatingcontrol.0.Rooms.Wohnzimmer.ResetManual
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        //heatingcontrol.0.Rooms.Wohnzimmer.TemperatureOffset 
-        else if (ids[4] == "TemperatureOffset") {
+        } else if (ids[4] == "TemperatureOffset") {
+            //heatingcontrol.0.Rooms.Wohnzimmer.TemperatureOffset
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        //heatingcontrol.0.Rooms.Wohnzimmer.isActive 
-        else if (ids[4] == "isActive") {
+        } else if (ids[4] == "isActive") {
+            //heatingcontrol.0.Rooms.Wohnzimmer.isActive 
             bRet = true;
             ChangeStatus(ids[4], ids[3], state.val);
-        }
-        //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature 
-        else if (ids[2] == "Profiles") {
+        } else if (ids[2] == "Profiles") {
+
+            //heatingcontrol.0.Profiles.1.Küche.Mo-Su.Periods.1.Temperature
             bRet = true;
 
             //heatingcontrol.0.Profiles.1.CopyProfile
             //heatingcontrol.0.Profiles.1.Wohnzimmer.CopyProfile
             //heatingcontrol.0.Profiles.1.Wohnzimmer.Fri.CopyPeriods
-            if (ids[4] == "CopyProfile")  {
+            if (ids[4] == "CopyProfile") {
 
                 await CopyProfileAll(parseInt(ids[3]));
 
@@ -946,16 +891,14 @@ async function HandleStateChangeGeneral(id, state) {
                 if (adapter.config.UseVisFromPittini) {
                     await SetVis();
                 }
-            }
-            else if (ids[5] == "CopyProfile") {
-                
+            } else if (ids[5] == "CopyProfile") {
+
                 await CopyProfile(ids[4], parseInt(ids[3]));
                 //vis update xxx
                 if (adapter.config.UseVisFromPittini) {
                     await SetVis();
                 }
-            }
-            else if (ids[6] == "CopyPeriods") {
+            } else if (ids[6] == "CopyPeriods") {
 
                 const currentProfile = await GetCurrentProfile();
                 await CopyPeriods(ids[4], ids[5], currentProfile);
@@ -963,13 +906,11 @@ async function HandleStateChangeGeneral(id, state) {
                 if (adapter.config.UseVisFromPittini) {
                     await SetVis();
                 }
-            }
-            else {
+            } else {
                 ChangeStatus(ids[2], ids[4], state.val);
             }
         }
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in HandleStateChangeGeneral [" + e + "]");
     }
     return bRet;
@@ -983,8 +924,7 @@ async function GetCurrentRoom() {
 
     if (temp != null &&  temp !== undefined) {
         sRet = temp.val;
-    }
-    else {
+    } else {
         adapter.log.error("could not read vis.ChoosenRoom " + JSON.stringify(temp));
     }
 
@@ -1003,8 +943,7 @@ async function HandleStateChangeExternal(id, state) {
                 let present = false;
                 if (parseInt(adapter.config.Path2PresentDPType) === 1) {
                     present = state.val;
-                }
-                else {
+                } else {
                     if (state.val > parseInt(adapter.config.Path2PresentDPLimit)) {
                         present = true;
                     }
@@ -1036,8 +975,7 @@ async function HandleStateChangeExternal(id, state) {
                 let guestpresent = false;
                 if (parseInt(adapter.config.Path2GuestsPresentDPType) === 1) {
                     guestpresent = state.val;
-                }
-                else {
+                } else {
                     if (state.val > parseInt(adapter.config.Path2GuestsPresentDPLimit)) {
                         guestpresent = true;
                     }
@@ -1053,8 +991,7 @@ async function HandleStateChangeExternal(id, state) {
                 let partynow = false;
                 if (parseInt(adapter.config.Path2PartyNowDPType) === 1) {
                     partynow = state.val;
-                }
-                else {
+                } else {
                     if (state.val > parseInt(adapter.config.Path2PartyNowDPLimit)) {
                         partynow = true;
                     }
@@ -1072,8 +1009,7 @@ async function HandleStateChangeExternal(id, state) {
                 bRet = true;
             }
         }
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in HandleStateChangeExternal [" + e + "]");
     }
 
@@ -1086,8 +1022,7 @@ async function HandleStateChangeDevices(id, state) {
     adapter.log.debug("HandleStateChangeDevices " + id);
     try {
         bRet = await CheckStateChangeDevice(id, state);
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in HandleStateChangeDevices [" + e + "]");
     }
     return bRet;
@@ -1128,8 +1063,7 @@ async function checkHeatingPeriod() {
                             //end already past, increase end year
                             EndDate.setFullYear(EndDate.getFullYear() + 1);
                             adapter.log.debug("corrected End " + EndDate.toDateString());
-                        }
-                        else {
+                        } else {
                             //else decrease Start year
                             StartDate.setFullYear(StartDate.getFullYear() - 1);
                             adapter.log.debug("corrected Start " + StartDate.toDateString());
@@ -1139,8 +1073,7 @@ async function checkHeatingPeriod() {
                     if (now >= StartDate && now <= EndDate) {
                         adapter.log.debug("we are in period");
                         isHeatingPeriod = true;
-                    }
-                    else {
+                    } else {
                         adapter.log.debug("we are not in period, after start " + StartDate.toDateString() + " and before end " + EndDate.toDateString());
                         isHeatingPeriod = false;
                     }
@@ -1150,9 +1083,7 @@ async function checkHeatingPeriod() {
             adapter.log.info("heating period is " + JSON.stringify(isHeatingPeriod));
 
             await adapter.setStateAsync("HeatingPeriodActive", { ack: false, val: isHeatingPeriod });
-        }
-
-        catch (e) {
+        } catch (e) {
             adapter.log.error("exception catch in checkHeatingPeriod [" + e + "] ");
         }
     }
@@ -1236,8 +1167,7 @@ async function SaveProfile(obj) {
                         //adapter.log.debug("periods2Save " + JSON.stringify(periods2Save));
                         room2Save.profiles[profile] = periods2Save;
 
-                    }
-                    else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+                    } else if (parseInt(adapter.config.ProfileType, 10) === 2) {
 
                         const periods2Save = {
                             Mo_Fr: {},
@@ -1278,8 +1208,7 @@ async function SaveProfile(obj) {
                         }
 
                         room2Save.profiles[profile] = periods2Save;
-                    }
-                    else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+                    } else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
 
                         const periods2Save = {
@@ -1401,8 +1330,7 @@ async function SaveProfile(obj) {
                     if (parseInt(adapter.config.TemperatureDecrease) === 1) {// relative
                         id1 += ".relative";
                         decreaseMode = true;
-                    }
-                    else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
+                    } else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
                         id1 += ".absolute";
                         decreaseMode = true;
                     }
@@ -1445,8 +1373,7 @@ async function SaveProfile(obj) {
         }
         adapter.sendTo(obj.from, obj.command, profile2Save, obj.callback);
 
-    }
-    catch (e) {
+    } catch (e) {
         adapter.log.error("exception in SaveProfile [" + e + "]");
     }
 }
@@ -1482,8 +1409,7 @@ async function LoadProfile(obj) {
         }
         if (!ready2load) {
             adapter.log.error("could not load profile " + retText);
-        }
-        else {
+        } else {
             //load now
 
 
@@ -1511,8 +1437,7 @@ async function LoadProfile(obj) {
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
                             }
-                        }
-                        else if (parseInt(adapter.config.ProfileType, 10) === 2) {
+                        } else if (parseInt(adapter.config.ProfileType, 10) === 2) {
 
                             for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                                 const id = id1 + ".Mo-Fr.Periods." + period;
@@ -1533,8 +1458,7 @@ async function LoadProfile(obj) {
                                 await adapter.setStateAsync(id + ".time", { ack: true, val: Time });
                                 await adapter.setStateAsync(id + ".Temperature", { ack: true, val: Temperature });
                             }
-                        }
-                        else if (parseInt(adapter.config.ProfileType, 10) === 3) {
+                        } else if (parseInt(adapter.config.ProfileType, 10) === 3) {
 
                             for (let period = 1; period <= parseInt(adapter.config.NumberOfPeriods, 10); period++) {
                                 const id = id1 + ".Mon.Periods." + period;
@@ -1611,8 +1535,7 @@ async function LoadProfile(obj) {
                         if (parseInt(adapter.config.TemperatureDecrease) === 1) {// relative
                             id1 += ".relative";
                             decreaseMode = true;
-                        }
-                        else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
+                        } else if (parseInt(adapter.config.TemperatureDecrease) === 2) {// absolutue
                             id1 += ".absolute";
                             decreaseMode = true;
                         }
@@ -1646,8 +1569,7 @@ async function LoadProfile(obj) {
 
             ChangeStatus("Profiles", "all", null);
         }
-    }
-    catch (e) {
+    } catch (e) {
         retText = "exception in LoadProfile [" + e + "]";
         adapter.log.error(retText);
 
