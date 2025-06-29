@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.14",
+    "version": "2.12.15",
     "news": {
+      "2.12.15": {
+        "en": "HmIP-eTRV-B-2 R4M added to autodetect\nnew testing",
+        "de": "HmIP-eTRV-B-2 R4M zum autodetect hinzugefügt\nneue tests",
+        "ru": "HmIP-eTRV-B-2 R4M добавлен в автодетект\nновые испытания",
+        "pt": "HmIP-eTRV-B-2 R4M adicionado à detecção automática\nnovos testes",
+        "nl": "HmIP-eTRV-B-2 R4M toegevoegd aan autodetect\nnieuwe tests",
+        "fr": "HmIP-eTRV-B-2 R4M ajouté à la détection automatique\nnouveaux essais",
+        "it": "HmIP-eTRV-B-2 R4M aggiunto al rilevamento automatico\nnuovi test",
+        "es": "HmIP-eTRV-B-2 R4M añadido a autodetecto\nnuevas pruebas",
+        "pl": "HmIP- eTRV- B-2 R4M dodany do autodetekcji\nnowe badania",
+        "uk": "HmIP-eTRV-B-2 R4M додано до автодетект\nновий тест",
+        "zh-cn": "HmIP-eTRV-B-2 R4M 添加到自动检测器中\n新测试"
+      },
       "2.12.14": {
         "en": "see issue #635: initial values (-99) not to write to object \nchanges requested by adapter checker\ndependencies updated",
         "de": "siehe ausgabe #635: anfangswerte (-99) nicht zum objekt schreiben\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "(René) bug fixed heating period: collection of cron job string fixed",
         "uk": "(René) термін фіксації опалювальних помилок: розрахунок фіксованої робочої рядки cron",
         "zh-cn": "(René) bug 固定加热期:计算已固定的 cron 任务串"
-      },
-      "2.12.7": {
-        "en": "(René) see issue #561: change of dependencies",
-        "de": "(René) siehe Ausgabe #561: Änderung der Abhängigkeiten",
-        "ru": "#561: изменение зависимостей",
-        "pt": "(René) veja a questão #561: mudança de dependências",
-        "nl": "(René) zie nummer 561: verandering van afhankelijkheden",
-        "fr": "(René) voir le numéro 561 : changement de dépendance",
-        "it": "(René) vedi numero #561: cambiamento delle dipendenze",
-        "es": "(René) ver número #561: cambio de dependencia",
-        "pl": "(René) zob. numer # 561: zmiana zależności",
-        "uk": "(René) див. питання #561: зміна залежностей",
-        "zh-cn": "(René)参见第561期:属地变更"
       }
     },
     "titleLang": {
