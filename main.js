@@ -1613,6 +1613,9 @@ async function GetTelegramUser(obj) {
                         for (const userdata in value[user]) {
                             userName = value[user]["userName"];
                             firstName = value[user]["firstName"];
+
+                            adapter.log.debug("telegram-instance userdata " + JSON.stringify(userdata) + " " + JSON.stringify(value[user][userdata])); 
+
                         }
 
                         const nextUser = {
