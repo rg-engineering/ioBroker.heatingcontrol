@@ -43,7 +43,7 @@
     "InterActorDelay": "Verzögerung zwischen Akteuraktionen [ms]",
     "InterThermostatDelay": "Verzögerung zwischen Thermostataktionen [ms]",
     "Logging": "Protokollierung",
-    "Main settings": "Haupteinstellungen",
+    "Main settings": "Allgemeine Einstellungen",
     "Maintenance": "Wartung",
     "MaintenanceModeTemperature": "Zieltemperatur im Wartungsmodus",
     "Mo-Fr + Sa-So": "Montag-Freitag + Samstag-Sonntag",
