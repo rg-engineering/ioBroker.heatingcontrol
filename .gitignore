@@ -10,7 +10,7 @@ test
 
 admin/i18n/flat.txt
 admin/i18n/*/flat.txt
-
+.commitinfo
 
 /todo.txt
 /*.njsproj
