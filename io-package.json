@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.15",
+    "version": "2.12.16",
     "news": {
+      "2.12.16": {
+        "en": "dependencies updated\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\nchanges requested by adapter checker",
+        "de": "aktualisierte abhängigkeiten\nfehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
+        "ru": "обновленные зависимости\nисправление ошибок см. проблему #682: HmIP-eTRV-2 не обнаружен автоматически\nизменения, запрошенные adapter checker",
+        "pt": "dependências atualizadas\ncorreção de erros ver problema #682: HmIP-eTRV-2 não detectado automaticamente\nalterações solicitadas pelo verificador de adaptadores",
+        "nl": "afhankelijkheden bijgewerkt\nbug fix zie probleem #682: HmIP-eTRV-2 niet automatisch gedetecteerd\nwijzigingen gevraagd door adaptercontrole",
+        "fr": "dépendances mises à jour\ncorrection du bug voir le problème #682: HmIP-eTRV-2 non détecté automatiquement\nmodifications demandées par l'adaptateur checker",
+        "it": "dipendenze aggiornate\nbug fix vedi problema #682: HmIP-eTRV-2 non autodeterminato\nmodifiche richieste da adattatore checker",
+        "es": "dependencias actualizadas\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\ncambios solicitados por el adaptador",
+        "pl": "zaktualizowane zależności\nbug fix see issue # 682: HmIP- eTRV-2 not autodetected\nzmiany wymagane przez sprawdzacz adaptera",
+        "uk": "оновлені залежності\nвиправлення помилок див. питання #682: HmIP-eTRV-2 не autodetected\nзміни, які вимагаються перевіркою адаптера",
+        "zh-cn": "更新依赖关系\n错误修复参见第682期: HmIP- eTRV-2 未自动检测\n适配器检查器要求的更改"
+      },
       "2.12.15": {
         "en": "HmIP-eTRV-B-2 R4M added to autodetect\nnew testing",
         "de": "HmIP-eTRV-B-2 R4M zum autodetect hinzugefügt\nneue tests",
@@ -80,19 +93,6 @@
         "pl": "(René) uaktualnianie zależności\n(René) adaptacja dla nowych widżetów Vis-2 (Pogoda / Ogrzewanie)\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
         "uk": "(René) оновлення залежностей\n(René) адаптація для нових віджетів Vis-2 (Weather / Опалення)\n(René) Виправлення помилок на основі рекомендації адаптера",
         "zh-cn": "(René) 更新依赖关系\n(René)新 Vis-2 部件的适应(Weather / Heating)\n(René) 根据适配器检查器建议修复错误"
-      },
-      "2.12.8": {
-        "en": "(René) bug fix heating period: calculation of cron job string fixed",
-        "de": "(René) Bugfix Heizperiode: Berechnung der Cron Job string behoben",
-        "ru": "(René) фиксирующий период нагревания жуков: вычисление фиксированной строки работы крон",
-        "pt": "(René) correção de bugs período de aquecimento: cálculo de cron cadeia de trabalho fixo",
-        "nl": "(René) bug fix verwarmingsperiode: berekening van cron job string vast",
-        "fr": "(René) correction de bug période de chauffage: calcul de la chaîne de travail cron corrigé",
-        "it": "(René) bug fix periodo di riscaldamento: calcolo della stringa di lavoro di cron fisso",
-        "es": "(René) ciclo de calentamiento de fallos: cálculo de cadena de trabajo de cron fijo",
-        "pl": "(René) bug fixed heating period: collection of cron job string fixed",
-        "uk": "(René) термін фіксації опалювальних помилок: розрахунок фіксованої робочої рядки cron",
-        "zh-cn": "(René) bug 固定加热期:计算已固定的 cron 任务串"
       }
     },
     "titleLang": {
