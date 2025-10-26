@@ -284,6 +284,10 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (René) bug fix sentry
+
 ### 2.12.17 (2025-10-26)
 * (René) changes requested by adapter checker
 
