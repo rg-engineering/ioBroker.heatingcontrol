@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.17",
+    "version": "2.12.18",
     "news": {
+      "2.12.18": {
+        "en": "bug fix sentry",
+        "de": "fehlerbehebung gesendet",
+        "ru": "исправлять ошибки",
+        "pt": "corrigir o erro sentinela",
+        "nl": "bug repareren wacht",
+        "fr": "correction du bug sentinelle",
+        "it": "bug fix sendry",
+        "es": "bug fix centry",
+        "pl": "bug fix sentry",
+        "uk": "виправлення помилок",
+        "zh-cn": "错误修正哨兵"
+      },
       "2.12.17": {
         "en": "changes requested by adapter checker",
         "de": "änderungen, die von adapter checker angefordert werden",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 422: błąd naprawić okno otwarte / zamknięcia obsługi\naktualizacji zależności",
         "uk": "див. питання #422: виправлення помилок вікна відкритим/закриття\nоновлення залежності",
         "zh-cn": "参见问题422:错误修复窗口打开/关闭处理\n更新依赖关系"
-      },
-      "2.12.11": {
-        "en": "see issue #611: test with nodejs@22\nsee issue #617: bug fix: TemperaturOverrideRemainingTime is not correct after Override interruption",
-        "de": "siehe ausgabe #611: test mit nodejs@22\nsiehe Ausgabe #617: Bugfix: Temperaturüberschreitung Zeit ist nicht korrekt nach Übergeordnete Unterbrechung",
-        "ru": "#611: тест с nodejs@22\n#617: исправление ошибок: TemperaturOverride Время некорректно после Переключение",
-        "pt": "veja a questão #611: teste com nodejs@22\nveja o problema #617: correção de bugs: TemperaturOverride Continuando O tempo não está correto depois Interrupção de substituição",
-        "nl": "zie nummer #611: test met nodejs@22\nzie probleem #617: bugfix: TemperaturOverrideRemaining Tijd is niet correct na Interruptie negeren",
-        "fr": "voir numéro 611: test avec nodejs@22\nvoir le numéro #617: correction du bogue: TemperaturOverrideRemaining Le temps n'est pas correct après Arrêt du dépassement",
-        "it": "vedi numero #611: prova con nodejs@22\nvedi problema #617: bug fix: TemperaturOverrideRemaining Il tempo non è corretto dopo Interruzione di override",
-        "es": "ver número #611: prueba con nodejs@22\nver número #617: bug fix: TemperaturOverrideRemanente El tiempo no es correcto después Interrupción por cancelación",
-        "pl": "zob. numer # 611: test z nodejs @ 22\nzobacz numer # 617: błąd naprawić: TeraturOverrideRemaining Czas nie jest poprawny po Przerwanie działania",
-        "uk": "переглянути номер #611: тест з nodejs@22\nпереглянути проблему #617: Виправлення помилок: TemperaturOverrideЗнаменшення Час не правильний після Перерва на перерву",
-        "zh-cn": "参见第611期:带节点的测试@22\n参见第617期:错误修正: 维护 之后的时间不对 覆盖中断"
       }
     },
     "titleLang": {
