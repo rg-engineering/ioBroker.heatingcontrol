@@ -284,6 +284,9 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (René) changes requested by adapter checker
+
 ### 2.12.16 (2025-10-04)
 * (René) dependencies updated
 * (René) bug fix see issue #682: HmIP-eTRV-2 not autodetected
