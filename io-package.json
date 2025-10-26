@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.16",
+    "version": "2.12.17",
     "news": {
+      "2.12.17": {
+        "en": "changes requested by adapter checker",
+        "de": "änderungen, die von adapter checker angefordert werden",
+        "ru": "изменения, запрошенные adapter checker",
+        "pt": "alterações solicitadas pelo verificador de adaptadores",
+        "nl": "wijzigingen gevraagd door adaptercontrole",
+        "fr": "modifications demandées par l'adaptateur checker",
+        "it": "modifiche richieste da adattatore checker",
+        "es": "cambios solicitados por el adaptador",
+        "pl": "zmiany wymagane przez sprawdzacz adaptera",
+        "uk": "зміни, які вимагаються перевіркою адаптера",
+        "zh-cn": "适配器检查器要求的更改"
+      },
       "2.12.16": {
         "en": "dependencies updated\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\nchanges requested by adapter checker",
         "de": "aktualisierte abhängigkeiten\nfehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
@@ -80,19 +93,6 @@
         "pl": "zob. numer # 611: test z nodejs @ 22\nzobacz numer # 617: błąd naprawić: TeraturOverrideRemaining Czas nie jest poprawny po Przerwanie działania",
         "uk": "переглянути номер #611: тест з nodejs@22\nпереглянути проблему #617: Виправлення помилок: TemperaturOverrideЗнаменшення Час не правильний після Перерва на перерву",
         "zh-cn": "参见第611期:带节点的测试@22\n参见第617期:错误修正: 维护 之后的时间不对 覆盖中断"
-      },
-      "2.12.10": {
-        "en": "(René) update dependencies\n(René) adaption for new Vis-2 widgets (Weather / Heating)\n(René) bug fixes based on adapter checker recommendation",
-        "de": "(René) aktualisieren Abhängigkeiten\n(René) Adaption für neue Vis-2 Widgets (Wetter / Heizung)\n(René) Fehlerbehebungen basierend auf Adapter-Checker Empfehlung",
-        "ru": "(René) обновление зависимостей\n(René) адаптация для новых виджетов Vis-2 (Weather / Отопление)\n(René) исправления ошибок на основе рекомендации адаптера",
-        "pt": "(René) atualizar dependências\n(René) adaptação para novos widgets Vis-2 (Pesca / Aquecimento)\n(René) correções de bugs com base na recomendação do verificador do adaptador",
-        "nl": "(René) update afhankelijkheden\n(René) aanpassing voor nieuwe Vis-2 widgets (Weer / Verwarming)\n(René) bug fixes gebaseerd op adaptercontrole aanbeveling",
-        "fr": "(René) mettre à jour les dépendances\n(René) adaptation pour les nouveaux widgets Vis-2 (Météo / Chauffage)\nCorrections de bugs (René) basées sur la recommandation de l'adaptateur checker",
-        "it": "(René) aggiornamento dipendenze\n(René) adattamento per nuovi widget Vis-2 (Weather / Riscaldamento)\n(René) correzioni di bug in base alla raccomandazione dell'adattatore checker",
-        "es": "(René) dependencias de actualización\n(René) adaptación para nuevos widgets Vis-2 (Weather / Calefacción)\n(René) correcciones de errores basadas en la recomendación de control de adaptador",
-        "pl": "(René) uaktualnianie zależności\n(René) adaptacja dla nowych widżetów Vis-2 (Pogoda / Ogrzewanie)\n(René) poprawki błędów oparte na rekomendacji sprawdzania adaptera",
-        "uk": "(René) оновлення залежностей\n(René) адаптація для нових віджетів Vis-2 (Weather / Опалення)\n(René) Виправлення помилок на основі рекомендації адаптера",
-        "zh-cn": "(René) 更新依赖关系\n(René)新 Vis-2 部件的适应(Weather / Heating)\n(René) 根据适配器检查器建议修复错误"
       }
     },
     "titleLang": {
