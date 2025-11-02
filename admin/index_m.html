@@ -1,4 +1,5 @@
-﻿<html>
+
+<html>
 
 <head>
     <!-- Load ioBroker scripts and styles-->
@@ -55,6 +56,8 @@
 
     <script type="text/javascript">
 
+        /* eslint-disable prefer-template */
+
         //==========================================================================
         //load / save profile
         function SaveProfile(instance) {
@@ -73,6 +76,8 @@
 
         }
 
+
+        
 
         function generateFile(filename, obj) {
             var el = document.createElement('a');
@@ -120,7 +125,7 @@
                         console.log('profile loaded with ' + result);
 
                         $('#checkResultLoadProfile').html(result);
-                        
+
                         myOnChange(true)
                     });
                 }
@@ -154,7 +159,7 @@
                     DeviceList.splice(d, 1);
                 }
 
-            } 
+            }
 
             //and finally rearrange id's
             for (let i = 0; i < DeviceList.length; i++) {
@@ -308,7 +313,7 @@
 
                 $('.col-useactorifnoheating').hide();
                 $('.col-useactorifnothermostat').hide();
-                
+
 
                 $('.col-ActorOnDelay').hide();
                 $('.col-ActorOffDelay').hide();
@@ -423,7 +428,7 @@
 
             ShowHideNotificationDiscordSettings($('#discordTarget').val());
 
-            ShowHideCustumizedNotifications($('#useCustumizedNotifications').prop('checked')); 
+            ShowHideCustumizedNotifications($('#useCustumizedNotifications').prop('checked'));
 
         }
 
@@ -1033,6 +1038,8 @@
 
             });
 
+
+
             var $btnload_profile = $('#btn_load_profile');
             $btnload_profile.click(function () {
                 console.log('btn load profile');
@@ -1052,7 +1059,7 @@
                 "twelveHour": false
             });
 
-            
+
 
             showHideSettings();
             M.updateTextFields();
@@ -1155,7 +1162,7 @@
 
 
             $('#notificationsType').on('change', function () {
-                console.log('bbb ' + $(this).val()); 
+                console.log('bbb ' + $(this).val());
                 ShowHideNotificationSettings($(this).val());
             });
 
@@ -1190,16 +1197,16 @@
 
             $('#telegramInstance').on('change', function () {
                 getTelegramUser(onChange, instance, "allTelegramUsers");
-               
+
             });
             //initil set data
             console.log("telegram " + settings['telegramUser']);
-            getTelegramUser(onChange, instance, settings['telegramUser'] );
+            getTelegramUser(onChange, instance, settings['telegramUser']);
 
             //===========================================================================
             //power interruptions
             values2table('PowerInterruptions', settings.PowerInterruptions, onChange, tablePowerInterruptionsOnReady);
-   
+
             //++++++++++ TABS ++++++++++
             //Enhance Tabs with onShow-Function
             $('ul.tabs li a').on('click', function () { onTabShow($(this).attr('href')); });
@@ -1305,7 +1312,7 @@
                         let sensors = table2values('sensors');
                         let addtempsensors = table2values('addtempsensors');
 
-                        
+
 
                         console.log('Thermostatlist ' + JSON.stringify(thermostats));
                         console.log('Actorlist ' + JSON.stringify(actors));
@@ -1452,7 +1459,7 @@
                                 }
                             }
                         }
-                        
+
 
                         //find out if deleted
 
@@ -1542,7 +1549,7 @@
                             }
                         }
 
-                        
+
 
 
 
@@ -1608,7 +1615,7 @@
             });
 
 
-           
+
 
 
             showHideSettings();
@@ -1783,7 +1790,7 @@
 
         }
 
-       
+
 
 
         var selectId;
@@ -2083,7 +2090,7 @@
                                     <span class="translate">hint_AddTempSensorsUseEveryOffsetChange</span>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </li>
                     <li>
@@ -2591,9 +2598,18 @@
                                     <label for="MaintenanceModeTemperature" class="translate">MaintenanceModeTemperature</label>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="input-field col s12 m6 l3">
+                                    <input type="checkbox" class="value" id="enableCSVLogging" />
+                                    <label for="enableCSVLogging" class="translate">enableCSVLogging</label>
+                                </div>
+                                <div class="input-field col s6 col-use-custom-path">
+                                    <input type="text" id="CustomCsvPath" class="value" />
+                                    <label for="CustomCsvPath" class="translate">CustomCsvPath</label>
+                                </div>
+                            </div>
                         </div>
-                    </li>
+</li>
 
 
                 </ul>
@@ -2619,7 +2635,6 @@
                                 <div id="checkResultSaveProfile"></div>
                                 <div id="checkResultLoadProfile"></div>
                             </div>
-
 
                             <div class="row">
                                 <div class="input-field col s4">
@@ -2960,7 +2975,7 @@
                             </div>
                         </div>
 
-                       
+
                         <div id="tab-popup_AddTempSensors" class="col s12 page">
                             <div class="row">
                                 <div class="col s12 ">

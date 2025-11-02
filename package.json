@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "cron": "^4.3.3"
+    "cron": "^4.3.3",
+    "csv-writer": "^1.6.0" 
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.0.0",

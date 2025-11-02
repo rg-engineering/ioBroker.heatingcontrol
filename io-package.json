@@ -5,7 +5,7 @@
     "news": {
       "2.12.18": {
         "en": "bug fix sentry",
-        "de": "fehlerbehebung gesendet",
+        "de": "Fehlerbehebung sentry",
         "ru": "исправлять ошибки",
         "pt": "corrigir o erro sentinela",
         "nl": "bug repareren wacht",
@@ -18,7 +18,7 @@
       },
       "2.12.17": {
         "en": "changes requested by adapter checker",
-        "de": "änderungen, die von adapter checker angefordert werden",
+        "de": "Änderungen, die von Adapter-Checker angefordert werden",
         "ru": "изменения, запрошенные adapter checker",
         "pt": "alterações solicitadas pelo verificador de adaptadores",
         "nl": "wijzigingen gevraagd door adaptercontrole",
@@ -31,7 +31,7 @@
       },
       "2.12.16": {
         "en": "dependencies updated\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\nchanges requested by adapter checker",
-        "de": "aktualisierte abhängigkeiten\nfehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
+        "de": "aktualisierte Abhängigkeiten\nFehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
         "ru": "обновленные зависимости\nисправление ошибок см. проблему #682: HmIP-eTRV-2 не обнаружен автоматически\nизменения, запрошенные adapter checker",
         "pt": "dependências atualizadas\ncorreção de erros ver problema #682: HmIP-eTRV-2 não detectado automaticamente\nalterações solicitadas pelo verificador de adaptadores",
         "nl": "afhankelijkheden bijgewerkt\nbug fix zie probleem #682: HmIP-eTRV-2 niet automatisch gedetecteerd\nwijzigingen gevraagd door adaptercontrole",
@@ -267,6 +267,8 @@
     "emailWaitToSend": 0,
     "notificationsTemperature": false,
     "notificationsActor": false,
-    "notificationsWindow": false
+    "notificationsWindow": false,
+    "enableCSVLogging": false,
+    "CustomCsvPath": "/var/heatingcontrol/"
   }
 }
