@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.18",
+    "version": "2.12.19",
     "news": {
+      "2.12.19": {
+        "en": "csv-logging added (optionally), will be used in later enhancements",
+        "de": "csv-logging hinzugefügt (optional), wird in späteren verbesserungen verwendet",
+        "ru": "csv-логирование добавлено (необязательно), будет использоваться в последующих улучшениях",
+        "pt": "csv-logging adicionado (opcionalmente), será usado em melhorias posteriores",
+        "nl": "csv-logging toegevoegd (optioneel), zal worden gebruikt in latere verbeteringen",
+        "fr": "csv-logging ajouté (en option), sera utilisé dans les améliorations ultérieures",
+        "it": "csv-logging aggiunto (opzionale), sarà utilizzato in miglioramenti successivi",
+        "es": "csv-logging añadido (opcionalmente), se utilizará en mejoras posteriores",
+        "pl": "csv- logowanie dodane (opcjonalnie), będą stosowane w późniejszych ulepszeniach",
+        "uk": "csv-log додано (необов'язково), буде використовуватися в більш пізніх розширень",
+        "zh-cn": "添加csv-logy(可选),用于以后的增强"
+      },
       "2.12.18": {
         "en": "bug fix sentry",
         "de": "Fehlerbehebung sentry",
@@ -80,19 +93,6 @@
         "pl": "zob. numer # 607: długość minumumu użytkownika telegramu zredukowana do jednego znaku",
         "uk": "див. питання #607: довжина імпульсу телеграми, знижена до одного char",
         "zh-cn": "参见第607期:电报用户的微量长度缩小为1个字符"
-      },
-      "2.12.12": {
-        "en": "see issue #422: bug fix window open/close handling\nupdate dependencies",
-        "de": "siehe ausgabe #422: bugfix Fenster öffnen/schließen-Behandlung\nAktualisierung der Abhängigkeiten",
-        "ru": "см. вопрос #422: окно исправления клопа\nобновление зависимостей",
-        "pt": "veja o problema #422: janela de correção de bugs aberta / fechar manipulação\ndependências",
-        "nl": "zie probleem #422: foutherstelvenster open/sluiten\nafhankelijkheden bijwerken",
-        "fr": "voir le problème #422: correction de la fenêtre ouverte/fermer la gestion\nmettre à jour les dépendances",
-        "it": "vedi numero #422: finestra di correzione bug aperta/chiudi gestione\naggiornamento dipendenze",
-        "es": "ver el número #422: corrección de errores ventana abierta / cierre manejo\ndependencias de actualización",
-        "pl": "zobacz numer # 422: błąd naprawić okno otwarte / zamknięcia obsługi\naktualizacji zależności",
-        "uk": "див. питання #422: виправлення помилок вікна відкритим/закриття\nоновлення залежності",
-        "zh-cn": "参见问题422:错误修复窗口打开/关闭处理\n更新依赖关系"
       }
     },
     "titleLang": {
