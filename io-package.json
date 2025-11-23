@@ -269,6 +269,6 @@
     "notificationsActor": false,
     "notificationsWindow": false,
     "enableCSVLogging": false,
-    "CustomCsvPath": "/var/heatingcontrol/"
+    "CustomCsvPath": "/opt/iobroker/iobroker-data/files/ai-heatingcontrol/data"
   }
 }

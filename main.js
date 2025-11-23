@@ -23,6 +23,8 @@ const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
 
 const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
+const { existsSync, mkdirSync } = require('fs');
+const { join } = require('path');
 
 //======================================
 const CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
@@ -180,7 +182,20 @@ async function main() {
         adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
 
         //======================================
-        
+
+        const dataDir = join(utils.getAbsoluteDefaultDataDir(), 'files', 'heatingcontrol', 'data');
+
+        try {
+            // create directory
+            if (!existsSync(dataDir)) {
+                adapter.log.info(`Creating data directory at ${dataDir}`);
+                mkdirSync(dataDir, { recursive: true });
+            }
+        } catch (err) {
+            adapter.log.error(`Could not create Storage directory: ${err} on ${dataDir}`);
+
+        }
+
 
 
         SystemLanguage = await GetSystemLanguage();
