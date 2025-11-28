@@ -118,8 +118,8 @@ function startAdapter(options) {
                         adapter.log.debug("send command");
                         // Send response in callback if required
                         if (obj.callback) {
-adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
-}
+                            adapter.sendTo(obj.from, obj.command, "Message received", obj.callback);
+                        }
                         break;
                     case "listRooms":
                         //adapter.log.debug("got list rooms");

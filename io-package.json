@@ -268,7 +268,6 @@
     "notificationsTemperature": false,
     "notificationsActor": false,
     "notificationsWindow": false,
-    "enableCSVLogging": false,
-    "CustomCsvPath": "/opt/iobroker/iobroker-data/files/ai-heatingcontrol/data"
+    "enableCSVLogging": false
   }
 }
