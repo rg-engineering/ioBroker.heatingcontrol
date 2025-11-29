@@ -18,6 +18,7 @@ import {
 
 import TabMainSettings from './Tabs/MainSettings';
 import TabRoomSettings from './Tabs/RoomSettings';
+import TabProfileSettings from './Tabs/ProfileSettings';
 
 import enLang from './i18n/en.json';
 import deLang from './i18n/de.json';
@@ -61,6 +62,10 @@ const tabs: {
         {
             name: 'main_settings',
             title: 'Main_settings',
+        },
+        {
+            name: 'profile_settings',
+            title: 'Profile_Settings',
         },
         {
             name: 'room_settings',
@@ -171,6 +176,32 @@ class App extends GenericApp<GenericAppProps, AppState> {
         );
     }
 
+    renderProfileSettings(): React.JSX.Element {
+        if (!this.state.systemConfig) {
+            return <div>{I18n.t('Loading...')}</div>;
+        }
+
+        //console.log("renderProfileSettings called");
+
+        return (
+            <TabProfileSettings
+                alive={this.state.alive}
+                common={this.common || ({} as ioBroker.InstanceCommon)}
+                socket={this.socket}
+                native={this.state.native as HeatingControlAdapterConfig}
+                instance={this.instance}
+                adapterName={this.adapterName}
+                changeNative={(native): void =>
+                    this.setState({ native, changed: this.getIsChanged(native) })
+                }
+                themeType={this.state.themeType}
+                theme={this.state.theme}
+                themeName={this.state.themeName}
+                systemConfig={this.state.systemConfig}
+            />
+        );
+    }
+
     renderRoomSettings(): React.JSX.Element {
         if (!this.state.systemConfig) {
             return <div>{I18n.t('Loading...')}</div>;
@@ -211,7 +242,9 @@ class App extends GenericApp<GenericAppProps, AppState> {
         if (this.state.selectedTab === 'room_settings') {
             return this.renderRoomSettings();
         }
-
+        if (this.state.selectedTab === 'profile_settings') {
+            return this.renderProfileSettings();
+        }
 
         //console.log("renderTab done");
 
