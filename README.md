@@ -285,6 +285,7 @@ When the adapter crashes or an other Code error happens, this error message that
   ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* (René) admin overworked completely with react and vite. ATTENTION: breaking changes in admin settings !!!
 * (René) csv-logging: path changed, one log per room now
 
 ### 2.12.19 (2025-11-02)

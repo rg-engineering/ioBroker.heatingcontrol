@@ -1206,7 +1206,7 @@ const schema: ConfigItemPanel = {
             "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordUserTag: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             label: 'DiscordUserTag',
             "xs": 12,
@@ -1217,7 +1217,7 @@ const schema: ConfigItemPanel = {
             "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordUserId: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             label: 'discordUserId',
             "xs": 12,
@@ -1228,7 +1228,7 @@ const schema: ConfigItemPanel = {
             "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordServerId: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             label: 'discordServerId',
             "xs": 12,
@@ -1239,7 +1239,7 @@ const schema: ConfigItemPanel = {
             "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordChannelId: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             label: 'discordChannelId',
             "xs": 12,
@@ -1250,7 +1250,7 @@ const schema: ConfigItemPanel = {
             "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordWaitToSend: {
-            newLine: false,
+            newLine: true,
             type: 'number',
             min: 0,
             max: 60,
