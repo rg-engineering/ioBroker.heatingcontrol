@@ -33,25 +33,42 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'header',
             label: 'GeneralSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         timezone: {
             newLine: true,
             type: 'text',
             label: 'timezone',
-            xs: 12
+            "xs": 4,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         //=======================================================================
         _header2: {
             newLine: true,
             type: 'header',
             label: 'DPSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         Path2PresentDP: {
             newLine: true,
             type: 'objectId',
-            label: 'Path2PresentDP'
+            label: 'Path2PresentDP',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         Path2PresentDPType: {
             newLine: false,
@@ -66,17 +83,32 @@ const schema: ConfigItemPanel = {
                     label: "number",
                     value: 2
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         Path2VacationDP: {
             newLine: true,
             type: 'objectId',
-            label: 'Path2VacationDP'
+            label: 'Path2VacationDP',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         Path2GuestsPresentDP: {
             newLine: true,
             type: 'objectId',
-            label: 'Path2GuestsPresentDP'
+            label: 'Path2GuestsPresentDP',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         Path2GuestsPresentDPType: {
             newLine: false,
@@ -91,19 +123,34 @@ const schema: ConfigItemPanel = {
                     label: "number",
                     value: 2
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         Path2GuestsPresentDPLimit: {
             newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'Path2GuestsPresentDPLimit'
+            label: 'Path2GuestsPresentDPLimit',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         Path2PartyNowDP: {
             newLine: true,
             type: 'objectId',
-            label: 'Path2PartyNowDP'
+            label: 'Path2PartyNowDP',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         Path2PartyNowDPType: {
             newLine: false,
@@ -118,21 +165,35 @@ const schema: ConfigItemPanel = {
                     label: "number",
                     value: 2
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         Path2PartyNowDPLimit: {
             newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'Path2PartyNowDPLimit'
+            label: 'Path2PartyNowDPLimit',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         //=======================================================================
         _header3: {
             newLine: true,
             type: 'header',
             label: 'ThermostatSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         UseChangesFromThermostat: {
             newLine: false,
@@ -155,12 +216,22 @@ const schema: ConfigItemPanel = {
                     label: "until_next_profile_point",
                     value: 5
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         ExtendOverride: {
-            newLine: false,
+            newLine: true,
             type: 'checkbox',
-            label: 'ExtendOverride'
+            label: 'ExtendOverride',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         OverrideMode: {
             newLine: false,
@@ -175,68 +246,127 @@ const schema: ConfigItemPanel = {
                     label: "until_next_profile_point",
                     value: 2
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         ThermostatHandlesWindowOpen: {
-            newLine: false,
+            newLine: true,
             type: 'checkbox',
-            label: 'ThermostatHandlesWindowOpen'
+            label: 'ThermostatHandlesWindowOpen',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         InterThermostatDelay: {
             newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'InterThermostatDelay'
+            label: 'InterThermostatDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         //=======================================================================
         _header4: {
             newLine: true,
             type: 'header',
             label: 'AdditionalTemperatureSensorSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         UseAddTempSensors: {
-            newLine: false,
+            newLine: true,
             type: 'checkbox',
-            label: 'UseAddTempSensors'
+            label: 'UseAddTempSensors',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         hint_UseAddTempSensors: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             readOnly: true,
-            label: 'hint_UseAddTempSensors'
+            label: 'hint_UseAddTempSensors',
+            "xs": 12,
+            "sm": 10,
+            "md": 10,
+            "lg": 10,
+            "xl": 10
         },
         AddTempSensorsTempLimit: {
-            newLine: false,
+            newLine: true,
             type: 'number',
             min: 0,
             max: 6,
-            label: 'AddTempSensorsTempLimit'
+            label: 'AddTempSensorsTempLimit',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseAddTempSensors) return true;",
         },
         hint_AddTempSensorsTempLimit: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             readOnly: true,
-            label: 'hint_AddTempSensorsTempLimit'
+            label: 'hint_AddTempSensorsTempLimit',
+            "xs": 12,
+            "sm": 10,
+            "md": 10,
+            "lg": 10,
+            "xl": 10,
+            "hidden": "if (!data.UseAddTempSensors) return true;",
         },
         AddTempSensorsMaxTimeDiff: {
-            newLine: false,
+            newLine: true,
             type: 'number',
             min: 0,
             max: 1000,
-            label: 'AddTempSensorsMaxTimeDiff'
+            label: 'AddTempSensorsMaxTimeDiff',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseAddTempSensors) return true;",
         },
         hint_AddTempSensorsMaxTimeDiff: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             readOnly: true,
-            label: 'hint_AddTempSensorsMaxTimeDiff'
+            label: 'hint_AddTempSensorsMaxTimeDiff',
+            "xs": 12,
+            "sm": 10,
+            "md": 10,
+            "lg": 10,
+            "xl": 10,
+            "hidden": "if (!data.UseAddTempSensors) return true;",
         },
         AddTempSensorsUseEveryOffsetChange: {
-            newLine: false,
+            newLine: true,
             type: 'checkbox',
-            label: 'AddTempSensorsUseEveryOffsetChange'
+            label: 'AddTempSensorsUseEveryOffsetChange',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseAddTempSensors) return true;",
         },
 
         //=======================================================================
@@ -244,62 +374,110 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'header',
             label: 'SensorSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         UseSensors: {
             newLine: true,
             type: 'checkbox',
-            label: 'use_sensors'
+            label: 'use_sensors',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         SensorOpenDelay: {
             newLine: true,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'SensorOpenDelay'
+            label: 'SensorOpenDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseSensors) return true;",
         },
         SensorCloseDelay: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'SensorCloseDelay'
+            label: 'SensorCloseDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseSensors) return true;",
         },
         //=======================================================================
         _header6: {
             newLine: true,
             type: 'header',
             label: 'ActorSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         UseActors: {
             newLine: true,
             type: 'checkbox',
-            label: 'use_actors'
+            label: 'use_actors',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         ActorBeforeOnDelay: {
             newLine: true,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'ActorBeforeOnDelay'
+            label: 'ActorBeforeOnDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         ActorBeforeOffDelay: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'ActorBeforeOffDelay'
+            label: 'ActorBeforeOffDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         InterActorDelay: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'InterActorDelay'
+            label: 'InterActorDelay',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         regulatorType: {
-            newLine: false,
+            newLine: true,
             type: 'select',
             label: 'regulatorType',
             options: [
@@ -311,24 +489,42 @@ const schema: ConfigItemPanel = {
                     label: "linear Hysteresis",
                     value: 2
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         ExtHandlingRepTime: {
             newLine: true,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'ExtHandlingActorRepTime'
+            label: 'ExtHandlingActorRepTime',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         ExtHandlingActorAckWaitTime: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
             step: 1,
-            label: 'ExtHandlingActorAckWaitTime'
+            label: 'ExtHandlingActorAckWaitTime',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         UseActorsIfNotHeating: {
-            newLine: false,
+            newLine: true,
             type: 'select',
             label: 'UseActorsIfNotHeating',
             options: [
@@ -344,7 +540,13 @@ const schema: ConfigItemPanel = {
                     label: "on",
                     value: 3
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         UseActorsIfNoThermostat: {
             newLine: false,
@@ -363,54 +565,103 @@ const schema: ConfigItemPanel = {
                     label: "on",
                     value: 3
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         //=======================================================================
         _header7: {
             newLine: true,
             type: 'header',
             label: 'VisSettings',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         UseVisFromPittini: {
             newLine: true,
             type: 'checkbox',
-            label: 'UseVisFromPittini'
+            label: 'UseVisFromPittini',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         hint_vis_from_Pittini: {
-            newLine: true,
+            newLine: false,
             type: 'text',
             readOnly: true,
-            label: 'hint_vis_from_Pittini'
+            label: 'hint_vis_from_Pittini',
+            "xs": 12,
+            "sm": 10,
+            "md": 10,
+            "lg": 10,
+            "xl": 10
         },
         VisUseSimple: {
             newLine: true,
             type: 'checkbox',
-            label: 'VisUseSimple'
+            label: 'VisUseSimple',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         PittiniPathImageWindowOpen: {
             newLine: true,
             type: 'text',
-            label: 'PittiniPathImageWindowOpen'
+            label: 'PittiniPathImageWindowOpen',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         PittiniPathImageWindowClosed: {
             newLine: false,
             type: 'text',
-            label: 'PittiniPathImageWindowClosed'
+            label: 'PittiniPathImageWindowClosed',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMinProfilTemp: {
             newLine: true,
             type: 'number',
             min: 0,
             max: 20,
-            label: 'VisMinProfilTemp'
+            label: 'VisMinProfilTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMaxProfilTemp: {
             newLine: false,
             type: 'number',
-            min: 0,
-            max: 20,
-            label: 'VisMaxProfilTemp'
+            min: 10,
+            max: 30,
+            label: 'VisMaxProfilTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisStepWidthProfilTemp: {
             newLine: false,
@@ -429,21 +680,39 @@ const schema: ConfigItemPanel = {
                     value: 2
                 }
             ],
-            label: 'VisStepWidthProfilTemp'
+            label: 'VisStepWidthProfilTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMinDecRelTemp: {
             newLine: true,
             type: 'number',
-            min: 0,
-            max: 20,
-            label: 'VisMinDecRelTemp'
+            min: 1,
+            max: 10,
+            label: 'VisMinDecRelTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMaxDecRelTemp: {
             newLine: false,
             type: 'number',
-            min: 0,
+            min: 2,
             max: 20,
-            label: 'VisMaxDecRelTemp'
+            label: 'VisMaxDecRelTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisStepWidthDecRelTemp: {
             newLine: false,
@@ -462,21 +731,39 @@ const schema: ConfigItemPanel = {
                     value: 2
                 }
             ],
-            label: 'VisStepWidthDecRelTemp'
+            label: 'VisStepWidthDecRelTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMinDecAbsTemp: {
             newLine: true,
             type: 'number',
-            min: 0,
+            min: 3,
             max: 20,
-            label: 'VisMinDecAbsTemp'
+            label: 'VisMinDecAbsTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMaxDecAbsTemp: {
             newLine: false,
             type: 'number',
-            min: 0,
-            max: 20,
-            label: 'VisMaxDecAbsTemp'
+            min: 5,
+            max: 30,
+            label: 'VisMaxDecAbsTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisStepWidthDecAbsTemp: {
             newLine: false,
@@ -495,21 +782,39 @@ const schema: ConfigItemPanel = {
                     value: 2
                 }
             ],
-            label: 'VisStepWidthDecAbsTemp'
+            label: 'VisStepWidthDecAbsTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMinOverrideTemp: {
             newLine: true,
             type: 'number',
             min: 3,
-            max: 20,
-            label: 'VisMinOverrideTemp'
+            max: 25,
+            label: 'VisMinOverrideTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisMaxOverrideTemp: {
             newLine: false,
             type: 'number',
             min: 5,
             max: 35,
-            label: 'VisMaxOverrideTemp'
+            label: 'VisMaxOverrideTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
         VisStepWidthOverrideTemp: {
             newLine: false,
@@ -528,7 +833,13 @@ const schema: ConfigItemPanel = {
                     value: 2
                 }
             ],
-            label: 'VisStepWidthOverrideTemp'
+            label: 'VisStepWidthOverrideTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseVisFromPittini && !data.VisUseSimple ) return true;",
         },
 
         //=======================================================================
@@ -536,34 +847,64 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'header',
             label: 'Logging',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         extendedInfoLogTemperature: {
             newLine: true,
             type: 'checkbox',
-            label: 'extendedInfoLogTemperature'
+            label: 'extendedInfoLogTemperature',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         extendedInfoLogActor: {
             newLine: false,
             type: 'checkbox',
-            label: 'extendedInfoLogActor'
+            label: 'extendedInfoLogActor',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseActors) return true;",
         },
         extendedInfoLogWindow: {
             newLine: false,
             type: 'checkbox',
-            label: 'extendedInfoLogWindow'
+            label: 'extendedInfoLogWindow',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.UseSensors) return true;",
         },
         //=======================================================================
         _header9: {
             newLine: true,
             type: 'header',
             label: 'Notifications',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
         notificationEnabled: {
             newLine: true,
             type: 'checkbox',
-            label: 'notificationEnabled'
+            label: 'notificationEnabled',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         notificationsType: {
             newLine: false,
@@ -594,22 +935,46 @@ const schema: ConfigItemPanel = {
                     value: "Discord"
                 }
             ],
-            label: 'notificationsType'
+            label: 'notificationsType',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled) return true;",
         },
         notificationsTemperature: {
             newLine: true,
             type: 'checkbox',
-            label: 'notificationsTemperature'
+            label: 'notificationsTemperature',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled) return true;",
         },
         notificationsActor: {
             newLine: false,
             type: 'checkbox',
-            label: 'notificationsActor'
+            label: 'notificationsActor',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || !data.UseActors) return true;",
         },
         notificationsWindow: {
             newLine: false,
             type: 'checkbox',
-            label: 'notificationsWindow'
+            label: 'notificationsWindow',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || !data.UseSensors) return true;",
         },
         //=======================================================================
         //Telegram Settings
@@ -617,24 +982,48 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'instance',
             label: 'Telegram instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Telegram') return true;",
         },
         telegramUser: {
-            newLine: false,
+            newLine: true,
             type: 'text',
             label: 'Telegram instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Telegram') return true;",
         },
         telegramWaitToSend: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Telegram') return true;",
         },
         telegramSilentNotice: {
             newLine: false,
             type: 'checkbox',
-            label: 'Silent Notice'
+            label: 'Silent Notice',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Telegram') return true;",
         },
         //=======================================================================
         //Whatsapp Settings
@@ -642,9 +1031,15 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='WhatsApp') return true;",
         },
         //=======================================================================
         //Signal Settings
@@ -652,14 +1047,26 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'instance',
             label: 'Signal instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Signal') return true;",
         },
         signalWaitToSend: {
             newLine: true,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Signal') return true;",
         },
         //=======================================================================
         //Pushover Settings
@@ -667,49 +1074,98 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'instance',
             label: 'Pushover instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Pushover') return true;",
         },
         pushoverWaitToSend: {
             newLine: true,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Pushover') return true;",
         },
         pushoverDeviceID: {
             newLine: false,
             type: 'text',
-            label: 'device ID (optional)'
+            label: 'device ID (optional)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Pushover') return true;",
         },
         pushoverSilentNotice: {
             newLine: false,
             type: 'checkbox',
-            label: 'Silent Notice'
+            label: 'Silent Notice',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Pushover') return true;",
         },
         //=======================================================================
         //email Settings
+        emailInstance: {
+            newLine: true,
+            type: 'instance',
+            label: 'email instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='E-Mail') return true;",
+        },
         emailReceiver: {
             newLine: true,
             type: 'text',
             label: 'email receiver',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='E-Mail') return true;",
         },
         emailSender: {
             newLine: false,
             type: 'text',
             label: 'email sender',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='E-Mail') return true;",
         },
-        emailInstance: {
-            newLine: true,
-            type: 'instance',
-            label: 'email instance',
-        },
+        
         emailWaitToSend: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='E-Mail') return true;",
         },
         //=======================================================================
         //discord Settings
@@ -717,6 +1173,12 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'instance',
             label: 'Discord instance',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordTarget: {
             newLine: true,
@@ -735,78 +1197,162 @@ const schema: ConfigItemPanel = {
                     label: "ServerChannel",
                     value: "ServerChannel"
                 }
-            ]
+            ],
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordUserTag: {
             newLine: true,
             type: 'text',
             label: 'DiscordUserTag',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordUserId: {
             newLine: true,
             type: 'text',
             label: 'discordUserId',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordServerId: {
             newLine: true,
             type: 'text',
             label: 'discordServerId',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordChannelId: {
             newLine: true,
             type: 'text',
             label: 'discordChannelId',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         discordWaitToSend: {
-            newLine: true,
+            newLine: false,
             type: 'number',
             min: 0,
-            max: 20,
+            max: 60,
             step: 1,
-            label: 'Waiting for the send (seconds)'
+            label: 'Waiting for the send (seconds)',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled || data.notificationsType!='Discord') return true;",
         },
         useCustumizedNotifications: {
             newLine: true,
             type: 'checkbox',
-            label: 'useCustumizedNotifications'
+            label: 'useCustumizedNotifications',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsWithInstanceName: {
-            newLine: true,
+            newLine: false,
             type: 'checkbox',
-            label: 'useCustumizedNotificationsWithInstanceName'
+            label: 'useCustumizedNotificationsWithInstanceName',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsNewTargetTemp: {
             newLine: true,
             type: 'text',
-            label: 'useCustumizedNotificationsNewTargetTemp'
+            label: 'useCustumizedNotificationsNewTargetTemp',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsActorOn: {
-            newLine: true,
+            newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsActorOn'
+            label: 'useCustumizedNotificationsActorOn',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsActorOff: {
-            newLine: true,
+            newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsActorOff'
+            label: 'useCustumizedNotificationsActorOff',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsWindowOpen: {
-            newLine: true,
+            newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsWindowOpen'
+            label: 'useCustumizedNotificationsWindowOpen',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         useCustumizedNotificationsWindowClose: {
-            newLine: true,
+            newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsWindowClose'
+            label: 'useCustumizedNotificationsWindowClose',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+            "hidden": "if (!data.notificationEnabled ) return true;",
         },
         //=======================================================================
         _header10: {
             newLine: true,
             type: 'header',
             label: 'Maintenance',
-            xs: 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
         },
+
+        /* müssen verschoben werden auf eigene Seite
         btn_deleteunusedDP: {
             newLine: true,
             type: 'button',
@@ -823,18 +1369,29 @@ const schema: ConfigItemPanel = {
                 console.log("Delete unused config clicked");
             }
         },
+        */
         MaintenanceModeTemperature: {
             newLine: true,
             type: 'number',
             min: 20,
             max: 40,
             step: 5,
-            label: 'MaintenanceModeTemperature'
+            label: 'MaintenanceModeTemperature',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         },
         enableCSVLogging: {
             newLine: true,
             type: 'checkbox',
-            label: 'enableCSVLogging'
+            label: 'enableCSVLogging',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2
         }
     }
 }
@@ -852,17 +1409,120 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                 socket={props.socket}
                 themeName={props.themeName}
                 themeType={props.themeType}
-                adapterName="ai-heatingcontrol"
+                adapterName="heatingcontrol"
                 instance={props.instance || 0}
                 isFloatComma={props.systemConfig.common.isFloatComma}
                 dateFormat={props.systemConfig.common.dateFormat}
                 schema={schema}
                 onChange={(params): void => {
 
-                    console.log("MainSettings onChange " + JSON.stringify(params));
+                    console.log("MainSettings onChange params: " + JSON.stringify(params));
 
                     const native: HeatingControlAdapterConfig = JSON.parse(JSON.stringify(props.native));
+                    //console.log("MainSettings onChange native: " + JSON.stringify(native));
 
+                    native.timezone = params.timezone;
+
+                    native.Path2PresentDP = params.Path2PresentDP;
+                    native.Path2PresentDPType = params.Path2PresentDPType;
+                    native.Path2VacationDP = params.Path2VacationDP;
+                    native.Path2GuestsPresentDP = params.Path2GuestsPresentDP;
+                    native.Path2GuestsPresentDPType = params.Path2GuestsPresentDPType;
+                    native.Path2GuestsPresentDPLimit = params.Path2GuestsPresentDPLimit;
+                    native.Path2PartyNowDP = params.Path2PartyNowDP;
+                    native.Path2PartyNowDPType = params.Path2PartyNowDPType;
+                    native.Path2PartyNowDPLimit = params.Path2PartyNowDPLimit;
+
+                    native.UseChangesFromThermostat = params.UseChangesFromThermostat;
+                    native.ExtendOverride = params.ExtendOverride;
+                    native.OverrideMode = params.OverrideMode;
+                    native.ThermostatHandlesWindowOpen = params.ThermostatHandlesWindowOpen;
+                    native.InterThermostatDelay = params.InterThermostatDelay;
+
+                    native.UseAddTempSensors = params.UseAddTempSensors;
+                    native.AddTempSensorsTempLimit = params.AddTempSensorsTempLimit;
+                    native.AddTempSensorsMaxTimeDiff = params.AddTempSensorsMaxTimeDiff;
+                    native.AddTempSensorsUseEveryOffsetChange = params.AddTempSensorsUseEveryOffsetChange;
+
+                    native.UseSensors = params.UseSensors;
+                    native.SensorOpenDelay = params.SensorOpenDelay;
+                    native.SensorCloseDelay = params.SensorCloseDelay;
+
+                    native.UseActors = params.UseActors;
+                    native.ActorBeforeOnDelay = params.ActorBeforeOnDelay;
+                    native.ActorBeforeOffDelay = params.ActorBeforeOffDelay;
+                    native.InterActorDelay = params.InterActorDelay;
+                    native.regulatorType = params.regulatorType;
+                    native.ExtHandlingRepTime = params.ExtHandlingRepTime;
+                    native.ExtHandlingActorAckWaitTime = params.ExtHandlingActorAckWaitTime;
+                    native.UseActorsIfNotHeating = params.UseActorsIfNotHeating;
+                    native.UseActorsIfNoThermostat = params.UseActorsIfNoThermostat;
+
+                    native.UseVisFromPittini = params.UseVisFromPittini;
+                    native.VisUseSimple = params.VisUseSimple;
+                    native.PittiniPathImageWindowOpen = params.PittiniPathImageWindowOpen;
+                    native.PittiniPathImageWindowClosed = params.PittiniPathImageWindowClosed;
+                    native.VisMinProfilTemp = params.VisMinProfilTemp;
+                    native.VisMaxProfilTemp = params.VisMaxProfilTemp;
+                    native.VisStepWidthProfilTemp = params.VisStepWidthProfilTemp;
+                    native.VisMinDecRelTemp = params.VisMinDecRelTemp;
+                    native.VisMaxDecRelTemp = params.VisMaxDecRelTemp;
+                    native.VisStepWidthDecRelTemp = params.VisStepWidthDecRelTemp;
+                    native.VisMinDecAbsTemp = params.VisMinDecAbsTemp;
+                    native.VisMaxDecAbsTemp = params.VisMaxDecAbsTemp;
+                    native.VisStepWidthDecAbsTemp = params.VisStepWidthDecAbsTemp;
+                    native.VisMinOverrideTemp = params.VisMinOverrideTemp;
+                    native.VisMaxOverrideTemp = params.VisMaxOverrideTemp;
+                    native.VisStepWidthOverrideTemp = params.VisStepWidthOverrideTemp;
+
+                    native.extendedInfoLogTemperature = params.extendedInfoLogTemperature;
+                    native.extendedInfoLogActor = params.extendedInfoLogActor;
+                    native.extendedInfoLogWindow = params.extendedInfoLogWindow;
+
+                    native.notificationEnabled = params.notificationEnabled;
+                    native.notificationsType = params.notificationsType;
+                    native.notificationsTemperature = params.notificationsTemperature;
+                    native.notificationsActor = params.notificationsActor;
+                    native.notificationsWindow = params.notificationsWindow;
+
+                    native.telegramInstance = params.telegramInstance;
+                    native.telegramUser = params.telegramUser;
+                    native.telegramWaitToSend = params.telegramWaitToSend;
+                    native.telegramSilentNotice = params.telegramSilentNotice;
+
+                    native.whatsappWaitToSend = params.whatsappWaitToSend;
+
+                    native.signalInstance = params.signalInstance;
+                    native.signalWaitToSend = params.signalWaitToSend;
+
+                    native.pushoverInstance = params.pushoverInstance;
+                    native.pushoverWaitToSend = params.pushoverWaitToSend;
+                    native.pushoverDeviceID = params.pushoverDeviceID;
+                    native.pushoverSilentNotice = params.pushoverSilentNotice;
+
+                    native.emailReceiver = params.emailReceiver;
+                    native.emailSender = params.emailSender;
+                    native.emailInstance = params.emailInstance;
+                    native.emailWaitToSend = params.emailWaitToSend;
+
+                    native.discordInstance = params.discordInstance;
+                    native.discordTarget = params.discordTarget;
+                    native.discordUserTag = params.discordUserTag;
+                    native.discordUserId = params.discordUserId;
+                    native.discordServerId = params.discordServerId;
+                    native.discordChannelId = params.discordChannelId;
+                    native.discordWaitToSend = params.discordWaitToSend;
+
+                    native.useCustumizedNotifications = params.useCustumizedNotifications;
+                    native.useCustumizedNotificationsWithInstanceName = params.useCustumizedNotificationsWithInstanceName;
+                    native.useCustumizedNotificationsNewTargetTemp = params.useCustumizedNotificationsNewTargetTemp;
+                    native.useCustumizedNotificationsActorOn = params.useCustumizedNotificationsActorOn;
+                    native.useCustumizedNotificationsActorOff = params.useCustumizedNotificationsActorOff;
+                    native.useCustumizedNotificationsWindowOpen = params.useCustumizedNotificationsWindowOpen;
+                    native.useCustumizedNotificationsWindowClosed = params.useCustumizedNotificationsWindowClose;
+
+                    native.MaintenanceModeTemperature = params.MaintenanceModeTemperature;
+                    native.enableCSVLogging = params.enableCSVLogging;
                     
                     
                     props.changeNative(native);

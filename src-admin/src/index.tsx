@@ -15,7 +15,7 @@ declare global {
     }
 }
 
-window.adapterName = 'ai-heatingcontrol';
+window.adapterName = 'heatingcontrol';
 window.sentryDSN = ''; //todo
 
 console.log(`iobroker.${window.adapterName}@${pkg.version}`);

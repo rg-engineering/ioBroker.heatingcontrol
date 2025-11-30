@@ -50,7 +50,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                 socket={props.socket}
                 themeName={props.themeName}
                 themeType={props.themeType}
-                adapterName="ai-heatingcontrol"
+                adapterName="heatingcontrol"
                 instance={props.instance || 0}
                 isFloatComma={props.systemConfig.common.isFloatComma}
                 dateFormat={props.systemConfig.common.dateFormat}

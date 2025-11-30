@@ -1,6 +1,6 @@
 {
   "name": "iobroker.heatingcontrol",
-  "version": "2.12.19",
+  "version": "3.0.0",
   "description": "HeatingControl Adapter",
   "author": {
     "name": "René G.",
@@ -51,7 +51,7 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "build": "npm run build-backend && node tasks",
+    "build": "node tasks && npm pack",
     "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade",
     "npm": "npm i && cd src-admin && npm i -f",
     "0-clean": "node tasks.js --0-clean",

@@ -134,14 +134,14 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
     async onConnectionReady(): Promise<void> {
         super.onConnectionReady();
-        const selectedTab = window.localStorage.getItem(`ai-heatingcontrol.${this.instance}.selectedTab`) || 'connection';
+        const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'connection';
 
         void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
 
         const systemConfig = await this.socket.getSystemConfig();
-        const aliveState = await this.socket.getState(`system.adapter.ai-heatingcontrol.${this.instance}.alive`);
+        const aliveState = await this.socket.getState(`system.adapter.heatingcontrol.${this.instance}.alive`);
         this.setState({ alive: !!aliveState?.val, selectedTab, systemConfig });
-        await this.socket.subscribeState(`system.adapter.ai-heatingcontrol.${this.instance}.alive`, this.onAliveChanged);
+        await this.socket.subscribeState(`system.adapter.heatingcontrol.${this.instance}.alive`, this.onAliveChanged);
     }
 
     onAliveChanged = (_id: string, state: ioBroker.State | null | undefined): void => {
@@ -281,7 +281,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
                                 value={this.state.selectedTab || tabs[0].name}
                                 onChange={(_e, value) => {
                                     this.setState({ selectedTab: value });
-                                    window.localStorage.setItem(`ai-heatingcontrol.${this.instance}.selectedTab`, value);
+                                    window.localStorage.setItem(`heatingcontrol.${this.instance}.selectedTab`, value);
                                 }}
                                 variant="scrollable"
                                 scrollButtons="auto"
