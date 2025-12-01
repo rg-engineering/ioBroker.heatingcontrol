@@ -19,6 +19,8 @@ import {
 import TabMainSettings from './Tabs/MainSettings';
 import TabRoomSettings from './Tabs/RoomSettings';
 import TabProfileSettings from './Tabs/ProfileSettings';
+import TabMaintenance from './Tabs/Maintenance';
+
 
 import enLang from './i18n/en.json';
 import deLang from './i18n/de.json';
@@ -70,6 +72,10 @@ const tabs: {
         {
             name: 'room_settings',
             title: 'Room_Settings',
+        },
+        {
+            name: 'maintenance',
+            title: 'Maintenance',
         },
     ];
 
@@ -229,6 +235,32 @@ class App extends GenericApp<GenericAppProps, AppState> {
         );
     }
 
+    renderMaintenance(): React.JSX.Element {
+        if (!this.state.systemConfig) {
+            return <div>{I18n.t('Loading...')}</div>;
+        }
+
+        //console.log("renderRoomSettings called");
+
+        return (
+            <TabMaintenance
+                alive={this.state.alive}
+                common={this.common || ({} as ioBroker.InstanceCommon)}
+                socket={this.socket}
+                native={this.state.native as HeatingControlAdapterConfig}
+                instance={this.instance}
+                adapterName={this.adapterName}
+                changeNative={(native): void =>
+                    this.setState({ native, changed: this.getIsChanged(native) })
+                }
+                themeType={this.state.themeType}
+                theme={this.state.theme}
+                themeName={this.state.themeName}
+                systemConfig={this.state.systemConfig}
+                
+            />
+        );
+    }
    
     
 
@@ -244,6 +276,9 @@ class App extends GenericApp<GenericAppProps, AppState> {
         }
         if (this.state.selectedTab === 'profile_settings') {
             return this.renderProfileSettings();
+        }
+        if (this.state.selectedTab === 'maintenance') {
+            return this.renderMaintenance();
         }
 
         //console.log("renderTab done");

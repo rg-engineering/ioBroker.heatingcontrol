@@ -35,24 +35,7 @@ const schema: ConfigItemPanel = {
             label: 'GeneralProfileSettings',
             xs: 12,
         },
-        /* muss woanders hin verschoben werden 
-        btn_save_profile: {
-            newLine: true,
-            type: 'button',
-            label: 'btn_save_profile',
-            onClick: async (): Promise<void> => {
-                console.log("save profile clicked");
-            }
-        },
-        btn_load_profile: {
-            newLine: true,
-            type: 'button',
-            label: 'btn_load_profile',
-            onClick: async (): Promise<void> => {
-                console.log("upload profile clicked");
-            }
-        },
-        */
+        
         ProfileType: {
             newLine: true,
             type: 'select',

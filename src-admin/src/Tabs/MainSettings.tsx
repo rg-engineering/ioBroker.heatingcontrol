@@ -8,8 +8,6 @@ import { type ConfigItemPanel, JsonConfigComponent } from '@iobroker/json-config
 import type { HeatingControlAdapterConfig } from "../types";
 
 
-//todo: ausblenden von einstellungen je nach auswahl
-//todo: buttons evtl. auf neue Seite auslagern
 interface SettingsProps {
     common: ioBroker.InstanceCommon;
     native: HeatingControlAdapterConfig;
@@ -1352,24 +1350,7 @@ const schema: ConfigItemPanel = {
             "xl": 12
         },
 
-        /* müssen verschoben werden auf eigene Seite
-        btn_deleteunusedDP: {
-            newLine: true,
-            type: 'button',
-            label: 'DeleteUnusedDP',
-            onClick: async (): Promise<void> => {
-                console.log("Delete unused data points clicked");
-            }
-        },
-        btn_deleteunusedConfig: {
-            newLine: true,
-            type: 'button',
-            label: 'DeleteUnusedConfig',
-            onClick: async (): Promise<void> => {
-                console.log("Delete unused config clicked");
-            }
-        },
-        */
+        
         MaintenanceModeTemperature: {
             newLine: true,
             type: 'number',

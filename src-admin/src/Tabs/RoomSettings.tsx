@@ -107,6 +107,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     const [actors, setActors] = useState<SettingItem[]>([]);
     // Lokaler State für Fenstersensoren des aktuell ausgewählten Raums
     const [WindowSensors, setWindowSensors] = useState<SettingItem[]>([]);
+    // Lokaler State für zusätzliche Temperatursensoren des aktuell ausgewählten Raums
+    const [AdditionalSensors, setAdditionalSensors] = useState<SettingItem[]>([]);
 
 
     // Memoisierte und sortierte Liste der Räume aus props.rooms
@@ -152,6 +154,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             setThermostats([]);
             setActors([]);
             setWindowSensors([]);
+            setAdditionalSensors([]);
             setRoomIsActive(false);
             return;
         }
@@ -175,7 +178,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 name: t?.name ?? '',
                 isActive: !!t?.isActive,
                 OID_Target: t?.OID_Target ?? '',
-                OID_Current: t?.OID_Current ?? '',
+               
             }))
             : [];
         setActors(list2);
@@ -184,11 +187,19 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             ? roomCfg.WindowSensors.map((t: any) => ({
                 name: t?.name ?? '',
                 isActive: !!t?.isActive,
-                OID_Target: t?.OID_Target ?? '',
                 OID_Current: t?.OID_Current ?? '',
             }))
             : [];
         setWindowSensors(list3);
+
+        const list4: SettingItem[] = Array.isArray(roomCfg?.AdditionalSensors)
+            ? roomCfg.AdditionalSensors.map((t: any) => ({
+                name: t?.name ?? '',
+                isActive: !!t?.isActive,
+                OID_Current: t?.OID_Current ?? '',
+            }))
+            : [];
+        setAdditionalSensors(list4);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRoom, props.native.rooms]);
@@ -212,6 +223,13 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         if (!selectedRoom) return;
         setRoomFields(selectedRoom, { WindowSensors: newList });
         setWindowSensors(newList);
+    };
+
+    // Helper: Persistiert zusätzliche Temperatursensoren in props.native.rooms[selectedRoom].Actors
+    const persistAdditionalSensors = (newList: SettingItem[]) => {
+        if (!selectedRoom) return;
+        setRoomFields(selectedRoom, { AdditionalSensors: newList });
+        setAdditionalSensors(newList);
     };
 
     // Persistiert isActive für den aktuellen Raum
@@ -286,6 +304,23 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const newList = WindowSensors.filter((_, i) => i !== index);
         persistWindowSensors(newList);
     };
+
+    // Änderungen an einer AdditionalSensors-Zeile
+    const updateAddSensorField = (index: number, field: keyof SettingItem, value: any) => {
+        const newList = AdditionalSensors.map((t, i) => i === index ? { ...t, [field]: value } : t);
+        persistAdditionalSensors(newList);
+    };
+
+    const addAddSensor = () => {
+        const newItem: SettingItem = { name: '', isActive: false, OID_Target: '', OID_Current: '' };
+        persistAdditionalSensors([...AdditionalSensors, newItem]);
+    };
+
+    const removeAddSensor = (index: number) => {
+        const newList = AdditionalSensors.filter((_, i) => i !== index);
+        persistAdditionalSensors(newList);
+    };
+
 
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
@@ -395,6 +430,30 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             ) : (
                 <div>
                         <em>{I18n.t('select a room to display window sensor settings')}</em>
+                </div>
+            )}
+
+            {/* Tabelle für zusätzliche Temperatursensoren */}
+            {selectedRoom ? (
+                roomIsActive ? (
+                    <SettingTable
+                        settingName={I18n.t('additional temperature sensors')}
+                        settings={AdditionalSensors}
+                        onAdd={addAddSensor}
+                        onUpdate={updateAddSensorField}
+                        onRemove={removeAddSensor}
+                        addButtonTooltip={I18n.t('add a new temperature sensor')}
+                        useOIDTarget={false}
+                        useOIDCurrent={true}
+                    />
+                ) : (
+                    <div>
+                        <em>{I18n.t('room is inactive - activate to edit additional temperature sensor settings')}</em>
+                    </div>
+                )
+            ) : (
+                <div>
+                    <em>{I18n.t('select a room to display additional temperature sensor settings')}</em>
                 </div>
             )}
 

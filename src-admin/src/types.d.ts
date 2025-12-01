@@ -7,8 +7,9 @@ export interface RoomConfig {
     Name: string; //translated names from enum in ioBroker
     id: string, //id from enum in ioBroker
     Actors: ActorConfig[];
-    WindowSensors: WindowSensorConfig[];
+    WindowSensors: SensorConfig[];
     Thermostats: ThermostatConfig[];
+    RoomAdditionalSensors: SensorConfig[];
 }
 
 
@@ -150,8 +151,9 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     //just temporary to copy from GUI to room config
     isActive: boolean;
     RoomThermostats: ThermostatConfig[];
-    RoomWindowSensors: WindowSensorConfig[];
+    RoomWindowSensors: SensorConfig[];
     RoomActors: ActorConfig[];
+    RoomAdditionalSensors: SensorConfig[];
 
 }
 
