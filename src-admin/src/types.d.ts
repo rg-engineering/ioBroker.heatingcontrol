@@ -9,7 +9,7 @@ export interface RoomConfig {
     Actors: ActorConfig[];
     WindowSensors: SensorConfig[];
     Thermostats: ThermostatConfig[];
-    RoomAdditionalSensors: SensorConfig[];
+    AdditionalTemperatureSensors: SensorConfig[];
 }
 
 

@@ -148,7 +148,18 @@ class App extends GenericApp<GenericAppProps, AppState> {
         const aliveState = await this.socket.getState(`system.adapter.heatingcontrol.${this.instance}.alive`);
         this.setState({ alive: !!aliveState?.val, selectedTab, systemConfig });
         await this.socket.subscribeState(`system.adapter.heatingcontrol.${this.instance}.alive`, this.onAliveChanged);
+
+        this.UpdateDataFromOldVersion();
     }
+
+    UpdateDataFromOldVersion() {
+        //function to update data from old versions
+
+        if (this.state.native.devices !== undefined) {
+            console.log("old setting version detected, need to take over data!!! to do" );
+        }
+    }
+
 
     onAliveChanged = (_id: string, state: ioBroker.State | null | undefined): void => {
         if (!!state?.val !== this.state.alive) {
