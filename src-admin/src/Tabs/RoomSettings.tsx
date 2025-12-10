@@ -360,7 +360,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             setWaitForTempIfWindowOpen('');
             return;
         }
-        if (n > 100) n = 100;
+        if (n > 1000) n = 1000;
         setWaitForTempIfWindowOpen(n);
     };
 
@@ -369,7 +369,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         if (!Number.isFinite(val) || Number.isNaN(val)) val = 0;
         val = Math.round(val);
         if (val < 0) val = 0;
-        if (val > 100) val = 100;
+        if (val > 1000) val = 1000;
         setWaitForTempIfWindowOpen(val);
         const newNative = { ...(props.native as any), WaitForTempIfWindowOpen: val };
         props.changeNative(newNative);

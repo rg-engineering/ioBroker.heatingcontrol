@@ -16,6 +16,7 @@ import {
     AdminConnection,
 } from '@iobroker/adapter-react-v5';
 
+
 import TabMainSettings from './Tabs/MainSettings';
 import TabRoomSettings from './Tabs/RoomSettings';
 import TabProfileSettings from './Tabs/ProfileSettings';
@@ -35,6 +36,7 @@ import ukLang from './i18n/uk.json';
 import zhCnLang from './i18n/zh-cn.json';
 
 import type { HeatingControlAdapterConfig } from "./types";
+import LegacyMigrator from './MigrateData';
 
 const styles: Record<string, any> = {
     tabContent: {
@@ -149,17 +151,19 @@ class App extends GenericApp<GenericAppProps, AppState> {
         this.setState({ alive: !!aliveState?.val, selectedTab, systemConfig });
         await this.socket.subscribeState(`system.adapter.heatingcontrol.${this.instance}.alive`, this.onAliveChanged);
 
-        this.UpdateDataFromOldVersion();
-    }
-
-    UpdateDataFromOldVersion() {
-        //function to update data from old versions
-
-        if (this.state.native.devices !== undefined) {
-            console.log("old setting version detected, need to take over data!!! to do" );
+        // Migration auslagern - ruft LegacyMigrator.migrate auf
+        try {
+            LegacyMigrator.migrate(
+                (this.state.native as any) || {},
+                this.state.rooms,
+                this.state.systemConfig,
+                this.getIsChanged.bind(this),
+                (partial) => this.setState(partial as any)
+            );
+        } catch (err) {
+            console.error('Fehler beim Aufruf des LegacyMigrators:', err);
         }
     }
-
 
     onAliveChanged = (_id: string, state: ioBroker.State | null | undefined): void => {
         if (!!state?.val !== this.state.alive) {
