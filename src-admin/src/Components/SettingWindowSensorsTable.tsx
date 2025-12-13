@@ -115,13 +115,7 @@ export default function SettingWindowSensorsTable(props: Props): React.JSX.Eleme
                                 </Select>
 
 
-                                <TextField
-                                    fullWidth
-                                    value={t.DataType}
-                                    onChange={(e) => onUpdate(idx, 'DataType', e.target.value)}
-                                    variant="standard"
-                                    placeholder="boolean"
-                                />
+                                
                             </TableCell>
 
 

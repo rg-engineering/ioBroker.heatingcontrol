@@ -213,12 +213,15 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 name: t?.name ?? '',
                 isActive: !!t?.isActive,
                 OID_Current: t?.OID_Current ?? '',
+                DataType: t?.DataType ?? 'boolean',
+                valueOpen: t?.valueOpen ?? 'true', 
+                valueClosed: t?.valueClosed ?? 'false',
             }))
             : [];
         setWindowSensors(list3);
 
-        const list4: SettingTempSensorItem[] = Array.isArray(roomCfg?.AdditionalSensors)
-            ? roomCfg.AdditionalSensors.map((t: any) => ({
+        const list4: SettingTempSensorItem[] = Array.isArray(roomCfg?.AdditionalTemperatureSensors)
+            ? roomCfg.AdditionalTemperatureSensors.map((t: any) => ({
                 name: t?.name ?? '',
                 isActive: !!t?.isActive,
                 OID_Current: t?.OID_Current ?? '',

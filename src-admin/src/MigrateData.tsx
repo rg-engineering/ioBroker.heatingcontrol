@@ -43,12 +43,16 @@ export default class LegacyMigrator {
                 let overallChanged = false;
                 for (const device of native.devices) {
                     try {
+
+                        console.debug("migrate " + JSON.stringify(device));
+
                         const didChange = this.migrateSingleDevice(native, device, rooms, systemConfig);
                         if (didChange) {
                             overallChanged = true;
                         }
                     } catch {
                         // einzelnes device überspringen
+                        console.warn("migrate exception " );
                     }
                 }
                 if (overallChanged) {
@@ -109,6 +113,7 @@ export default class LegacyMigrator {
             }
         } catch {
             // ignore individual device errors
+            console.warn("migrate exception in migrateSingleDevice ");
         }
 
         return roomChanged || deviceChanged;
@@ -264,6 +269,9 @@ export default class LegacyMigrator {
             if (idx === -1) return false;
             const room = roomsArray[idx];
             if (!Array.isArray(room.WindowSensors)) room.WindowSensors = [];
+
+            //Datatype kann boolean, number oder string sein
+            //valueClosed, valueOpen sind strings
 
             const cfg = {
                 name: device.name ?? '',

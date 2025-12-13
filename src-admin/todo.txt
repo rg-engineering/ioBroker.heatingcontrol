@@ -1,0 +1,3 @@
+
+* OID Suche für alle OID's in den tabellen
+* Übersetzungen
