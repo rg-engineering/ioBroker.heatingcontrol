@@ -5,6 +5,11 @@ import React from 'react';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 
 import { AppBar, Tabs, Tab } from '@mui/material';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
     Loader,
@@ -91,6 +96,8 @@ interface AppState extends GenericAppState {
 }
 
 class App extends GenericApp<GenericAppProps, AppState> {
+
+    private uploadInputRef: React.RefObject<HTMLInputElement>;
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
@@ -169,6 +176,69 @@ class App extends GenericApp<GenericAppProps, AppState> {
         if (!!state?.val !== this.state.alive) {
             this.setState({ alive: !!state?.val });
         }
+    };
+
+    // Download current native config as JSON file
+    onDownloadConfig = (): void => {
+        try {
+            const data = this.state.native || {};
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const fileName = `heatingcontrol-config-instance-${this.instance}.json`;
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('Fehler beim Download der Konfiguration:', err);
+            // einfache Nutzerinfo
+            // eslint-disable-next-line no-alert
+            alert(I18n.t('Failed to download configuration'));
+        }
+    };
+
+    // Trigger hidden file input
+    onUploadClick = (): void => {
+        this.uploadInputRef.current?.click();
+    };
+
+    // Read uploaded JSON file and apply to native config (simple overwrite)
+    onUploadChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const text = reader.result as string;
+                const parsed = JSON.parse(text) as HeatingControlAdapterConfig;
+                // Set native and mark as changed
+                this.setState({ native: parsed as any, changed: this.getIsChanged(parsed as any) });
+                // eslint-disable-next-line no-alert
+                alert(I18n.t('Configuration loaded from file'));
+            } catch (err) {
+                console.error('Fehler beim Einlesen der Konfigurationsdatei:', err);
+                // eslint-disable-next-line no-alert
+                alert(I18n.t('Invalid configuration file'));
+            } finally {
+                // Clear file input so same file can be selected again if needed
+                if (this.uploadInputRef.current) {
+                    this.uploadInputRef.current.value = '';
+                }
+            }
+        };
+        reader.onerror = (ev) => {
+            console.error('FileReader error', ev);
+            // eslint-disable-next-line no-alert
+            alert(I18n.t('Failed to read file'));
+        };
+        reader.readAsText(file);
     };
 
     renderMainSettings(): React.JSX.Element {
@@ -325,7 +395,18 @@ class App extends GenericApp<GenericAppProps, AppState> {
                             color: this.state.theme.palette.text.primary,
                         }}
                     >
+
+                        <input
+                            ref={this.uploadInputRef}
+                            type="file"
+                            accept=".json,application/json"
+                            style={{ display: 'none' }}
+                            onChange={this.onUploadChange}
+                        />
+
                         <AppBar position="static">
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+
                             <Tabs
                                 indicatorColor="secondary"
                                 value={this.state.selectedTab || tabs[0].name}
@@ -357,6 +438,30 @@ class App extends GenericApp<GenericAppProps, AppState> {
                                     />
                                 ))}
                             </Tabs>
+
+                            <Box display="flex" alignItems="center" pr={1}>
+                                <Tooltip title={I18n.t('Download configuration')}>
+                                    <IconButton
+                                        color="inherit"
+                                        onClick={this.onDownloadConfig}
+                                        size="large"
+                                        aria-label="download-config"
+                                    >
+                                        <CloudDownloadIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={I18n.t('Upload configuration')}>
+                                    <IconButton
+                                        color="inherit"
+                                        onClick={this.onUploadClick}
+                                        size="large"
+                                        aria-label="upload-config"
+                                    >
+                                        <CloudUploadIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        </Box>
                         </AppBar>
                         <div style={this.isIFrame ? styles.tabContentIFrame : styles.tabContent}>
                             {this.renderTab()}
