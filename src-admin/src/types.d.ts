@@ -4,7 +4,7 @@
 //ist das gleiche interface wie in adapter-config.d.ts
 export interface RoomConfig {
     isActive: boolean;
-    Name: string; //translated names from enum in ioBroker
+    name: string; //translated names from enum in ioBroker
     id: string, //id from enum in ioBroker
     Actors: ActorConfig[];
     WindowSensors: SensorConfig[];

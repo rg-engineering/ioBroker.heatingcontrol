@@ -1,4 +1,5 @@
 
 * OID Suche für alle OID's in den tabellen
+* akors, sensors und addTempSeensors ausblenenden , wenn entsprehcneds use... auf false
 * Übersetzungen
 * Wartungsfunktionen

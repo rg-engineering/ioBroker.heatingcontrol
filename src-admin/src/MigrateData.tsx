@@ -174,7 +174,7 @@ export default class LegacyMigrator {
                 const newRoomEntry: RoomConfig = {
                     id: roomID,
                     isActive: true,
-                    Name: roomName,
+                    name: roomName,
                     Actors: [],
                     WindowSensors: [],
                     Thermostats: [],
@@ -190,8 +190,8 @@ export default class LegacyMigrator {
                     if (!existingRoom.isActive) {
                         existingRoom.isActive = true; changed = true;
                     }
-                    if (existingRoom.Name !== roomName) {
-                        existingRoom.Name = roomName; changed = true;
+                    if (existingRoom.name !== roomName) {
+                        existingRoom.name = roomName; changed = true;
                     }
                     return changed;
                 }
