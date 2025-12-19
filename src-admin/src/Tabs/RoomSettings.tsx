@@ -214,7 +214,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 isActive: !!t?.isActive,
                 OID_Current: t?.OID_Current ?? '',
                 DataType: t?.DataType ?? 'boolean',
-                valueOpen: t?.valueOpen ?? 'true', 
+                valueOpen: t?.valueOpen ?? 'true',
                 valueClosed: t?.valueClosed ?? 'false',
             }))
             : [];
@@ -434,7 +434,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 roomIsActive ? (
                     <FormControl fullWidth variant="standard">
 
-                        
+
                         <Divider>
                             <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
                                 {I18n.t('thermostats')}
@@ -499,133 +499,150 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             />
                         </Box>
 
-
-                        <Divider>
-                            <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                {I18n.t('actors')}
-                            </Typography>
-                        </Divider>
-
-
-                        <Box component="section" sx={{ p: 2, border: 'none' }}>
-                            <Badge color="primary" id='hint_actors' sx={{ display: 'block', mb: 2 }}>
-                                {I18n.t('hint_actors')}
-                            </Badge>
-
-                            <Badge color="primary" id='useExtHandling_hint' sx={{ display: 'block', mb: 2 }}>
-                                {I18n.t('useExtHandling_hint')}
-                            </Badge>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
-                                <Button
-                                    id='btn_check4newActors'
-                                    onClick={() => Check4NewActors()}
-                                    variant="contained"
-                                    sx={{ flexShrink: 0 }}
-                                >
-                                    {I18n.t('Check4NewActors')}
-                                </Button>
-                                <Badge color="primary" id='Check4NewActors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                                    {I18n.t('Check4NewActors_hint')}
-                                </Badge>
-                            </Box>
-
-                            <SettingActorsTable
-                                settingName={I18n.t('actors')}
-                                settings={actors}
-                                socket={props.socket}
-                                theme={props.theme}
-                                themeName={props.themeName}
-                                themeType={props.themeType}
-                                onAdd={addActor}
-                                onUpdate={updateActorField}
-                                onRemove={removeActor}
-                                addButtonTooltip={I18n.t('add a new actor')}
-                            />
-                        </Box>
-
-                        <Divider>
-                            <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                {I18n.t('window sensors')}
-                            </Typography>
-                        </Divider>
+                        {props.native.UseActors ? (
+                            <div>
+                                <Divider>
+                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                                        {I18n.t('actors')}
+                                    </Typography>
+                                </Divider>
 
 
-                        <Box component="section" sx={{ p: 2, border: 'none' }}>
-                            <Badge color="primary" id='hint_sensors' sx={{ display: 'block', mb: 2 }}>
-                                {I18n.t('hint_sensors')}
-                            </Badge>
+                                <Box component="section" sx={{ p: 2, border: 'none' }}>
+                                    <Badge color="primary" id='hint_actors' sx={{ display: 'block', mb: 2 }}>
+                                        {I18n.t('hint_actors')}
+                                    </Badge>
+
+                                    <Badge color="primary" id='useExtHandling_hint' sx={{ display: 'block', mb: 2 }}>
+                                        {I18n.t('useExtHandling_hint')}
+                                    </Badge>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
+                                        <Button
+                                            id='btn_check4newActors'
+                                            onClick={() => Check4NewActors()}
+                                            variant="contained"
+                                            sx={{ flexShrink: 0 }}
+                                        >
+                                            {I18n.t('Check4NewActors')}
+                                        </Button>
+                                        <Badge color="primary" id='Check4NewActors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                            {I18n.t('Check4NewActors_hint')}
+                                        </Badge>
+                                    </Box>
+
+                                    <SettingActorsTable
+                                        settingName={I18n.t('actors')}
+                                        settings={actors}
+                                        socket={props.socket}
+                                        theme={props.theme}
+                                        themeName={props.themeName}
+                                        themeType={props.themeType}
+                                        onAdd={addActor}
+                                        onUpdate={updateActorField}
+                                        onRemove={removeActor}
+                                        addButtonTooltip={I18n.t('add a new actor')}
+                                    />
+                                </Box>
+                            </div>
+                        ) : (
+                            null
+                        )}
+
+                        {props.native.UseSensors ? (
+                            <div>
+                                <Divider>
+                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                                        {I18n.t('window sensors')}
+                                    </Typography>
+                                </Divider>
 
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
-                                <Button
-                                    id='btn_check4newSensors'
-                                    onClick={() => Check4newWindowSensors()}
-                                    variant="contained"
-                                    sx={{ flexShrink: 0 }}
-                                >
-                                    {I18n.t('Check4NewSensors')}
-                                </Button>
+                                <Box component="section" sx={{ p: 2, border: 'none' }}>
+                                    <Badge color="primary" id='hint_sensors' sx={{ display: 'block', mb: 2 }}>
+                                        {I18n.t('hint_sensors')}
+                                    </Badge>
 
 
-                                <Badge color="primary" id='Check4NewSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                                    {I18n.t('Check4NewSensors_hint')}
-                                </Badge>
-                            </Box>
-
-                            <SettingWindowSensorsTable
-                                settingName={I18n.t('window sensors')}
-                                settings={WindowSensors}
-                                socket={props.socket}
-                                theme={props.theme}
-                                themeName={props.themeName}
-                                themeType={props.themeType}
-                                onAdd={addWindowSensor}
-                                onUpdate={updateWindowSensorField}
-                                onRemove={removeWindowSensor}
-                                addButtonTooltip={I18n.t('add a new window sensor')}
-                            />
-                        </Box>
-
-                        <Divider>
-                            <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                {I18n.t('additional temperature sensors')}
-                            </Typography>
-                        </Divider>
-
-                        <Box component="section" sx={{ p: 2, border: 'none' }}>
-                            <Badge color="primary" id='hint_AddTempSensors' sx={{ display: 'block', mb: 2 }}>
-                                {I18n.t('hint_AddTempSensors')}
-                            </Badge>
-
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
-                                <Button
-                                    id='btn_check4newAddTempSensors'
-                                    onClick={() => Check4NewAddTempSensors()}
-                                    variant="contained"
-                                    sx={{ flexShrink: 0 }}
-                                >
-                                    {I18n.t('Check4NewAddTempSensors')}
-                                </Button>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
+                                        <Button
+                                            id='btn_check4newSensors'
+                                            onClick={() => Check4newWindowSensors()}
+                                            variant="contained"
+                                            sx={{ flexShrink: 0 }}
+                                        >
+                                            {I18n.t('Check4NewSensors')}
+                                        </Button>
 
 
-                                <Badge color="primary" id='Check4NewAddTempSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                                    {I18n.t('Check4NewAddTempSensors_hint')}
-                                </Badge>
-                            </Box>
+                                        <Badge color="primary" id='Check4NewSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                            {I18n.t('Check4NewSensors_hint')}
+                                        </Badge>
+                                    </Box>
 
-                            <SettingTempSensorsTable
-                                settingName={I18n.t('additional temperature sensors')}
-                                settings={AdditionalSensors}
-                                socket={props.socket}
-                                theme={props.theme}
-                                themeName={props.themeName}
-                                themeType={props.themeType}
-                                onAdd={addAddSensor}
-                                onUpdate={updateAddSensorField}
-                                onRemove={removeAddSensor}
-                                addButtonTooltip={I18n.t('add a new temperature sensor')}
-                            />
-                        </Box>
+                                    <SettingWindowSensorsTable
+                                        settingName={I18n.t('window sensors')}
+                                        settings={WindowSensors}
+                                        socket={props.socket}
+                                        theme={props.theme}
+                                        themeName={props.themeName}
+                                        themeType={props.themeType}
+                                        onAdd={addWindowSensor}
+                                        onUpdate={updateWindowSensorField}
+                                        onRemove={removeWindowSensor}
+                                        addButtonTooltip={I18n.t('add a new window sensor')}
+                                    />
+                                </Box>
+                            </div>
+                        ) : (
+                            null
+                        )}
+
+                        {props.native.UseAddTempSensors ? (
+                            <div>
+                                <Divider>
+                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                                        {I18n.t('additional temperature sensors')}
+                                    </Typography>
+                                </Divider>
+
+                                <Box component="section" sx={{ p: 2, border: 'none' }}>
+                                    <Badge color="primary" id='hint_AddTempSensors' sx={{ display: 'block', mb: 2 }}>
+                                        {I18n.t('hint_AddTempSensors')}
+                                    </Badge>
+
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', width: '100%' }}>
+                                        <Button
+                                            id='btn_check4newAddTempSensors'
+                                            onClick={() => Check4NewAddTempSensors()}
+                                            variant="contained"
+                                            sx={{ flexShrink: 0 }}
+                                        >
+                                            {I18n.t('Check4NewAddTempSensors')}
+                                        </Button>
+
+
+                                        <Badge color="primary" id='Check4NewAddTempSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                            {I18n.t('Check4NewAddTempSensors_hint')}
+                                        </Badge>
+                                    </Box>
+
+                                    <SettingTempSensorsTable
+                                        settingName={I18n.t('additional temperature sensors')}
+                                        settings={AdditionalSensors}
+                                        socket={props.socket}
+                                        theme={props.theme}
+                                        themeName={props.themeName}
+                                        themeType={props.themeType}
+                                        onAdd={addAddSensor}
+                                        onUpdate={updateAddSensorField}
+                                        onRemove={removeAddSensor}
+                                        addButtonTooltip={I18n.t('add a new temperature sensor')}
+                                    />
+                                </Box>
+                            </div>
+                        ) : (
+                            null
+                        )}
                     </FormControl>
                 ) : (
                     <div>
