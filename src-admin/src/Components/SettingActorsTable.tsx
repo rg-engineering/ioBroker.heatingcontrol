@@ -17,12 +17,18 @@ import {
 
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import SelectOID from './SelectOID';
 
 export type SettingActorItem = { name: string; isActive: boolean; OID_Target: string; useExtHandling: boolean };
 
 type Props = {
     settingName: string;
     settings: SettingActorItem[];
+    socket: AdminConnection;
+    theme: IobTheme;
+    themeName: ThemeName;
+    themeType: ThemeType;
     onAdd: () => void;
     onUpdate: (index: number, field: keyof SettingActorItem, value: any) => void;
     onRemove: (index: number) => void;
@@ -30,6 +36,10 @@ type Props = {
 };
 
 //todo: ausblenden von nicht benötigten OID's
+
+
+
+
 export default function SettingActorsTable(props: Props): React.JSX.Element {
     const { settingName, settings, onAdd, onUpdate, onRemove, addButtonTooltip } = props;
 
@@ -83,12 +93,14 @@ export default function SettingActorsTable(props: Props): React.JSX.Element {
                             </TableCell>
 
                             <TableCell>
-                                <TextField
-                                    fullWidth
-                                    value={t.OID_Target}
-                                    onChange={(e) => onUpdate(idx, 'OID_Target', e.target.value)}
-                                    variant="standard"
-                                    placeholder="javascript.0.device.target"
+                                <SelectOID
+                                    settingName={I18n.t('OID Target')}
+                                    socket={props.socket}
+                                    theme={props.theme}
+                                    themeName={props.themeName}
+                                    themeType={props.themeType}
+                                    Value={t.OID_Target}
+                                    onChange={(value) => onUpdate(idx, 'OID_Target', value)}
                                 />
                             </TableCell>
 

@@ -488,6 +488,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <SettingThermostatsTable
                                 settingName={I18n.t('Thermostats')}
                                 settings={thermostats}
+                                socket={props.socket}
+                                theme={props.theme}
+                                themeName={props.themeName}
+                                themeType={props.themeType}
                                 onAdd={addThermostat}
                                 onUpdate={updateThermostatField}
                                 onRemove={removeThermostat}
@@ -528,6 +532,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <SettingActorsTable
                                 settingName={I18n.t('actors')}
                                 settings={actors}
+                                socket={props.socket}
+                                theme={props.theme}
+                                themeName={props.themeName}
+                                themeType={props.themeType}
                                 onAdd={addActor}
                                 onUpdate={updateActorField}
                                 onRemove={removeActor}
@@ -567,6 +575,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <SettingWindowSensorsTable
                                 settingName={I18n.t('window sensors')}
                                 settings={WindowSensors}
+                                socket={props.socket}
+                                theme={props.theme}
+                                themeName={props.themeName}
+                                themeType={props.themeType}
                                 onAdd={addWindowSensor}
                                 onUpdate={updateWindowSensorField}
                                 onRemove={removeWindowSensor}
@@ -604,6 +616,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <SettingTempSensorsTable
                                 settingName={I18n.t('additional temperature sensors')}
                                 settings={AdditionalSensors}
+                                socket={props.socket}
+                                theme={props.theme}
+                                themeName={props.themeName}
+                                themeType={props.themeType}
                                 onAdd={addAddSensor}
                                 onUpdate={updateAddSensorField}
                                 onRemove={removeAddSensor}

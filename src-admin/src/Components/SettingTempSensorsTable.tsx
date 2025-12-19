@@ -17,12 +17,18 @@ import {
 
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import SelectOID from './SelectOID';
 
 export type SettingTempSensorItem = { name: string; isActive: boolean;  OID_Current: string; };
 
 type Props = {
     settingName: string;
     settings: SettingTempSensorItem[];
+    socket: AdminConnection;
+    theme: IobTheme;
+    themeName: ThemeName;
+    themeType: ThemeType;
     onAdd: () => void;
     onUpdate: (index: number, field: keyof SettingTempSensorItem, value: any) => void;
     onRemove: (index: number) => void;
@@ -83,13 +89,17 @@ export default function SettingTempSensorsTable(props: Props): React.JSX.Element
                             </TableCell>
                             
                             <TableCell>
-                                <TextField
-                                    fullWidth
-                                    value={t.OID_Current}
-                                    onChange={(e) => onUpdate(idx, 'OID_Current', e.target.value)}
-                                    variant="standard"
-                                    placeholder="javascript.0.device.current"
+
+                                <SelectOID
+                                    settingName={I18n.t('OID Current')}
+                                    socket={props.socket}
+                                    theme={props.theme}
+                                    themeName={props.themeName}
+                                    themeType={props.themeType}
+                                    Value={t.OID_Current}
+                                    onChange={(value) => onUpdate(idx, 'OID_Current', value)}
                                 />
+
                             </TableCell>
                             
 

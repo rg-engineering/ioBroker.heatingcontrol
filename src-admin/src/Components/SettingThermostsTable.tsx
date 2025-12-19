@@ -17,12 +17,18 @@ import {
 
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import SelectOID from './SelectOID';
 
 export type SettingThermostatItem = { name: string; isActive: boolean; OID_Target: string; OID_Current: string; useExtHandling: boolean };
 
 type Props = {
     settingName: string;
     settings: SettingThermostatItem[];
+    socket: AdminConnection;
+    theme: IobTheme;
+    themeName: ThemeName;
+    themeType: ThemeType;
     onAdd: () => void;
     onUpdate: (index: number, field: keyof SettingThermostatItem, value: any) => void;
     onRemove: (index: number) => void;
@@ -84,25 +90,33 @@ export default function SettingThermostatTable(props: Props): React.JSX.Element 
                             </TableCell>
                             
                             <TableCell>
-                                <TextField
-                                    fullWidth
-                                    value={t.OID_Target}
-                                    onChange={(e) => onUpdate(idx, 'OID_Target', e.target.value)}
-                                    variant="standard"
-                                    placeholder="javascript.0.device.target"
+
+                                <SelectOID
+                                    settingName={I18n.t('OID Target')}
+                                    socket={props.socket}
+                                    theme={props.theme}
+                                    themeName={props.themeName}
+                                    themeType={props.themeType}
+                                    Value={t.OID_Target}
+                                    onChange={(value) => onUpdate(idx, 'OID_Target', value)}
                                 />
+
                             </TableCell>
                             
 
                             
                             <TableCell>
-                                <TextField
-                                    fullWidth
-                                    value={t.OID_Current}
-                                    onChange={(e) => onUpdate(idx, 'OID_Current', e.target.value)}
-                                    variant="standard"
-                                    placeholder="javascript.0.device.current"
+
+                                <SelectOID
+                                    settingName={I18n.t('OID Current')}
+                                    socket={props.socket}
+                                    theme={props.theme}
+                                    themeName={props.themeName}
+                                    themeType={props.themeType}
+                                    Value={t.OID_Current}
+                                    onChange={(value) => onUpdate(idx, 'OID_Current', value)}
                                 />
+
                             </TableCell>
 
                             <TableCell>
