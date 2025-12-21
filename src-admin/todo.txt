@@ -4,8 +4,11 @@
 * Wartungsfunktionen
 	deleteUnusedDP
 	Profil speichern und laden
-* Gerätesuche 
-	eINSTELLUNG GEWERK FEHLT NOCH
+* Gerätesuche
+	status anzeige nach suche
+	name von devicedetect bis ins admin für neu gefundene Geräte
+	Testen mit dummy daten
+
 
 * Telegramm-User holen
 

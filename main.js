@@ -4,7 +4,7 @@
  *
  * Created: 30.07.2019 21:31:28
  *  Author: Rene
-
+ * 
 */
 
 /* jshint -W097 */// jshint strict:false
@@ -12,15 +12,10 @@
 "use strict";
 
 
-
-
-
 // you have to require the utils module and call adapter function
 const utils = require("@iobroker/adapter-core");
 
-const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
-
-
+//const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
 const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
 const { existsSync, mkdirSync } = require('fs');
@@ -122,12 +117,12 @@ function startAdapter(options) {
                         }
                         break;
                     case "listRooms":
-                        //adapter.log.debug("got list rooms");
-                        await ListRooms(obj);
+                        adapter.log.debug("got list rooms: not implemented");
+                        //await ListRooms(obj);
                         break;
                     case "listFunctions":
-                        //adapter.log.debug("got list rooms");
-                        await ListFunctions(obj);
+                        adapter.log.debug("got list functions: not implemented");
+                        //await ListFunctions(obj);
                         break;
                     case "listThermostats":
                         //adapter.log.debug("got list thermostats");
@@ -179,7 +174,8 @@ function startAdapter(options) {
 //
 async function main() {
     try {
-        adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
+
+        //adapter.log.debug("devices " + JSON.stringify(adapter.config.devices));
 
         //======================================
 
@@ -195,8 +191,6 @@ async function main() {
             adapter.log.error(`Could not create Storage directory: ${err} on ${dataDir}`);
 
         }
-
-
 
         SystemLanguage = await GetSystemLanguage();
 
@@ -234,179 +228,105 @@ async function GetSystemLanguage() {
     return language;
 }
 
-async function SearchRoomAndFunction(roomName, gewerk) {
 
-    let status = "to do";
-    const devices = [];
 
-    let allRooms = {};
-    //get room enums first; this includes members as well
+async function SearchRoomAndFunction(roomID, functionID) {
+
+    adapter.log.debug("search for devices in " + roomID + " and " + functionID);
+
+    // Enums laden
     const AllRoomsEnum = await adapter.getEnumAsync("rooms");
-    allRooms = AllRoomsEnum.result;
+    //adapter.log.info("all rooms " + JSON.stringify(AllRoomsEnum));
+    const AllFunctionsEnum = await adapter.getEnumAsync("functions");
+    //adapter.log.info("all functions " + JSON.stringify(AllFunctionsEnum));
 
-    //find the right room with members
-    let roomMembers = {};
-    let roomFound = false;
-    for (const e in allRooms) {
+    // Members auslesen
+    const roomMembers = AllRoomsEnum.result[roomID]?.common?.members || [];
+    adapter.log.debug("room members " + JSON.stringify(roomMembers));
+    const functionMembers = AllFunctionsEnum.result[functionID]?.common?.members || [];
+    adapter.log.debug("function members " + JSON.stringify(functionMembers));
 
-        let name = undefined;
+    // Schnittmenge bilden
+    const devicesInRoomWithFunction = roomMembers.filter(id =>
+        functionMembers.includes(id)
+    );
 
-        if (typeof allRooms[e].common.name === "string") {
-            name = allRooms[e].common.name;
-        } else if (typeof allRooms[e].common.name === "object") {
-            name = allRooms[e].common.name[SystemLanguage];
-        } else {
-            adapter.log.warn("unknown type " + typeof allRooms[e].common.name + " " + JSON.stringify(allRooms[e].common.name));
-        }
-        //adapter.log.debug("check room " + name + " =? " + roomName );
+    adapter.log.info("device(s) found for room and function " + JSON.stringify(devicesInRoomWithFunction));
 
-        if (name === roomName) {
-            adapter.log.debug("### room found with members " + JSON.stringify(allRooms[e].common.members));
-            roomMembers = allRooms[e].common.members;
-            roomFound = true;
+    return devicesInRoomWithFunction;
+}
+
+function GetRoomId(roomId2find) {
+
+    let roomIdFound = -1;
+
+    for (let r = 0; r < adapter.config.rooms.length; r++) {
+
+        const roomId = adapter.config.rooms[r].id;
+
+        if (roomId == roomId2find) {
+            roomIdFound = r;
+            adapter.log.debug("Raum gefunden, id " + roomIdFound + " for " + roomId2find);
+            break;
         }
     }
-
-    if (roomFound && roomMembers != null && roomMembers.length > 0) {
-
-        let allFunctions = {};
-        const AllFunctionsEnum = await adapter.getEnumAsync("functions");
-        allFunctions = AllFunctionsEnum.result;
-
-        //adapter.log.debug("gewerke " + JSON.stringify(allFunctions));
-
-        //find the function / gewerk room with members
-        let functionMembers = {};
-        let functionFound = false;
-        for (const e in allFunctions) {
-
-            let name = undefined;
-
-            if (typeof allFunctions[e].common.name === "string") {
-                name = allFunctions[e].common.name;
-            } else if (typeof allFunctions[e].common.name === "object") {
-                name = allFunctions[e].common.name[SystemLanguage];
-            } else {
-                adapter.log.warn("unknown type " + typeof allFunctions[e].common.name + " " + JSON.stringify(allFunctions[e].common.name));
-            }
-
-            //adapter.log.debug("check function " + name + " =? " + gewerk);
-
-            if (name === gewerk) {
-                adapter.log.debug("### function found with members " + JSON.stringify(allFunctions[e].common.members));
-                functionMembers = allFunctions[e].common.members;
-                functionFound = true;
-            }
-        }
-
-        if (functionFound && functionMembers != null && functionMembers.length > 0) {
-
-            //now find devices in both lists (room and gewerk)
-            
-            for (const r in roomMembers) {
-
-                for (const d in functionMembers) {
-
-                    if (roomMembers[r] == functionMembers[d]) {
-
-                        //look for it in adapter.config.devices
-
-                        let found = findObjectByKey(adapter.config.devices, "OID_Target", roomMembers[r]);
-                        adapter.log.debug("found " + JSON.stringify(found));
-
-                        if (found ==null) {
-
-                            found = findObjectByKey(adapter.config.devices, "OID_Current", roomMembers[r]);
-                            adapter.log.debug("found " + JSON.stringify(found));
-
-                            if (found == null) {
-
-                                const deviceObj = await adapter.getForeignObjectAsync(roomMembers[r]);
-
-                                devices.push({
-                                    name: roomMembers[r],
-                                    obj: deviceObj
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-
-            status = " room and function found " + JSON.stringify(devices);
-        } else {
-            if (!functionFound) {
-                status = "function " + gewerk + " not found in enum ";
-            } else {
-                status = "function " + gewerk + " has no devices ";
-            }
-            adapter.log.debug(status);
-        }
-    } else {
-        if (!roomFound) {
-            status = "room " + roomName + " not found in enum ";
-        } else {
-            status = "room " + roomName + " has no devices ";
-        }
-        adapter.log.debug(status);
-
-    }
-
-    const returnObject = {
-        devices:devices,
-        status:status
-    };
-
-    return returnObject;
+    return roomIdFound;
 }
 
 
 async function ListThermostats(obj) {
     adapter.log.debug("ListThermostats " + JSON.stringify(obj));
 
-    const roomName = obj.message.room;
-    const gewerk = obj.message.gewerk;
-
-    const result = await SearchRoomAndFunction(roomName, gewerk);
-    let status = "";
+    const roomID = obj.message.room;
+    const functionID = obj.message.gewerk;
+    let status = "nothing found";
     const devices = [];
 
-    if (result.devices.length > 0) {
-        adapter.log.debug("ListThermostats " + JSON.stringify(result));
+    //hole alle Geräte, die im Raum und in Funktion member sind
+    const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
+    const roomIdInList = GetRoomId(roomID);
 
-        let AlreadyUsed = false;
-        for (const d in result.devices) {
+    if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
+        status = devicesInRoomWithFunction.length + " devices found ";
 
-            const resultCheck = await Check4Thermostat(adapter, result.devices[d].obj);
+        for (const id of devicesInRoomWithFunction) {
 
-            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+            // 🔍 Check: OID bereits in Thermostat-Liste?
+            const alreadyUsed = adapter.config.rooms[roomIdInList].Thermostats.some(t =>
+                t.OID_Target === id || t.OID_Current === id
+            );
 
-            if (resultCheck.found) {
+            //wenn OID bereits als Thermostat verwendet wird, dann überspringen
+            if (alreadyUsed) {
+                adapter.log.debug(`Überspringe ${id} (bereits in Thermostat-Liste)`);
+                continue;
+            }
 
-                const found = findObjectByKey(adapter.config.devices, "OID_Target", resultCheck.device.OID_Target);
-                adapter.log.debug("found " + JSON.stringify(found));
-                if (found == null) {
-                    adapter.log.debug("push to list ");
+            try {
+                //hole das Object 
+                const deviceObj = await adapter.getForeignObjectAsync(id);
+
+                //und prüfe, ob das Object ein bekanntes Thermostat ist
+                const resultCheck = await Check4Thermostat(adapter, deviceObj);
+                //Achtung: hier kommen die OID's zurück!!
+
+
+                if (deviceObj && resultCheck.found) {
                     devices.push(resultCheck.device);
-                } else {
-                    AlreadyUsed = true;
-                    adapter.log.debug("alread used ");
                 }
+            } catch (err) {
+                adapter.log.warn(`Objekt ${id} konnte nicht geladen werden: ${err}`);
             }
         }
 
-        if (devices.length > 0) {
-            status = devices.length + " devices found";
+        if (devices.length == 0) {
+            status = "no new thermostats found";
         } else {
-            if (AlreadyUsed) {
-                status = "devices found, but already used";
-
-            } else {
-                status = "unknown devices found, please add it manually";
-            }
+            status = devices.length + " new thermostat(s) found";
         }
-    } else {
-        status = result.status;
+
+        adapter.log.info(`new thermostat(s) : ${devices.length} ` + JSON.stringify(devices));
+
     }
 
     const returnObject = {
@@ -416,52 +336,64 @@ async function ListThermostats(obj) {
     adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
 }
 
+
+
+
 async function ListActors(obj) {
     adapter.log.debug("ListActors " + JSON.stringify(obj));
 
-    const roomName = obj.message.room;
-    const gewerk = obj.message.gewerk;
-
-    const result = await SearchRoomAndFunction(roomName, gewerk);
-    let status = "";
+    const roomID = obj.message.room;
+    const functionID = obj.message.gewerk;
+    let status = "nothing found";
     const devices = [];
 
-    if (result.devices.length > 0) {
-        adapter.log.debug("ListActors " + JSON.stringify(result));
+    //hole alle Geräte, die im Raum und in Funktion member sind
+    const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
+    const roomIdInList = GetRoomId(roomID);
 
-        let AlreadyUsed = false;
-        for (const d in result.devices) {
+    if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
+        status = devicesInRoomWithFunction.length + " devices found ";
 
-            const resultCheck = await Check4Actor(adapter, result.devices[d].obj);
+        for (const id of devicesInRoomWithFunction) {
 
-            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+            // 🔍 Check: OID bereits in Thermostat-Liste?
+            const alreadyUsed = adapter.config.rooms[roomIdInList].Actors.some(t =>
+                t.OID_Target === id 
+            );
 
-            if (resultCheck.found) {
-                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
-                adapter.log.debug("found " + JSON.stringify(found));
-                if (found == null) {
-                    adapter.log.debug("push to list ");
+            //wenn OID bereits als Thermostat verwendet wird, dann überspringen
+            if (alreadyUsed) {
+                adapter.log.debug(`Überspringe ${id} (bereits in Aktor-Liste)`);
+                continue;
+            }
+
+            try {
+                //hole das Object 
+                const deviceObj = await adapter.getForeignObjectAsync(id);
+
+                //und prüfe, ob das Object ein bekanntes Thermostat ist
+                const resultCheck = await Check4Actor(adapter, deviceObj);
+                //Achtung: hier kommen die OID's zurück!!
+
+
+                if (deviceObj && resultCheck.found) {
                     devices.push(resultCheck.device);
-                } else {
-                    AlreadyUsed = true;
-                    adapter.log.debug("alread used ");
                 }
+            } catch (err) {
+                adapter.log.warn(`Objekt ${id} konnte nicht geladen werden: ${err}`);
             }
         }
 
-        if (devices.length > 0) {
-            status = devices.length + " devices found";
+        if (devices.length == 0) {
+            status = "no new actor found";
         } else {
-            if (AlreadyUsed) {
-                status = "devices found, but already used";
-
-            } else {
-                status = "unknown devices found, please add it manually";
-            }
+            status = devices.length + " new actor(s) found";
         }
-    } else {
-        status = result.status;
+
+        adapter.log.info(`new actors(s) : ${devices.length} ` + JSON.stringify(devices));
+
     }
+    
 
 
     const returnObject = {
@@ -475,57 +407,61 @@ async function ListActors(obj) {
 async function ListSensors(obj) {
     adapter.log.debug("ListSensors " + JSON.stringify(obj));
 
-    const roomName = obj.message.room;
-    const gewerk = obj.message.gewerk;
-
-    const result = await SearchRoomAndFunction(roomName, gewerk);
-    let status = "";
+    const roomID = obj.message.room;
+    const functionID = obj.message.gewerk;
+    let status = "nothing found";
     const devices = [];
 
-    if (result.devices.length > 0) {
-        adapter.log.debug("ListSensors " + JSON.stringify(result));
+    //hole alle Geräte, die im Raum und in Funktion member sind
+    const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
+    const roomIdInList = GetRoomId(roomID);
 
-        let AlreadyUsed = false;
-        for (const d in result.devices) {
+    if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
+        status = devicesInRoomWithFunction.length + " devices found ";
 
-            const resultCheck = await Check4Sensor(adapter, result.devices[d].obj);
+        for (const id of devicesInRoomWithFunction) {
 
-            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+            // 🔍 Check: OID bereits in Thermostat-Liste?
+            const alreadyUsed = adapter.config.rooms[roomIdInList].WindowSensors.some(t =>
+                t.OID_Current === id
+            );
 
-            if (resultCheck.found) {
-                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
+            //wenn OID bereits als Thermostat verwendet wird, dann überspringen
+            if (alreadyUsed) {
+                adapter.log.debug(`Überspringe ${id} (bereits in Sensor-Liste)`);
+                continue;
+            }
 
-                adapter.log.debug("found " + JSON.stringify(found));
+            try {
+                //hole das Object 
+                const deviceObj = await adapter.getForeignObjectAsync(id);
 
-                if (found == null) {
-                    adapter.log.debug("push to list ");
+                //und prüfe, ob das Object ein bekanntes Thermostat ist
+                const resultCheck = await Check4Sensor(adapter, deviceObj);
+                //Achtung: hier kommen die OID's zurück!!
+
+
+                if (deviceObj && resultCheck.found) {
                     devices.push(resultCheck.device);
-                } else {
-                    AlreadyUsed = true;
-                    adapter.log.debug("alread used ");
                 }
+            } catch (err) {
+                adapter.log.warn(`Objekt ${id} konnte nicht geladen werden: ${err}`);
             }
         }
 
-        if (devices.length > 0) {
-            status = devices.length + " devices found";
+        if (devices.length == 0) {
+            status = "no new sensor found";
         } else {
-            if (AlreadyUsed) {
-                status = "devices found, but already used";
-
-            } else {
-                status = "unknown devices found, please add it manually";
-            }
+            status = devices.length + " new sensor(s) found";
         }
-    } else {
-        status = result.status;
-    }
 
+        adapter.log.info(`new sensor(s) : ${devices.length} ` + JSON.stringify(devices));
+
+    }
 
     const returnObject = {
         list: devices,
-        status: status,
-        room: roomName
+        status: status
     };
 
     adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
@@ -534,148 +470,64 @@ async function ListSensors(obj) {
 async function ListAddTempSensors(obj) {
     adapter.log.debug("ListAddTempSensors " + JSON.stringify(obj));
 
-    const roomName = obj.message.room;
-    const gewerk = obj.message.gewerk;
-
-    const result = await SearchRoomAndFunction(roomName, gewerk);
-    let status = "";
+    const roomID = obj.message.room;
+    const functionID = obj.message.gewerk;
+    let status = "nothing found";
     const devices = [];
 
-    if (result.devices.length > 0) {
-        adapter.log.debug("ListSensors " + JSON.stringify(result));
+    //hole alle Geräte, die im Raum und in Funktion member sind
+    const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
+    const roomIdInList = GetRoomId(roomID);
 
-        let AlreadyUsed = false;
-        for (const d in result.devices) {
+    if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
+        status = devicesInRoomWithFunction.length + " devices found ";
 
-            const resultCheck = await Check4TempSensor(adapter, result.devices[d].obj);
+        for (const id of devicesInRoomWithFunction) {
 
-            adapter.log.debug("got for " + JSON.stringify(resultCheck));
+            // 🔍 Check: OID bereits in Thermostat-Liste?
+            const alreadyUsed = adapter.config.rooms[roomIdInList].AdditionalTemperatureSensors.some(t =>
+                t.OID_Current === id
+            );
 
-            if (resultCheck.found) {
-                const found = findObjectByKey(adapter.config.devices, "OID", resultCheck.device.OID);
+            //wenn OID bereits als Thermostat verwendet wird, dann überspringen
+            if (alreadyUsed) {
+                adapter.log.debug(`Überspringe ${id} (bereits in AddTempertureSensor-Liste)`);
+                continue;
+            }
 
-                adapter.log.debug("found " + JSON.stringify(found));
+            try {
+                //hole das Object 
+                const deviceObj = await adapter.getForeignObjectAsync(id);
 
-                if (found == null) {
-                    adapter.log.debug("push to list ");
+                //und prüfe, ob das Object ein bekanntes Thermostat ist
+                const resultCheck = await Check4TempSensor(adapter, deviceObj);
+                //Achtung: hier kommen die OID's zurück!!
+
+
+                if (deviceObj && resultCheck.found) {
                     devices.push(resultCheck.device);
-                } else {
-                    AlreadyUsed = true;
-                    adapter.log.debug("alread used ");
                 }
+            } catch (err) {
+                adapter.log.warn(`Objekt ${id} konnte nicht geladen werden: ${err}`);
             }
         }
 
-        if (devices.length > 0) {
-            status = devices.length + " devices found";
+        if (devices.length == 0) {
+            status = "no new additional temperature sensor found";
         } else {
-            if (AlreadyUsed) {
-                status = "devices found, but already used";
-
-            } else {
-                status = "unknown devices found, please add it manually";
-            }
+            status = devices.length + " new additional temperature sensor(s) found";
         }
-    } else {
-        status = result.status;
-    }
 
+        adapter.log.info(`new additional temperature sensor(s) : ${devices.length} ` + JSON.stringify(devices));
+
+    }
 
     const returnObject = {
         list: devices,
-        status: status,
-        room: roomName
+        status: status
     };
 
     adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
-}
-
-
-
-async function ListRooms(obj) {
-
-    adapter.log.debug("ListRooms " + JSON.stringify(obj));
-
-    let rooms = {};
-    //get room enums first; this includes members as well
-    const AllRoomsEnum = await adapter.getEnumAsync("rooms");
-    rooms = AllRoomsEnum.result;
-    adapter.log.debug("rooms " + JSON.stringify(rooms));
-
-    const language = await GetSystemLanguage();
-    let newRooms = 0;
-    for (const e in rooms) {
-
-        let name = undefined;
-
-        if (typeof rooms[e].common.name === "string") {
-            name = rooms[e].common.name;
-        } else if (typeof rooms[e].common.name === "object") {
-            name = rooms[e].common.name.de;
-
-            name = rooms[e].common.name[language];
-            //adapter.log.warn("room name " + name + " " + JSON.stringify(rooms[e].common.name));
-        } else {
-            adapter.log.warn("unknown type " + typeof rooms[e].common.name + " " + JSON.stringify(rooms[e].common.name));
-        }
-
-        const roomdata = findObjectByKey(adapter.config.rooms, "name", name);
-
-        if (roomdata !== null) {
-           
-            adapter.log.debug("Listrooms room " + name + " already exist");
-        } else {
-            adapter.log.debug("Listrooms found new room " + name);
-
-            newRooms++;
-            adapter.config.rooms.push({
-                name: name,
-                isActive: false    //must be enabled manually, otherwise we create too many datapoints for unused rooms 
-            });
-        }
-    }
-
-    adapter.log.debug("all rooms done with " + newRooms + " new rooms :" + JSON.stringify(adapter.config.rooms));
-
-    const returnObject = {
-        list: adapter.config.rooms,
-        newRooms: newRooms
-    };
-
-    adapter.sendTo(obj.from, obj.command, returnObject, obj.callback);
-}
-
-async function ListFunctions(obj) {
-
-    adapter.log.debug("### start ListFunctions");
-
-    const enumFunctions = [];
-    
-    const AllFunctionsEnum = await adapter.getEnumAsync("functions");
-    //adapter.log.debug("function enums: " + JSON.stringify(AllFunctionsEnum));
-    const functions = AllFunctionsEnum.result;
-
-    for (const e1 in functions) {
-
-        let name = undefined;
-
-        if (typeof functions[e1].common.name === "string") {
-            name = functions[e1].common.name;
-        } else if (typeof functions[e1].common.name === "object") {
-            name = functions[e1].common.name[SystemLanguage];
-        } else {
-            adapter.log.warn("unknown type " + typeof functions[e1].common.name + " " + JSON.stringify(functions[e1].common.name));
-        }
-
-        enumFunctions.push({
-            name: name
-        }
-        );
-
-    }
-    adapter.log.debug("all functions done " + JSON.stringify(enumFunctions));
-
-    adapter.sendTo(obj.from, obj.command, enumFunctions, obj.callback);
 }
 
 let lastIdAcked = "";
