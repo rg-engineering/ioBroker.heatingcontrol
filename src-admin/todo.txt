@@ -1,5 +1,11 @@
 
-* OID Suche für alle OID's in den tabellen
-* akors, sensors und addTempSeensors ausblenenden , wenn entsprehcneds use... auf false
+
 * Übersetzungen
 * Wartungsfunktionen
+	deleteUnusedDP
+	Profil speichern und laden
+* Gerätesuche 
+	eINSTELLUNG GEWERK FEHLT NOCH
+
+* Telegramm-User holen
+

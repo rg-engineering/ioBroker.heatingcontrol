@@ -91,6 +91,7 @@ const tabs: {
 interface AppState extends GenericAppState {
     moreLoaded: boolean;
     rooms: Record<string, ioBroker.EnumObject> | null;
+    functions: Record<string, ioBroker.EnumObject> | null;
     alive: boolean;
     systemConfig: ioBroker.SystemConfigObject | null;
 }
@@ -152,6 +153,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
         const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'connection';
 
         void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
+        void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
 
         const systemConfig = await this.socket.getSystemConfig();
         const aliveState = await this.socket.getState(`system.adapter.heatingcontrol.${this.instance}.alive`);
@@ -316,6 +318,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 themeName={this.state.themeName}
                 systemConfig={this.state.systemConfig}
                 rooms={this.state.rooms || {}}
+                functions={this.state.functions || {}}
             />
         );
     }

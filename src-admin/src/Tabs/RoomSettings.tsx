@@ -45,6 +45,7 @@ interface SettingsProps {
     theme: IobTheme;
     systemConfig: ioBroker.SystemConfigObject;
     rooms?: Record<string, ioBroker.EnumObject>;
+    functions?: Record<string, ioBroker.EnumObject>;
     alive: boolean;
 }
 
@@ -103,6 +104,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
     // Lokaler State für die aktuell ausgewählte Raum-ID
     const [selectedRoom, setSelectedRoom] = useState<string>(() => (props.native as any).roomSelector ?? '');
+    const [selectedFunction, setSelectedFunction] = useState<string>(() => (props.native as any).functionSelector ?? '');
 
     // Lokaler State: isActive für den aktuell ausgewählten Raum
     const [roomIsActive, setRoomIsActive] = useState<boolean>(() => {
@@ -161,6 +163,32 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             })
             .sort((a, b) => a.name.localeCompare(b.name));
     }, [props.rooms]);
+
+    // Memoisierte und sortierte Liste der Funktionen aus props.rooms
+    const functionsList = useMemo(() => {
+        if (!props.functions) return [] as { id: string; name: string }[];
+        return Object.entries(props.functions)
+            .map(([id, fkt]) => {
+                // Versuche, den Namen aus function.common.name zu bekommen (kann string oder object sein)
+                let name = id;
+                try {
+                    const commonName = (fkt && (fkt as any).common && (fkt as any).common.name);
+                    if (typeof commonName === 'string') {
+                        name = commonName;
+                    } else if (commonName && typeof commonName === 'object') {
+                        // Falls es ein i18n-Objekt ist, nimm die Default-String-Darstellung oder die ID
+                        //anpassen an Systemeinstellung
+                        const curLanguage = props.systemConfig?.common?.language || 'de';
+                        name = commonName[curLanguage] || commonName.de || commonName.en || id;
+                        //name = commonName.de || commonName.en || id;
+                    }
+                } catch {
+                    name = id;
+                }
+                return { id, name };
+            })
+            .sort((a, b) => a.name.localeCompare(b.name));
+    }, [props.functions]);
 
 
 
@@ -285,6 +313,12 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         props.changeNative(newNative);
     };
 
+    // onChange-Handler für die Selectbox (korrekter Typ für MUI Select)
+    const handleFunctionChange = (event: SelectChangeEvent<string>) => {
+        const value = (event.target.value as string) ?? '';
+        setSelectedFunction(value);
+    };
+
     // Änderungen an einer Thermostat-Zeile
     const updateThermostatField = (index: number, field: keyof SettingThermostatItem, value: any) => {
         const newList = thermostats.map((t, i) => i === index ? { ...t, [field]: value } : t);
@@ -378,23 +412,61 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         props.changeNative(newNative);
     };
 
-    const Check4NewThermostats = () => {
+    const Check4NewThermostats = async () => {
         console.log("Check4NewThermostats pressed");
+
+        const data = {
+            room: selectedRoom,
+            gewerk: selectedFunction
+        };
+        const instance = 'heatingcontrol.' + props.instance;;
+        const newDevices = await props.socket.sendTo(instance, 'listThermostats', data);
+
+        console.log("got devices " + JSON.stringify(newDevices));
     }
-    const Check4NewActors = () => {
+
+
+    const Check4NewActors = async () => {
         console.log("Check4NewActors pressed");
+
+        const data = {
+            room: selectedRoom,
+            gewerk: selectedFunction
+        };
+        const instance = 'heatingcontrol.' + props.instance;;
+        const newDevices = await props.socket.sendTo(instance, 'listActors', data);
+
+        console.log("got devices " + JSON.stringify(newDevices));
     }
-    const Check4newWindowSensors = () => {
+    const Check4newWindowSensors = async () => {
         console.log("Check4newWindowSensors pressed");
+
+        const data = {
+            room: selectedRoom,
+            gewerk: selectedFunction
+        };
+        const instance = 'heatingcontrol.' + props.instance;;
+        const newDevices = await props.socket.sendTo(instance, 'listSensors', data);
+
+        console.log("got devices " + JSON.stringify(newDevices));
     }
-    const Check4NewAddTempSensors = () => {
+    const Check4NewAddTempSensors = async () => {
         console.log("Check4NewAddTempSensors pressed");
+
+        const data = {
+            room: selectedRoom,
+            gewerk: selectedFunction
+        };
+        const instance = 'heatingcontrol.' + props.instance;;
+        const newDevices = await props.socket.sendTo(instance, 'listAddTempSensors', data);
+
+        console.log("got devices " + JSON.stringify(newDevices));
     }
 
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
             <div style={{ marginBottom: 12 }}>
-                <FormControl fullWidth variant="standard">
+                <FormControl variant="standard" sx={{ minWidth: '40%',  maxWidth: '60%' }} >
                     <InputLabel id="room-selector-label">{I18n.t('select a room')}</InputLabel>
                     <Select
                         labelId="room-selector-label"
@@ -412,7 +484,6 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                         ))}
                     </Select>
                 </FormControl>
-
                 {/* Checkbox für isActive des aktuell ausgewählten Raums */}
                 {selectedRoom ? (
                     <FormControlLabel
@@ -428,6 +499,31 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     />
                 ) : null}
             </div>
+
+            <div style={{ marginBottom: 12 }}>
+                <FormControl variant="standard" sx={{ minWidth: '40%', maxWidth: '60%' }}>
+                    <InputLabel id="function-selector-label">{I18n.t('select a function')}</InputLabel>
+                    <Select
+                        labelId="function-selector-label"
+                        value={selectedFunction ?? ''}
+                        onChange={handleFunctionChange}
+                        displayEmpty
+                    >
+                        <MenuItem value="">
+                            <em>{I18n.t('no function selected')}</em>
+                        </MenuItem>
+                        {functionsList.map(r => (
+                            <MenuItem key={r.id} value={r.id}>
+                                {r.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </div>
+
+
+
+            
 
 
             {selectedRoom ? (
@@ -473,16 +569,19 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                     value={waitForTempIfWindowOpen === '' ? '' : String(waitForTempIfWindowOpen)}
                                     onChange={handleWaitChange}
                                     onBlur={handleWaitBlur}
-                                    // Beschränkungen: numerisch, ganze Zahlen 0-100
-                                    inputProps={{ inputMode: 'numeric', pattern: '\\d*', min: 0, max: 1000 }}
-                                    // Maximal 30% der Breite einnehmen
                                     sx={{ mb: 2, maxWidth: '30%' }}
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">{I18n.t('seconds') || 'Sekunden'}</InputAdornment>
-                                    }}
+                                    /* MUI-Typing: einige Slot-Namen / Shapes sind in den @mui/material-Typen nicht
+                                       exakt wie in der Doku (oder können je nach Minor-Version fehlen).
+                                       Sicherer Weg: die slot-Objekte an `any` zu casten, damit TypeScript nicht meckert,
+                                       während die Laufzeit-API von MUI korrekt genutzt wird. */
+                                    slots={({} as any)}
+                                    slotProps={
+                                        {
+                                            input: { inputProps: { inputMode: 'numeric', pattern: '\\d*', min: 0, max: 1000 } },
+                                            endDecorator: { children: I18n.t('seconds') },
+                                        } as any
+                                    }
                                 />
-
-
 
                             </Box>
                             <SettingThermostatsTable
