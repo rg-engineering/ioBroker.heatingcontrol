@@ -422,7 +422,56 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const instance = 'heatingcontrol.' + props.instance;;
         const newDevices = await props.socket.sendTo(instance, 'listThermostats', data);
 
-        console.log("got devices " + JSON.stringify(newDevices));
+        console.log("got new thermostats " + JSON.stringify(newDevices));
+
+        try {
+            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            if (devices.length === 0) {
+                console.log("No devices returned from listThermostats");
+                return;
+            }
+
+            // Sammlung vorhandener OIDs (Target + Current)
+            const existingOids = new Set<string>();
+            thermostats.forEach(t => {
+                if (t?.OID_Target) existingOids.add(String(t.OID_Target));
+                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+            });
+
+            // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
+            const toAddMap = new Map<string, SettingThermostatItem>();
+            devices.forEach(d => {
+                const oidTarget = d?.OID_Target ?? d?.oidTarget ?? d?.oid_target ?? '';
+                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+                // mindestens eine OID erforderlich
+                if (!oidTarget && !oidCurrent) return;
+                // wenn eine der OIDs bereits existiert, überspringen
+                if ((oidTarget && existingOids.has(String(oidTarget))) || (oidCurrent && existingOids.has(String(oidCurrent)))) return;
+                // Schlüssel zur Vermeidung von Duplikaten innerhalb der gefundenen Geräte: kombination aus OIDs oder Name
+                const key = (oidTarget || '') + '|' + (oidCurrent || '') + '|' + (d?.name ?? '');
+                if (toAddMap.has(key)) return;
+                const item: SettingThermostatItem = {
+                    name: d?.name ?? '',
+                    isActive: true,
+                    OID_Target: oidTarget ?? '',
+                    OID_Current: oidCurrent ?? '',
+                } as SettingThermostatItem;
+                toAddMap.set(key, item);
+            });
+
+            const toAdd = Array.from(toAddMap.values());
+            if (toAdd.length === 0) {
+                console.log("No new thermostats to add after filtering duplicates.");
+                return;
+            }
+
+            const newList = [...thermostats, ...toAdd];
+            persistThermostats(newList);
+            console.log(`Added ${toAdd.length} new thermostats to the settings.`);
+        } catch (err) {
+            console.error("Error processing new thermostats:", err);
+        }
+
     }
 
 
@@ -436,7 +485,58 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const instance = 'heatingcontrol.' + props.instance;;
         const newDevices = await props.socket.sendTo(instance, 'listActors', data);
 
-        console.log("got devices " + JSON.stringify(newDevices));
+        console.log("got new actors  " + JSON.stringify(newDevices));
+
+        try {
+            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            if (devices.length === 0) {
+                console.log("No devices returned from listActors");
+                return;
+            }
+
+            // Sammlung vorhandener OIDs (Target + Current)
+            const existingOids = new Set<string>();
+            actors.forEach(t => {
+                if (t?.OID_Target) existingOids.add(String(t.OID_Target));
+                
+            });
+
+            // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
+            const toAddMap = new Map<string, SettingActorItem>();
+            devices.forEach(d => {
+                const oidTarget = d?.OID_Target ?? d?.oidTarget ?? d?.oid_target ?? '';
+               
+                // Für Actor ist mindestens die Target-OID erforderlich
+                if (!oidTarget) return;
+                // wenn die OID bereits existiert, überspringen
+                if (existingOids.has(String(oidTarget))) return;
+
+                // Key nur aus OID_Target und Name bilden (Actors haben kein oidCurrent)
+                const key = (oidTarget || '') + '|' + (d?.name ?? '');
+
+                if (toAddMap.has(key)) return;
+                const item: SettingActorItem = {
+                    name: d?.name ?? '',
+                    isActive: true,
+                    OID_Target: oidTarget ?? '',
+                    
+                } as SettingActorItem;
+                toAddMap.set(key, item);
+            });
+
+            const toAdd = Array.from(toAddMap.values());
+            if (toAdd.length === 0) {
+                console.log("No new actors to add after filtering duplicates.");
+                return;
+            }
+
+            const newList = [...actors, ...toAdd];
+            persistActors(newList);
+            console.log(`Added ${toAdd.length} new actors to the settings.`);
+        } catch (err) {
+            console.error("Error processing new actors:", err);
+        }
+
     }
     const Check4newWindowSensors = async () => {
         console.log("Check4newWindowSensors pressed");
@@ -448,7 +548,58 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const instance = 'heatingcontrol.' + props.instance;;
         const newDevices = await props.socket.sendTo(instance, 'listSensors', data);
 
-        console.log("got devices " + JSON.stringify(newDevices));
+        console.log("got new sensors " + JSON.stringify(newDevices));
+
+        try {
+            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            if (devices.length === 0) {
+                console.log("No devices returned from listActors");
+                return;
+            }
+
+            // Sammlung vorhandener OIDs (Target + Current)
+            const existingOids = new Set<string>();
+            WindowSensors.forEach(t => {
+                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+
+            });
+
+            // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
+            const toAddMap = new Map<string, SettingWindowSensorItem>();
+            devices.forEach(d => {
+                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+
+                // Für Sensoren ist mindestens die Current-OID erforderlich
+                if (!oidCurrent) return;
+                // wenn die OID bereits existiert, überspringen
+                if (existingOids.has(String(oidCurrent))) return;
+
+                // Key nur aus OID_Current und Name bilden 
+                const key = (oidCurrent || '') + '|' + (d?.name ?? '');
+
+                if (toAddMap.has(key)) return;
+                const item: SettingWindowSensorItem = {
+                    name: d?.name ?? '',
+                    isActive: true,
+                    OID_Current: oidCurrent ?? '',
+
+                } as SettingWindowSensorItem;
+                toAddMap.set(key, item);
+            });
+
+            const toAdd = Array.from(toAddMap.values());
+            if (toAdd.length === 0) {
+                console.log("No new sensors to add after filtering duplicates.");
+                return;
+            }
+
+            const newList = [...WindowSensors, ...toAdd];
+            persistWindowSensors(newList);
+            console.log(`Added ${toAdd.length} new sensors to the settings.`);
+        } catch (err) {
+            console.error("Error processing new sensors:", err);
+        }
+
     }
     const Check4NewAddTempSensors = async () => {
         console.log("Check4NewAddTempSensors pressed");
@@ -460,7 +611,57 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const instance = 'heatingcontrol.' + props.instance;;
         const newDevices = await props.socket.sendTo(instance, 'listAddTempSensors', data);
 
-        console.log("got devices " + JSON.stringify(newDevices));
+        console.log("got new additional sensors " + JSON.stringify(newDevices));
+
+        try {
+            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            if (devices.length === 0) {
+                console.log("No devices returned from listActors");
+                return;
+            }
+
+            // Sammlung vorhandener OIDs (Target + Current)
+            const existingOids = new Set<string>();
+            AdditionalSensors.forEach(t => {
+                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+
+            });
+
+            // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
+            const toAddMap = new Map<string, SettingTempSensorItem>();
+            devices.forEach(d => {
+                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+
+                // Für Sensoren ist mindestens die Current-OID erforderlich
+                if (!oidCurrent) return;
+                // wenn die OID bereits existiert, überspringen
+                if (existingOids.has(String(oidCurrent))) return;
+
+                // Key nur aus OID_Current und Name bilden 
+                const key = (oidCurrent || '') + '|' + (d?.name ?? '');
+
+                if (toAddMap.has(key)) return;
+                const item: SettingTempSensorItem = {
+                    name: d?.name ?? '',
+                    isActive: true,
+                    OID_Current: oidCurrent ?? '',
+
+                } as SettingTempSensorItem;
+                toAddMap.set(key, item);
+            });
+
+            const toAdd = Array.from(toAddMap.values());
+            if (toAdd.length === 0) {
+                console.log("No new additional temperature sensor to add after filtering duplicates.");
+                return;
+            }
+
+            const newList = [...AdditionalSensors, ...toAdd];
+            persistAdditionalSensors(newList);
+            console.log(`Added ${toAdd.length} new additional temperature sensor to the settings.`);
+        } catch (err) {
+            console.error("Error processing new additional temperature sensor:", err);
+        }
     }
 
     return (
