@@ -994,7 +994,7 @@ async function SaveProfile(obj) {
             
             if (adapter.config.rooms[room].isActive) {
 
-                const roomName = adapter.config.rooms[room].name;
+                const roomName = adapter.config.rooms[room].name || adapter.config.rooms[room].Name;
 
                 adapter.log.debug("saving for " + roomName);
 
@@ -1249,11 +1249,56 @@ async function SaveProfile(obj) {
 
 
 async function LoadProfile(obj) {
-    adapter.log.warn("LoadProfile called " + JSON.stringify(obj));
+    adapter.log.warn("!!!LoadProfile called:  " + JSON.stringify(obj));
 
     let retText = "successfully loaded";
     try {
-        const profile2Load = JSON.parse(obj.message);
+
+
+        // Robust: prüfen ob obj.message bereits ein JSON-Objekt ist oder ein string, ggf. parsen
+        let profile2Load = null;
+
+        if (obj && obj.message !== undefined && obj.message !== null) {
+            if (typeof obj.message === "string") {
+                try {
+                    profile2Load = JSON.parse(obj.message);
+                } catch (err) {
+                    adapter.log.error("LoadProfile: Cannot parse obj.message string: " + err);
+                    retText = "Cannot parse profile JSON: " + err;
+                    adapter.sendTo(obj.from, obj.command, retText, obj.callback);
+                    return;
+                }
+            } else if (typeof obj.message === "object") {
+                // Falls obj.message.message eine JSON-String enthält, versuchen diese zu parsen
+                if (obj.message.message && typeof obj.message.message === "string") {
+                    try {
+                        profile2Load = JSON.parse(obj.message.message);
+                    } catch (err) {
+                        adapter.log.error("LoadProfile: Cannot parse nested obj.message.message string: " + err);
+                        retText = "Cannot parse nested profile JSON: " + err;
+                        adapter.sendTo(obj.from, obj.command, retText, obj.callback);
+                        return;
+                    }
+                } else {
+                    profile2Load = obj.message;
+                }
+            } else {
+                adapter.log.error("LoadProfile: Unsupported obj.message type: " + typeof obj.message);
+                retText = "Unsupported obj.message type: " + typeof obj.message;
+                adapter.sendTo(obj.from, obj.command, retText, obj.callback);
+                return;
+            }
+        } else {
+            adapter.log.error("LoadProfile: obj.message is missing or null");
+            retText = "obj.message is missing or null";
+            adapter.sendTo(obj.from, obj.command, retText, obj.callback);
+            return;
+        }
+
+
+
+
+        
 
         adapter.log.debug("got data " + JSON.stringify(profile2Load));
 
@@ -1286,7 +1331,7 @@ async function LoadProfile(obj) {
             for (let room = 0; room < adapter.config.rooms.length; room++) {
                 if (adapter.config.rooms[room].isActive) {
 
-                    const roomName = adapter.config.rooms[room].name;
+                    const roomName = adapter.config.rooms[room].name || adapter.config.rooms[room].Name;
 
                     for (let profile = 1; profile <= parseInt(adapter.config.NumberOfProfiles, 10); profile++) {
                         const key = "Profiles." + profile;

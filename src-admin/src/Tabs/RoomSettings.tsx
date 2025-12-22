@@ -138,6 +138,12 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         return '';
     });
 
+    // Neuer lokaler State für Ergebnis / Status von Check4NewThermostats
+    const [checkThermostatsResult, setCheckThermostatsResult] = useState<string>('');
+    const [checkActorsResult, setCheckActorsResult] = useState<string>('');
+    const [checkSensorsResult, setCheckSensorsResult] = useState<string>('');
+    const [checkAddTempSensorsResult, setCheckAddTempSensorsResult] = useState<string>('');
+
     // Memoisierte und sortierte Liste der Räume aus props.rooms
     const roomsList = useMemo(() => {
         if (!props.rooms) return [] as { id: string; name: string }[];
@@ -303,6 +309,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const value = (event.target.value as string) ?? '';
         setSelectedRoom(value);
 
+        setCheckThermostatsResult("");
+        setCheckActorsResult("");
+        setCheckSensorsResult("");
+        setCheckAddTempSensorsResult("");
+
         // Neue native Konfiguration mit dem gewählten Raum
         const newNative = {
             ...(props.native as any),
@@ -424,6 +435,18 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         console.log("got new thermostats " + JSON.stringify(newDevices));
 
+        // Setze den Status/Text in den neuen State (wenn vorhanden)
+        try {
+            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            if (typeof status === 'object') {
+                setCheckThermostatsResult(JSON.stringify(status));
+            } else {
+                setCheckThermostatsResult(String(status));
+            }
+        } catch (err) {
+            setCheckThermostatsResult('Error reading status');
+        }
+
         try {
             const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
             if (devices.length === 0) {
@@ -441,8 +464,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingThermostatItem>();
             devices.forEach(d => {
-                const oidTarget = d?.OID_Target ?? d?.oidTarget ?? d?.oid_target ?? '';
-                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+                const oidTarget = d?.OID_Target  ?? '';
+                const oidCurrent = d?.OID_Current  ?? '';
                 // mindestens eine OID erforderlich
                 if (!oidTarget && !oidCurrent) return;
                 // wenn eine der OIDs bereits existiert, überspringen
@@ -451,7 +474,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 const key = (oidTarget || '') + '|' + (oidCurrent || '') + '|' + (d?.name ?? '');
                 if (toAddMap.has(key)) return;
                 const item: SettingThermostatItem = {
-                    name: d?.name ?? '',
+                    name: d?.Name ?? '',
                     isActive: true,
                     OID_Target: oidTarget ?? '',
                     OID_Current: oidCurrent ?? '',
@@ -487,6 +510,18 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         console.log("got new actors  " + JSON.stringify(newDevices));
 
+        // Setze den Status/Text in den neuen State (wenn vorhanden)
+        try {
+            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            if (typeof status === 'object') {
+                setCheckActorsResult(JSON.stringify(status));
+            } else {
+                setCheckActorsResult(String(status));
+            }
+        } catch (err) {
+            setCheckActorsResult('Error reading status');
+        }
+
         try {
             const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
             if (devices.length === 0) {
@@ -516,7 +551,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                 if (toAddMap.has(key)) return;
                 const item: SettingActorItem = {
-                    name: d?.name ?? '',
+                    name: d?.Name ?? '',
                     isActive: true,
                     OID_Target: oidTarget ?? '',
                     
@@ -550,6 +585,18 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         console.log("got new sensors " + JSON.stringify(newDevices));
 
+        // Setze den Status/Text in den neuen State (wenn vorhanden)
+        try {
+            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            if (typeof status === 'object') {
+                setCheckSensorsResult(JSON.stringify(status));
+            } else {
+                setCheckSensorsResult(String(status));
+            }
+        } catch (err) {
+            setCheckSensorsResult('Error reading status');
+        }
+
         try {
             const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
             if (devices.length === 0) {
@@ -567,7 +614,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingWindowSensorItem>();
             devices.forEach(d => {
-                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+                const oidCurrent = d?.OID_Current ?? '';
 
                 // Für Sensoren ist mindestens die Current-OID erforderlich
                 if (!oidCurrent) return;
@@ -579,7 +626,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                 if (toAddMap.has(key)) return;
                 const item: SettingWindowSensorItem = {
-                    name: d?.name ?? '',
+                    name: d?.Name ?? '',
                     isActive: true,
                     OID_Current: oidCurrent ?? '',
 
@@ -613,6 +660,18 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         console.log("got new additional sensors " + JSON.stringify(newDevices));
 
+        // Setze den Status/Text in den neuen State (wenn vorhanden)
+        try {
+            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            if (typeof status === 'object') {
+                setCheckAddTempSensorsResult(JSON.stringify(status));
+            } else {
+                setCheckAddTempSensorsResult(String(status));
+            }
+        } catch (err) {
+            setCheckAddTempSensorsResult('Error reading status');
+        }
+
         try {
             const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
             if (devices.length === 0) {
@@ -630,7 +689,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingTempSensorItem>();
             devices.forEach(d => {
-                const oidCurrent = d?.OID_Current ?? d?.oidCurrent ?? d?.oid_current ?? '';
+                const oidCurrent = d?.OID_Current  ?? '';
 
                 // Für Sensoren ist mindestens die Current-OID erforderlich
                 if (!oidCurrent) return;
@@ -642,7 +701,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                 if (toAddMap.has(key)) return;
                 const item: SettingTempSensorItem = {
-                    name: d?.name ?? '',
+                    name: d?.Name ?? '',
                     isActive: true,
                     OID_Current: oidCurrent ?? '',
 
@@ -724,8 +783,6 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
 
 
-            
-
 
             {selectedRoom ? (
                 roomIsActive ? (
@@ -757,6 +814,16 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                     {I18n.t('Check4NewThermostats')}
                                 </Button>
 
+
+                                {checkThermostatsResult.length>0 ? (
+
+                                    <Badge color="primary" id='Check4NewThermostats_Result' sx={{ maxWidth: '20%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                        {checkThermostatsResult}
+                                    </Badge>
+
+                                    
+                                ): (null)}
+
                                 <Badge color="primary" id='Check4NewThermostats_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                     {I18n.t('Check4NewThermostats_hint')}
                                 </Badge>
@@ -775,7 +842,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                        exakt wie in der Doku (oder können je nach Minor-Version fehlen).
                                        Sicherer Weg: die slot-Objekte an `any` zu casten, damit TypeScript nicht meckert,
                                        während die Laufzeit-API von MUI korrekt genutzt wird. */
-                                    slots={({} as any)}
+                                    slots={({} as any)
+                                    }
                                     slotProps={
                                         {
                                             input: { inputProps: { inputMode: 'numeric', pattern: '\\d*', min: 0, max: 1000 } },
@@ -785,6 +853,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                 />
 
                             </Box>
+
+                            
+
                             <SettingThermostatsTable
                                 settingName={I18n.t('Thermostats')}
                                 settings={thermostats}
@@ -825,6 +896,17 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                         >
                                             {I18n.t('Check4NewActors')}
                                         </Button>
+
+                                        {checkActorsResult.length > 0 ? (
+
+                                            <Badge color="primary" id='Check4NewActors_Result' sx={{ maxWidth: '20%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                                {checkActorsResult}
+                                            </Badge>
+
+
+                                        ) : (null)}
+
+
                                         <Badge color="primary" id='Check4NewActors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                             {I18n.t('Check4NewActors_hint')}
                                         </Badge>
@@ -873,6 +955,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                             {I18n.t('Check4NewSensors')}
                                         </Button>
 
+                                        {checkSensorsResult.length > 0 ? (
+
+                                            <Badge color="primary" id='Check4NewSensors_Result' sx={{ maxWidth: '20%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                                {checkSensorsResult}
+                                            </Badge>
+
+
+                                        ) : (null)}
 
                                         <Badge color="primary" id='Check4NewSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                             {I18n.t('Check4NewSensors_hint')}
@@ -920,6 +1010,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                             {I18n.t('Check4NewAddTempSensors')}
                                         </Button>
 
+                                        {checkAddTempSensorsResult.length > 0 ? (
+
+                                            <Badge color="primary" id='Check4NewAddTempSensors_Result' sx={{ maxWidth: '20%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                                {checkAddTempSensorsResult}
+                                            </Badge>
+
+
+                                        ) : (null)}
 
                                         <Badge color="primary" id='Check4NewAddTempSensors_hint' sx={{ maxWidth: '30%', whiteSpace: 'normal', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                             {I18n.t('Check4NewAddTempSensors_hint')}

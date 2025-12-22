@@ -2,11 +2,10 @@
 
 * Übersetzungen
 * Wartungsfunktionen
-	deleteUnusedDP
+
 	Profil speichern und laden
 * Gerätesuche
-	status anzeige nach suche
-	name von devicedetect bis ins admin für neu gefundene Geräte
+	
 	Testen mit dummy daten
 
 
