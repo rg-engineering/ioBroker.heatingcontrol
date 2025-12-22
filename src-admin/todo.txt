@@ -2,8 +2,6 @@
 
 * Übersetzungen
 
-* Gerätesuche	
-	Testen mit dummy daten
 
 * Telegramm-User holen
 

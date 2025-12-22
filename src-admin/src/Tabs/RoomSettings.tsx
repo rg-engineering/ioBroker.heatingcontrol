@@ -448,7 +448,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
         try {
-            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            const devices: any[] = (newDevices && Array.isArray(newDevices.list)) ? newDevices.list : [];
             if (devices.length === 0) {
                 console.log("No devices returned from listThermostats");
                 return;
@@ -460,6 +460,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 if (t?.OID_Target) existingOids.add(String(t.OID_Target));
                 if (t?.OID_Current) existingOids.add(String(t.OID_Current));
             });
+            console.log("existing oids: " + JSON.stringify(existingOids));
 
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingThermostatItem>();
@@ -467,9 +468,15 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 const oidTarget = d?.OID_Target  ?? '';
                 const oidCurrent = d?.OID_Current  ?? '';
                 // mindestens eine OID erforderlich
-                if (!oidTarget && !oidCurrent) return;
+                if (!oidTarget && !oidCurrent) {
+                    console.log("has no oidCurrent or oidTarget");
+                    return;
+                }
                 // wenn eine der OIDs bereits existiert, überspringen
-                if ((oidTarget && existingOids.has(String(oidTarget))) || (oidCurrent && existingOids.has(String(oidCurrent)))) return;
+                if ((oidTarget && existingOids.has(String(oidTarget))) || (oidCurrent && existingOids.has(String(oidCurrent)))) {
+                    console.log("OID already used");
+                    return;
+                }
                 // Schlüssel zur Vermeidung von Duplikaten innerhalb der gefundenen Geräte: kombination aus OIDs oder Name
                 const key = (oidTarget || '') + '|' + (oidCurrent || '') + '|' + (d?.name ?? '');
                 if (toAddMap.has(key)) return;
@@ -523,7 +530,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
         try {
-            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            const devices: any[] = (newDevices && Array.isArray(newDevices.list)) ? newDevices.list : [];
             if (devices.length === 0) {
                 console.log("No devices returned from listActors");
                 return;
@@ -535,6 +542,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 if (t?.OID_Target) existingOids.add(String(t.OID_Target));
                 
             });
+            console.log("existing oids: " + JSON.stringify(existingOids));
 
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingActorItem>();
@@ -542,9 +550,15 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 const oidTarget = d?.OID_Target ?? d?.oidTarget ?? d?.oid_target ?? '';
                
                 // Für Actor ist mindestens die Target-OID erforderlich
-                if (!oidTarget) return;
+                if (!oidTarget) {
+                    console.log("has no oidTarget");
+                    return;
+                }
                 // wenn die OID bereits existiert, überspringen
-                if (existingOids.has(String(oidTarget))) return;
+                if (existingOids.has(String(oidTarget))) {
+                    console.log("OID already used");
+                    return;
+                }
 
                 // Key nur aus OID_Target und Name bilden (Actors haben kein oidCurrent)
                 const key = (oidTarget || '') + '|' + (d?.name ?? '');
@@ -598,9 +612,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
         try {
-            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            const devices: any[] = (newDevices && Array.isArray(newDevices.list)) ? newDevices.list : [];
             if (devices.length === 0) {
-                console.log("No devices returned from listActors");
+                console.log("No devices returned from listSensors");
                 return;
             }
 
@@ -610,6 +624,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 if (t?.OID_Current) existingOids.add(String(t.OID_Current));
 
             });
+            console.log("existing oids: " + JSON.stringify(existingOids));
 
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingWindowSensorItem>();
@@ -617,9 +632,16 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 const oidCurrent = d?.OID_Current ?? '';
 
                 // Für Sensoren ist mindestens die Current-OID erforderlich
-                if (!oidCurrent) return;
+                if (!oidCurrent) {
+                    console.log("has no oidCurrent");
+                    return;
+                }
                 // wenn die OID bereits existiert, überspringen
-                if (existingOids.has(String(oidCurrent))) return;
+                if (existingOids.has(String(oidCurrent))) {
+                    
+                    console.log("OID already used");
+                    return;
+                }
 
                 // Key nur aus OID_Current und Name bilden 
                 const key = (oidCurrent || '') + '|' + (d?.name ?? '');
@@ -673,9 +695,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
         try {
-            const devices: any[] = (newDevices && Array.isArray(newDevices.devices)) ? newDevices.devices : [];
+            const devices: any[] = (newDevices && Array.isArray(newDevices.list)) ? newDevices.list : [];
             if (devices.length === 0) {
-                console.log("No devices returned from listActors");
+                console.log("No devices returned from listAddTempSensors");
                 return;
             }
 
@@ -685,6 +707,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 if (t?.OID_Current) existingOids.add(String(t.OID_Current));
 
             });
+            console.log("existing oids: " + JSON.stringify(existingOids));
+
 
             // Filtere neue Geräte, vermeide Duplikate gegenüber vorhandenen OIDs
             const toAddMap = new Map<string, SettingTempSensorItem>();
@@ -692,9 +716,15 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 const oidCurrent = d?.OID_Current  ?? '';
 
                 // Für Sensoren ist mindestens die Current-OID erforderlich
-                if (!oidCurrent) return;
+                if (!oidCurrent) {
+                    console.log("has no oidCurrent");
+                    return;
+                }
                 // wenn die OID bereits existiert, überspringen
-                if (existingOids.has(String(oidCurrent))) return;
+                if (existingOids.has(String(oidCurrent))) {
+                    console.log("OID already used");
+                    return;
+                }
 
                 // Key nur aus OID_Current und Name bilden 
                 const key = (oidCurrent || '') + '|' + (d?.name ?? '');
