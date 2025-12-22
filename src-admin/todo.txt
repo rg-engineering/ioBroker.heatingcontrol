@@ -1,13 +1,9 @@
 
 
 * Übersetzungen
-* Wartungsfunktionen
 
-	Profil speichern und laden
-* Gerätesuche
-	
+* Gerätesuche	
 	Testen mit dummy daten
-
 
 * Telegramm-User holen
 

@@ -1268,26 +1268,10 @@ async function LoadProfile(obj) {
                     adapter.sendTo(obj.from, obj.command, retText, obj.callback);
                     return;
                 }
-            } else if (typeof obj.message === "object") {
-                // Falls obj.message.message eine JSON-String enthält, versuchen diese zu parsen
-                if (obj.message.message && typeof obj.message.message === "string") {
-                    try {
-                        profile2Load = JSON.parse(obj.message.message);
-                    } catch (err) {
-                        adapter.log.error("LoadProfile: Cannot parse nested obj.message.message string: " + err);
-                        retText = "Cannot parse nested profile JSON: " + err;
-                        adapter.sendTo(obj.from, obj.command, retText, obj.callback);
-                        return;
-                    }
-                } else {
-                    profile2Load = obj.message;
-                }
             } else {
-                adapter.log.error("LoadProfile: Unsupported obj.message type: " + typeof obj.message);
-                retText = "Unsupported obj.message type: " + typeof obj.message;
-                adapter.sendTo(obj.from, obj.command, retText, obj.callback);
-                return;
+                profile2Load = obj.message;
             }
+
         } else {
             adapter.log.error("LoadProfile: obj.message is missing or null");
             retText = "obj.message is missing or null";
