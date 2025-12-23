@@ -176,12 +176,13 @@
           ]
         },
         "title": {
-          "en": "breaking change: configuration of devices must be done again"
-
+          "en": "!!! not yet recommended for production use !!! breaking change: configuration of devices / rooms must be done again",
+          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden."
         },
         "text": {
-          "en": "due to re-development of admin in react configuration structure has been changed. Devices must be configured again"
-        
+          "en": "Due to the redesign of the administration interface in React, the configuration structure has changed. Devices/rooms must be reconfigured. While the adapter attempts to migrate the data, this cannot be guaranteed. Important: It is no longer possible to create rooms in the adapter. Instead, globally created rooms from the categories will be used.",
+          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet"
+
         },
         "level": "warn",
         "buttons": [
