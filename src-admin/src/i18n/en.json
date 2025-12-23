@@ -194,7 +194,18 @@
   "Profile Maintenance": "Profile Maintenance",
   "notificationEnabled": "notifications enabled",
   "enableCSVLogging": "CSV-Logging enabled",
-  "notificationsType": "notifications type"
+  "notificationsType": "notifications type",
+
+  "DataType": "Data Type",
+  "valueOpen": "value for 'open''",
+  "valueClosed": "value for 'closed'",
+  "nothing configured": "nothing configured",
+  "room is inactive - activate to edit settings": "room is inactive - activate to edit settings",
+  "select a room to display settings": "select a room to display settings",
+  "no room selected": "no room selected",
+  "no function selected": "no function selected"
+
+
 
 
 

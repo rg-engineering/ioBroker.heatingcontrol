@@ -194,5 +194,15 @@
   "Profile Maintenance": "Profil-Wartung",
   "notificationEnabled": "Benachrichtungen aktiviert",
   "enableCSVLogging": "CSV-Logging aktiviert",
-  "notificationsType": "Benachrichtungstyp"
+  "notificationsType": "Benachrichtungstyp",
+
+  "DataType": "Datentyp",
+  "valueOpen": "Wert für 'offen'",
+  "valueClosed": "Wert für 'geschlossen'",
+  "nothing configured": "nichts konfiguriert",
+  "room is inactive - activate to edit settings": "Raum ist nicht aktiv - Aktivieren, um Einstellungen zu bearbeiten",
+  "select a room to display settings": "einen Raum auswählen, um die Einstellungen zu sehen",
+  "no room selected": "kein Raum ausgewählt",
+  "no function selected": "keine Funktion ausgewählt"
+
 }
