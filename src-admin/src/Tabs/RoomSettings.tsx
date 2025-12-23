@@ -17,8 +17,6 @@ import {
     Button,
     Badge,
     Box,
-    Divider,
-    Typography,
     TextField
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
@@ -31,7 +29,7 @@ import SettingTempSensorsTable from '../Components/SettingTempSensorsTable';
 import type { SettingTempSensorItem } from '../Components/SettingTempSensorsTable';
 import SettingWindowSensorsTable from '../Components/SettingWindowSensorsTable';
 import type { SettingWindowSensorItem } from '../Components/SettingWindowSensorsTable';
-
+import BoxDivider from '../Components/BoxDivider'
 
 
 interface SettingsProps {
@@ -874,11 +872,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <FormControl fullWidth variant="standard">
 
 
-                        <Divider>
-                            <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                {I18n.t('thermostats')}
-                            </Typography>
-                        </Divider>
+                        <BoxDivider
+                            Name={I18n.t('thermostats')}
+                            theme={props.theme}
+                            />
 
 
 
@@ -957,11 +954,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseActors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('actors')}
-                                    </Typography>
-                                </Divider>
+
+                                <BoxDivider
+                                    Name={I18n.t('actors')}
+                                    theme={props.theme}
+                                />
 
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
@@ -1017,11 +1014,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseSensors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('window sensors')}
-                                    </Typography>
-                                </Divider>
+ 
+                                <BoxDivider
+                                    Name={I18n.t('window sensors')}
+                                    theme={props.theme}
+                                />
 
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
@@ -1074,11 +1071,12 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseAddTempSensors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('additional temperature sensors')}
-                                    </Typography>
-                                </Divider>
+
+
+                                <BoxDivider
+                                    Name={I18n.t('additional temperature sensors')}
+                                    theme={props.theme}
+                                />
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
                                     <Badge color="primary" id='hint_AddTempSensors' sx={{ display: 'block', mb: 2 }}>

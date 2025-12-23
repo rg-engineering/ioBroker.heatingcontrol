@@ -177,6 +177,26 @@
   "useExtHandling": "extended handling",
   "useExtHandling_hint": "With the extended handling, it is checked whether the value was really set and whether the acknowledge was set. ",
   "use_actors": "actuators used",
-  "use_sensors": "sensors used"
+  "use_sensors": "sensors used",
+
+
+  "Main_settings": "Main Settings",
+  "Profile_Settings": "Profile Settings",
+  "Room_Settings": "Room Settings",
+  "select a room": "select a room",
+  "select a function": "select a function",
+  "OID Target": "OID Target",
+  "OID Current": "OID Current",
+  "activities": "activities",
+  "name": "name",
+  "activ": "active",
+  "General Maintenance": "General Maintenance",
+  "Profile Maintenance": "Profile Maintenance",
+  "notificationEnabled": "notifications enabled",
+  "enableCSVLogging": "CSV-Logging enabled",
+  "notificationsType": "notifications type"
+
+
+
 
 }

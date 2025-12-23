@@ -5,6 +5,7 @@ import React, {  useRef, useState } from 'react';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
 import { I18n } from '@iobroker/adapter-react-v5';
 import type { HeatingControlAdapterConfig } from "../types";
+import BoxDivider from '../Components/BoxDivider'
 
 import {
     Button,
@@ -183,23 +184,15 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
 
-            <Box sx={{
-                width: '100%',
-                background: props.theme.palette.primary.main,
-                color: props.theme.palette.primary.contrastText,
-                padding: '4px !important',
-                borderRadius: '3px',
-                marginBlockEnd: 0,
-                marginBlockStart: 0,
-                marginBottom: 0
-            }}>
-                <h5 style={{ margin: 0 }}>
-                    {I18n.t('General Maintenance')}
-                </h5>
+
+            <BoxDivider
+                Name={I18n.t('General Maintenance')}
+                theme={props.theme}
+            />
 
 
-            </Box>
 
+            
 
             <div style={{ marginBottom: 12 }}>
 
@@ -243,22 +236,10 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
 
             </div>
 
-            <Box sx={{
-                width: '100%',
-                background: props.theme.palette.primary.main,
-                color: props.theme.palette.primary.contrastText,
-                padding: '4px !important',
-                borderRadius: '3px',
-                marginBlockEnd: 0,
-                marginBlockStart: 0,
-                marginBottom: 0
-            }}>
-                <h5 style={{ margin: 0 }}>
-                    {I18n.t('Profile Maintenance')}
-                </h5>
-
-
-            </Box>
+            <BoxDivider
+                Name={I18n.t('Profile Maintenance')}
+                theme={props.theme}
+            />
 
 
             <div style={{ marginBottom: 12 }}>

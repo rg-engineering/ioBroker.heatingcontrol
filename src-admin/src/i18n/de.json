@@ -177,5 +177,22 @@
   "useExtHandling": "erweiterte Handhabung",
   "useExtHandling_hint": "Bei der erweiterten Behandlung wird geprüft, ob der Wert wirklich gesetzt wurde und ob die Bestätigung gesetzt wurde. ",
   "use_actors": "Aktoren verwenden",
-  "use_sensors": "Sensoren verwenden"
+  "use_sensors": "Sensoren verwenden",
+
+
+  "Main_settings": "Haupteinstellungen",
+  "Profile_Settings": "Profileinstellungen",
+  "Room_Settings": "Raumeinstellungen",
+  "select a room": "Raum auswählen",
+  "select a function": "Funktion auswählen",
+  "OID Target": "OID Ziel",
+  "OID Current": "OID Aktuell",
+  "activities": "Aktivitäten",
+  "name": "Name",
+  "activ": "aktiv",
+  "General Maintenance": "Allgemeine Wartung",
+  "Profile Maintenance": "Profil-Wartung",
+  "notificationEnabled": "Benachrichtungen aktiviert",
+  "enableCSVLogging": "CSV-Logging aktiviert",
+  "notificationsType": "Benachrichtungstyp"
 }
