@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.12.19",
+    "version": "3.0.0",
     "news": {
       "2.12.19": {
         "en": "csv-logging added (optionally), will be used in later enhancements",
@@ -165,7 +165,33 @@
     "dataSource": "push",
     "adminUI": {
       "config": "materialize"
-    }
+    },
+    "messages": [
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<=3.0.0",
+            "newVersion>=3.0.0"
+          ]
+        },
+        "title": {
+          "en": "!!! not yet recommended for production use !!! breaking change: configuration of devices / rooms must be done again",
+          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden."
+        },
+        "text": {
+          "en": "Due to the redesign of the administration interface in React, the configuration structure has changed. Devices/rooms must be reconfigured. While the adapter attempts to migrate the data, this cannot be guaranteed. Important: It is no longer possible to create rooms in the adapter. Instead, globally created rooms from the categories will be used.",
+          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet"
+
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      }
+    ]
+  
   },
   "native": {
     "devices": [],

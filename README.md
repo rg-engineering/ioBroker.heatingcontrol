@@ -46,6 +46,12 @@ For more details and for information how to disable the error reporting see [Sen
 
 **I'm looking for support in creating / updating the user documentation and the FAQ's. If someone is interested, please contact me...**
 
+## Translation
+The adapter is translated using Weblate, a web-based tool that makes translation easier for developers and translators alike.
+[Participate in the ioBroker Adapters project](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+[Click here to go directly to the translations](https://weblate.iobroker.net/projects/adapters/heatingcontrol/)
+
 
 
 ## Adapter for controlling your heating system.
@@ -285,6 +291,10 @@ When the adapter crashes or an other Code error happens, this error message that
   ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+* (René) admin overworked completely with react and vite. **ATTENTION**: breaking changes in admin settings !!!
+		Rooms can no longer be created manually. Only rooms that are generally configured in ioBrooker are used.
+		The adapter attempts to migrate the configuration, but this cannot be guaranteed in any case.
+
 * (René) csv-logging: path changed, one log per room now
 
 ### 2.12.19 (2025-11-02)

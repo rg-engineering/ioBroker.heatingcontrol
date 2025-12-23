@@ -1,6 +1,6 @@
 {
   "name": "iobroker.heatingcontrol",
-  "version": "2.12.19",
+  "version": "3.0.0",
   "description": "HeatingControl Adapter",
   "author": {
     "name": "René G.",
@@ -29,9 +29,10 @@
     "@alcalzone/release-script-plugin-iobroker": "^4.0.0",
     "@alcalzone/release-script-plugin-license": "^4.0.0",
     "@alcalzone/release-script-plugin-manual-review": "^4.0.0",
+    "@iobroker/build-tools": "^2.0.15",
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.1.1"
+    "@iobroker/testing": "^5.2.2"
   },
   "main": "main.js",
   "bugs": {
@@ -44,11 +45,28 @@
     "test:integration": "mocha test/integration --exit",
     "lint": "eslint -c eslint.config.mjs .",
     "translate": "translate-adapter",
-    "release": "release-script"
+    "release": "release-script",
+
+    "build-backend": "tsc -p tsconfig.build.json",
+    "release-patch": "release-script patch --yes",
+    "release-minor": "release-script minor --yes",
+    "release-major": "release-script major --yes",
+    "build": "node tasks && npm pack",
+    "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade",
+    "npm": "npm i && cd src-admin && npm i -f",
+    "0-clean": "node tasks.js --0-clean",
+    "1-npm": "node tasks.js --1-npm",
+    "2-build": "node tasks.js --2-build",
+    "3-copy": "node tasks.js --3-copy",
+    "4-patch": "node tasks.js --4-patch"
+
   },
   "files": [
     "admin/",
     "admin{,/!(i18n)/**}/flat.txt",
+    "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
+    "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
+    "admin/build/",
     "doc/",
     "lib/",
     "!.vscode",

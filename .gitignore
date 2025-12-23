@@ -19,3 +19,5 @@ admin/i18n/*/flat.txt
 /log.txt
 *.orig
 /.vscode/extensions.json
+/src-admin/build/*
+*.tgz
