@@ -15,6 +15,7 @@ export default [
             'build',
             'dist',
             'admin/build',
+            'admin/assets/',
             'admin/words.js',
             'admin/admin.d.ts',
             'admin/blockly.js',
@@ -22,7 +23,8 @@ export default [
             'node_modules',
             'typings',
             '.github',
-            'test'
+            'test',
+            'src-admin/build/assets/',
         ],
     },
     {

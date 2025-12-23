@@ -1,26 +1,21 @@
-/* eslint-disable prefer-template */
-/* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
 //ist das gleiche interface wie in adapter-config.d.ts
 export interface RoomConfig {
     isActive: boolean;
     name: string; //translated names from enum in ioBroker
-    id: string, //id from enum in ioBroker
+    id: string; //id from enum in ioBroker
     Actors: ActorConfig[];
     WindowSensors: SensorConfig[];
     Thermostats: ThermostatConfig[];
     AdditionalTemperatureSensors: SensorConfig[];
 }
 
-
 export interface powerInterruptions {
-    active: boolean,
-    Start: string,
-    End: string
+    active: boolean;
+    Start: string;
+    End: strin;
 }
 export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     /** Configuration of the adapter */
-
 
     //main settings
     timezone: string;
@@ -143,7 +138,6 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     FixTempIfNoHeatingPeriod: number;
     PowerInterruptions: powerInterruptions[];
 
-
     //room settings
     rooms: RoomConfig[];
     roomSelector: string;
@@ -154,6 +148,4 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     RoomWindowSensors: SensorConfig[];
     RoomActors: ActorConfig[];
     RoomAdditionalSensors: SensorConfig[];
-
 }
-

@@ -5,7 +5,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
 import { I18n } from '@iobroker/adapter-react-v5';
-import type { HeatingControlAdapterConfig } from "../types";
+import type { HeatingControlAdapterConfig, RoomConfig } from "../types";
 
 import {
     Select,
@@ -19,8 +19,7 @@ import {
     Box,
     Divider,
     Typography,
-    TextField,
-    InputAdornment
+    TextField
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 
@@ -32,6 +31,8 @@ import SettingTempSensorsTable from '../Components/SettingTempSensorsTable';
 import type { SettingTempSensorItem } from '../Components/SettingTempSensorsTable';
 import SettingWindowSensorsTable from '../Components/SettingWindowSensorsTable';
 import type { SettingWindowSensorItem } from '../Components/SettingWindowSensorsTable';
+
+
 
 interface SettingsProps {
     common: ioBroker.InstanceCommon;
@@ -56,25 +57,34 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     console.log("RoomSettings render: " + JSON.stringify(props.native));
 
     // Hilfsfunktionen für native.rooms als Array
-    const getNativeRooms = (): any[] => {
-        const n = (props.native as any).rooms;
+    const getNativeRooms = (): RoomConfig[]  => {
+        const n = props.native.rooms;
         return Array.isArray(n) ? n : [];
     };
 
-    const findRoom = (id: string) => {
-        if (!id) return undefined;
+    const findRoom = (id: string): RoomConfig | undefined => {
+        if (!id) {
+            return undefined;
+        }
         const arr = getNativeRooms();
         return arr.find(r => r && r.id === id);
     };
 
+
     // Hilfsfunktion: Namen eines Raumes aus props.rooms ermitteln (fällt zurück auf ID)
     const getRoomNameFromProps = (id: string): string => {
-        if (!id) return '';
+        if (!id) {
+            return '';
+        }
         try {
             const room = props.rooms ? props.rooms[id] : undefined;
-            if (!room) return id;
+            if (!room) {
+                return id;
+            }
             const commonName = (room as any)?.common?.name;
-            if (typeof commonName === 'string') return commonName;
+            if (typeof commonName === 'string') {
+                return commonName;
+            }
             if (commonName && typeof commonName === 'object') {
                 const curLanguage = props.systemConfig?.common?.language || 'de';
                 return commonName[curLanguage] || commonName.de || commonName.en || id;
@@ -85,7 +95,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
     };
 
-    const setRoomFields = (id: string, fields: Record<string, any>) => {
+    const setRoomFields = (id: string, fields: Record<string, any>): boolean => {
         const nativeCopy: any = { ...(props.native as any) };
         const roomsArr = Array.isArray(nativeCopy.rooms) ? [...nativeCopy.rooms] : [];
         const idx = roomsArr.findIndex((r: any) => r && r.id === id);
@@ -130,10 +140,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     // Erlaubt leeren String (für ungesetzten Wert) oder eine ganze Zahl 0-100
     const [waitForTempIfWindowOpen, setWaitForTempIfWindowOpen] = useState<number | ''>(() => {
         const v = (props.native as any).WaitForTempIfWindowOpen;
-        if (typeof v === 'number' && Number.isInteger(v)) return Math.max(0, Math.min(100, v));
+        if (typeof v === 'number' && Number.isInteger(v)) {
+            return Math.max(0, Math.min(100, v));
+        }
         if (typeof v === 'string' && v !== '') {
             const n = parseInt(v, 10);
-            if (!isNaN(n)) return Math.max(0, Math.min(100, n));
+            if (!isNaN(n)) {
+                return Math.max(0, Math.min(100, n));
+            }
         }
         return '';
     });
@@ -146,7 +160,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
     // Memoisierte und sortierte Liste der Räume aus props.rooms
     const roomsList = useMemo(() => {
-        if (!props.rooms) return [] as { id: string; name: string }[];
+        if (!props.rooms) {
+            return [] as { id: string; name: string }[];
+        }
         return Object.entries(props.rooms)
             .map(([id, room]) => {
                 // Versuche, den Namen aus room.common.name zu bekommen (kann string oder object sein)
@@ -172,7 +188,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
     // Memoisierte und sortierte Liste der Funktionen aus props.rooms
     const functionsList = useMemo(() => {
-        if (!props.functions) return [] as { id: string; name: string }[];
+        if (!props.functions) {
+            return [] as { id: string; name: string }[];
+        }
         return Object.entries(props.functions)
             .map(([id, fkt]) => {
                 // Versuche, den Namen aus function.common.name zu bekommen (kann string oder object sein)
@@ -204,7 +222,6 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         if (external !== selectedRoom) {
             setSelectedRoom(external);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.native.roomSelector]);
 
     // Wenn sich selectedRoom oder props.native.rooms ändert, Thermostate laden
@@ -217,8 +234,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             setRoomIsActive(false);
             return;
         }
-        const roomCfg = findRoom(selectedRoom) ?? {};
+        const roomCfg = findRoom(selectedRoom);
 
+        if (roomCfg === undefined) {
+            return;
+        }
         // isActive für aktuellen Raum laden
         setRoomIsActive(!!roomCfg.isActive);
 
@@ -228,6 +248,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 isActive: !!t?.isActive,
                 OID_Target: t?.OID_Target ?? '',
                 OID_Current: t?.OID_Current ?? '',
+                useExtHandling: t?.useExtHandling ?? false
             }))
             : [];
         setThermostats(list1);
@@ -237,6 +258,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 name: t?.name ?? '',
                 isActive: !!t?.isActive,
                 OID_Target: t?.OID_Target ?? '',
+                useExtHandling: t?.useExtHandling ?? false
 
             }))
             : [];
@@ -263,39 +285,46 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             : [];
         setAdditionalSensors(list4);
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRoom, props.native.rooms]);
 
     // Helper: Persistiert Thermostats in props.native.rooms (Array)
-    const persistThermostats = (newList: SettingThermostatItem[]) => {
-        if (!selectedRoom) return;
+    const persistThermostats = (newList: SettingThermostatItem[]):void => {
+        if (!selectedRoom) {
+            return;
+        }
         setRoomFields(selectedRoom, { Thermostats: newList });
         setThermostats(newList);
     };
 
     // Helper: Persistiert Aktoren in props.native.rooms[selectedRoom].Actors
-    const persistActors = (newList: SettingActorItem[]) => {
-        if (!selectedRoom) return;
+    const persistActors = (newList: SettingActorItem[]):void => {
+        if (!selectedRoom) {
+            return;
+        }
         setRoomFields(selectedRoom, { Actors: newList });
         setActors(newList);
     };
 
     // Helper: Persistiert Fenstersensoren in props.native.rooms[selectedRoom].WindowSensors
-    const persistWindowSensors = (newList: SettingWindowSensorItem[]) => {
-        if (!selectedRoom) return;
+    const persistWindowSensors = (newList: SettingWindowSensorItem[]):void => {
+        if (!selectedRoom) {
+            return;
+        }
         setRoomFields(selectedRoom, { WindowSensors: newList });
         setWindowSensors(newList);
     };
 
     // Helper: Persistiert zusätzliche Temperatursensoren in props.native.rooms[selectedRoom].AdditionalSensors
-    const persistAdditionalSensors = (newList: SettingTempSensorItem[]) => {
-        if (!selectedRoom) return;
+    const persistAdditionalSensors = (newList: SettingTempSensorItem[]):void => {
+        if (!selectedRoom) {
+            return;
+        }
         setRoomFields(selectedRoom, { AdditionalSensors: newList });
         setAdditionalSensors(newList);
     };
 
     // Persistiert isActive für den aktuellen Raum
-    const persistRoomIsActive = (checked: boolean) => {
+    const persistRoomIsActive = (checked: boolean):void => {
         if (!selectedRoom) {
             // Wenn kein Raum ausgewählt ist, nichts tun
             return;
@@ -305,8 +334,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     };
 
     // onChange-Handler für die Selectbox (korrekter Typ für MUI Select)
-    const handleRoomChange = (event: SelectChangeEvent<string>) => {
-        const value = (event.target.value as string) ?? '';
+    const handleRoomChange = (event: SelectChangeEvent<string>):void => {
+        const value = event.target.value ?? '';
         setSelectedRoom(value);
 
         setCheckThermostatsResult("");
@@ -325,78 +354,78 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     };
 
     // onChange-Handler für die Selectbox (korrekter Typ für MUI Select)
-    const handleFunctionChange = (event: SelectChangeEvent<string>) => {
-        const value = (event.target.value as string) ?? '';
+    const handleFunctionChange = (event: SelectChangeEvent<string>):void => {
+        const value = event.target.value ?? '';
         setSelectedFunction(value);
     };
 
     // Änderungen an einer Thermostat-Zeile
-    const updateThermostatField = (index: number, field: keyof SettingThermostatItem, value: any) => {
+    const updateThermostatField = (index: number, field: keyof SettingThermostatItem, value: any):void => {
         const newList = thermostats.map((t, i) => i === index ? { ...t, [field]: value } : t);
         persistThermostats(newList);
     };
 
-    const addThermostat = () => {
+    const addThermostat = ():void => {
         const newItem: SettingThermostatItem = { name: '', isActive: false, OID_Target: '', OID_Current: '', useExtHandling: false };
         persistThermostats([...thermostats, newItem]);
     };
 
-    const removeThermostat = (index: number) => {
+    const removeThermostat = (index: number):void => {
         const newList = thermostats.filter((_, i) => i !== index);
         persistThermostats(newList);
     };
 
     // Änderungen an einer Aktor-Zeile
-    const updateActorField = (index: number, field: keyof SettingActorItem, value: any) => {
+    const updateActorField = (index: number, field: keyof SettingActorItem, value: any):void => {
         const newList = actors.map((t, i) => i === index ? { ...t, [field]: value } : t);
         persistActors(newList);
     };
 
-    const addActor = () => {
+    const addActor = ():void => {
         const newItem: SettingActorItem = { name: '', isActive: false, OID_Target: '', useExtHandling: false };
         persistActors([...actors, newItem]);
     };
 
-    const removeActor = (index: number) => {
+    const removeActor = (index: number):void => {
         const newList = actors.filter((_, i) => i !== index);
         persistActors(newList);
     };
 
     // Änderungen an einer Fenstersensor-Zeile
-    const updateWindowSensorField = (index: number, field: keyof SettingWindowSensorItem, value: any) => {
+    const updateWindowSensorField = (index: number, field: keyof SettingWindowSensorItem, value: any):void => {
         const newList = WindowSensors.map((t, i) => i === index ? { ...t, [field]: value } : t);
         persistWindowSensors(newList);
     };
 
-    const addWindowSensor = () => {
+    const addWindowSensor = ():void => {
         const newItem: SettingWindowSensorItem = { name: '', isActive: false, OID_Current: '', DataType: 'boolean', valueClosed: false, valueOpen: true };
         persistWindowSensors([...WindowSensors, newItem]);
     };
 
-    const removeWindowSensor = (index: number) => {
+    const removeWindowSensor = (index: number):void => {
         const newList = WindowSensors.filter((_, i) => i !== index);
         persistWindowSensors(newList);
     };
 
     // Änderungen an einer AdditionalSensors-Zeile
-    const updateAddSensorField = (index: number, field: keyof SettingTempSensorItem, value: any) => {
+    const updateAddSensorField = (index: number, field: keyof SettingTempSensorItem, value: any):void => {
         const newList = AdditionalSensors.map((t, i) => i === index ? { ...t, [field]: value } : t);
         persistAdditionalSensors(newList);
     };
 
-    const addAddSensor = () => {
+    const addAddSensor = ():void => {
         // OID_Target entfernt, da SettingTempSensorItem diesen möglicherweise nicht besitzt
         const newItem: SettingTempSensorItem = { name: '', isActive: false, OID_Current: '' };
         persistAdditionalSensors([...AdditionalSensors, newItem]);
     };
 
-    const removeAddSensor = (index: number) => {
+    const removeAddSensor = (index: number):void => {
         const newList = AdditionalSensors.filter((_, i) => i !== index);
         persistAdditionalSensors(newList);
     };
 
     // Handler für das neue TextField: nur ganze Zahlen 0-100 erlauben
-    const handleWaitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleWaitChange = (e: React.ChangeEvent<HTMLInputElement>):void => {
         // Nur Ziffern zulassen
         const digits = e.target.value.replace(/\D+/g, '');
         if (digits === '') {
@@ -408,22 +437,30 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             setWaitForTempIfWindowOpen('');
             return;
         }
-        if (n > 1000) n = 1000;
+        if (n > 1000) {
+            n = 1000;
+        }
         setWaitForTempIfWindowOpen(n);
     };
 
-    const handleWaitBlur = () => {
+    const handleWaitBlur = ():void => {
         let val = waitForTempIfWindowOpen === '' ? 0 : Number(waitForTempIfWindowOpen);
-        if (!Number.isFinite(val) || Number.isNaN(val)) val = 0;
+        if (!Number.isFinite(val) || Number.isNaN(val)) {
+            val = 0;
+        }
         val = Math.round(val);
-        if (val < 0) val = 0;
-        if (val > 1000) val = 1000;
+        if (val < 0) {
+            val = 0;
+        }
+        if (val > 1000) {
+            val = 1000;
+        }
         setWaitForTempIfWindowOpen(val);
         const newNative = { ...(props.native as any), WaitForTempIfWindowOpen: val };
         props.changeNative(newNative);
     };
 
-    const Check4NewThermostats = async () => {
+    const Check4NewThermostats = async (): Promise<void> => {
         console.log("Check4NewThermostats pressed");
 
         const data = {
@@ -437,14 +474,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         // Setze den Status/Text in den neuen State (wenn vorhanden)
         try {
-            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            const status = (newDevices && newDevices.status) ? newDevices.status : '';
             if (typeof status === 'object') {
                 setCheckThermostatsResult(JSON.stringify(status));
             } else {
                 setCheckThermostatsResult(String(status));
             }
         } catch (err) {
-            setCheckThermostatsResult('Error reading status');
+            setCheckThermostatsResult('Error reading status ' + err);
         }
 
         try {
@@ -457,8 +494,12 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Sammlung vorhandener OIDs (Target + Current)
             const existingOids = new Set<string>();
             thermostats.forEach(t => {
-                if (t?.OID_Target) existingOids.add(String(t.OID_Target));
-                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+                if (t?.OID_Target) {
+                    existingOids.add(String(t.OID_Target));
+                }
+                if (t?.OID_Current) {
+                    existingOids.add(String(t.OID_Current));
+                }
             });
             console.log("existing oids: " + JSON.stringify(existingOids));
 
@@ -479,7 +520,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 }
                 // Schlüssel zur Vermeidung von Duplikaten innerhalb der gefundenen Geräte: kombination aus OIDs oder Name
                 const key = (oidTarget || '') + '|' + (oidCurrent || '') + '|' + (d?.name ?? '');
-                if (toAddMap.has(key)) return;
+                if (toAddMap.has(key)) {
+                    return;
+                }
                 const item: SettingThermostatItem = {
                     name: d?.Name ?? '',
                     isActive: true,
@@ -505,7 +548,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     }
 
 
-    const Check4NewActors = async () => {
+    const Check4NewActors = async (): Promise<void> => {
         console.log("Check4NewActors pressed");
 
         const data = {
@@ -519,14 +562,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         // Setze den Status/Text in den neuen State (wenn vorhanden)
         try {
-            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            const status = (newDevices && newDevices.status) ? newDevices.status : '';
             if (typeof status === 'object') {
                 setCheckActorsResult(JSON.stringify(status));
             } else {
                 setCheckActorsResult(String(status));
             }
         } catch (err) {
-            setCheckActorsResult('Error reading status');
+            setCheckActorsResult('Error reading status ' + err);
         }
 
         try {
@@ -539,7 +582,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Sammlung vorhandener OIDs (Target + Current)
             const existingOids = new Set<string>();
             actors.forEach(t => {
-                if (t?.OID_Target) existingOids.add(String(t.OID_Target));
+                if (t?.OID_Target) {
+                    existingOids.add(String(t.OID_Target));
+                }
                 
             });
             console.log("existing oids: " + JSON.stringify(existingOids));
@@ -563,7 +608,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 // Key nur aus OID_Target und Name bilden (Actors haben kein oidCurrent)
                 const key = (oidTarget || '') + '|' + (d?.name ?? '');
 
-                if (toAddMap.has(key)) return;
+                if (toAddMap.has(key)) {
+                    return;
+                }
                 const item: SettingActorItem = {
                     name: d?.Name ?? '',
                     isActive: true,
@@ -587,7 +634,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
     }
-    const Check4newWindowSensors = async () => {
+    const Check4newWindowSensors = async (): Promise<void> => {
         console.log("Check4newWindowSensors pressed");
 
         const data = {
@@ -601,14 +648,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         // Setze den Status/Text in den neuen State (wenn vorhanden)
         try {
-            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            const status = (newDevices && newDevices.status) ? newDevices.status : '';
             if (typeof status === 'object') {
                 setCheckSensorsResult(JSON.stringify(status));
             } else {
                 setCheckSensorsResult(String(status));
             }
         } catch (err) {
-            setCheckSensorsResult('Error reading status');
+            setCheckSensorsResult('Error reading status ' + err);
         }
 
         try {
@@ -621,7 +668,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Sammlung vorhandener OIDs (Target + Current)
             const existingOids = new Set<string>();
             WindowSensors.forEach(t => {
-                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+                if (t?.OID_Current) {
+                    existingOids.add(String(t.OID_Current));
+                }
 
             });
             console.log("existing oids: " + JSON.stringify(existingOids));
@@ -646,7 +695,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 // Key nur aus OID_Current und Name bilden 
                 const key = (oidCurrent || '') + '|' + (d?.name ?? '');
 
-                if (toAddMap.has(key)) return;
+                if (toAddMap.has(key)) {
+                    return;
+                }
                 const item: SettingWindowSensorItem = {
                     name: d?.Name ?? '',
                     isActive: true,
@@ -670,7 +721,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
 
     }
-    const Check4NewAddTempSensors = async () => {
+    const Check4NewAddTempSensors = async (): Promise<void>  => {
         console.log("Check4NewAddTempSensors pressed");
 
         const data = {
@@ -684,14 +735,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
         // Setze den Status/Text in den neuen State (wenn vorhanden)
         try {
-            const status = (newDevices && (newDevices as any).status) ? (newDevices as any).status : '';
+            const status = (newDevices && newDevices.status) ? newDevices.status : '';
             if (typeof status === 'object') {
                 setCheckAddTempSensorsResult(JSON.stringify(status));
             } else {
                 setCheckAddTempSensorsResult(String(status));
             }
         } catch (err) {
-            setCheckAddTempSensorsResult('Error reading status');
+            setCheckAddTempSensorsResult('Error reading status ' + err);
         }
 
         try {
@@ -704,7 +755,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             // Sammlung vorhandener OIDs (Target + Current)
             const existingOids = new Set<string>();
             AdditionalSensors.forEach(t => {
-                if (t?.OID_Current) existingOids.add(String(t.OID_Current));
+                if (t?.OID_Current) {
+                    existingOids.add(String(t.OID_Current));
+                }
 
             });
             console.log("existing oids: " + JSON.stringify(existingOids));
@@ -729,7 +782,9 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                 // Key nur aus OID_Current und Name bilden 
                 const key = (oidCurrent || '') + '|' + (d?.name ?? '');
 
-                if (toAddMap.has(key)) return;
+                if (toAddMap.has(key)) {
+                    return;
+                }
                 const item: SettingTempSensorItem = {
                     name: d?.Name ?? '',
                     isActive: true,

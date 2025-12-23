@@ -2,7 +2,7 @@
 /* eslint-disable quote-props */
 /* eslint-disable prettier/prettier */
 
-import { InputLabel, FormControl, Button, TextField } from '@mui/material';
+import {  FormControl, Button, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { DialogSelectID } from '@iobroker/adapter-react-v5';
 import type {
@@ -52,13 +52,13 @@ export default function SelectOID(props: Props): React.JSX.Element {
     }, [props.Value]);
 
 
-    const error: string = "";
-    const disabled: boolean = false;
+    const error = "";
+    const disabled = false;
 
     const socket = props.socket;
 
     const customFilter: ObjectBrowserCustomFilter = { type: ["channel", "state", "device"] };
-    const root: string = "";
+    const root = "";
     const types: ObjectBrowserType = ["channel", "state", "device"] ;
 
     return (
@@ -118,7 +118,7 @@ export default function SelectOID(props: Props): React.JSX.Element {
                             setShowSelectId(false);
                         }}
                         onOk={value_ => {
-                            console.log("on okay, new value " + value_);
+                            console.log("on okay, new value ");
                             setShowSelectId(false);
                             // Typabsicherung: value_ kann string | string[] | undefined sein.
                             // Konvertiere in einen string, bevor setValue aufgerufen wird.

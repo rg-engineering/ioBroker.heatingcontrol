@@ -1,23 +1,13 @@
 /* eslint-disable prefer-template */
 /* eslint-disable quote-props */
 /* eslint-disable prettier/prettier */
-
-
-
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
 import { I18n } from '@iobroker/adapter-react-v5';
 import type { HeatingControlAdapterConfig } from "../types";
 
 import {
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Checkbox,
-    FormControlLabel,
     Button,
-    Stack,
     Typography,
     Box,
     Badge,
@@ -51,13 +41,13 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
 
     const [DeleteUnusedDPResult, setDeleteUnusedDPResult] = useState<string>('');
     //const [DeleteUnusedConfigResult, setDeleteUnusedConfigResult] = useState<string>('');
-    const [contents, setContents] = useState<string>('');
+    //const [contents, setContents] = useState<string>('');
     const [selectedFileName, setSelectedFileName] = useState<string>('');
     const [uploadResult, setUploadResult] = useState<string>('');
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const DeleteUnusedDP = async () => {
+    const DeleteUnusedDP = async (): Promise<void> => {
         console.log("DeleteUnusedDP pressed");
 
         const instance = 'heatingcontrol.' + props.instance;
@@ -71,7 +61,7 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
                 setDeleteUnusedDPResult(String(status));
             }
         } catch (err) {
-            setDeleteUnusedDPResult('Error reading status');
+            setDeleteUnusedDPResult('Error reading status ' + err);
         }
     }
 
@@ -115,7 +105,7 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
         }
     };
 
-    const DownloadProfile = async () => {
+    const DownloadProfile = async (): Promise<void> => {
         console.log("DownloadProfile pressed");
 
         const instance = 'heatingcontrol.' + props.instance;
@@ -128,7 +118,7 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
     }
 
     // Öffnet den Datei-Dialog
-    const openFileDialog = () => {
+    const openFileDialog = ():void => {
         setUploadResult('');
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -137,7 +127,7 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
     }
 
     // Datei wurde ausgewählt -> lesen und hochladen
-    const onFileChange: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+    const onFileChange: React.ChangeEventHandler<HTMLInputElement> =  (e) => {
         const file = e.target.files && e.target.files[0];
         if (!file) {
             setUploadResult(I18n.t('No file selected'));
@@ -155,8 +145,8 @@ export default function Maintenance(props: SettingsProps): React.JSX.Element {
         const reader = new FileReader();
         reader.onload = async () => {
             try {
-                const text = String(reader.result ?? '');
-                setContents(text);
+                const text = typeof reader.result === 'string' ? reader.result : '';
+                //setContents(text);
 
                 // Versuchen zu parsen; wenn möglich, als Objekt senden, sonst roher Text
                 let payload: unknown = text;

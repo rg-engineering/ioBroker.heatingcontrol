@@ -19,5 +19,10 @@ admin/i18n/*/flat.txt
 /log.txt
 *.orig
 /.vscode/extensions.json
-/src-admin/build/*
+src-admin/build/*
 *.tgz
+
+
+/src-admin/build/assets/
+/src-admin/build/assets/*
+/src-admin/build/assets/index-Bd3GtHgn.css

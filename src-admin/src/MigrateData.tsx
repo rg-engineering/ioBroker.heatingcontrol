@@ -35,6 +35,7 @@ export default class LegacyMigrator {
         } catch (err) {
             // Fehler protokollieren, aber Migration fortsetzen
             // Aufrufer kann loggen
+            console.warn("migrate exception ignored " + err);
         }
 
         // 2) Migriere alte devices falls vorhanden
@@ -61,6 +62,7 @@ export default class LegacyMigrator {
             }
         } catch (err) {
             // ignore
+            console.warn("migrate exception ignored " + err);
         }
     }
 
@@ -73,8 +75,10 @@ export default class LegacyMigrator {
         const availableRooms = rooms || {};
         const originalLength = native.rooms.length;
 
-        native.rooms = native.rooms.filter((r: RoomConfig | any) => {
-            if (r == null) { return false };
+        native.rooms = native.rooms.filter((r: RoomConfig ) => {
+            if (r == null) {
+                return false
+            };
             const id = (r as any).id;
             if (id === undefined || id === null) {
                 return false;
@@ -92,13 +96,15 @@ export default class LegacyMigrator {
 
     private static migrateSingleDevice(native: any, device: any, rooms: RoomsMap, systemConfig: SystemConfig): boolean {
         const findRes = this.findRoomIdForDevice(device, rooms, systemConfig);
-        if (!findRes.matched) { return false };
+        if (!findRes.matched) {
+            return false
+        };
 
-        const { roomID, roomName, curLanguage } = findRes;
+        const { roomID, roomName } = findRes;
 
         this.ensureNativeRoomsArrayExists(native);
 
-        const roomChanged = this.addOrUpdateRoomEntry(native, roomID, roomName, curLanguage);
+        const roomChanged = this.addOrUpdateRoomEntry(native, roomID, roomName);
 
         let deviceChanged = false;
         try {
@@ -135,9 +141,10 @@ export default class LegacyMigrator {
 
                 for (const id of Object.keys(localRooms)) {
                     const enumObj = localRooms[id];
-                    if (!enumObj || !enumObj.common) continue;
-
-                    const commonName = (enumObj.common as any).name;
+                    if (!enumObj || !enumObj.common) {
+                        continue;
+                    }
+                    const commonName = enumObj.common.name;
 
                     if (typeof commonName === 'string') {
                         roomName = commonName;
@@ -164,10 +171,12 @@ export default class LegacyMigrator {
     }
 
     private static ensureNativeRoomsArrayExists(native: any): void {
-        if (!native.rooms || !Array.isArray(native.rooms)) native.rooms = [];
+        if (!native.rooms || !Array.isArray(native.rooms)) {
+            native.rooms = [];
+        }
     }
 
-    private static addOrUpdateRoomEntry(native: any, roomID: string, roomName: string, curLanguage: string): boolean {
+    private static addOrUpdateRoomEntry(native: any, roomID: string, roomName: string): boolean {
         try {
             const exists = (native.rooms as any[]).some((r: any) => String(r.id) === String(roomID));
             if (!exists) {
@@ -206,10 +215,13 @@ export default class LegacyMigrator {
         try {
             const roomsArray = Array.isArray(native.rooms) ? native.rooms : [];
             const idx = roomsArray.findIndex((r: any) => String(r.id) === String(roomID));
-            if (idx === -1) return false;
+            if (idx === -1) {
+                return false;
+            }
             const room = roomsArray[idx];
-            if (!Array.isArray(room.Thermostats)) room.Thermostats = [];
-
+            if (!Array.isArray(room.Thermostats)) {
+                room.Thermostats = [];
+            }
             const cfg = {
                 name: device.name ?? '',
                 isActive: !!device.isActive,
@@ -237,9 +249,13 @@ export default class LegacyMigrator {
         try {
             const roomsArray = Array.isArray(native.rooms) ? native.rooms : [];
             const idx = roomsArray.findIndex((r: any) => String(r.id) === String(roomID));
-            if (idx === -1) return false;
+            if (idx === -1) {
+                return false;
+            }
             const room = roomsArray[idx];
-            if (!Array.isArray(room.Actors)) room.Actors = [];
+            if (!Array.isArray(room.Actors)) {
+                room.Actors = [];
+            }
 
             const cfg = {
                 name: device.name ?? '',
@@ -266,9 +282,13 @@ export default class LegacyMigrator {
         try {
             const roomsArray = Array.isArray(native.rooms) ? native.rooms : [];
             const idx = roomsArray.findIndex((r: any) => String(r.id) === String(roomID));
-            if (idx === -1) return false;
+            if (idx === -1) {
+                return false;
+            }
             const room = roomsArray[idx];
-            if (!Array.isArray(room.WindowSensors)) room.WindowSensors = [];
+            if (!Array.isArray(room.WindowSensors)) {
+                room.WindowSensors = [];
+            }
 
             //Datatype kann boolean, number oder string sein
             //valueClosed, valueOpen sind strings
@@ -304,7 +324,9 @@ export default class LegacyMigrator {
                 return false;
             }
             const room = roomsArray[idx];
-            if (!Array.isArray(room.AdditionalTemperatureSensors)) room.AdditionalTemperatureSensors = [];
+            if (!Array.isArray(room.AdditionalTemperatureSensors)) {
+                room.AdditionalTemperatureSensors = [];
+            }
 
             const cfg = {
                 name: device.name ?? '',
