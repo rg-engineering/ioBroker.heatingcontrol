@@ -20,7 +20,11 @@ import { I18n } from '@iobroker/adapter-react-v5';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
 import SelectOID from './SelectOID';
 
-export type SettingTempSensorItem = { name: string; isActive: boolean;  OID_Current: string; };
+export type SettingTempSensorItem = {
+    name: string;
+    isActive: boolean;
+    OID_Current: string;
+};
 
 type Props = {
     settingName: string;
@@ -101,7 +105,8 @@ export default function SettingTempSensorsTable(props: Props): React.JSX.Element
                                 />
 
                             </TableCell>
-                            
+
+
 
                             <TableCell>
                                 <Tooltip title={I18n.t('Delete device')}>
