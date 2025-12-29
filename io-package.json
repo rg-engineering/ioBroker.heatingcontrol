@@ -171,18 +171,35 @@
         "condition": {
           "operand": "and",
           "rules": [
-            "oldVersion<=3.0.0",
+            "oldVersion<3.0.0",
             "newVersion>=3.0.0"
           ]
         },
         "title": {
           "en": "!!! not yet recommended for production use !!! breaking change: configuration of devices / rooms must be done again",
-          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden."
+          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden.",
+          "ru": "!!! пока не рекомендуется для промышленного использования!!! критическое изменение: настройку устройств/комнат необходимо выполнить заново",
+          "pt": "!!! ainda não recomendado para uso em produção !!! alteração significativa: a configuração de dispositivos/salas deve ser feita novamente",
+          "nl": "!!! nog niet aanbevolen voor productiegebruik !!! belangrijke wijziging: de configuratie van apparaten/kamers moet opnieuw worden uitgevoerd",
+          "fr": "!!! pas encore recommandé pour une utilisation en production !!! changement avec rupture : la configuration des appareils/pièces doit être refaite",
+          "it": "!!! non ancora raccomandato per l'uso in produzione !!! modifica sostanziale: la configurazione dei dispositivi/stanze deve essere eseguita nuovamente",
+          "es": "!!! ¡Aún no se recomienda para uso en producción! Cambio importante: la configuración de dispositivos/salas debe realizarse nuevamente.",
+          "pl": "!!! nie jest jeszcze zalecany do użytku produkcyjnego !!! przełomowa zmiana: konfigurację urządzeń/pomieszczeń należy przeprowadzić od nowa",
+          "uk": "!!! поки що не рекомендовано для виробничого використання !!! зміна порушення: конфігурація пристроїв / кімнат повинна бути виконана знову",
+          "zh-cn": "!!!尚未推荐用于生产用途！重大更改：必须重新配置设备/房间"
         },
         "text": {
           "en": "Due to the redesign of the administration interface in React, the configuration structure has changed. Devices/rooms must be reconfigured. While the adapter attempts to migrate the data, this cannot be guaranteed. Important: It is no longer possible to create rooms in the adapter. Instead, globally created rooms from the categories will be used.",
-          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet"
-
+          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet",
+          "ru": "В связи с редизайном интерфейса администрирования в React изменилась структура конфигурации. Устройства/комнаты необходимо переконфигурировать. Хотя адаптер пытается перенести данные, это не может быть гарантировано. Важно: в адаптере больше нельзя создавать комнаты. Вместо этого будут использоваться глобально созданные комнаты из категорий.",
+          "pt": "Devido ao redesenho da interface de administração do React, a estrutura de configuração mudou. Dispositivos/salas devem ser reconfigurados. Embora o adaptador tente migrar os dados, isso não pode ser garantido. Importante: Não é mais possível criar ambientes no adaptador. Em vez disso, serão utilizadas salas criadas globalmente a partir das categorias.",
+          "nl": "Door het herontwerp van de beheerinterface in React is de configuratiestructuur veranderd. Apparaten/kamers moeten opnieuw worden geconfigureerd. Hoewel de adapter probeert de gegevens te migreren, kan dit niet worden gegarandeerd. Belangrijk: Het is niet langer mogelijk om kamers in de adapter te creëren. In plaats daarvan worden globaal aangemaakte kamers uit de categorieën gebruikt.",
+          "fr": "En raison de la refonte de l'interface d'administration dans React, la structure de configuration a changé. Les appareils/pièces doivent être reconfigurés. Même si l'adaptateur tente de migrer les données, cela ne peut pas être garanti. Important : Il n'est plus possible de créer des pièces dans l'adaptateur. Au lieu de cela, les salles créées globalement à partir des catégories seront utilisées.",
+          "it": "A causa della riprogettazione dell'interfaccia di amministrazione in React, la struttura di configurazione è cambiata. I dispositivi/stanze devono essere riconfigurati. Mentre l'adattatore tenta di migrare i dati, ciò non può essere garantito. Importante: non è più possibile creare stanze nell'adattatore. Verranno invece utilizzate le stanze create globalmente dalle categorie.",
+          "es": "Debido al rediseño de la interfaz de administración en React, la estructura de configuración ha cambiado. Los dispositivos/salas deben reconfigurarse. Mientras el adaptador intenta migrar los datos, esto no se puede garantizar. Importante: Ya no es posible crear habitaciones en el adaptador. En su lugar, se utilizarán salas creadas globalmente a partir de las categorías.",
+          "pl": "W związku z przeprojektowaniem interfejsu administracyjnego w React zmieniła się struktura konfiguracji. Należy ponownie skonfigurować urządzenia/pokoje. Chociaż adapter podejmuje próbę migracji danych, nie można tego zagwarantować. Ważne: Nie można już tworzyć pomieszczeń w adapterze. Zamiast tego zostaną użyte pokoje utworzone globalnie z kategorii.",
+          "uk": "Через редизайн інтерфейсу адміністрування в React змінилася структура конфігурації. Пристрої/кімнати необхідно переналаштувати. Поки адаптер намагається перенести дані, це не можна гарантувати. Важливо: більше неможливо створювати кімнати в адаптері. Замість цього будуть використовуватися глобально створені кімнати з категорій.",
+          "zh-cn": "由于React中管理界面的重新设计，配置结构发生了变化。设备/房间必须重新配置。当适配器尝试迁移数据时，这不能得到保证。重要提示：无法再在适配器中创建房间。相反，将使用类别中全局创建的房间。"
         },
         "level": "warn",
         "buttons": [
@@ -191,7 +208,6 @@
         ]
       }
     ]
-  
   },
   "native": {
     "devices": [],
