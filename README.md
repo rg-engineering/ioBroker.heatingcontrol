@@ -65,7 +65,7 @@ Features:
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
 * Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
 * unlimited number of thermostats, actuators and sonsors per room are supported
-* Thermostat, actuator and sensor are automatically detected per room. The function (eg "heating") is used for this.
+* Thermostat, actuator and sensor could be automatically detected per room (homematic devices only). The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
 * sensor is used to reduce target temperature (e.g. if a window is open); optionally with SensorDelay
 * interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
@@ -73,6 +73,7 @@ Features:
 * predefined heating period
 * take over changes from thermostat (optional)
 * visualization from [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) is supported. Thank you!
+* Vis-2 support with [vis-2-widgets-weather-and-heating](https://github.com/rg-engineering/ioBroker.vis-2-widgets-weather-and-heating)
 
 [FAQ](doc/FAQ.md)
 
@@ -82,9 +83,7 @@ Features:
 ## Settings
 ### main
 * Function = Function to be used to detect thermostats, actuators and sensors per room. It's one of the sytem enums
-* timezone = to be used for cron to adjust cron jobs
 * Path to Feiertag - Adapter = if you wnat to use Feiertag-Adapter to dectect automatically public holiday for today then set the path here (e.g. feiertage.0)
-* delete all devices when admin opens = should be disabled. Enable it only when you need to delete all room, actuator and sensor settings. A device search will be executed when adapter admin opens
 * sensor used = if you have window sensors and you want to decrease target temperature when window is open then enable that option
 * actuators used = if you want to control actuators directly from adapter. Just in case there is no direct connection between thermostat and actuator.
 * use actuators if no heating period = only valid with actuators. Defines how actuators are set when no heating period is active
@@ -101,10 +100,10 @@ Features:
 
 
 ### devices
-* a list of all rooms. You can disable a room here. 
-* press edit button on right hand side to open settings window for thermostats, actuators and sensors for that room
+* select a room first and enable it 
+* bewlo you will find all configurtions for the room
 
-### Edit Room
+### Room configuration
 * here you can verifay and set object ID's for thermostats, actuators and sensors
 * you can add manually new thermostats, actuators or sensors. Just press + button. Then you get an empty line which needs to filled up. The Edit-Button opens a list of available devices on the system
 * thermostats:
@@ -291,11 +290,13 @@ When the adapter crashes or an other Code error happens, this error message that
   ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+**not yet recommended for production use. beta test only**
 * (René) admin overworked completely with react and vite. **ATTENTION**: breaking changes in admin settings !!!
 		Rooms can no longer be created manually. Only rooms that are generally configured in ioBrooker are used.
 		The adapter attempts to migrate the configuration, but this cannot be guaranteed in any case.
-
 * (René) csv-logging: path changed, one log per room now
+* (arteck) always enable CopyProfile buttons
+* (arteck) Refactor SetVis function to improve readability and maintainability
 
 ### 2.12.19 (2025-11-02)
 * (René) csv-logging added (optionally), will be used in later enhancements
