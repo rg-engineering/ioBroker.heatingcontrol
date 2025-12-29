@@ -66,7 +66,7 @@
     "admin{,/!(src)/**}/!(tsconfig|tsconfig.*|.eslintrc).{json,json5}",
     "admin{,/!(src)/**}/*.{html,css,png,svg,jpg,js}",
     "admin/build/",
-    "doc/",
+    "!doc/",
     "lib/",
     "!.vscode",
     "!.github",
@@ -78,7 +78,7 @@
     "!.idea",
     "!test",
     "!typings",
-    "www/",
+    "!www/",
     "io-package.json",
     "LICENSE",
     "main.js"
