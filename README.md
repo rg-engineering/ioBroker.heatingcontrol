@@ -289,7 +289,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 3.0.0 (2025-12-29)
 **not yet recommended for production use. beta test only**
 * (René) admin overworked completely with react and vite. **ATTENTION**: breaking changes in admin settings !!!
 		Rooms can no longer be created manually. Only rooms that are generally configured in ioBrooker are used.

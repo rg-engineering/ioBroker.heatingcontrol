@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "2.99.9",
+    "version": "3.0.0",
     "news": {
+      "3.0.0": {
+        "en": "**not yet recommended for production use. beta test only**\n* admin overworked completely with react and vite. **ATTENTION**: breaking changes in admin settings !!!\n\t\tRooms can no longer be created manually. Only rooms that are generally configured in ioBrooker are used.\n\t\tThe adapter attempts to migrate the configuration, but this cannot be guaranteed in any case.\n* csv-logging: path changed, one log per room now\n* always enable CopyProfile buttons\n* Refactor SetVis function to improve readability and maintainability",
+        "de": "** noch nicht für den Produktionseinsatz empfohlen. nur beta-test* *\n* Admin komplett mit Reakt und Vite überarbeitet. **Achtung**: Änderungen in Admin-Einstellungen geändert !!!\nDie Räume können nicht mehr manuell erstellt werden. Es werden nur Räume verwendet, die global in ioBrooker konfiguriert sind.\nDer Adapter versucht, die Konfiguration zu migrieren, aber dies kann nicht in jedem Fall gewährleistet werden.\n* csv-logging: Pfad geändert, ein Protokoll pro Raum\n* CopyProfile ist jetzt immer aktiviert\n* Refactor SetVis Funktion zur Verbesserung der Lesbarkeit und Wartbarkeit",
+        "ru": "** не рекомендуется для использования в производстве. только бета-тестирование* *\n* админ перегружен полностью реакцией и добротой. ** ВНИМАНИЕ**: изменение настроек администратора!!!\nКомнаты больше нельзя создавать вручную. Используются только комнаты, которые обычно настроены в ioBrooker.\nАдаптер пытается перенести конфигурацию, но это ни в коем случае нельзя гарантировать.\ncsvlogging: путь изменился, теперь один журнал на комнату\n* Всегда включайте кнопки CopyProfile\n* Функция Refactor SetVis улучшает читаемость и ремонтопригодность",
+        "pt": "** ainda não recomendado para utilização na produção. apenas teste beta* *\n* admin sobrecarregado completamente com reação e vite. ** ATENÇÃO**: quebrando alterações nas configurações de administrador !!!\nOs quartos já não podem ser criados manualmente. Apenas são utilizados quartos que são geralmente configurados no ioBrooker.\nO adaptador tenta migrar a configuração, mas isso não pode ser garantido em nenhum caso.\n* csv-logging: caminho alterado, um log por quarto agora\n* Ativar sempre os botões CopiarPerfil\n* Refactor SetVis função para melhorar a legibilidade e manutenção",
+        "nl": "**nog niet aanbevolen voor productiegebruik. uitsluitend bètatest *\n* admin overwerkt volledig met reactie en vite. **Opmerking**: wijzigingen in admin instellingen breken !!!\nRuimtes kunnen niet meer handmatig worden aangemaakt. Alleen kamers die over het algemeen zijn geconfigureerd in ioBrooker worden gebruikt.\nDe adapter probeert de configuratie te migreren, maar dit kan in geen geval worden gegarandeerd.\n* csv-logging: pad veranderd, een log per kamer nu\n* altijd CopyProfile-knoppen inschakelen\n* Refactor SetVis functie om leesbaarheid en onderhoud te verbeteren",
+        "fr": "** pas encore recommandé pour l'utilisation de la production. essai bêta seulement* *\n* administrateur surchargé complètement avec réaction et rite. **ATTENTION**: casser les changements dans les paramètres d'administration !!!\nLes chambres ne peuvent plus être créées manuellement. Seules les pièces généralement configurées en ioBrooker sont utilisées.\nL'adaptateur tente de migrer la configuration, mais cela ne peut en aucun cas être garanti.\n* csv-logging: chemin changé, un journal par chambre maintenant\n* activer toujours les boutons CopyProfile\n* Refactor SetVis fonction pour améliorer la lisibilité et la maintenance",
+        "it": "** non ancora consigliato per uso di produzione. test beta solo* #\n* admin ha lavorato completamente con reagire e vite. **ATTENZIONE**: rompere i cambiamenti nelle impostazioni di amministrazione!\nLe camere non possono più essere create manualmente. Solo le camere che sono generalmente configurate in ioBrooker sono utilizzate.\nL'adattatore tenta di migrare la configurazione, ma questo non può essere garantito in ogni caso.\n* csv-logging: percorso cambiato, un log per stanza ora\n* abilita sempre i pulsanti CopyProfile\n* Funzione Refactor SetVis per migliorare la leggibilità e la manutenbilità",
+        "es": "**no se recomienda todavía para uso de la producción. prueba de beta únicamente* *\n* admin superó completamente el trabajo con reacción y vite. **ATENCIÓN**: romper cambios en la configuración de administración !!!\nLas habitaciones ya no se pueden crear manualmente. Sólo se utilizan habitaciones que generalmente están configuradas en ioBrooker.\nEl adaptador intenta migrar la configuración, pero esto no puede garantizarse en ningún caso.\n* csv-logging: camino cambiado, un registro por habitación ahora\n* siempre activa los botones CopyProfile\n* Refactor SetVis función para mejorar la legibilidad y mantenimiento",
+        "pl": "** nie jest jeszcze zalecane do stosowania w produkcji. tylko test beta **\n* admin przepracował całkowicie z reakcji i vite. ** UWAGA* *: łamanie zmian w ustawieniach administratora!!! \nPokoje nie mogą być już tworzone ręcznie. Używane są tylko pokoje, które są na ogół skonfigurowane w joBrooker.\nAdapter próbuje przenieść konfigurację, ale w żadnym wypadku nie można tego zagwarantować.\n* csv- logowanie: ścieżka zmieniona, jeden log na pokój teraz\n* zawsze włącza przyciski CopyProfile\n* Funkcja Refactor SetVis w celu poprawy czytelności i utrzymania",
+        "uk": "**не рекомендується використовувати для виробництва. бета тест тільки* ім'я *\n* адмін перероблений повністю з реагацією і вітом. **ATTENTION***: зміни в налаштуваннях адміністратора !!!\nНомери не можуть бути створені вручну. використовуються тільки номери, які, як правило, налаштовані в ioBrooker.\nПерехідник намагається намітити конфігурацію, але це не гарантується в будь-якому випадку.\n* csv-log: зміна шляху, один журнал за номер зараз\n* завжди ввімкніть кнопку Копіювання\n* Функція Refactor SetVis для поліпшення читабельності та стійкості",
+        "zh-cn": "** 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n* 处理过度,完全与反应和葡萄酒。 校对:Soup!\n房间无法再手动创建. 仅使用通常在ioBrooker中配置的房间.\n适配器试图迁移配置,但这在任何情况下都无法保证.\n* csv-logy:路径改变,现在每个房间一个日志\n* 总是启用 CopyProfile 按钮\n* 调整Setvis功能,以提高可读性和可维护性"
+      },
       "2.12.19": {
         "en": "csv-logging added (optionally), will be used in later enhancements",
         "de": "csv-logging hinzugefügt (optional), wird in späteren verbesserungen verwendet",
@@ -80,19 +93,6 @@
         "pl": "zobacz numer # 635: wartości początkowe (-99) nie zapisywać do obiektu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
         "uk": "переглянути проблему #635: початкові значення (-99) не писати на об'єкт\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
         "zh-cn": "参见第635期: 初始值 (-99) 不写入对象\n适配器检查器要求的更改\n更新依赖关系"
-      },
-      "2.12.13": {
-        "en": "see issue #607: minimum length of telegram user reduced to one char",
-        "de": "siehe ausgabe #607: minimale Länge des telegramm-Benutzernamens reduziert auf ein Zeichen",
-        "ru": "#607: минумная длина пользователя телеграммы уменьшена до одного шара",
-        "pt": "veja a edição #607: comprimento do minumum do usuário do telegrama reduzido a um char",
-        "nl": "zie nummer 607: minimale lengte van de telegramgebruiker gereduceerd tot één teken",
-        "fr": "voir numéro 607: longueur minimale de l'utilisateur de télégramme réduite à un omble",
-        "it": "vedi numero #607: lunghezza minumum dell'utente del telegramma ridotta a un char",
-        "es": "ver número #607: longitud de minumum usuario de telegrama reducido a un char",
-        "pl": "zob. numer # 607: długość minumumu użytkownika telegramu zredukowana do jednego znaku",
-        "uk": "див. питання #607: довжина імпульсу телеграми, знижена до одного char",
-        "zh-cn": "参见第607期:电报用户的微量长度缩小为1个字符"
       }
     },
     "titleLang": {
