@@ -317,7 +317,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         if (!selectedRoom) {
             return;
         }
-        setRoomFields(selectedRoom, { AdditionalSensors: newList });
+        setRoomFields(selectedRoom, { AdditionalTemperatureSensors: newList });
         setAdditionalSensors(newList);
     };
 
