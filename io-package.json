@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
+      "3.0.1": {
+        "en": "*not yet recommended for production use. beta test only**\nbug fix: added missing OID configurations for public holiday and holidays at home\nbug fix: 'function' for device search will be saved now\npreselect 'function' and 'selected room' if nothing was selected / stored before",
+        "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: hinzugefügt fehlende OID-Konfigurationen für Feiertage und Ferien zu Hause\nfehlerbehebung: 'funktion' für gerätesuche wird jetzt gespeichert\n\"funktion\" und \"ausgewähltes zimmer\" vorwählen, wenn vorher nichts ausgewählt / gespeichert wurde",
+        "ru": "*не рекомендуется для использования в производстве. только бета-тестирование**\nисправление ошибок: добавлены недостающие конфигурации OID для государственных праздников и праздников дома\nисправление ошибок: «функция» для поиска устройств будет сохранена\nпредварительно выбранная «функция» и «выбранная комната», если до этого ничего не было выбрано или сохранено",
+        "pt": "*ainda não recomendado para a produção. apenas teste beta**\ncorreção de bug: adicionadas configurações OID ausentes para férias públicas e feriados em casa\ncorreção de bug: 'function' para a pesquisa do dispositivo será salva agora\npreselect 'function' e 'select room' se nada foi seleccionado / armazenado antes",
+        "nl": "*nog niet aanbevolen voor productie gebruik. uitsluitend bètatest *\nbug fix: ontbrekende OID configuraties toegevoegd voor feestdagen en feestdagen thuis\nbugfix: 'functioneel' voor het zoeken naar een apparaat wordt nu opgeslagen\nvoorselecteer 'function' en 'selected room' als er niets is geselecteerd / opgeslagen voor",
+        "fr": "*pas encore recommandé pour l'utilisation de la production. essai bêta seulement**\nbug fix: ajout de configurations OID manquantes pour les jours fériés et les jours fériés à la maison\ncorrection du bug: 'fonction' pour la recherche de périphérique sera sauvegardée maintenant\nprésélectionner 'fonction' et 'chambre sélectionnée' si rien n'a été sélectionné / stocké avant",
+        "it": "*non ancora consigliato per uso di produzione. test beta solo* #\nbug fix: aggiunte configurazioni OID mancanti per le vacanze pubbliche e le vacanze a casa\ncorrezione bug: 'funzione' per la ricerca del dispositivo verrà salvato ora\nse nulla è stato selezionato / memorizzato prima",
+        "es": "*aún no recomendado para el uso de la producción. prueba de beta únicamente**\nbug fix: añadido configuraciones OID desaparecidas para vacaciones públicas y vacaciones en casa\nbug fix: 'función' para la búsqueda del dispositivo se guardará ahora\npreseleccionar 'función' y 'seleccionado habitación' si nada fue seleccionado / almacenado antes",
+        "pl": "*nie jest jeszcze zalecane do produkcji. tylko test beta **\nfix bug: dodano brakujące konfiguracje OID na święta publiczne i wakacje w domu\nbug fix: 'funkcja' dla wyszukiwania urządzeń zostanie teraz zapisany\npreselekcjonuj 'funkcja' i 'wybrany pokój' jeśli nic nie zostało wcześniej wybrane / zapisane",
+        "uk": "*ще не рекомендується використовувати для виробництва. бета тест тільки* ім'я*\nвиправлення помилок: додано відсутні налаштування OID для громадського відпочинку та відпочинку в домашніх умовах\nвиправлення помилок: 'function' для пошуку пристрою буде збережено зараз\nпередпродаж 'function' і 'selected room' якщо нічого не було вибрано / зберігаються до",
+        "zh-cn": "* 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n错误修正: 为家用公共假日和节假日添加缺失的 OID 配置\n错误修正: 设备搜索的“ 功能 ” 现在将被保存\n预选“ 函数” 和“ 选定房间 ” 如果未选择任何功能 / 存储在之前"
+      },
       "3.0.0": {
         "en": "**not yet recommended for production use. beta test only**\n* admin overworked completely with react and vite. **ATTENTION**: breaking changes in admin settings !!!\n\t\tRooms can no longer be created manually. Only rooms that are generally configured in ioBrooker are used.\n\t\tThe adapter attempts to migrate the configuration, but this cannot be guaranteed in any case.\n* csv-logging: path changed, one log per room now\n* always enable CopyProfile buttons\n* Refactor SetVis function to improve readability and maintainability",
         "de": "** noch nicht für den Produktionseinsatz empfohlen. nur beta-test* *\n* Admin komplett mit Reakt und Vite überarbeitet. **Achtung**: Änderungen in Admin-Einstellungen geändert !!!\nDie Räume können nicht mehr manuell erstellt werden. Es werden nur Räume verwendet, die global in ioBrooker konfiguriert sind.\nDer Adapter versucht, die Konfiguration zu migrieren, aber dies kann nicht in jedem Fall gewährleistet werden.\n* csv-logging: Pfad geändert, ein Protokoll pro Raum\n* CopyProfile ist jetzt immer aktiviert\n* Refactor SetVis Funktion zur Verbesserung der Lesbarkeit und Wartbarkeit",
@@ -80,19 +93,6 @@
         "pl": "HmIP- eTRV- B-2 R4M dodany do autodetekcji\nnowe badania",
         "uk": "HmIP-eTRV-B-2 R4M додано до автодетект\nновий тест",
         "zh-cn": "HmIP-eTRV-B-2 R4M 添加到自动检测器中\n新测试"
-      },
-      "2.12.14": {
-        "en": "see issue #635: initial values (-99) not to write to object \nchanges requested by adapter checker\ndependencies updated",
-        "de": "siehe ausgabe #635: anfangswerte (-99) nicht zum objekt schreiben\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
-        "ru": "#635: начальные значения (-99), чтобы не писать\nизменения, запрошенные adapter checker\nобновленные зависимости",
-        "pt": "veja a edição #635: valores iniciais (-99) para não escrever para objeto\nalterações solicitadas pelo verificador do adaptador\ndependências atualizadas",
-        "nl": "zie nummer #635: initiële waarden (-99) om niet naar object te schrijven\nwijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
-        "fr": "voir numéro 635: valeurs initiales (-99) à ne pas écrire pour objet\nmodifications demandées par l'adaptateur checker\ndépendances mises à jour",
-        "it": "vedi numero #635: valori iniziali (-99) per non scrivere a oggetto\nmodifiche richieste da adattatore checker\ndipendenze aggiornate",
-        "es": "ver número #635: valores iniciales (-99) para no escribir al objeto\ncambios solicitados por el adaptador\ndependencias actualizadas",
-        "pl": "zobacz numer # 635: wartości początkowe (-99) nie zapisywać do obiektu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
-        "uk": "переглянути проблему #635: початкові значення (-99) не писати на об'єкт\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
-        "zh-cn": "参见第635期: 初始值 (-99) 不写入对象\n适配器检查器要求的更改\n更新依赖关系"
       }
     },
     "titleLang": {
