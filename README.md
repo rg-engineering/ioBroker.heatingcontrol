@@ -293,6 +293,8 @@ When the adapter crashes or an other Code error happens, this error message that
 ### **WORK IN PROGRESS**
 **not yet recommended for production use. beta test only**
 * (René) bug fix: added missing OID configurations for public holiday and holidays at home
+* (René) bug fix: 'function' for device search will be saved now
+* (René) preselect 'function' and 'selected room' if nothing was selected / stored before
 
 ### 3.0.0 (2025-12-29)
 **not yet recommended for production use. beta test only**

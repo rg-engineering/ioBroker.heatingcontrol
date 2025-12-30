@@ -142,6 +142,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     //room settings
     rooms: RoomConfig[];
     roomSelector: string;
+    functionSelector: string;
 
     //just temporary to copy from GUI to room config
     isActive: boolean;

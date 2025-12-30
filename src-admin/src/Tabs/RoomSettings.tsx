@@ -32,6 +32,11 @@ import type { SettingWindowSensorItem } from '../Components/SettingWindowSensors
 import BoxDivider from '../Components/BoxDivider'
 
 
+//todo
+//gewerk speichern
+//selectboxen vorbelegen, damit der Text richtig sichtbar wird
+
+
 interface SettingsProps {
     common: ioBroker.InstanceCommon;
     native: HeatingControlAdapterConfig;
@@ -123,6 +128,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             return false;
         }
     });
+
 
 
     // Lokaler State für Thermostate des aktuell ausgewählten Raums
@@ -221,6 +227,13 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             setSelectedRoom(external);
         }
     }, [props.native.roomSelector]);
+
+    useEffect(() => {
+        const external = (props.native as any).functionSelector ?? '';
+        if (external !== selectedFunction) {
+            setSelectedFunction(external);
+        }
+    }, [props.native.functionSelector]);
 
     // Wenn sich selectedRoom oder props.native.rooms ändert, Thermostate laden
     useEffect(() => {
@@ -355,6 +368,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     const handleFunctionChange = (event: SelectChangeEvent<string>):void => {
         const value = event.target.value ?? '';
         setSelectedFunction(value);
+
+        // Persistiere die Auswahl durch changeNative (wie bei roomSelector)
+        const newNative = {
+            ...(props.native as any),
+            functionSelector: value,
+        } as HeatingControlAdapterConfig;
+
+        props.changeNative(newNative);
     };
 
     // Änderungen an einer Thermostat-Zeile
@@ -806,6 +827,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
     }
 
+    // Berechnete Anzeige-Werte für Selects: zeigen ersten Listeneintrag, wenn kein value gesetzt ist
+    const roomDisplayValue = selectedRoom || (roomsList.length > 0 ? roomsList[0].id : '');
+    const functionDisplayValue = selectedFunction || (functionsList.length > 0 ? functionsList[0].id : '');
+
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
             <div style={{ marginBottom: 12 }}>
@@ -813,7 +838,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="room-selector-label">{I18n.t('select a room')}</InputLabel>
                     <Select
                         labelId="room-selector-label"
-                        value={selectedRoom ?? ''}
+                        value={roomDisplayValue}
                         onChange={handleRoomChange}
                         displayEmpty
                     >
@@ -848,7 +873,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="function-selector-label">{I18n.t('select a function')}</InputLabel>
                     <Select
                         labelId="function-selector-label"
-                        value={selectedFunction ?? ''}
+                        value={functionDisplayValue}
                         onChange={handleFunctionChange}
                         displayEmpty
                     >
