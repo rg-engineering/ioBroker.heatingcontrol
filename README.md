@@ -791,7 +791,7 @@ Attention: some changes in datapoints!!
 ## License
 MIT License
 
-Copyright (c) 2019-2025 René G. <info@rg-engineering.eu>
+Copyright (c) 2019-2026 René G. <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
