@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "news": {
+      "3.0.2": {
+        "en": "*not yet recommended for production use. beta test only**\nbug fix: room selection, refresh configuration display for inactive rooms",
+        "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: zimmerauswahl, konfigurationsanzeige für inaktive zimmer",
+        "ru": "*не рекомендуется для использования в производстве. только бета-тестирование**\nисправление ошибок: выбор комнаты, дисплей конфигурации обновления для неактивных комнат",
+        "pt": "*ainda não recomendado para a produção. apenas teste beta**\ncorreção de bug: seleção de sala, exibição de configuração de atualização para salas inativas",
+        "nl": "*nog niet aanbevolen voor productie gebruik. uitsluitend bètatest *\nbug fix: kamerselectie, configuratiescherm vernieuwen voor inactieve kamers",
+        "fr": "*pas encore recommandé pour l'utilisation de la production. essai bêta seulement**\ncorrection du bug : sélection de la pièce, affichage de configuration de rafraîchissement pour les pièces inactives",
+        "it": "*non ancora consigliato per uso di produzione. test beta solo* #\ncorrezione bug: selezione della camera, visualizzazione di configurazione di aggiornamento per le camere inattive",
+        "es": "*aún no recomendado para el uso de la producción. prueba de beta únicamente**\ncorrección de errores: selección de habitaciones, pantalla de configuración de actualización para habitaciones inactivas",
+        "pl": "*nie jest jeszcze zalecane do produkcji. tylko test beta **\nnaprawianie błędów: wybór pokoju, wyświetlacz konfiguracji odświeżania dla nieaktywnych pokoi",
+        "uk": "*ще не рекомендується використовувати для виробництва. бета тест тільки* ім'я*\nвиправлення помилок: вибір приміщення, дисплей конфігурації оновлень для неактивних кімнат",
+        "zh-cn": "* 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n错误修补: 房间选择, 非活动房间刷新配置显示"
+      },
       "3.0.1": {
         "en": "*not yet recommended for production use. beta test only**\nbug fix: added missing OID configurations for public holiday and holidays at home\nbug fix: 'function' for device search will be saved now\npreselect 'function' and 'selected room' if nothing was selected / stored before",
         "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: hinzugefügt fehlende OID-Konfigurationen für Feiertage und Ferien zu Hause\nfehlerbehebung: 'funktion' für gerätesuche wird jetzt gespeichert\n\"funktion\" und \"ausgewähltes zimmer\" vorwählen, wenn vorher nichts ausgewählt / gespeichert wurde",
@@ -80,19 +93,6 @@
         "pl": "zaktualizowane zależności\nbug fix see issue # 682: HmIP- eTRV-2 not autodetected\nzmiany wymagane przez sprawdzacz adaptera",
         "uk": "оновлені залежності\nвиправлення помилок див. питання #682: HmIP-eTRV-2 не autodetected\nзміни, які вимагаються перевіркою адаптера",
         "zh-cn": "更新依赖关系\n错误修复参见第682期: HmIP- eTRV-2 未自动检测\n适配器检查器要求的更改"
-      },
-      "2.12.15": {
-        "en": "HmIP-eTRV-B-2 R4M added to autodetect\nnew testing",
-        "de": "HmIP-eTRV-B-2 R4M zum autodetect hinzugefügt\nneue tests",
-        "ru": "HmIP-eTRV-B-2 R4M добавлен в автодетект\nновые испытания",
-        "pt": "HmIP-eTRV-B-2 R4M adicionado à detecção automática\nnovos testes",
-        "nl": "HmIP-eTRV-B-2 R4M toegevoegd aan autodetect\nnieuwe tests",
-        "fr": "HmIP-eTRV-B-2 R4M ajouté à la détection automatique\nnouveaux essais",
-        "it": "HmIP-eTRV-B-2 R4M aggiunto al rilevamento automatico\nnuovi test",
-        "es": "HmIP-eTRV-B-2 R4M añadido a autodetecto\nnuevas pruebas",
-        "pl": "HmIP- eTRV- B-2 R4M dodany do autodetekcji\nnowe badania",
-        "uk": "HmIP-eTRV-B-2 R4M додано до автодетект\nновий тест",
-        "zh-cn": "HmIP-eTRV-B-2 R4M 添加到自动检测器中\n新测试"
       }
     },
     "titleLang": {
