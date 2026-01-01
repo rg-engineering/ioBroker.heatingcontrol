@@ -235,7 +235,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
     }, [props.native.functionSelector]);
 
-    // Wenn sich selectedRoom oder props.native.rooms ändert, Thermostate laden
+    // Wenn sich selectedRoom oder props.native.rooms ändert, alles neu laden
     useEffect(() => {
         if (!selectedRoom) {
             setThermostats([]);
@@ -248,6 +248,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const roomCfg = findRoom(selectedRoom);
 
         if (roomCfg === undefined) {
+            setThermostats([]);
+            setActors([]);
+            setWindowSensors([]);
+            setAdditionalSensors([]);
+            setRoomIsActive(false);
             return;
         }
         // isActive für aktuellen Raum laden
@@ -363,6 +368,8 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         // Persistiere die Auswahl durch changeNative
         props.changeNative(newNative);
     };
+
+
 
     // onChange-Handler für die Selectbox (korrekter Typ für MUI Select)
     const handleFunctionChange = (event: SelectChangeEvent<string>):void => {
@@ -828,8 +835,13 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
     }
 
     // Berechnete Anzeige-Werte für Selects: zeigen ersten Listeneintrag, wenn kein value gesetzt ist
-    const roomDisplayValue = selectedRoom || (roomsList.length > 0 ? roomsList[0].id : '');
-    const functionDisplayValue = selectedFunction || (functionsList.length > 0 ? functionsList[0].id : '');
+    //const roomDisplayValue = selectedRoom || (roomsList.length > 0 ? roomsList[0].id : '');
+    //const functionDisplayValue = selectedFunction || (functionsList.length > 0 ? functionsList[0].id : '');
+
+
+    console.warn("selectedRoom " + selectedRoom);
+
+    console.warn("selectedFunction " + selectedFunction);
 
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
@@ -838,11 +850,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="room-selector-label">{I18n.t('select a room')}</InputLabel>
                     <Select
                         labelId="room-selector-label"
-                        value={roomDisplayValue}
+                        value={selectedRoom ?? ' '}
                         onChange={handleRoomChange}
                         displayEmpty
                     >
-                        <MenuItem value="">
+                        <MenuItem value=" ">
                             <em>{I18n.t('no room selected')}</em>
                         </MenuItem>
                         {roomsList.map(r => (
@@ -873,11 +885,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="function-selector-label">{I18n.t('select a function')}</InputLabel>
                     <Select
                         labelId="function-selector-label"
-                        value={functionDisplayValue}
+                        value={selectedFunction ?? " "} 
                         onChange={handleFunctionChange}
                         displayEmpty
                     >
-                        <MenuItem value="">
+                        <MenuItem value=" ">
                             <em>{I18n.t('no function selected')}</em>
                         </MenuItem>
                         {functionsList.map(r => (

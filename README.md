@@ -289,6 +289,11 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+**not yet recommended for production use. beta test only**
+* (René) bug fix: room selection, refresh configuration display for inactive rooms
+
 ### 3.0.1 (2025-12-30)
 **not yet recommended for production use. beta test only**
 * (René) bug fix: added missing OID configurations for public holiday and holidays at home
