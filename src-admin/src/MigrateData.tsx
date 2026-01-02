@@ -57,8 +57,13 @@ export default class LegacyMigrator {
                     }
                 }
                 if (overallChanged) {
+                    // native.device löschen, damit beim nächsten Start nicht nochmal migriert wird
+                    delete native.devices;
                     setState({ native, changed: getIsChanged(native) });
                 }
+
+                
+
             }
         } catch (err) {
             // ignore

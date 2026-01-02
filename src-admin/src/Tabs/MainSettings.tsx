@@ -109,7 +109,7 @@ const schema: ConfigItemPanel = {
             "lg": 4,
             "xl": 4
         },
-        OID_Path2HolidayPresentDP: {
+        Path2HolidayPresentDP: {
             newLine: true,
             type: 'objectId',
             label: 'Path2HolidayPresentDP',
