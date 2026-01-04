@@ -289,8 +289,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 3.0.3 (2026-01-04)
 * (René) see issue #723: The OIDs selected in the OID selection dialog were not saved.
 * (René) bug fix: use correct actor ID
 * (René) bug fix: OID-Path for Path2HolidayPresentDP now taken from old version

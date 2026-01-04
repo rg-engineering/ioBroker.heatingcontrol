@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "news": {
+      "3.0.3": {
+        "en": "see issue #723: The OIDs selected in the OID selection dialog were not saved.\nbug fix: use correct actor ID\nbug fix: OID-Path for Path2HolidayPresentDP now taken from old version\nold device structure deleted after migration to avoid double import",
+        "de": "siehe Ausgabe #723: Die im OID Auswahldialog ausgewählten OIDs wurden nicht gespeichert.\nfehlerbehebung: Verwenden Sie korrekte Aktor-ID\nfehlerbehebung: OID-Path für Path2Holiday Gegenwart DP jetzt aus der alten Version\nalte gerätestruktur nach der migration gelöscht, um doppelimport zu vermeiden",
+        "ru": "проблема No 723: ОИД, выбранные в диалоге выбора ОИД, не были сохранены.\nисправление ошибок: используйте правильный идентификатор актера\nисправление ошибок: Обсуждение Path2Holiday Презентация DP теперь взят из старой версии\nстарая структура устройства удалена после миграции, чтобы избежать двойного импорта",
+        "pt": "ver problema #723: Os OIDs selecionados na janela de seleção do OID não foram salvos.\ncorreção de erros: usar o ID correto do ator\ncorreção de erros: Caminho OID para o Caminho2Holiday Presente DP agora retirado da versão antiga\nestrutura antiga do dispositivo apagada após a migração para evitar a importação dupla",
+        "nl": "zie probleem #723: De OID's die geselecteerd zijn in het OID-selectievenster zijn niet opgeslagen.\nbug fix: gebruik de juiste actor ID\nbugfix: OID-pad voor Path2Holiday Aanwezig DP nu genomen van oude versie\noude apparaatstructuur verwijderd na migratie om dubbele import te voorkomen",
+        "fr": "voir le numéro 723 : Les OID sélectionnés dans la boîte de dialogue de sélection de l'OID n'ont pas été enregistrés.\ncorrection du bug : utiliser l'identifiant de l'acteur correct\ncorrection du bug & #160;: OID-Path pour Path2Holiday Présent DP maintenant pris de l'ancienne version\nstructure ancienne du dispositif supprimé après la migration pour éviter une double importation",
+        "it": "vedi problema #723: I OID selezionati nella finestra di dialogo di selezione OID non sono stati salvati.\nbug fix: utilizzare corretto attore ID\ncorrezione bug: OID-Path per Path2Holiday Presente DP ora preso dalla vecchia versione\nvecchia struttura del dispositivo cancellato dopo la migrazione per evitare doppio importazione",
+        "es": "ver número #723: Los OID seleccionados en el diálogo de selección OID no fueron guardados.\nbug fix: use correct actor ID\nbug fix: OID-Path para Path2Holiday Presente DP now taken from old version\nantigua estructura del dispositivo eliminada después de la migración para evitar la doble importación",
+        "pl": "zobacz numer # 723: OID wybrane w oknie wyboru OID nie zostały zapisane.\nfix: użyj poprawnego identyfikatora aktora\npoprawka błędu: OID- Path for Path2Holiday Obecny DP teraz wzięte ze starej wersji\nstara struktura urządzenia usunięta po migracji, aby uniknąć podwójnego importu",
+        "uk": "див. питання #723: Вибрані OID у діалоговому вікні вибору OID не збережені.\nвиправлення помилок: використовувати правильний актор ID\nвиправлення помилок: OID-Path для Path2Holiday Головна DP тепер приймається з старої версії\nстара структура пристрою видалена після міграції, щоб уникнути подвійний імпорт",
+        "zh-cn": "参见第 723 期: OID 选择对话框中选择的 OID 未保存 .\n错误修复: 使用正确的演员标识\n错误修正 : Path2Holiday 的 OID- 路径 现 DP 现在取自旧版本\n迁移后删除旧设备结构以避免重复导入"
+      },
       "3.0.2": {
         "en": "*not yet recommended for production use. beta test only**\nbug fix: room selection, refresh configuration display for inactive rooms",
         "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: zimmerauswahl, konfigurationsanzeige für inaktive zimmer",
@@ -80,19 +93,6 @@
         "pl": "zmiany wymagane przez sprawdzacz adaptera",
         "uk": "зміни, які вимагаються перевіркою адаптера",
         "zh-cn": "适配器检查器要求的更改"
-      },
-      "2.12.16": {
-        "en": "dependencies updated\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\nchanges requested by adapter checker",
-        "de": "aktualisierte Abhängigkeiten\nFehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
-        "ru": "обновленные зависимости\nисправление ошибок см. проблему #682: HmIP-eTRV-2 не обнаружен автоматически\nизменения, запрошенные adapter checker",
-        "pt": "dependências atualizadas\ncorreção de erros ver problema #682: HmIP-eTRV-2 não detectado automaticamente\nalterações solicitadas pelo verificador de adaptadores",
-        "nl": "afhankelijkheden bijgewerkt\nbug fix zie probleem #682: HmIP-eTRV-2 niet automatisch gedetecteerd\nwijzigingen gevraagd door adaptercontrole",
-        "fr": "dépendances mises à jour\ncorrection du bug voir le problème #682: HmIP-eTRV-2 non détecté automatiquement\nmodifications demandées par l'adaptateur checker",
-        "it": "dipendenze aggiornate\nbug fix vedi problema #682: HmIP-eTRV-2 non autodeterminato\nmodifiche richieste da adattatore checker",
-        "es": "dependencias actualizadas\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\ncambios solicitados por el adaptador",
-        "pl": "zaktualizowane zależności\nbug fix see issue # 682: HmIP- eTRV-2 not autodetected\nzmiany wymagane przez sprawdzacz adaptera",
-        "uk": "оновлені залежності\nвиправлення помилок див. питання #682: HmIP-eTRV-2 не autodetected\nзміни, які вимагаються перевіркою адаптера",
-        "zh-cn": "更新依赖关系\n错误修复参见第682期: HmIP- eTRV-2 未自动检测\n适配器检查器要求的更改"
       }
     },
     "titleLang": {
