@@ -129,6 +129,8 @@ export default function SelectOID(props: Props): React.JSX.Element {
                                     : '';
 
                             setValue(normalized);
+                            // Parent informieren
+                            props.onChange(normalized);
 
                         }}
                     />
