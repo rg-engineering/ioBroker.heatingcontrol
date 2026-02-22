@@ -1,10 +1,10 @@
 {
     "name": "heatingcontrol-admin",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "private": true,
     "dependencies": {
-        "@iobroker/adapter-react-v5": "^8.0.16",
-        "@iobroker/json-config": "^8.0.6",
+        "@iobroker/adapter-react-v5": "^8.0.21",
+        "@iobroker/json-config": "^8.1.11",
         "@mui/icons-material": "^6.5.0",
         "@mui/material": "^6.5.0",
         "@vitejs/plugin-react": "^5.1.2",
