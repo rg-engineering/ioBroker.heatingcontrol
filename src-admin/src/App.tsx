@@ -150,7 +150,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
     async onConnectionReady(): Promise<void> {
         super.onConnectionReady();
-        const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'connection';
+        const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'main_settings';
 
         void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
         void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
