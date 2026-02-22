@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "news": {
+      "3.0.4": {
+        "en": "see issue #730: bug fix: if window sensor uses \"false\" for Open window state was always set to open",
+        "de": "siehe Ausgabe #730: Fehlerbehebung: wenn Fenstersensor \"false\" für Open-Fenster-Zustand verwendet wurde immer eingestellt, um zu öffnen",
+        "ru": "проблема No 730: исправление ошибок: если датчик окна использует «ложь» для состояния «Открытое окно»",
+        "pt": "ver problema #730: correção de erros: se o sensor de janela usa \"falso\" para o estado da janela aberta foi sempre definido para abrir",
+        "nl": "zie probleem #730: bug fix: als venstersensor \"vals\" gebruikt voor Open window status is altijd ingesteld om te openen",
+        "fr": "voir le problème #730: correction du bug: si le capteur de fenêtre utilise \"false\" pour l'état de la fenêtre ouverte a toujours été réglé pour ouvrir",
+        "it": "vedi numero #730: fix bug: se il sensore della finestra utilizza \"false\" per lo stato della finestra aperta è sempre stato impostato per aprire",
+        "es": "ver número #730: corrección de errores: si el sensor de ventana utiliza \"falso\" para Open ventana estado siempre fue establecido para abrir",
+        "pl": "zobacz problem # 730: błąd naprawić: jeśli czujnik okna używa \"false\" dla stanu Otwórz okno zawsze było otwarte",
+        "uk": "переглянути номер #730: Виправлення помилок: якщо у віконному сенсорі використовується \"false\" для відкритого вікна",
+        "zh-cn": "参见问题 # 730: 错误修正: 如果窗口传感器使用“ 假” 来打开窗口状态, 总是被设定打开"
+      },
       "3.0.3": {
         "en": "see issue #723: The OIDs selected in the OID selection dialog were not saved.\nbug fix: use correct actor ID\nbug fix: OID-Path for Path2HolidayPresentDP now taken from old version\nold device structure deleted after migration to avoid double import",
         "de": "siehe Ausgabe #723: Die im OID Auswahldialog ausgewählten OIDs wurden nicht gespeichert.\nfehlerbehebung: Verwenden Sie korrekte Aktor-ID\nfehlerbehebung: OID-Path für Path2Holiday Gegenwart DP jetzt aus der alten Version\nalte gerätestruktur nach der migration gelöscht, um doppelimport zu vermeiden",
@@ -80,19 +93,6 @@
         "pl": "bug fix sentry",
         "uk": "виправлення помилок",
         "zh-cn": "错误修正哨兵"
-      },
-      "2.12.17": {
-        "en": "changes requested by adapter checker",
-        "de": "Änderungen, die von Adapter-Checker angefordert werden",
-        "ru": "изменения, запрошенные adapter checker",
-        "pt": "alterações solicitadas pelo verificador de adaptadores",
-        "nl": "wijzigingen gevraagd door adaptercontrole",
-        "fr": "modifications demandées par l'adaptateur checker",
-        "it": "modifiche richieste da adattatore checker",
-        "es": "cambios solicitados por el adaptador",
-        "pl": "zmiany wymagane przez sprawdzacz adaptera",
-        "uk": "зміни, які вимагаються перевіркою адаптера",
-        "zh-cn": "适配器检查器要求的更改"
       }
     },
     "titleLang": {
