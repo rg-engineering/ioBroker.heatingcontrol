@@ -176,16 +176,16 @@
           ]
         },
         "title": {
-          "en": "!!! not yet recommended for production use !!! breaking change: configuration of devices / rooms must be done again",
-          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden.",
-          "ru": "!!! пока не рекомендуется для промышленного использования!!! критическое изменение: настройку устройств/комнат необходимо выполнить заново",
-          "pt": "!!! ainda não recomendado para uso em produção !!! alteração significativa: a configuração de dispositivos/salas deve ser feita novamente",
-          "nl": "!!! nog niet aanbevolen voor productiegebruik !!! belangrijke wijziging: de configuratie van apparaten/kamers moet opnieuw worden uitgevoerd",
-          "fr": "!!! pas encore recommandé pour une utilisation en production !!! changement avec rupture : la configuration des appareils/pièces doit être refaite",
-          "it": "!!! non ancora raccomandato per l'uso in produzione !!! modifica sostanziale: la configurazione dei dispositivi/stanze deve essere eseguita nuovamente",
-          "es": "!!! ¡Aún no se recomienda para uso en producción! Cambio importante: la configuración de dispositivos/salas debe realizarse nuevamente.",
-          "pl": "!!! nie jest jeszcze zalecany do użytku produkcyjnego !!! przełomowa zmiana: konfigurację urządzeń/pomieszczeń należy przeprowadzić od nowa",
-          "uk": "!!! поки що не рекомендовано для виробничого використання !!! зміна порушення: конфігурація пристроїв / кімнат повинна бути виконана знову",
+          "en": "!!! breaking change: configuration of devices / rooms must be done again",
+          "de": "!!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden.",
+          "ru": "!!! критическое изменение: настройку устройств/комнат необходимо выполнить заново",
+          "pt": "!!! alteração significativa: a configuração de dispositivos/salas deve ser feita novamente",
+          "nl": "!!! belangrijke wijziging: de configuratie van apparaten/kamers moet opnieuw worden uitgevoerd",
+          "fr": "!!! changement avec rupture : la configuration des appareils/pièces doit être refaite",
+          "it": "!!! modifica sostanziale: la configurazione dei dispositivi/stanze deve essere eseguita nuovamente",
+          "es": "!!! Cambio importante: la configuración de dispositivos/salas debe realizarse nuevamente.",
+          "pl": "!!! przełomowa zmiana: konfigurację urządzeń/pomieszczeń należy przeprowadzić od nowa",
+          "uk": "!!! зміна порушення: конфігурація пристроїв / кімнат повинна бути виконана знову",
           "zh-cn": "!!!尚未推荐用于生产用途！重大更改：必须重新配置设备/房间"
         },
         "text": {
