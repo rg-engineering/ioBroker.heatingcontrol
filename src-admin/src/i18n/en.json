@@ -87,6 +87,7 @@
   "Telegram instance": "Telegram instance",
   "TemperatureDecrease": " temperature lowering",
   "ThermostatHandlesWindowOpen": "Thermostat handles \"Window is Open\"",
+  "WindowOpenHasPriorityOverThermostat": "Window open has priority over thermostat",
   "ThermostatModeIfNoHeatingperiod": "Thermostat mode if no heatingperiod",
   "ThermostatSettings": "Thermostat Settings",
   "UseActorsIfNoThermostat": "use actuators if no thermostat available",

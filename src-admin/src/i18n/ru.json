@@ -95,6 +95,7 @@
   "Telegram instance": "Экземпляр Телеграммы",
   "TemperatureDecrease": "снижение температуры",
   "ThermostatHandlesWindowOpen": "Ручки термостата «Окно открыто»",
+  "WindowOpenHasPriorityOverThermostat": "Открытое окно имеет приоритет над термостатом",
   "ThermostatModeIfNoHeatingperiod": "Режим термостата, если нет периода нагрева",
   "ThermostatSettings": "Настройки термостата",
   "UseActorsIfNoThermostat": "используйте приводы, если нет термостата",
