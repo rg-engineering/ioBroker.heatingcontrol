@@ -95,6 +95,7 @@
   "Telegram instance": "电报实例",
   "TemperatureDecrease": "降温",
   "ThermostatHandlesWindowOpen": "恒温器处理“窗户已打开”",
+  "WindowOpenHasPriorityOverThermostat": "打开窗户时优先于温控器",
   "ThermostatModeIfNoHeatingperiod": "无供暖时恒温器模式",
   "ThermostatSettings": "恒温器设置",
   "UseActorsIfNoThermostat": "如果没有可用的恒温器，请使用执行器",

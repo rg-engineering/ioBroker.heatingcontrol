@@ -95,6 +95,7 @@
   "Telegram instance": "Telegram-instantie",
   "TemperatureDecrease": "temperatuur verlagen",
   "ThermostatHandlesWindowOpen": "Thermostaatgrepen \"Raam staat open\"",
+  "WindowOpenHasPriorityOverThermostat": "Open raam heeft prioriteit boven de thermostaat",
   "ThermostatModeIfNoHeatingperiod": "Thermostaatmodus als er geen verwarmingsperiode is",
   "ThermostatSettings": "Thermostaat instellingen",
   "UseActorsIfNoThermostat": "gebruik actuatoren als er geen thermostaat beschikbaar is",

@@ -95,6 +95,7 @@
   "Telegram instance": "Instancja telegramu",
   "TemperatureDecrease": "obniżenie temperatury",
   "ThermostatHandlesWindowOpen": "Termostat obsługuje „Okno jest otwarte”",
+  "WindowOpenHasPriorityOverThermostat": "Otwarte okno ma priorytet nad termostatem",
   "ThermostatModeIfNoHeatingperiod": "Tryb termostatu, jeśli nie ma okresu grzewczego",
   "ThermostatSettings": "Ustawienia termostatu",
   "UseActorsIfNoThermostat": "użyj siłowników, jeśli nie jest dostępny termostat",
