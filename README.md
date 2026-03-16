@@ -291,6 +291,7 @@ When the adapter crashes or an other Code error happens, this error message that
 -->
 
 ### **WORK IN PROGRESS**
+* (softwarecrash) Add optional window-open thermostat priority
 * (René) changes requested by adapter checker
 * (René) dependencies updated
 
