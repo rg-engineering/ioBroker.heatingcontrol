@@ -35,6 +35,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     ExtendOverride: boolean;
     OverrideMode: number;
     ThermostatHandlesWindowOpen: boolean;
+    WindowOpenHasPriorityOverThermostat: boolean;
     InterThermostatDelay: number;
 
     UseAddTempSensors: boolean;

@@ -95,6 +95,7 @@
   "Telegram instance": "Istanza di Telegram",
   "TemperatureDecrease": "abbassamento della temperatura",
   "ThermostatHandlesWindowOpen": "Il termostato gestisce \"La finestra è aperta\"",
+  "WindowOpenHasPriorityOverThermostat": "La finestra aperta ha priorità sul termostato",
   "ThermostatModeIfNoHeatingperiod": "Modalità termostato in assenza di periodo di riscaldamento",
   "ThermostatSettings": "Impostazioni del termostato",
   "UseActorsIfNoThermostat": "utilizzare gli attuatori se non è disponibile alcun termostato",

@@ -282,6 +282,16 @@ const schema: ConfigItemPanel = {
             "lg": 2,
             "xl": 2
         },
+        WindowOpenHasPriorityOverThermostat: {
+            newLine: false,
+            type: 'checkbox',
+            label: 'WindowOpenHasPriorityOverThermostat',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
+        },
         InterThermostatDelay: {
             newLine: false,
             type: 'number',
@@ -1439,6 +1449,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.ExtendOverride = params.ExtendOverride;
                     native.OverrideMode = params.OverrideMode;
                     native.ThermostatHandlesWindowOpen = params.ThermostatHandlesWindowOpen;
+                    native.WindowOpenHasPriorityOverThermostat = params.WindowOpenHasPriorityOverThermostat;
                     native.InterThermostatDelay = params.InterThermostatDelay;
 
                     native.UseAddTempSensors = params.UseAddTempSensors;

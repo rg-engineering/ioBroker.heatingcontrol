@@ -255,6 +255,7 @@
     "HolidayPresentLikeSunday": true,
     "ExtendOverride": false,
     "ThermostatHandlesWindowOpen": false,
+    "WindowOpenHasPriorityOverThermostat": false,
     "VisMinDecRelTemp": 1,
     "VisMaxDecRelTemp": 10,
     "VisStepWidthDecRelTemp": 1,

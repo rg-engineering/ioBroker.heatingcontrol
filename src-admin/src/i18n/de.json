@@ -87,6 +87,7 @@
   "Telegram instance": "Telegram-Instanz",
   "TemperatureDecrease": " Temperaturabsenkung",
   "ThermostatHandlesWindowOpen": "Thermostat behandelt \"Fenster ist offen\"",
+  "WindowOpenHasPriorityOverThermostat": "Fenster offen hat Vorrang vor Thermostat",
   "ThermostatModeIfNoHeatingperiod": "Thermostatbetrieb wenn keine Heizperiode",
   "ThermostatSettings": "Thermostateinstellungen",
   "UseActorsIfNoThermostat": "Stellantriebe verwenden, wenn kein Thermostat vorhanden ist",
