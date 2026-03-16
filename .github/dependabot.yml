@@ -2,10 +2,28 @@
 version: 2
 updates:
 
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "daily"
+   - package-ecosystem: "github-actions"
+     directory: "/"
+     schedule:
+      interval: "cron"
       timezone: "Europe/Berlin"
-    target-branch: "master"
-    open-pull-requests-limit: 30
+      cronjob: "35 1 27 * *"
+     open-pull-requests-limit: 15
+
+   - package-ecosystem: "npm"
+     directory: "/"
+     schedule:
+      interval: "cron"
+      timezone: "Europe/Berlin"
+      cronjob: "35 1 27 * *"
+     open-pull-requests-limit: 15
+     versioning-strategy: "increase"
+
+   - package-ecosystem: "npm"
+     directory: "/src-admin"
+     schedule:
+      interval: "cron"
+      timezone: "Europe/Berlin"
+      cronjob: "35 1 27 * *"
+     open-pull-requests-limit: 15
+     versioning-strategy: "increase"
