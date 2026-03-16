@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.4",
+    "version": "3.1.0",
     "news": {
+      "3.1.0": {
+        "en": "Add optional window-open thermostat priority\nchanges requested by adapter checker\ndependencies updated",
+        "de": "Optionale Fenster-Öffnungsthermostatpriorität hinzufügen\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
+        "ru": "Добавить дополнительный оконный термостат приоритет\nизменения, запрошенные adapter checker\nобновленные зависимости",
+        "pt": "Adicionar a prioridade opcional do termostato aberto em janelas\nalterações solicitadas pelo verificador de adaptadores\ndependências atualizadas",
+        "nl": "Optionele venster-open thermostaatprioriteit toevoegen\nwijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
+        "fr": "Ajouter une priorité de thermostat ouverte en option\nmodifications demandées par l'adaptateur checker\ndépendances mises à jour",
+        "it": "Aggiungere la priorità del termostato opzionale\nmodifiche richieste da adattatore checker\ndipendenze aggiornate",
+        "es": "Añadir prioridad opcional de termostato abierto ventana\ncambios solicitados por el adaptador\ndependencias actualizadas",
+        "pl": "Dodaj opcjonalny priorytet termostatu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
+        "uk": "Додавання додаткового пріоритету термостату вікна\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
+        "zh-cn": "添加可选窗口开放自动调温器优先级\n适配器检查器要求的更改\n更新依赖关系"
+      },
       "3.0.4": {
         "en": "see issue #730: bug fix: if window sensor uses \"false\" for Open window state was always set to open",
         "de": "siehe Ausgabe #730: Fehlerbehebung: wenn Fenstersensor \"false\" für Open-Fenster-Zustand verwendet wurde immer eingestellt, um zu öffnen",
@@ -80,19 +93,6 @@
         "pl": "csv- logowanie dodane (opcjonalnie), będą stosowane w późniejszych ulepszeniach",
         "uk": "csv-log додано (необов'язково), буде використовуватися в більш пізніх розширень",
         "zh-cn": "添加csv-logy(可选),用于以后的增强"
-      },
-      "2.12.18": {
-        "en": "bug fix sentry",
-        "de": "Fehlerbehebung sentry",
-        "ru": "исправлять ошибки",
-        "pt": "corrigir o erro sentinela",
-        "nl": "bug repareren wacht",
-        "fr": "correction du bug sentinelle",
-        "it": "bug fix sendry",
-        "es": "bug fix centry",
-        "pl": "bug fix sentry",
-        "uk": "виправлення помилок",
-        "zh-cn": "错误修正哨兵"
       }
     },
     "titleLang": {
