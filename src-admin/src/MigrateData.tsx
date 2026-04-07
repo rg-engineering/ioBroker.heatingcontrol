@@ -31,6 +31,8 @@ export default class LegacyMigrator {
             native = res.native;
             if (res.removed > 0) {
                 setState({ native, changed: getIsChanged(native) });
+
+                console.warn("Removed " + res.removed + " rooms with missing/invalid id during data migration."); 
             }
         } catch (err) {
             // Fehler protokollieren, aber Migration fortsetzen
@@ -61,13 +63,17 @@ export default class LegacyMigrator {
                     delete native.devices;
                     setState({ native, changed: getIsChanged(native) });
                 }
-
-                
-
             }
         } catch (err) {
             // ignore
             console.warn("migrate exception ignored " + err);
+        }
+
+        // Prüfe, ob native.devices noch vorhanden ist, wenn ja, lösche es und logge es
+        if (native && Object.prototype.hasOwnProperty.call(native, "devices")) {
+            delete native.devices;
+            setState({ native, changed: getIsChanged(native) });
+            console.warn("native.devices wurde nach der Migration entfernt.");
         }
     }
 
@@ -82,15 +88,18 @@ export default class LegacyMigrator {
 
         native.rooms = native.rooms.filter((r: RoomConfig ) => {
             if (r == null) {
+                console.debug("Removing room entry because it is null or undefined ");
                 return false
             };
             const id = (r as any).id;
             if (id === undefined || id === null) {
+                console.debug("Removing room entry because id is undefined or null: " + r?.name);
                 return false;
             }
             const idStr = String(id).trim();
             if (idStr === '') {
-                return false
+                console.debug("Removing room entry because id is an empty string: " + r?.name);
+                return false;
             };
             return Object.prototype.hasOwnProperty.call(availableRooms, idStr);
         });
