@@ -18,8 +18,8 @@ const utils = require("@iobroker/adapter-core");
 //const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
 const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
-const { existsSync, mkdirSync } = require('fs');
-const { join } = require('path');
+const { existsSync, mkdirSync } = require('node:fs');
+const { join } = require('node:path');
 
 //======================================
 const CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
