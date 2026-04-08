@@ -7,7 +7,7 @@
         "@iobroker/json-config": "^8.2.22",
         "@mui/icons-material": "^6.5.0",
         "@mui/material": "^6.5.0",
-        "@vitejs/plugin-react": "^5.1.2",
+        "@vitejs/plugin-react": "^6.0.1",
         "@types/react": "^18.3.25",
         "@types/react-dom": "^18.3.7",
         "react": "^18.3.1",
