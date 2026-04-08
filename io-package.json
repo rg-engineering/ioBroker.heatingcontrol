@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "news": {
+      "3.1.1": {
+        "en": "some logs in migrate data\nissue #781: fix upload configuration",
+        "de": "einige protokolle in migrieren daten\nausgabe #781: upload-konfiguration beheben",
+        "ru": "некоторые журналы в миграционных данных\nпроблема #781: исправить конфигурацию загрузки",
+        "pt": "alguns logs em dados de migração\nproblema # 781: corrigir configuração de upload",
+        "nl": "sommige logs in migrerende gegevens\nprobleem #781: fix upload configuratie",
+        "fr": "certains journaux dans les données de migration\nnuméro #781: correction de la configuration de téléchargement",
+        "it": "alcuni registri in dati di migrazione\nnumero #781: correzione della configurazione di upload",
+        "es": "algunos registros en datos de migración\nedición #781: fijar configuración de carga",
+        "pl": "niektóre logi w danych migracyjnych\nwydanie # 781: naprawić konfigurację wysyłania",
+        "uk": "деякі журнали в міграції даних\nproblem #781: виправлено налаштування завантаження",
+        "zh-cn": "迁移数据中的一些日志\n781期: 固定上传配置"
+      },
       "3.1.0": {
         "en": "Add optional window-open thermostat priority\nchanges requested by adapter checker\ndependencies updated",
         "de": "Optionale Fenster-Öffnungsthermostatpriorität hinzufügen\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "** nie jest jeszcze zalecane do stosowania w produkcji. tylko test beta **\n* admin przepracował całkowicie z reakcji i vite. ** UWAGA* *: łamanie zmian w ustawieniach administratora!!! \nPokoje nie mogą być już tworzone ręcznie. Używane są tylko pokoje, które są na ogół skonfigurowane w joBrooker.\nAdapter próbuje przenieść konfigurację, ale w żadnym wypadku nie można tego zagwarantować.\n* csv- logowanie: ścieżka zmieniona, jeden log na pokój teraz\n* zawsze włącza przyciski CopyProfile\n* Funkcja Refactor SetVis w celu poprawy czytelności i utrzymania",
         "uk": "**не рекомендується використовувати для виробництва. бета тест тільки* ім'я *\n* адмін перероблений повністю з реагацією і вітом. **ATTENTION***: зміни в налаштуваннях адміністратора !!!\nНомери не можуть бути створені вручну. використовуються тільки номери, які, як правило, налаштовані в ioBrooker.\nПерехідник намагається намітити конфігурацію, але це не гарантується в будь-якому випадку.\n* csv-log: зміна шляху, один журнал за номер зараз\n* завжди ввімкніть кнопку Копіювання\n* Функція Refactor SetVis для поліпшення читабельності та стійкості",
         "zh-cn": "** 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n* 处理过度,完全与反应和葡萄酒。 校对:Soup!\n房间无法再手动创建. 仅使用通常在ioBrooker中配置的房间.\n适配器试图迁移配置,但这在任何情况下都无法保证.\n* csv-logy:路径改变,现在每个房间一个日志\n* 总是启用 CopyProfile 按钮\n* 调整Setvis功能,以提高可读性和可维护性"
-      },
-      "2.12.19": {
-        "en": "csv-logging added (optionally), will be used in later enhancements",
-        "de": "csv-logging hinzugefügt (optional), wird in späteren verbesserungen verwendet",
-        "ru": "csv-логирование добавлено (необязательно), будет использоваться в последующих улучшениях",
-        "pt": "csv-logging adicionado (opcionalmente), será usado em melhorias posteriores",
-        "nl": "csv-logging toegevoegd (optioneel), zal worden gebruikt in latere verbeteringen",
-        "fr": "csv-logging ajouté (en option), sera utilisé dans les améliorations ultérieures",
-        "it": "csv-logging aggiunto (opzionale), sarà utilizzato in miglioramenti successivi",
-        "es": "csv-logging añadido (opcionalmente), se utilizará en mejoras posteriores",
-        "pl": "csv- logowanie dodane (opcjonalnie), będą stosowane w późniejszych ulepszeniach",
-        "uk": "csv-log додано (необов'язково), буде використовуватися в більш пізніх розширень",
-        "zh-cn": "添加csv-logy(可选),用于以后的增强"
       }
     },
     "titleLang": {
