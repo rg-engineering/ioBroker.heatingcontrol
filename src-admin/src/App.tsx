@@ -99,6 +99,7 @@ interface AppState extends GenericAppState {
 class App extends GenericApp<GenericAppProps, AppState> {
 
     private uploadInputRef: React.RefObject<HTMLInputElement>;
+
     constructor(props: GenericAppProps) {
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
@@ -123,6 +124,10 @@ class App extends GenericApp<GenericAppProps, AppState> {
         extendedProps.sentryDSN = window.sentryDSN;
 
         super(props, extendedProps);
+
+        // Fix: Initialisiere uploadInputRef
+        this.uploadInputRef = React.createRef();
+
         this.state = {
             ...this.state,
             moreLoaded: false,
@@ -207,6 +212,8 @@ class App extends GenericApp<GenericAppProps, AppState> {
     onUploadClick = (): void => {
         this.uploadInputRef.current?.click();
     };
+
+
 
     // Read uploaded JSON file and apply to native config (simple overwrite)
     onUploadChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
