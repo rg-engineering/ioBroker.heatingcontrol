@@ -292,6 +292,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### **WORK IN PROGRESS**
 * (René) some logs in migrate data
+* (René) issue #781: fix upload configuration 
 
 ### 3.1.0 (2026-03-16)
 * (softwarecrash) Add optional window-open thermostat priority

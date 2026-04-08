@@ -91,7 +91,7 @@ export default class LegacyMigrator {
                 console.debug("Removing room entry because it is null or undefined ");
                 return false
             };
-            const id = (r as any).id;
+            const id = r?.id;
             if (id === undefined || id === null) {
                 console.debug("Removing room entry because id is undefined or null: " + r?.name);
                 return false;
