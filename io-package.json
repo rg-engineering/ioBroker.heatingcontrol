@@ -210,7 +210,6 @@
     ]
   },
   "native": {
-    "devices": [],
     "rooms": [],
     "UseActors": false,
     "Gewerk": "Heizung",

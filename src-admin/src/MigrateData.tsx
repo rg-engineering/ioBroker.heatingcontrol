@@ -60,7 +60,8 @@ export default class LegacyMigrator {
                 }
                 if (overallChanged) {
                     // native.device löschen, damit beim nächsten Start nicht nochmal migriert wird
-                    delete native.devices;
+                    //delete native.devices;
+                    native.devices = []; // alternativ leeres Array setzen, um mögliche Fehler zu vermeiden
                     setState({ native, changed: getIsChanged(native) });
                 }
             }
@@ -71,7 +72,8 @@ export default class LegacyMigrator {
 
         // Prüfe, ob native.devices noch vorhanden ist, wenn ja, lösche es und logge es
         if (native && Object.prototype.hasOwnProperty.call(native, "devices")) {
-            delete native.devices;
+            //delete native.devices;
+            native.devices = []; // alternativ leeres Array setzen, um mögliche Fehler zu vermeiden
             setState({ native, changed: getIsChanged(native) });
             console.warn("native.devices wurde nach der Migration entfernt.");
         }
@@ -86,21 +88,26 @@ export default class LegacyMigrator {
         const availableRooms = rooms || {};
         const originalLength = native.rooms.length;
 
+        console.warn("availableRooms for migration: " + Object.keys(availableRooms).join(", ")); 
+
         native.rooms = native.rooms.filter((r: RoomConfig ) => {
             if (r == null) {
-                console.debug("Removing room entry because it is null or undefined ");
+                console.warn("Removing room entry because it is null or undefined ");
                 return false
             };
             const id = r?.id;
             if (id === undefined || id === null) {
-                console.debug("Removing room entry because id is undefined or null: " + r?.name);
+                console.warn("Removing room entry because id is undefined or null: " + r?.name);
                 return false;
             }
             const idStr = String(id).trim();
             if (idStr === '') {
-                console.debug("Removing room entry because id is an empty string: " + r?.name);
+                console.warn("Removing room entry because id is an empty string: " + r?.name);
                 return false;
             };
+
+            console.warn("is room id " + idStr + " available in rooms? " + Object.keys(availableRooms).join(", ")); 
+
             return Object.prototype.hasOwnProperty.call(availableRooms, idStr);
         });
 
