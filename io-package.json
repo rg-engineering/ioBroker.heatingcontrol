@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.1.2",
+    "version": "3.1.3",
     "news": {
+      "3.1.3": {
+        "en": "fix in migrate data: wait, until room list is available and check if room list is empty, otherwise do not migrate data to avoid removing rooms\nchangelog_old.md added",
+        "de": "in migrieren daten: warten, bis die zimmerliste verfügbar ist und überprüfen, ob die zimmerliste leer ist, andernfalls nicht migrieren daten, um zu vermeiden, dass räume\nchangelog old.md hinzugefügt",
+        "ru": "фиксировать данные миграции: ждать, пока список номеров не будет доступен, и проверять, пуст ли список номеров, в противном случае не переносить данные, чтобы избежать удаления номеров\nchangelog old.md добавлено",
+        "pt": "corrigir em dados migrar: aguarde, até que a lista de salas esteja disponível e verifique se a lista de salas está vazia, caso contrário não migrar dados para evitar a remoção de salas\nchangelog old.md adicionado",
+        "nl": "fix in migrerende gegevens: wacht, totdat kamerlijst beschikbaar is en controleer of kamerlijst leeg is, anders migreren geen gegevens om te voorkomen dat ruimtes worden verwijderd\nchangelog old.md toegevoegd",
+        "fr": "corriger dans les données de migration: attendre, jusqu'à ce que la liste des pièces soit disponible et vérifier si la liste des pièces est vide, sinon ne pas migrer les données pour éviter de supprimer les pièces\nchangelog old.md ajouté",
+        "it": "fix in dati di migrazione: attendere, fino a quando l'elenco delle camere è disponibile e verificare se l'elenco delle camere è vuoto, altrimenti non migrare i dati per evitare la rimozione delle camere\nchangelog old.md aggiunto",
+        "es": "fijar en datos de migración: esperar, hasta que la lista de habitaciones esté disponible y comprobar si la lista de habitaciones está vacía, de lo contrario no migrar datos para evitar la eliminación de habitaciones\nchangelog old.md añadido",
+        "pl": "fix in migrate data: czekać, aż lista pokoju jest dostępna i sprawdzić, czy lista pokoju jest pusta, w przeciwnym razie nie migracja danych, aby uniknąć usunięcia pokoi\nchangelog _ old.md dodany",
+        "uk": "виправити в мігрувати дані: чекати, поки список номерів доступний і перевірте, якщо список номерів порожній, інакше не мигратувати дані, щоб уникнути видалення номерів\njavascript licenses api веб-сайт go1.13.8",
+        "zh-cn": "在迁移数据中固定 : 等待, 等待房间列表可用, 并检查房间列表是否为空, 否则不迁移数据以避免删除房间 \n已添加 changelog old.md"
+      },
       "3.1.2": {
         "en": "some logs in migrate data",
         "de": "einige protokolle in migrieren daten",
@@ -80,19 +93,6 @@
         "pl": "*nie jest jeszcze zalecane do produkcji. tylko test beta **\nnaprawianie błędów: wybór pokoju, wyświetlacz konfiguracji odświeżania dla nieaktywnych pokoi",
         "uk": "*ще не рекомендується використовувати для виробництва. бета тест тільки* ім'я*\nвиправлення помилок: вибір приміщення, дисплей конфігурації оновлень для неактивних кімнат",
         "zh-cn": "* 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n错误修补: 房间选择, 非活动房间刷新配置显示"
-      },
-      "3.0.1": {
-        "en": "*not yet recommended for production use. beta test only**\nbug fix: added missing OID configurations for public holiday and holidays at home\nbug fix: 'function' for device search will be saved now\npreselect 'function' and 'selected room' if nothing was selected / stored before",
-        "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: hinzugefügt fehlende OID-Konfigurationen für Feiertage und Ferien zu Hause\nfehlerbehebung: 'funktion' für gerätesuche wird jetzt gespeichert\n\"funktion\" und \"ausgewähltes zimmer\" vorwählen, wenn vorher nichts ausgewählt / gespeichert wurde",
-        "ru": "*не рекомендуется для использования в производстве. только бета-тестирование**\nисправление ошибок: добавлены недостающие конфигурации OID для государственных праздников и праздников дома\nисправление ошибок: «функция» для поиска устройств будет сохранена\nпредварительно выбранная «функция» и «выбранная комната», если до этого ничего не было выбрано или сохранено",
-        "pt": "*ainda não recomendado para a produção. apenas teste beta**\ncorreção de bug: adicionadas configurações OID ausentes para férias públicas e feriados em casa\ncorreção de bug: 'function' para a pesquisa do dispositivo será salva agora\npreselect 'function' e 'select room' se nada foi seleccionado / armazenado antes",
-        "nl": "*nog niet aanbevolen voor productie gebruik. uitsluitend bètatest *\nbug fix: ontbrekende OID configuraties toegevoegd voor feestdagen en feestdagen thuis\nbugfix: 'functioneel' voor het zoeken naar een apparaat wordt nu opgeslagen\nvoorselecteer 'function' en 'selected room' als er niets is geselecteerd / opgeslagen voor",
-        "fr": "*pas encore recommandé pour l'utilisation de la production. essai bêta seulement**\nbug fix: ajout de configurations OID manquantes pour les jours fériés et les jours fériés à la maison\ncorrection du bug: 'fonction' pour la recherche de périphérique sera sauvegardée maintenant\nprésélectionner 'fonction' et 'chambre sélectionnée' si rien n'a été sélectionné / stocké avant",
-        "it": "*non ancora consigliato per uso di produzione. test beta solo* #\nbug fix: aggiunte configurazioni OID mancanti per le vacanze pubbliche e le vacanze a casa\ncorrezione bug: 'funzione' per la ricerca del dispositivo verrà salvato ora\nse nulla è stato selezionato / memorizzato prima",
-        "es": "*aún no recomendado para el uso de la producción. prueba de beta únicamente**\nbug fix: añadido configuraciones OID desaparecidas para vacaciones públicas y vacaciones en casa\nbug fix: 'función' para la búsqueda del dispositivo se guardará ahora\npreseleccionar 'función' y 'seleccionado habitación' si nada fue seleccionado / almacenado antes",
-        "pl": "*nie jest jeszcze zalecane do produkcji. tylko test beta **\nfix bug: dodano brakujące konfiguracje OID na święta publiczne i wakacje w domu\nbug fix: 'funkcja' dla wyszukiwania urządzeń zostanie teraz zapisany\npreselekcjonuj 'funkcja' i 'wybrany pokój' jeśli nic nie zostało wcześniej wybrane / zapisane",
-        "uk": "*ще не рекомендується використовувати для виробництва. бета тест тільки* ім'я*\nвиправлення помилок: додано відсутні налаштування OID для громадського відпочинку та відпочинку в домашніх умовах\nвиправлення помилок: 'function' для пошуку пристрою буде збережено зараз\nпередпродаж 'function' і 'selected room' якщо нічого не було вибрано / зберігаються до",
-        "zh-cn": "* 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n错误修正: 为家用公共假日和节假日添加缺失的 OID 配置\n错误修正: 设备搜索的“ 功能 ” 现在将被保存\n预选“ 函数” 和“ 选定房间 ” 如果未选择任何功能 / 存储在之前"
       }
     },
     "titleLang": {
