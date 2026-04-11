@@ -289,8 +289,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 3.1.2 (2026-04-11)
 * (René) some logs in migrate data
 
 ### 3.1.1 (2026-04-08)
