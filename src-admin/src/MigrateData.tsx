@@ -106,7 +106,7 @@ export default class LegacyMigrator {
                 return false;
             };
 
-            console.warn("is room id " + idStr + " available in rooms? " + Object.keys(availableRooms).join(", ")); 
+            console.warn("is room id " + idStr + " available in rooms? " + Object.keys(availableRooms).join(", ") + " !=! " + Object.prototype.hasOwnProperty.call(availableRooms, idStr)); 
 
             return Object.prototype.hasOwnProperty.call(availableRooms, idStr);
         });
