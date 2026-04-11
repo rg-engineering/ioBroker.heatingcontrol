@@ -174,6 +174,12 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 this.getIsChanged.bind(this),
                 (partial) => this.setState(partial as any)
             );
+
+            if (this.state.native && Object.prototype.hasOwnProperty.call(this.state.native, "devices")) {
+                
+                console.error("native.devices still present after migration");
+            }
+
         } catch (err) {
             console.error('Fehler beim Aufruf des LegacyMigrators:', err);
         }
