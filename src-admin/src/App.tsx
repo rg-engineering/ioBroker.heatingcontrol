@@ -157,8 +157,16 @@ class App extends GenericApp<GenericAppProps, AppState> {
         super.onConnectionReady();
         const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'main_settings';
 
-        void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
-        void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
+        //void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
+        //void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
+
+        const rooms = await this.socket.getEnums('rooms');
+        this.setState({ moreLoaded: true, rooms })
+        const functions = await this.socket.getEnums('functions');
+        this.setState({ moreLoaded: true, functions })
+
+        console.log("Rooms loaded: " + JSON.stringify(rooms));
+        console.log("Functions loaded: " + JSON.stringify(functions));
 
         const systemConfig = await this.socket.getSystemConfig();
         const aliveState = await this.socket.getState(`system.adapter.heatingcontrol.${this.instance}.alive`);

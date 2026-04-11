@@ -25,6 +25,11 @@ export default class LegacyMigrator {
         if (native === undefined || native === null) {
             return;
         }
+        // Prüfe, ob rooms mindestens einen Eintrag hat
+        if (!rooms || Object.keys(rooms).length === 0) {
+            console.error("Migration abgebrochen: availableRooms ist leer oder nicht definiert.");
+            return;
+        }
         // 1) Entferne ungültige Räume
         try {
             const res = this.removeRoomsWithMissingId(native, rooms);
@@ -84,6 +89,9 @@ export default class LegacyMigrator {
         if (!native.rooms || !Array.isArray(native.rooms)) {
             return { native, removed: 0 };
         }
+
+
+
 
         const availableRooms = rooms || {};
         const originalLength = native.rooms.length;

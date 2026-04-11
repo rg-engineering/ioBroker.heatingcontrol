@@ -289,8 +289,9 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
-### 3.1.2 (2026-04-11)
-* (René) some logs in migrate data
+### **WORK IN PROGRESS**
+* (René) fix in migrate data: wait, until room list is available and check if room list is empty, otherwise do not migrate data to avoid removing rooms
+* (René) changelog_old.md added
 
 ### 3.1.1 (2026-04-08)
 * (René) some logs in migrate data
