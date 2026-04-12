@@ -285,10 +285,6 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-<!--
-  Placeholder for the next version (at the beginning of the line):
-  ### **WORK IN PROGRESS**
--->
 ### **WORK IN PROGRESS**
 * (Eistee82) fix visualization step width: selecting 0.5°C stored 1.5 instead of 0.5 (#785)
 * (Eistee82) fix admin UI field name mismatch: ExtHandlingRepTime renamed to ExtHandlingActorRepTime (#787)
