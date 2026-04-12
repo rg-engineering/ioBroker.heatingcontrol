@@ -170,7 +170,7 @@ const schema: ConfigItemPanel = {
         UseFixHeatingPeriod: {
             newLine: true,
             type: 'checkbox',
-            label: 'UseFireplaceMode',
+            label: 'UseFixHeatingPeriod',
             "xs": 12,
             "sm": 2,
             "md": 2,
@@ -234,6 +234,7 @@ const schema: ConfigItemPanel = {
             "lg": 2,
             "xl": 2,
         },
+        
         //=======================================================================
         _header3: {
             newLine: true,
