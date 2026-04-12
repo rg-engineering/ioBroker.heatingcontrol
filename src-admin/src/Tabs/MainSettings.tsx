@@ -698,7 +698,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -749,7 +749,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -800,7 +800,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -851,7 +851,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
