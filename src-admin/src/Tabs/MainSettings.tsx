@@ -526,7 +526,7 @@ const schema: ConfigItemPanel = {
             "xl": 2,
             "hidden": "if (!data.UseActors) return true;",
         },
-        ExtHandlingRepTime: {
+        ExtHandlingActorRepTime: {
             newLine: true,
             type: 'number',
             min: 0,
@@ -1358,10 +1358,10 @@ const schema: ConfigItemPanel = {
             "xl": 2,
             "hidden": "if (!data.notificationEnabled ) return true;",
         },
-        useCustumizedNotificationsWindowClose: {
+        useCustumizedNotificationsWindowClosed: {
             newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsWindowClose',
+            label: 'useCustumizedNotificationsWindowClosed',
             "xs": 12,
             "sm": 2,
             "md": 2,
@@ -1466,7 +1466,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.ActorBeforeOffDelay = params.ActorBeforeOffDelay;
                     native.InterActorDelay = params.InterActorDelay;
                     native.regulatorType = params.regulatorType;
-                    native.ExtHandlingRepTime = params.ExtHandlingRepTime;
+                    native.ExtHandlingActorRepTime = params.ExtHandlingActorRepTime;
                     native.ExtHandlingActorAckWaitTime = params.ExtHandlingActorAckWaitTime;
                     native.UseActorsIfNotHeating = params.UseActorsIfNotHeating;
                     native.UseActorsIfNoThermostat = params.UseActorsIfNoThermostat;
@@ -1532,7 +1532,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.useCustumizedNotificationsActorOn = params.useCustumizedNotificationsActorOn;
                     native.useCustumizedNotificationsActorOff = params.useCustumizedNotificationsActorOff;
                     native.useCustumizedNotificationsWindowOpen = params.useCustumizedNotificationsWindowOpen;
-                    native.useCustumizedNotificationsWindowClosed = params.useCustumizedNotificationsWindowClose;
+                    native.useCustumizedNotificationsWindowClosed = params.useCustumizedNotificationsWindowClosed;
 
                     native.MaintenanceModeTemperature = params.MaintenanceModeTemperature;
                     native.enableCSVLogging = params.enableCSVLogging;

@@ -310,6 +310,24 @@
     "notificationsTemperature": false,
     "notificationsActor": false,
     "notificationsWindow": false,
-    "enableCSVLogging": false
+    "enableCSVLogging": false,
+    "UseSensors": false,
+    "PowerInterruptions": [],
+    "ExtHandlingThermostatRepTime": 10000,
+    "ExtHandlingThermostatAckWaitTime": 2000,
+    "discordInstance": "discord.0",
+    "discordTarget": "UserTag",
+    "discordUserTag": "",
+    "discordUserId": "",
+    "discordServerId": "",
+    "discordChannelId": "",
+    "discordWaitToSend": 0,
+    "useCustumizedNotifications": false,
+    "useCustumizedNotificationsWithInstanceName": false,
+    "useCustumizedNotificationsNewTargetTemp": "",
+    "useCustumizedNotificationsActorOn": "",
+    "useCustumizedNotificationsActorOff": "",
+    "useCustumizedNotificationsWindowOpen": "",
+    "useCustumizedNotificationsWindowClosed": ""
   }
 }
