@@ -285,10 +285,26 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-<!--
-  Placeholder for the next version (at the beginning of the line):
-  ### **WORK IN PROGRESS**
--->
+### **WORK IN PROGRESS**
+* (Eistee82) fix visualization step width: selecting 0.5°C stored 1.5 instead of 0.5 (#785)
+* (Eistee82) fix admin UI field name mismatch: ExtHandlingRepTime renamed to ExtHandlingActorRepTime (#787)
+* (Eistee82) fix off-by-one error in thermostat ID assignment (#788)
+* (Eistee82) add guard for GetRoomId returning -1 to prevent negative array index (#789)
+* (Eistee82) add null checks for getStateAsync results in SaveProfile (#790)
+* (Eistee82) fix copy-paste error: UseFixHeatingPeriod had label UseFireplaceMode (#791)
+* (Eistee82) fix typo in types.d.ts: strin → string (#792)
+* (Eistee82) fix onChange field name mismatch for customized notification window close (#793)
+* (Eistee82) fix type mismatch: notificationsType should be string not number (#794)
+* (Eistee82) add missing Discord notification defaults to io-package.json (#795)
+* (Eistee82) add missing config key defaults to io-package.json (#796)
+* (Eistee82) fix hysteresis debug log showing wrong calculation (+ instead of -) (#798)
+* (Eistee82) fix duplicate variable in hysteresis error message (#799)
+* (Eistee82) remove dead code: identical if/else branches in notification functions (#800)
+* (Eistee82) fix wrong typeof in error message in support_tools.js (#802)
+* (Eistee82) fix package.json bugs URL missing /issues suffix (#803)
+* (Eistee82) simplify redundant null check in main.js (#805)
+* (Eistee82) fix typo in error message: userTage → userTag (#808)
+
 ### 3.1.3 (2026-04-11)
 * (René) fix in migrate data: wait, until room list is available and check if room list is empty, otherwise do not migrate data to avoid removing rooms
 * (René) changelog_old.md added

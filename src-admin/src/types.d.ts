@@ -13,7 +13,7 @@ export interface RoomConfig {
 export interface powerInterruptions {
     active: boolean;
     Start: string;
-    End: strin;
+    End: string;
 }
 export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     /** Configuration of the adapter */
@@ -79,7 +79,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     extendedInfoLogWindow: boolean;
 
     notificationEnabled: boolean;
-    notificationsType: number;
+    notificationsType: string;
     notificationsTemperature: boolean;
     notificationsActor: boolean;
     notificationsWindow: boolean;

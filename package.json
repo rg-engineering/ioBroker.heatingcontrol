@@ -36,7 +36,7 @@
   },
   "main": "main.js",
   "bugs": {
-    "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol"
+    "url": "https://github.com/rg-engineering/ioBroker.heatingcontrol/issues"
   },
   "scripts": {
     "test": "npm run test:package",
