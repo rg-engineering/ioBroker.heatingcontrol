@@ -289,6 +289,9 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (Eistee82) fix visualization step width: selecting 0.5°C stored 1.5 instead of 0.5 (#785)
+
 ### 3.1.3 (2026-04-11)
 * (René) fix in migrate data: wait, until room list is available and check if room list is empty, otherwise do not migrate data to avoid removing rooms
 * (René) changelog_old.md added
