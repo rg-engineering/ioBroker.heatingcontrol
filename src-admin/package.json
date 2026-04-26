@@ -4,7 +4,7 @@
     "private": true,
     "dependencies": {
         "@iobroker/adapter-react-v5": "^8.0.21",
-        "@iobroker/json-config": "^8.2.22",
+        "@iobroker/json-config": "^8.3.9",
         "@mui/icons-material": "^6.5.0",
         "@mui/material": "^6.5.0",
         "@vitejs/plugin-react": "^5.1.2",
