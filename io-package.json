@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.1.3",
+    "version": "3.1.4",
     "news": {
       "3.1.4": {
         "en": "multiple bugs, inconsistencies and missing config defaults",
@@ -93,19 +93,6 @@
         "pl": "zobacz numer # 723: OID wybrane w oknie wyboru OID nie zostały zapisane.\nfix: użyj poprawnego identyfikatora aktora\npoprawka błędu: OID- Path for Path2Holiday Obecny DP teraz wzięte ze starej wersji\nstara struktura urządzenia usunięta po migracji, aby uniknąć podwójnego importu",
         "uk": "див. питання #723: Вибрані OID у діалоговому вікні вибору OID не збережені.\nвиправлення помилок: використовувати правильний актор ID\nвиправлення помилок: OID-Path для Path2Holiday Головна DP тепер приймається з старої версії\nстара структура пристрою видалена після міграції, щоб уникнути подвійний імпорт",
         "zh-cn": "参见第 723 期: OID 选择对话框中选择的 OID 未保存 .\n错误修复: 使用正确的演员标识\n错误修正 : Path2Holiday 的 OID- 路径 现 DP 现在取自旧版本\n迁移后删除旧设备结构以避免重复导入"
-      },
-      "3.0.2": {
-        "en": "*not yet recommended for production use. beta test only**\nbug fix: room selection, refresh configuration display for inactive rooms",
-        "de": "*noch nicht für den produktionseinsatz empfohlen. nur beta-test**\nbugfix: zimmerauswahl, konfigurationsanzeige für inaktive zimmer",
-        "ru": "*не рекомендуется для использования в производстве. только бета-тестирование**\nисправление ошибок: выбор комнаты, дисплей конфигурации обновления для неактивных комнат",
-        "pt": "*ainda não recomendado para a produção. apenas teste beta**\ncorreção de bug: seleção de sala, exibição de configuração de atualização para salas inativas",
-        "nl": "*nog niet aanbevolen voor productie gebruik. uitsluitend bètatest *\nbug fix: kamerselectie, configuratiescherm vernieuwen voor inactieve kamers",
-        "fr": "*pas encore recommandé pour l'utilisation de la production. essai bêta seulement**\ncorrection du bug : sélection de la pièce, affichage de configuration de rafraîchissement pour les pièces inactives",
-        "it": "*non ancora consigliato per uso di produzione. test beta solo* #\ncorrezione bug: selezione della camera, visualizzazione di configurazione di aggiornamento per le camere inattive",
-        "es": "*aún no recomendado para el uso de la producción. prueba de beta únicamente**\ncorrección de errores: selección de habitaciones, pantalla de configuración de actualización para habitaciones inactivas",
-        "pl": "*nie jest jeszcze zalecane do produkcji. tylko test beta **\nnaprawianie błędów: wybór pokoju, wyświetlacz konfiguracji odświeżania dla nieaktywnych pokoi",
-        "uk": "*ще не рекомендується використовувати для виробництва. бета тест тільки* ім'я*\nвиправлення помилок: вибір приміщення, дисплей конфігурації оновлень для неактивних кімнат",
-        "zh-cn": "* 尚未建议用于生产。 仅β试验* * 《大会正式记录,第五十八届会议,补编第5号》(a/c.6/61/rev.1)\n错误修补: 房间选择, 非活动房间刷新配置显示"
       }
     },
     "titleLang": {

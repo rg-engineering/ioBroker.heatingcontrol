@@ -289,9 +289,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 --->
-
-
-### **WORK IN PROGRESS**
+### 3.1.4 (2026-04-26)
 * (Eistee82 + Claude Opus 4.6) fix visualization step width: selecting 0.5°C stored 1.5 instead of 0.5 (#785)
 * (Eistee82 + Claude Opus 4.6) fix admin UI field name mismatch: ExtHandlingRepTime renamed to ExtHandlingActorRepTime (#787)
 * (Eistee82 + Claude Opus 4.6) fix off-by-one error in thermostat ID assignment (#788)
@@ -326,12 +324,6 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 3.0.4 (2026-02-22)
 * (René) see issue #730: bug fix: if window sensor uses "false" for Open window state was always set to open
-
-### 3.0.3 (2026-01-04)
-* (René) see issue #723: The OIDs selected in the OID selection dialog were not saved.
-* (René) bug fix: use correct actor ID
-* (René) bug fix: OID-Path for Path2HolidayPresentDP now taken from old version
-* (René) old device structure deleted after migration to avoid double import
 
 ## License
 MIT License
