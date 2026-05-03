@@ -325,6 +325,8 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 3.0.4 (2026-02-22)
 * (René) see issue #730: bug fix: if window sensor uses "false" for Open window state was always set to open
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 MIT License
 
