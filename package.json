@@ -32,7 +32,9 @@
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/build-tools": "^3.0.1",
     "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.2.2"
+    "@iobroker/testing": "^5.2.2",
+    "@types/node": "^22.19.19",
+    "typescript": "~5.9.3"
   },
   "main": "main.js",
   "bugs": {
