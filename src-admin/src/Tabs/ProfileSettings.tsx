@@ -177,10 +177,22 @@ const schema: ConfigItemPanel = {
             "lg": 2,
             "xl": 2,
         },
+        HeatingPeriodAsDP: {
+            newLine: true,
+            type: 'checkbox',
+            label: 'HeatingPeriodAsDP',
+            "xs": 12,
+            "sm": 2,
+            "md": 2,
+            "lg": 2,
+            "xl": 2,
+        },
+
         FixHeatingPeriodStart: {
             newLine: false,
             type: 'text',
             label: 'FixHeatingPeriodStart',
+            hidden: "if (!data.UseFixHeatingPeriod || data.HeatingPeriodAsDP) return true;",
             "xs": 12,
             "sm": 2,
             "md": 2,
