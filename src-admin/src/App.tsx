@@ -98,9 +98,14 @@ interface AppState extends GenericAppState {
 
 class App extends GenericApp<GenericAppProps, AppState> {
 
+    
+
     private uploadInputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: GenericAppProps) {
+
+        console.error("contructor called");
+
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
 

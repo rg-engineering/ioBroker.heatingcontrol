@@ -816,7 +816,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     isActive: true,
                     OID_Current: oidCurrent ?? '',
 
-                } as SettingTempSensorItem;
+                };
                 toAddMap.set(key, item);
             });
 
@@ -871,7 +871,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <Checkbox
                                 color="primary"
                                 checked={roomIsActive}
-                                onChange={(e) => persistRoomIsActive((e.target as HTMLInputElement).checked)}
+                                onChange={(e) => persistRoomIsActive((e.target).checked)}
                                 aria-label="room active checkbox"
                             />
                         }
@@ -961,7 +961,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                        exakt wie in der Doku (oder können je nach Minor-Version fehlen).
                                        Sicherer Weg: die slot-Objekte an `any` zu casten, damit TypeScript nicht meckert,
                                        während die Laufzeit-API von MUI korrekt genutzt wird. */
-                                    slots={({} as any)
+                                    slots={({})
                                     }
                                     slotProps={
                                         {

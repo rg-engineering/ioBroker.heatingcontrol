@@ -217,7 +217,7 @@ export default class LegacyMigrator {
                     WindowSensors: [],
                     Thermostats: [],
                     AdditionalTemperatureSensors: [],
-                } as any;
+                };
                 native.rooms.push(newRoomEntry);
                 return true;
             } else {
