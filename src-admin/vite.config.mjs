@@ -5,7 +5,7 @@ export default defineConfig(() => {
     return {
         build: {
             outDir: 'build',
-            sourcemap: true,
+            //sourcemap: true,
         },
         plugins: [react()],
         base: './',

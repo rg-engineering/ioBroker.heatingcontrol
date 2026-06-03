@@ -178,7 +178,7 @@ const schema: ConfigItemPanel = {
             "xl": 2,
         },
         HeatingPeriodAsDP: {
-            newLine: true,
+            newLine: false,
             type: 'checkbox',
             label: 'HeatingPeriodAsDP',
             "xs": 12,
@@ -203,6 +203,7 @@ const schema: ConfigItemPanel = {
             newLine: false,
             type: 'text',
             label: 'FixHeatingPeriodEnd',
+            hidden: "if (!data.UseFixHeatingPeriod || data.HeatingPeriodAsDP) return true;",
             "xs": 12,
             "sm": 2,
             "md": 2,
@@ -329,6 +330,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.UseFireplaceMode = params.UseFireplaceMode;
                     native.UseFireplaceModeResetAt = params.UseFireplaceModeResetAt;
                     native.UseFixHeatingPeriod = params.UseFixHeatingPeriod;
+                    native.HeatingPeriodAsDP = params.HeatingPeriodAsDP;
                     native.FixHeatingPeriodStart = params.FixHeatingPeriodStart;
                     native.FixHeatingPeriodEnd = params.FixHeatingPeriodEnd;
                     native.ThermostatModeIfNoHeatingperiod = params.ThermostatModeIfNoHeatingperiod;

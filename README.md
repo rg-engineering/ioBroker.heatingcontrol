@@ -291,6 +291,8 @@ When the adapter crashes or an other Code error happens, this error message that
 --->
 ### **WORK IN PROGRESS**
 - (copilot) Adapter requires node.js >= 22 now
+- (René) see issue #810: HeatingPeriod configurable via datapoint (like in admin) as option
+- (René) dependencies updated
 
 ### 3.1.4 (2026-04-26)
 * (Eistee82 + Claude Opus 4.6) fix visualization step width: selecting 0.5°C stored 1.5 instead of 0.5 (#785)

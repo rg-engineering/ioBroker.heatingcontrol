@@ -49,6 +49,7 @@ const SetVis = require("./lib/vis").SetVis;
 const HandleStateChangeVis = require("./lib/vis").HandleStateChangeVis;
 
 const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
+const CreateCron4HeatingPeriod = require("./lib/cronjobs").CreateCron4HeatingPeriod;
 
 const Check4Thermostat = require("./lib/devicedetect").Check4Thermostat;
 const Check4Actor = require("./lib/devicedetect").Check4Actor;
@@ -737,6 +738,9 @@ async function HandleStateChangeGeneral(id, state) {
         } else if (ids[2] == "PowerInterruptionPeriodActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
+        } else if (ids[2] == "FixHeatingPeriodStart" || ids[2] == "FixHeatingPeriodEnd") {
+            bRet = true;
+            CreateCron4HeatingPeriod();
         } else if (ids[4] == "TemperaturOverride") {
             //heatingcontrol.0.Rooms.Küche.TemperaturOverride
             bRet = true;

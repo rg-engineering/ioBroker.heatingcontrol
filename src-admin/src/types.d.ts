@@ -134,6 +134,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     UseFireplaceMode: boolean;
     UseFireplaceModeResetAt: Date;
     UseFixHeatingPeriod: boolean;
+    HeatingPeriodAsDP: boolean;
     FixHeatingPeriodStart: string;
     FixHeatingPeriodEnd: string;
     ThermostatModeIfNoHeatingperiod: number;
