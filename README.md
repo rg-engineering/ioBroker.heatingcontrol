@@ -289,7 +289,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 --->
-### **WORK IN PROGRESS**
+### 3.2.0 (2026-06-03)
 - (copilot) Adapter requires node.js >= 22 now
 - (René) see issue #810: HeatingPeriod configurable via datapoint (like in admin) as option
 - (René) dependencies updated
@@ -326,9 +326,6 @@ When the adapter crashes or an other Code error happens, this error message that
 * (softwarecrash) Add optional window-open thermostat priority
 * (René) changes requested by adapter checker
 * (René) dependencies updated
-
-### 3.0.4 (2026-02-22)
-* (René) see issue #730: bug fix: if window sensor uses "false" for Open window state was always set to open
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 

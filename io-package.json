@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.1.4",
+    "version": "3.2.0",
     "news": {
+      "3.2.0": {
+        "en": "Adapter requires node.js >= 22 now\nsee issue #810: HeatingPeriod configurable via datapoint (like in admin) as option\ndependencies updated",
+        "de": "Adapter benötigt node.js >= 22 jetzt\nsiehe Ausgabe #810: HeizungPeriod konfigurierbar über Datenpunkt (wie bei admin) als Option\naktualisierte abhängigkeiten",
+        "ru": "Адаптер требует node.js >= 22 сейчас\nпроблема #810: Настройка HeatingPeriod через точку данных (например, в админ)\nобновленные зависимости",
+        "pt": "Adaptador requer nod.js >= 22 agora\nver problema #810: AquecimentoPeriod configurável via datapoint (como em admin) como opção\ndependências atualizadas",
+        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nzie probleem #810: VerwarmingPeriod configureerbaar via datapoint (zoals in admin) als optie\nafhankelijkheden bijgewerkt",
+        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nvoir le numéro #810: ChauffagePériode configurable via datapoint (comme dans admin) comme option\ndépendances mises à jour",
+        "it": "Adattatore richiede node.js >= 22 ora\nvedi numero #810: HeatPeriod configurabile tramite datapoint (come in admin) come opzione\ndipendenze aggiornate",
+        "es": "Adaptador requiere node.js ю= 22 ahora\nver número #810: CalefacciónPeriod configurable vía datapoint (como en admin) como opción\ndependencias actualizadas",
+        "pl": "Adapter wymaga node.js > = 22\nzobacz numer # 810: HeatingPeriod konfigurowalny przez punkt danych (jak w admin) jako opcja\nzaktualizowane zależności",
+        "uk": "Адаптер вимагає node.js >= 22 тепер\nдив. питання #810: Налаштування опалювальних пристроїв через точку даних (наприклад, в адміні) як варіант\nоновлені залежності",
+        "zh-cn": "适配器需要节点.js 现在22\n参见第810期:通过数据点(如管理点)加热可配置\n更新依赖关系"
+      },
       "3.1.4": {
         "en": "multiple bugs, inconsistencies and missing config defaults",
         "de": "mehrere Bugs, Inkonsistenzen und fehlende Konfigurationsvorgaben",
@@ -80,19 +93,6 @@
         "pl": "zobacz problem # 730: błąd naprawić: jeśli czujnik okna używa \"false\" dla stanu Otwórz okno zawsze było otwarte",
         "uk": "переглянути номер #730: Виправлення помилок: якщо у віконному сенсорі використовується \"false\" для відкритого вікна",
         "zh-cn": "参见问题 # 730: 错误修正: 如果窗口传感器使用“ 假” 来打开窗口状态, 总是被设定打开"
-      },
-      "3.0.3": {
-        "en": "see issue #723: The OIDs selected in the OID selection dialog were not saved.\nbug fix: use correct actor ID\nbug fix: OID-Path for Path2HolidayPresentDP now taken from old version\nold device structure deleted after migration to avoid double import",
-        "de": "siehe Ausgabe #723: Die im OID Auswahldialog ausgewählten OIDs wurden nicht gespeichert.\nfehlerbehebung: Verwenden Sie korrekte Aktor-ID\nfehlerbehebung: OID-Path für Path2Holiday Gegenwart DP jetzt aus der alten Version\nalte gerätestruktur nach der migration gelöscht, um doppelimport zu vermeiden",
-        "ru": "проблема No 723: ОИД, выбранные в диалоге выбора ОИД, не были сохранены.\nисправление ошибок: используйте правильный идентификатор актера\nисправление ошибок: Обсуждение Path2Holiday Презентация DP теперь взят из старой версии\nстарая структура устройства удалена после миграции, чтобы избежать двойного импорта",
-        "pt": "ver problema #723: Os OIDs selecionados na janela de seleção do OID não foram salvos.\ncorreção de erros: usar o ID correto do ator\ncorreção de erros: Caminho OID para o Caminho2Holiday Presente DP agora retirado da versão antiga\nestrutura antiga do dispositivo apagada após a migração para evitar a importação dupla",
-        "nl": "zie probleem #723: De OID's die geselecteerd zijn in het OID-selectievenster zijn niet opgeslagen.\nbug fix: gebruik de juiste actor ID\nbugfix: OID-pad voor Path2Holiday Aanwezig DP nu genomen van oude versie\noude apparaatstructuur verwijderd na migratie om dubbele import te voorkomen",
-        "fr": "voir le numéro 723 : Les OID sélectionnés dans la boîte de dialogue de sélection de l'OID n'ont pas été enregistrés.\ncorrection du bug : utiliser l'identifiant de l'acteur correct\ncorrection du bug & #160;: OID-Path pour Path2Holiday Présent DP maintenant pris de l'ancienne version\nstructure ancienne du dispositif supprimé après la migration pour éviter une double importation",
-        "it": "vedi problema #723: I OID selezionati nella finestra di dialogo di selezione OID non sono stati salvati.\nbug fix: utilizzare corretto attore ID\ncorrezione bug: OID-Path per Path2Holiday Presente DP ora preso dalla vecchia versione\nvecchia struttura del dispositivo cancellato dopo la migrazione per evitare doppio importazione",
-        "es": "ver número #723: Los OID seleccionados en el diálogo de selección OID no fueron guardados.\nbug fix: use correct actor ID\nbug fix: OID-Path para Path2Holiday Presente DP now taken from old version\nantigua estructura del dispositivo eliminada después de la migración para evitar la doble importación",
-        "pl": "zobacz numer # 723: OID wybrane w oknie wyboru OID nie zostały zapisane.\nfix: użyj poprawnego identyfikatora aktora\npoprawka błędu: OID- Path for Path2Holiday Obecny DP teraz wzięte ze starej wersji\nstara struktura urządzenia usunięta po migracji, aby uniknąć podwójnego importu",
-        "uk": "див. питання #723: Вибрані OID у діалоговому вікні вибору OID не збережені.\nвиправлення помилок: використовувати правильний актор ID\nвиправлення помилок: OID-Path для Path2Holiday Головна DP тепер приймається з старої версії\nстара структура пристрою видалена після міграції, щоб уникнути подвійний імпорт",
-        "zh-cn": "参见第 723 期: OID 选择对话框中选择的 OID 未保存 .\n错误修复: 使用正确的演员标识\n错误修正 : Path2Holiday 的 OID- 路径 现 DP 现在取自旧版本\n迁移后删除旧设备结构以避免重复导入"
       }
     },
     "titleLang": {
