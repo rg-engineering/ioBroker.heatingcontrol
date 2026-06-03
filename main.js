@@ -740,7 +740,7 @@ async function HandleStateChangeGeneral(id, state) {
             ChangeStatus(ids[2], "all", state.val);
         } else if (ids[2] == "FixHeatingPeriodStart" || ids[2] == "FixHeatingPeriodEnd") {
             bRet = true;
-            CreateCron4HeatingPeriod();
+            await CreateCron4HeatingPeriod();
         } else if (ids[4] == "TemperaturOverride") {
             //heatingcontrol.0.Rooms.Küche.TemperaturOverride
             bRet = true;
