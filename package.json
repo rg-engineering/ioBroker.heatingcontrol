@@ -34,7 +34,8 @@
     "@iobroker/eslint-config": "^2.2.0",
     "@iobroker/testing": "^5.2.2",
     "@tsconfig/node22": "^22.0.5",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "@types/node": "^22.19.20"
   },
   "main": "main.js",
   "bugs": {
