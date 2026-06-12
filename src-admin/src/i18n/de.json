@@ -88,7 +88,7 @@
   "TemperatureDecrease": " Temperaturabsenkung",
   "ThermostatHandlesWindowOpen": "Thermostat behandelt \"Fenster ist offen\"",
   "WindowOpenHasPriorityOverThermostat": "Fenster offen hat Vorrang vor Thermostat",
-  "ThermostatModeIfNoHeatingperiod": "keine Heizperiode",
+  "ThermostatModeIfNoHeatingperiod": "Thermostatbetrieb wenn keine Heizperiode",
   "ThermostatSettings": "Thermostateinstellungen",
   "UseActorsIfNoThermostat": "Stellantriebe verwenden, wenn kein Thermostat vorhanden ist",
   "UseActorsIfNotHeating": "Stellantriebe verwenden, wenn keine Heizperiode vorhanden ist",
@@ -229,5 +229,10 @@
   "Selected file": "Ausgewählte Datei",
   "Download profile": "Profil herunterladen",
   "Upload profile": "Profil hochladen",
-  "Upload result": "Ergebnis des Hochladens"
+  "Upload result": "Ergebnis des Hochladens",
+  "UseValveProtection": "Ventilschutz verwenden (außerhalb Heizperiode)",
+  "ValveProtectionInterval": "Intervall [Tage]",
+  "ValveProtectionTime": "Uhrzeit [hh:mm]",
+  "ValveProtectionWaitTime": "Wartezeit je Phase [Sek.]",
+  "ValveProtectionCloseTemp": "Temperatur 'ganz zu' (Frostschutz)"
 }

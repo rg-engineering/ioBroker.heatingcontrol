@@ -226,5 +226,10 @@
   "Selected file": "Geselecteerd bestand",
   "Download profile": "Profiel downloaden",
   "Upload profile": "Profiel uploaden",
-  "Upload result": "Uploadresultaat"
+  "Upload result": "Uploadresultaat",
+  "UseValveProtection": "klepbescherming gebruiken (buiten verwarmingsperiode)",
+  "ValveProtectionInterval": "interval [dagen]",
+  "ValveProtectionTime": "tijd [hh:mm]",
+  "ValveProtectionWaitTime": "wachttijd per fase [sec]",
+  "ValveProtectionCloseTemp": "temperatuur 'volledig dicht' (vorstbescherming)"
 }

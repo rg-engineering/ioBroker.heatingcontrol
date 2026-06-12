@@ -226,5 +226,10 @@
   "Selected file": "File selezionato",
   "Download profile": "Scarica profilo",
   "Upload profile": "Carica profilo",
-  "Upload result": "Risultato del caricamento"
+  "Upload result": "Risultato del caricamento",
+  "UseValveProtection": "usa la protezione della valvola (fuori dal periodo di riscaldamento)",
+  "ValveProtectionInterval": "intervallo [giorni]",
+  "ValveProtectionTime": "ora [hh:mm]",
+  "ValveProtectionWaitTime": "tempo di attesa per fase [sec]",
+  "ValveProtectionCloseTemp": "temperatura 'completamente chiuso' (protezione antigelo)"
 }

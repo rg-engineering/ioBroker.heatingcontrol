@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
 /* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
+ 
 import React from 'react';
 
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
@@ -247,7 +247,7 @@ const schema: ConfigItemPanel = {
             "lg": 2,
             "xl": 2,
         },
-        
+
         //=======================================================================
         _header3: {
             newLine: true,

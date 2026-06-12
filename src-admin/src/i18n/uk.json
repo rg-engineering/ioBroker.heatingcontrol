@@ -226,5 +226,10 @@
   "Selected file": "Вибраний файл",
   "Download profile": "Завантажити профіль",
   "Upload profile": "Вивантажити профіль",
-  "Upload result": "Результат вивантаження"
+  "Upload result": "Результат вивантаження",
+  "UseValveProtection": "використовувати захист клапана (поза опалювальним періодом)",
+  "ValveProtectionInterval": "інтервал [дні]",
+  "ValveProtectionTime": "час [гг:хх]",
+  "ValveProtectionWaitTime": "час очікування на фазу [сек]",
+  "ValveProtectionCloseTemp": "температура «повністю закрито» (захист від замерзання)"
 }

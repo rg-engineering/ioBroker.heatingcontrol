@@ -226,5 +226,10 @@
   "Selected file": "已选择的文件",
   "Download profile": "下载配置文件",
   "Upload profile": "上传配置文件",
-  "Upload result": "上传结果"
+  "Upload result": "上传结果",
+  "UseValveProtection": "使用阀门保护（供暖期之外）",
+  "ValveProtectionInterval": "间隔[天]",
+  "ValveProtectionTime": "时间[hh:mm]",
+  "ValveProtectionWaitTime": "每阶段等待时间[秒]",
+  "ValveProtectionCloseTemp": "‘完全关闭’温度（防冻）"
 }

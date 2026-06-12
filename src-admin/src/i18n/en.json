@@ -229,5 +229,10 @@
   "Selected file": "Selected file",
   "Download profile": "Download profile",
   "Upload profile": "Upload profile",
-  "Upload result": "Upload result"
+  "Upload result": "Upload result",
+  "UseValveProtection": "use valve protection (outside heating period)",
+  "ValveProtectionInterval": "interval [days]",
+  "ValveProtectionTime": "time [hh:mm]",
+  "ValveProtectionWaitTime": "wait time per phase [sec]",
+  "ValveProtectionCloseTemp": "temperature 'fully closed' (frost protection)"
 }

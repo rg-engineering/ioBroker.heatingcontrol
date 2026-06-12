@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
-/* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
+ 
+ 
 import React from 'react';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 
@@ -26,6 +26,8 @@ import TabMainSettings from './Tabs/MainSettings';
 import TabRoomSettings from './Tabs/RoomSettings';
 import TabProfileSettings from './Tabs/ProfileSettings';
 import TabMaintenance from './Tabs/Maintenance';
+import TabLogging from './Tabs/Logging';
+import TabVisSettings from './Tabs/VisSettings';
 
 
 import enLang from './i18n/en.json';
@@ -81,8 +83,16 @@ const tabs: {
             title: 'Room_Settings',
         },
         {
+            name: 'vissettings',
+            title: 'VisSettings',
+        },
+        {
             name: 'maintenance',
             title: 'Maintenance',
+        },
+        {
+            name: 'logging',
+            title: 'Logging',
         },
     ];
 
@@ -222,7 +232,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
         } catch (err) {
             console.error('Fehler beim Download der Konfiguration:', err);
             // einfache Nutzerinfo
-            // eslint-disable-next-line no-alert
+             
             alert(I18n.t('Failed to download configuration'));
         }
     };
@@ -248,11 +258,11 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 const parsed = JSON.parse(text) as HeatingControlAdapterConfig;
                 // Set native and mark as changed
                 this.setState({ native: parsed as any, changed: this.getIsChanged(parsed as any) });
-                // eslint-disable-next-line no-alert
+                 
                 alert(I18n.t('Configuration loaded from file'));
             } catch (err) {
                 console.error('Fehler beim Einlesen der Konfigurationsdatei:', err);
-                // eslint-disable-next-line no-alert
+                 
                 alert(I18n.t('Invalid configuration file'));
             } finally {
                 // Clear file input so same file can be selected again if needed
@@ -263,7 +273,7 @@ class App extends GenericApp<GenericAppProps, AppState> {
         };
         reader.onerror = (ev) => {
             console.error('FileReader error', ev);
-            // eslint-disable-next-line no-alert
+             
             alert(I18n.t('Failed to read file'));
         };
         reader.readAsText(file);
@@ -378,6 +388,54 @@ class App extends GenericApp<GenericAppProps, AppState> {
    
     
 
+    renderVisSettings(): React.JSX.Element {
+        if (!this.state.systemConfig) {
+            return <div>{I18n.t('Loading...')}</div>;
+        }
+
+        return (
+            <TabVisSettings
+                alive={this.state.alive}
+                common={this.common || ({} as ioBroker.InstanceCommon)}
+                socket={this.socket}
+                native={this.state.native as HeatingControlAdapterConfig}
+                instance={this.instance}
+                adapterName={this.adapterName}
+                changeNative={(native): void =>
+                    this.setState({ native, changed: this.getIsChanged(native) })
+                }
+                themeType={this.state.themeType}
+                theme={this.state.theme}
+                themeName={this.state.themeName}
+                systemConfig={this.state.systemConfig}
+            />
+        );
+    }
+
+    renderLogging(): React.JSX.Element {
+        if (!this.state.systemConfig) {
+            return <div>{I18n.t('Loading...')}</div>;
+        }
+
+        return (
+            <TabLogging
+                alive={this.state.alive}
+                common={this.common || ({} as ioBroker.InstanceCommon)}
+                socket={this.socket}
+                native={this.state.native as HeatingControlAdapterConfig}
+                instance={this.instance}
+                adapterName={this.adapterName}
+                changeNative={(native): void =>
+                    this.setState({ native, changed: this.getIsChanged(native) })
+                }
+                themeType={this.state.themeType}
+                theme={this.state.theme}
+                themeName={this.state.themeName}
+                systemConfig={this.state.systemConfig}
+            />
+        );
+    }
+
     renderTab(): React.JSX.Element {
 
         //console.log("renderTab called");
@@ -393,6 +451,12 @@ class App extends GenericApp<GenericAppProps, AppState> {
         }
         if (this.state.selectedTab === 'maintenance') {
             return this.renderMaintenance();
+        }
+        if (this.state.selectedTab === 'vissettings') {
+            return this.renderVisSettings();
+        }
+        if (this.state.selectedTab === 'logging') {
+            return this.renderLogging();
         }
 
         //console.log("renderTab done");

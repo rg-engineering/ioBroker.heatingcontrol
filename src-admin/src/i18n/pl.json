@@ -226,5 +226,10 @@
   "Selected file": "Wybrany plik",
   "Download profile": "Pobierz profil",
   "Upload profile": "Prześlij profil",
-  "Upload result": "Wynik przesyłania"
+  "Upload result": "Wynik przesyłania",
+  "UseValveProtection": "użyj ochrony zaworu (poza okresem grzewczym)",
+  "ValveProtectionInterval": "interwał [dni]",
+  "ValveProtectionTime": "godzina [hh:mm]",
+  "ValveProtectionWaitTime": "czas oczekiwania na fazę [sek]",
+  "ValveProtectionCloseTemp": "temperatura 'całkowicie zamknięte' (ochrona przed mrozem)"
 }

@@ -226,5 +226,10 @@
   "Selected file": "Fichier sélectionné",
   "Download profile": "Télécharger le profil",
   "Upload profile": "Téléverser le profil",
-  "Upload result": "Résultat du téléversement"
+  "Upload result": "Résultat du téléversement",
+  "UseValveProtection": "utiliser la protection de vanne (hors période de chauffage)",
+  "ValveProtectionInterval": "intervalle [jours]",
+  "ValveProtectionTime": "heure [hh:mm]",
+  "ValveProtectionWaitTime": "temps d'attente par phase [s]",
+  "ValveProtectionCloseTemp": "température 'complètement fermé' (protection antigel)"
 }
