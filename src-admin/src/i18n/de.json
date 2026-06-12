@@ -88,7 +88,7 @@
   "TemperatureDecrease": " Temperaturabsenkung",
   "ThermostatHandlesWindowOpen": "Thermostat behandelt \"Fenster ist offen\"",
   "WindowOpenHasPriorityOverThermostat": "Fenster offen hat Vorrang vor Thermostat",
-  "ThermostatModeIfNoHeatingperiod": "Thermostatbetrieb wenn keine Heizperiode",
+  "ThermostatModeIfNoHeatingperiod": "keine Heizperiode",
   "ThermostatSettings": "Thermostateinstellungen",
   "UseActorsIfNoThermostat": "Stellantriebe verwenden, wenn kein Thermostat vorhanden ist",
   "UseActorsIfNotHeating": "Stellantriebe verwenden, wenn keine Heizperiode vorhanden ist",
