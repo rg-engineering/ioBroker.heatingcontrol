@@ -17,8 +17,6 @@ import {
     Button,
     Badge,
     Box,
-    Divider,
-    Typography,
     TextField
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
@@ -31,7 +29,12 @@ import SettingTempSensorsTable from '../Components/SettingTempSensorsTable';
 import type { SettingTempSensorItem } from '../Components/SettingTempSensorsTable';
 import SettingWindowSensorsTable from '../Components/SettingWindowSensorsTable';
 import type { SettingWindowSensorItem } from '../Components/SettingWindowSensorsTable';
+import BoxDivider from '../Components/BoxDivider'
 
+
+//todo
+//gewerk speichern
+//selectboxen vorbelegen, damit der Text richtig sichtbar wird
 
 
 interface SettingsProps {
@@ -125,6 +128,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
             return false;
         }
     });
+
 
 
     // Lokaler State für Thermostate des aktuell ausgewählten Raums
@@ -224,7 +228,14 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
     }, [props.native.roomSelector]);
 
-    // Wenn sich selectedRoom oder props.native.rooms ändert, Thermostate laden
+    useEffect(() => {
+        const external = (props.native as any).functionSelector ?? '';
+        if (external !== selectedFunction) {
+            setSelectedFunction(external);
+        }
+    }, [props.native.functionSelector]);
+
+    // Wenn sich selectedRoom oder props.native.rooms ändert, alles neu laden
     useEffect(() => {
         if (!selectedRoom) {
             setThermostats([]);
@@ -237,6 +248,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         const roomCfg = findRoom(selectedRoom);
 
         if (roomCfg === undefined) {
+            setThermostats([]);
+            setActors([]);
+            setWindowSensors([]);
+            setAdditionalSensors([]);
+            setRoomIsActive(false);
             return;
         }
         // isActive für aktuellen Raum laden
@@ -319,7 +335,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         if (!selectedRoom) {
             return;
         }
-        setRoomFields(selectedRoom, { AdditionalSensors: newList });
+        setRoomFields(selectedRoom, { AdditionalTemperatureSensors: newList });
         setAdditionalSensors(newList);
     };
 
@@ -353,10 +369,20 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         props.changeNative(newNative);
     };
 
+
+
     // onChange-Handler für die Selectbox (korrekter Typ für MUI Select)
     const handleFunctionChange = (event: SelectChangeEvent<string>):void => {
         const value = event.target.value ?? '';
         setSelectedFunction(value);
+
+        // Persistiere die Auswahl durch changeNative (wie bei roomSelector)
+        const newNative = {
+            ...(props.native as any),
+            functionSelector: value,
+        } as HeatingControlAdapterConfig;
+
+        props.changeNative(newNative);
     };
 
     // Änderungen an einer Thermostat-Zeile
@@ -790,7 +816,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     isActive: true,
                     OID_Current: oidCurrent ?? '',
 
-                } as SettingTempSensorItem;
+                };
                 toAddMap.set(key, item);
             });
 
@@ -808,6 +834,15 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
         }
     }
 
+    // Berechnete Anzeige-Werte für Selects: zeigen ersten Listeneintrag, wenn kein value gesetzt ist
+    //const roomDisplayValue = selectedRoom || (roomsList.length > 0 ? roomsList[0].id : '');
+    //const functionDisplayValue = selectedFunction || (functionsList.length > 0 ? functionsList[0].id : '');
+
+
+    console.warn("selectedRoom " + selectedRoom);
+
+    console.warn("selectedFunction " + selectedFunction);
+
     return (
         <div style={{ width: 'calc(100% - 8px)', minHeight: '100%' }}>
             <div style={{ marginBottom: 12 }}>
@@ -815,11 +850,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="room-selector-label">{I18n.t('select a room')}</InputLabel>
                     <Select
                         labelId="room-selector-label"
-                        value={selectedRoom ?? ''}
+                        value={selectedRoom ?? ' '}
                         onChange={handleRoomChange}
                         displayEmpty
                     >
-                        <MenuItem value="">
+                        <MenuItem value=" ">
                             <em>{I18n.t('no room selected')}</em>
                         </MenuItem>
                         {roomsList.map(r => (
@@ -836,7 +871,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                             <Checkbox
                                 color="primary"
                                 checked={roomIsActive}
-                                onChange={(e) => persistRoomIsActive((e.target as HTMLInputElement).checked)}
+                                onChange={(e) => persistRoomIsActive((e.target).checked)}
                                 aria-label="room active checkbox"
                             />
                         }
@@ -850,11 +885,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <InputLabel id="function-selector-label">{I18n.t('select a function')}</InputLabel>
                     <Select
                         labelId="function-selector-label"
-                        value={selectedFunction ?? ''}
+                        value={selectedFunction ?? " "} 
                         onChange={handleFunctionChange}
                         displayEmpty
                     >
-                        <MenuItem value="">
+                        <MenuItem value=" ">
                             <em>{I18n.t('no function selected')}</em>
                         </MenuItem>
                         {functionsList.map(r => (
@@ -874,11 +909,10 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                     <FormControl fullWidth variant="standard">
 
 
-                        <Divider>
-                            <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                {I18n.t('thermostats')}
-                            </Typography>
-                        </Divider>
+                        <BoxDivider
+                            Name={I18n.t('thermostats')}
+                            theme={props.theme}
+                            />
 
 
 
@@ -927,7 +961,7 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
                                        exakt wie in der Doku (oder können je nach Minor-Version fehlen).
                                        Sicherer Weg: die slot-Objekte an `any` zu casten, damit TypeScript nicht meckert,
                                        während die Laufzeit-API von MUI korrekt genutzt wird. */
-                                    slots={({} as any)
+                                    slots={({})
                                     }
                                     slotProps={
                                         {
@@ -957,11 +991,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseActors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('actors')}
-                                    </Typography>
-                                </Divider>
+
+                                <BoxDivider
+                                    Name={I18n.t('actors')}
+                                    theme={props.theme}
+                                />
 
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
@@ -1017,11 +1051,11 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseSensors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('window sensors')}
-                                    </Typography>
-                                </Divider>
+ 
+                                <BoxDivider
+                                    Name={I18n.t('window sensors')}
+                                    theme={props.theme}
+                                />
 
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
@@ -1074,11 +1108,12 @@ export default function RoomSettings(props: SettingsProps): React.JSX.Element {
 
                         {props.native.UseAddTempSensors ? (
                             <div>
-                                <Divider>
-                                    <Typography component="span" sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                                        {I18n.t('additional temperature sensors')}
-                                    </Typography>
-                                </Divider>
+
+
+                                <BoxDivider
+                                    Name={I18n.t('additional temperature sensors')}
+                                    theme={props.theme}
+                                />
 
                                 <Box component="section" sx={{ p: 2, border: 'none' }}>
                                     <Badge color="primary" id='hint_AddTempSensors' sx={{ display: 'block', mb: 2 }}>

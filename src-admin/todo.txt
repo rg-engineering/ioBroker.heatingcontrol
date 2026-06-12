@@ -1,7 +1,5 @@
 
 
-* Übersetzungen
-
 
 * Telegramm-User holen
 

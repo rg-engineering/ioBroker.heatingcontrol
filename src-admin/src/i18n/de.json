@@ -87,6 +87,7 @@
   "Telegram instance": "Telegram-Instanz",
   "TemperatureDecrease": " Temperaturabsenkung",
   "ThermostatHandlesWindowOpen": "Thermostat behandelt \"Fenster ist offen\"",
+  "WindowOpenHasPriorityOverThermostat": "Fenster offen hat Vorrang vor Thermostat",
   "ThermostatModeIfNoHeatingperiod": "Thermostatbetrieb wenn keine Heizperiode",
   "ThermostatSettings": "Thermostateinstellungen",
   "UseActorsIfNoThermostat": "Stellantriebe verwenden, wenn kein Thermostat vorhanden ist",
@@ -177,5 +178,32 @@
   "useExtHandling": "erweiterte Handhabung",
   "useExtHandling_hint": "Bei der erweiterten Behandlung wird geprüft, ob der Wert wirklich gesetzt wurde und ob die Bestätigung gesetzt wurde. ",
   "use_actors": "Aktoren verwenden",
-  "use_sensors": "Sensoren verwenden"
+  "use_sensors": "Sensoren verwenden",
+
+
+  "Main_settings": "Haupteinstellungen",
+  "Profile_Settings": "Profileinstellungen",
+  "Room_Settings": "Raumeinstellungen",
+  "select a room": "Raum auswählen",
+  "select a function": "Funktion auswählen",
+  "OID Target": "OID Ziel",
+  "OID Current": "OID Aktuell",
+  "activities": "Aktivitäten",
+  "name": "Name",
+  "activ": "aktiv",
+  "General Maintenance": "Allgemeine Wartung",
+  "Profile Maintenance": "Profil-Wartung",
+  "notificationEnabled": "Benachrichtungen aktiviert",
+  "enableCSVLogging": "CSV-Logging aktiviert",
+  "notificationsType": "Benachrichtungstyp",
+
+  "DataType": "Datentyp",
+  "valueOpen": "Wert für 'offen'",
+  "valueClosed": "Wert für 'geschlossen'",
+  "nothing configured": "nichts konfiguriert",
+  "room is inactive - activate to edit settings": "Raum ist nicht aktiv - Aktivieren, um Einstellungen zu bearbeiten",
+  "select a room to display settings": "einen Raum auswählen, um die Einstellungen zu sehen",
+  "no room selected": "kein Raum ausgewählt",
+  "no function selected": "keine Funktion ausgewählt"
+
 }

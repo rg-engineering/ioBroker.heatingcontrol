@@ -18,8 +18,8 @@ const utils = require("@iobroker/adapter-core");
 //const findObjectByKey = require("./lib/support_tools.js").findObjectByKey;
 const GetCurrentProfile = require("./lib/database").GetCurrentProfile;
 
-const { existsSync, mkdirSync } = require('fs');
-const { join } = require('path');
+const { existsSync, mkdirSync } = require('node:fs');
+const { join } = require('node:path');
 
 //======================================
 const CreateDatapoints = require("./lib/datapoints").CreateDatapoints;
@@ -49,6 +49,7 @@ const SetVis = require("./lib/vis").SetVis;
 const HandleStateChangeVis = require("./lib/vis").HandleStateChangeVis;
 
 const CreateCronJobs = require("./lib/cronjobs").CreateCronJobs;
+const CreateCron4HeatingPeriod = require("./lib/cronjobs").CreateCron4HeatingPeriod;
 
 const Check4Thermostat = require("./lib/devicedetect").Check4Thermostat;
 const Check4Actor = require("./lib/devicedetect").Check4Actor;
@@ -286,6 +287,11 @@ async function ListThermostats(obj) {
     const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
     const roomIdInList = GetRoomId(roomID);
 
+    if (roomIdInList === -1) {
+        adapter.log.warn("room not found in config: " + roomID);
+        return { result: "error", devices: [], status: "room not found" };
+    }
+
     if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
         status = devicesInRoomWithFunction.length + " devices found ";
 
@@ -351,6 +357,11 @@ async function ListActors(obj) {
     const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
     const roomIdInList = GetRoomId(roomID);
 
+    if (roomIdInList === -1) {
+        adapter.log.warn("room not found in config: " + roomID);
+        return { result: "error", devices: [], status: "room not found" };
+    }
+
     if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
         status = devicesInRoomWithFunction.length + " devices found ";
 
@@ -358,7 +369,7 @@ async function ListActors(obj) {
 
             // 🔍 Check: OID bereits in Thermostat-Liste?
             const alreadyUsed = adapter.config.rooms[roomIdInList].Actors.some(t =>
-                t.OID_Target === id 
+                t.OID_Target === id
             );
 
             //wenn OID bereits als Thermostat verwendet wird, dann überspringen
@@ -415,6 +426,11 @@ async function ListSensors(obj) {
     //hole alle Geräte, die im Raum und in Funktion member sind
     const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
     const roomIdInList = GetRoomId(roomID);
+
+    if (roomIdInList === -1) {
+        adapter.log.warn("room not found in config: " + roomID);
+        return { result: "error", devices: [], status: "room not found" };
+    }
 
     if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
         status = devicesInRoomWithFunction.length + " devices found ";
@@ -478,6 +494,11 @@ async function ListAddTempSensors(obj) {
     //hole alle Geräte, die im Raum und in Funktion member sind
     const devicesInRoomWithFunction = await SearchRoomAndFunction(roomID, functionID);
     const roomIdInList = GetRoomId(roomID);
+
+    if (roomIdInList === -1) {
+        adapter.log.warn("room not found in config: " + roomID);
+        return { result: "error", devices: [], status: "room not found" };
+    }
 
     if (devicesInRoomWithFunction !== undefined && devicesInRoomWithFunction.length > 0) {
         status = devicesInRoomWithFunction.length + " devices found ";
@@ -610,7 +631,7 @@ async function HandleStateChange(id, state) {
 
 async function HandleStateChangeGeneral(id, state) {
     let bRet = false;
-    //adapter.log.debug("HandleStateChangeGeneral " + id);
+    adapter.log.debug("HandleStateChangeGeneral " + id);
 
     try {
         const ids = id.split(".");
@@ -717,6 +738,9 @@ async function HandleStateChangeGeneral(id, state) {
         } else if (ids[2] == "PowerInterruptionPeriodActive") {
             bRet = true;
             ChangeStatus(ids[2], "all", state.val);
+        } else if (ids[2] == "FixHeatingPeriodStart" || ids[2] == "FixHeatingPeriodEnd") {
+            bRet = true;
+            await CreateCron4HeatingPeriod();
         } else if (ids[4] == "TemperaturOverride") {
             //heatingcontrol.0.Rooms.Küche.TemperaturOverride
             bRet = true;
@@ -789,7 +813,7 @@ async function GetCurrentRoom() {
 
     const temp = await adapter.getStateAsync("vis.ChoosenRoom");
 
-    if (temp != null &&  temp !== undefined) {
+    if (temp != null) {
         sRet = temp.val;
     } else {
         adapter.log.error("could not read vis.ChoosenRoom " + JSON.stringify(temp));
@@ -1212,17 +1236,17 @@ async function SaveProfile(obj) {
                         const WindowOpenDecrease = await adapter.getStateAsync(id1 + ".WindowOpenDecrease");
                         const AbsentDecrease = await adapter.getStateAsync(id1 + ".AbsentDecrease");
                         const VacationAbsentDecrease = await adapter.getStateAsync(id1 + ".VacationAbsentDecrease");
-                        let FireplaceModeDecrease = 0;
+                        let FireplaceModeDecrease = null;
                         if (adapter.config.UseFireplaceMode) {
                             FireplaceModeDecrease = await adapter.getStateAsync(id1 + ".FireplaceModeDecrease");
                         }
                         const decrease = {
-                            GuestIncrease: GuestIncrease.val,
-                            PartyDecrease: PartyDecrease.val,
-                            WindowOpenDecrease: WindowOpenDecrease.val,
-                            AbsentDecrease: AbsentDecrease.val,
-                            VacationAbsentDecrease: VacationAbsentDecrease.val,
-                            FireplaceModeDecrease: FireplaceModeDecrease.val
+                            GuestIncrease: GuestIncrease != null ? GuestIncrease.val : 0,
+                            PartyDecrease: PartyDecrease != null ? PartyDecrease.val : 0,
+                            WindowOpenDecrease: WindowOpenDecrease != null ? WindowOpenDecrease.val : 0,
+                            AbsentDecrease: AbsentDecrease != null ? AbsentDecrease.val : 0,
+                            VacationAbsentDecrease: VacationAbsentDecrease != null ? VacationAbsentDecrease.val : 0,
+                            FireplaceModeDecrease: FireplaceModeDecrease != null ? FireplaceModeDecrease.val : 0
                         };
                         adapter.log.debug("decrease " + JSON.stringify(decrease));
                         room2Save.profiles[profile].decrease = decrease;

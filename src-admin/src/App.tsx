@@ -98,8 +98,14 @@ interface AppState extends GenericAppState {
 
 class App extends GenericApp<GenericAppProps, AppState> {
 
+    
+
     private uploadInputRef: React.RefObject<HTMLInputElement>;
+
     constructor(props: GenericAppProps) {
+
+        console.error("contructor called");
+
         const extendedProps = { ...props };
         extendedProps.encryptedFields = ['pass'];
 
@@ -123,6 +129,10 @@ class App extends GenericApp<GenericAppProps, AppState> {
         extendedProps.sentryDSN = window.sentryDSN;
 
         super(props, extendedProps);
+
+        // Fix: Initialisiere uploadInputRef
+        this.uploadInputRef = React.createRef();
+
         this.state = {
             ...this.state,
             moreLoaded: false,
@@ -150,10 +160,18 @@ class App extends GenericApp<GenericAppProps, AppState> {
 
     async onConnectionReady(): Promise<void> {
         super.onConnectionReady();
-        const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'connection';
+        const selectedTab = window.localStorage.getItem(`heatingcontrol.${this.instance}.selectedTab`) || 'main_settings';
 
-        void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
-        void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
+        //void this.socket.getEnums('rooms').then(rooms => this.setState({ moreLoaded: true, rooms }));
+        //void this.socket.getEnums('functions').then(functions => this.setState({ moreLoaded: true, functions }));
+
+        const rooms = await this.socket.getEnums('rooms');
+        this.setState({ moreLoaded: true, rooms })
+        const functions = await this.socket.getEnums('functions');
+        this.setState({ moreLoaded: true, functions })
+
+        console.log("Rooms loaded: " + JSON.stringify(rooms));
+        console.log("Functions loaded: " + JSON.stringify(functions));
 
         const systemConfig = await this.socket.getSystemConfig();
         const aliveState = await this.socket.getState(`system.adapter.heatingcontrol.${this.instance}.alive`);
@@ -169,6 +187,12 @@ class App extends GenericApp<GenericAppProps, AppState> {
                 this.getIsChanged.bind(this),
                 (partial) => this.setState(partial as any)
             );
+
+            if (this.state.native && Object.prototype.hasOwnProperty.call(this.state.native, "devices")) {
+                
+                console.error("native.devices still present after migration");
+            }
+
         } catch (err) {
             console.error('Fehler beim Aufruf des LegacyMigrators:', err);
         }
@@ -207,6 +231,8 @@ class App extends GenericApp<GenericAppProps, AppState> {
     onUploadClick = (): void => {
         this.uploadInputRef.current?.click();
     };
+
+
 
     // Read uploaded JSON file and apply to native config (simple overwrite)
     onUploadChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

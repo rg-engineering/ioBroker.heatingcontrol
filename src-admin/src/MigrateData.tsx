@@ -25,12 +25,19 @@ export default class LegacyMigrator {
         if (native === undefined || native === null) {
             return;
         }
+        // Prüfe, ob rooms mindestens einen Eintrag hat
+        if (!rooms || Object.keys(rooms).length === 0) {
+            console.error("Migration abgebrochen: availableRooms ist leer oder nicht definiert.");
+            return;
+        }
         // 1) Entferne ungültige Räume
         try {
             const res = this.removeRoomsWithMissingId(native, rooms);
             native = res.native;
             if (res.removed > 0) {
                 setState({ native, changed: getIsChanged(native) });
+
+                console.warn("Removed " + res.removed + " rooms with missing/invalid id during data migration."); 
             }
         } catch (err) {
             // Fehler protokollieren, aber Migration fortsetzen
@@ -57,12 +64,23 @@ export default class LegacyMigrator {
                     }
                 }
                 if (overallChanged) {
+                    // native.device löschen, damit beim nächsten Start nicht nochmal migriert wird
+                    //delete native.devices;
+                    native.devices = []; // alternativ leeres Array setzen, um mögliche Fehler zu vermeiden
                     setState({ native, changed: getIsChanged(native) });
                 }
             }
         } catch (err) {
             // ignore
             console.warn("migrate exception ignored " + err);
+        }
+
+        // Prüfe, ob native.devices noch vorhanden ist, wenn ja, lösche es und logge es
+        if (native && Object.prototype.hasOwnProperty.call(native, "devices")) {
+            //delete native.devices;
+            native.devices = []; // alternativ leeres Array setzen, um mögliche Fehler zu vermeiden
+            setState({ native, changed: getIsChanged(native) });
+            console.warn("native.devices wurde nach der Migration entfernt.");
         }
     }
 
@@ -72,21 +90,32 @@ export default class LegacyMigrator {
             return { native, removed: 0 };
         }
 
+
+
+
         const availableRooms = rooms || {};
         const originalLength = native.rooms.length;
 
+        console.warn("availableRooms for migration: " + Object.keys(availableRooms).join(", ")); 
+
         native.rooms = native.rooms.filter((r: RoomConfig ) => {
             if (r == null) {
+                console.warn("Removing room entry because it is null or undefined ");
                 return false
             };
-            const id = (r as any).id;
+            const id = r?.id;
             if (id === undefined || id === null) {
+                console.warn("Removing room entry because id is undefined or null: " + r?.name);
                 return false;
             }
             const idStr = String(id).trim();
             if (idStr === '') {
-                return false
+                console.warn("Removing room entry because id is an empty string: " + r?.name);
+                return false;
             };
+
+            console.warn("is room id " + idStr + " available in rooms? " + Object.keys(availableRooms).join(", ") + " !=! " + Object.prototype.hasOwnProperty.call(availableRooms, idStr)); 
+
             return Object.prototype.hasOwnProperty.call(availableRooms, idStr);
         });
 
@@ -188,7 +217,7 @@ export default class LegacyMigrator {
                     WindowSensors: [],
                     Thermostats: [],
                     AdditionalTemperatureSensors: [],
-                } as any;
+                };
                 native.rooms.push(newRoomEntry);
                 return true;
             } else {

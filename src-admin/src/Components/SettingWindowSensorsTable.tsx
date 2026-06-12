@@ -71,7 +71,7 @@ export default function SettingWindowSensorsTable(props: Props): React.JSX.Eleme
                         <TableCell>{I18n.t('OID Current')}</TableCell>
                         <TableCell>{I18n.t('DataType')}</TableCell>
                         <TableCell>{I18n.t('valueOpen')}</TableCell>
-                        <TableCell>{I18n.t('ValueClosed')}</TableCell>
+                        <TableCell>{I18n.t('valueClosed')}</TableCell>
                         <TableCell>{I18n.t('activities')}</TableCell>
                     </TableRow>
                 </TableHead>

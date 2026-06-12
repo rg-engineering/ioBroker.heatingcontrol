@@ -1,98 +1,98 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.0.0",
+    "version": "3.2.0",
     "news": {
-      "2.12.19": {
-        "en": "csv-logging added (optionally), will be used in later enhancements",
-        "de": "csv-logging hinzugefügt (optional), wird in späteren verbesserungen verwendet",
-        "ru": "csv-логирование добавлено (необязательно), будет использоваться в последующих улучшениях",
-        "pt": "csv-logging adicionado (opcionalmente), será usado em melhorias posteriores",
-        "nl": "csv-logging toegevoegd (optioneel), zal worden gebruikt in latere verbeteringen",
-        "fr": "csv-logging ajouté (en option), sera utilisé dans les améliorations ultérieures",
-        "it": "csv-logging aggiunto (opzionale), sarà utilizzato in miglioramenti successivi",
-        "es": "csv-logging añadido (opcionalmente), se utilizará en mejoras posteriores",
-        "pl": "csv- logowanie dodane (opcjonalnie), będą stosowane w późniejszych ulepszeniach",
-        "uk": "csv-log додано (необов'язково), буде використовуватися в більш пізніх розширень",
-        "zh-cn": "添加csv-logy(可选),用于以后的增强"
+      "3.2.0": {
+        "en": "Adapter requires node.js >= 22 now\nsee issue #810: HeatingPeriod configurable via datapoint (like in admin) as option\ndependencies updated",
+        "de": "Adapter benötigt node.js >= 22 jetzt\nsiehe Ausgabe #810: HeizungPeriod konfigurierbar über Datenpunkt (wie bei admin) als Option\naktualisierte abhängigkeiten",
+        "ru": "Адаптер требует node.js >= 22 сейчас\nпроблема #810: Настройка HeatingPeriod через точку данных (например, в админ)\nобновленные зависимости",
+        "pt": "Adaptador requer nod.js >= 22 agora\nver problema #810: AquecimentoPeriod configurável via datapoint (como em admin) como opção\ndependências atualizadas",
+        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nzie probleem #810: VerwarmingPeriod configureerbaar via datapoint (zoals in admin) als optie\nafhankelijkheden bijgewerkt",
+        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nvoir le numéro #810: ChauffagePériode configurable via datapoint (comme dans admin) comme option\ndépendances mises à jour",
+        "it": "Adattatore richiede node.js >= 22 ora\nvedi numero #810: HeatPeriod configurabile tramite datapoint (come in admin) come opzione\ndipendenze aggiornate",
+        "es": "Adaptador requiere node.js ю= 22 ahora\nver número #810: CalefacciónPeriod configurable vía datapoint (como en admin) como opción\ndependencias actualizadas",
+        "pl": "Adapter wymaga node.js > = 22\nzobacz numer # 810: HeatingPeriod konfigurowalny przez punkt danych (jak w admin) jako opcja\nzaktualizowane zależności",
+        "uk": "Адаптер вимагає node.js >= 22 тепер\nдив. питання #810: Налаштування опалювальних пристроїв через точку даних (наприклад, в адміні) як варіант\nоновлені залежності",
+        "zh-cn": "适配器需要节点.js 现在22\n参见第810期:通过数据点(如管理点)加热可配置\n更新依赖关系"
       },
-      "2.12.18": {
-        "en": "bug fix sentry",
-        "de": "Fehlerbehebung sentry",
-        "ru": "исправлять ошибки",
-        "pt": "corrigir o erro sentinela",
-        "nl": "bug repareren wacht",
-        "fr": "correction du bug sentinelle",
-        "it": "bug fix sendry",
-        "es": "bug fix centry",
-        "pl": "bug fix sentry",
-        "uk": "виправлення помилок",
-        "zh-cn": "错误修正哨兵"
+      "3.1.4": {
+        "en": "multiple bugs, inconsistencies and missing config defaults",
+        "de": "mehrere Bugs, Inkonsistenzen und fehlende Konfigurationsvorgaben",
+        "ru": "Множество ошибок, несоответствий и отсутствующих настроек по умолчанию",
+        "pt": "vários erros, inconsistências e predefinições de configuração em falta",
+        "nl": "meerdere bugs, inconsistenties en ontbrekende configuratiestandaards",
+        "fr": "bogues multiples, incohérences et défauts de configuration manquants",
+        "it": "bug multipli, incongruenze e configurazioni predefinite mancanti",
+        "es": "múltiples errores, inconsistencias y falta de configuración por defecto",
+        "pl": "liczne błędy, niespójności i brakujące ustawienia domyślne konfiguracji",
+        "uk": "численні помилки, невідповідності та відсутні конфігурації за замовчуванням",
+        "zh-cn": "multiple bugs, inconsistencies and missing config defaults"
       },
-      "2.12.17": {
-        "en": "changes requested by adapter checker",
-        "de": "Änderungen, die von Adapter-Checker angefordert werden",
-        "ru": "изменения, запрошенные adapter checker",
-        "pt": "alterações solicitadas pelo verificador de adaptadores",
-        "nl": "wijzigingen gevraagd door adaptercontrole",
-        "fr": "modifications demandées par l'adaptateur checker",
-        "it": "modifiche richieste da adattatore checker",
-        "es": "cambios solicitados por el adaptador",
-        "pl": "zmiany wymagane przez sprawdzacz adaptera",
-        "uk": "зміни, які вимагаються перевіркою адаптера",
-        "zh-cn": "适配器检查器要求的更改"
+      "3.1.3": {
+        "en": "fix in migrate data: wait, until room list is available and check if room list is empty, otherwise do not migrate data to avoid removing rooms\nchangelog_old.md added",
+        "de": "in migrieren daten: warten, bis die zimmerliste verfügbar ist und überprüfen, ob die zimmerliste leer ist, andernfalls nicht migrieren daten, um zu vermeiden, dass räume\nchangelog old.md hinzugefügt",
+        "ru": "фиксировать данные миграции: ждать, пока список номеров не будет доступен, и проверять, пуст ли список номеров, в противном случае не переносить данные, чтобы избежать удаления номеров\nchangelog old.md добавлено",
+        "pt": "corrigir em dados migrar: aguarde, até que a lista de salas esteja disponível e verifique se a lista de salas está vazia, caso contrário não migrar dados para evitar a remoção de salas\nchangelog old.md adicionado",
+        "nl": "fix in migrerende gegevens: wacht, totdat kamerlijst beschikbaar is en controleer of kamerlijst leeg is, anders migreren geen gegevens om te voorkomen dat ruimtes worden verwijderd\nchangelog old.md toegevoegd",
+        "fr": "corriger dans les données de migration: attendre, jusqu'à ce que la liste des pièces soit disponible et vérifier si la liste des pièces est vide, sinon ne pas migrer les données pour éviter de supprimer les pièces\nchangelog old.md ajouté",
+        "it": "fix in dati di migrazione: attendere, fino a quando l'elenco delle camere è disponibile e verificare se l'elenco delle camere è vuoto, altrimenti non migrare i dati per evitare la rimozione delle camere\nchangelog old.md aggiunto",
+        "es": "fijar en datos de migración: esperar, hasta que la lista de habitaciones esté disponible y comprobar si la lista de habitaciones está vacía, de lo contrario no migrar datos para evitar la eliminación de habitaciones\nchangelog old.md añadido",
+        "pl": "fix in migrate data: czekać, aż lista pokoju jest dostępna i sprawdzić, czy lista pokoju jest pusta, w przeciwnym razie nie migracja danych, aby uniknąć usunięcia pokoi\nchangelog _ old.md dodany",
+        "uk": "виправити в мігрувати дані: чекати, поки список номерів доступний і перевірте, якщо список номерів порожній, інакше не мигратувати дані, щоб уникнути видалення номерів\njavascript licenses api веб-сайт go1.13.8",
+        "zh-cn": "在迁移数据中固定 : 等待, 等待房间列表可用, 并检查房间列表是否为空, 否则不迁移数据以避免删除房间 \n已添加 changelog old.md"
       },
-      "2.12.16": {
-        "en": "dependencies updated\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\nchanges requested by adapter checker",
-        "de": "aktualisierte Abhängigkeiten\nFehlerbehebung siehe Ausgabe #682: HmIP-eTRV-2 nicht autodetected\nänderungen, die von adapter checker angefordert werden",
-        "ru": "обновленные зависимости\nисправление ошибок см. проблему #682: HmIP-eTRV-2 не обнаружен автоматически\nизменения, запрошенные adapter checker",
-        "pt": "dependências atualizadas\ncorreção de erros ver problema #682: HmIP-eTRV-2 não detectado automaticamente\nalterações solicitadas pelo verificador de adaptadores",
-        "nl": "afhankelijkheden bijgewerkt\nbug fix zie probleem #682: HmIP-eTRV-2 niet automatisch gedetecteerd\nwijzigingen gevraagd door adaptercontrole",
-        "fr": "dépendances mises à jour\ncorrection du bug voir le problème #682: HmIP-eTRV-2 non détecté automatiquement\nmodifications demandées par l'adaptateur checker",
-        "it": "dipendenze aggiornate\nbug fix vedi problema #682: HmIP-eTRV-2 non autodeterminato\nmodifiche richieste da adattatore checker",
-        "es": "dependencias actualizadas\nbug fix see issue #682: HmIP-eTRV-2 not autodetected\ncambios solicitados por el adaptador",
-        "pl": "zaktualizowane zależności\nbug fix see issue # 682: HmIP- eTRV-2 not autodetected\nzmiany wymagane przez sprawdzacz adaptera",
-        "uk": "оновлені залежності\nвиправлення помилок див. питання #682: HmIP-eTRV-2 не autodetected\nзміни, які вимагаються перевіркою адаптера",
-        "zh-cn": "更新依赖关系\n错误修复参见第682期: HmIP- eTRV-2 未自动检测\n适配器检查器要求的更改"
+      "3.1.2": {
+        "en": "some logs in migrate data",
+        "de": "einige protokolle in migrieren daten",
+        "ru": "некоторые журналы в миграционных данных",
+        "pt": "alguns logs em dados de migração",
+        "nl": "sommige logs in migrerende gegevens",
+        "fr": "certains journaux dans les données de migration",
+        "it": "alcuni registri in dati di migrazione",
+        "es": "algunos registros en datos de migración",
+        "pl": "niektóre logi w danych migracyjnych",
+        "uk": "деякі журнали в міграції даних",
+        "zh-cn": "迁移数据中的一些日志"
       },
-      "2.12.15": {
-        "en": "HmIP-eTRV-B-2 R4M added to autodetect\nnew testing",
-        "de": "HmIP-eTRV-B-2 R4M zum autodetect hinzugefügt\nneue tests",
-        "ru": "HmIP-eTRV-B-2 R4M добавлен в автодетект\nновые испытания",
-        "pt": "HmIP-eTRV-B-2 R4M adicionado à detecção automática\nnovos testes",
-        "nl": "HmIP-eTRV-B-2 R4M toegevoegd aan autodetect\nnieuwe tests",
-        "fr": "HmIP-eTRV-B-2 R4M ajouté à la détection automatique\nnouveaux essais",
-        "it": "HmIP-eTRV-B-2 R4M aggiunto al rilevamento automatico\nnuovi test",
-        "es": "HmIP-eTRV-B-2 R4M añadido a autodetecto\nnuevas pruebas",
-        "pl": "HmIP- eTRV- B-2 R4M dodany do autodetekcji\nnowe badania",
-        "uk": "HmIP-eTRV-B-2 R4M додано до автодетект\nновий тест",
-        "zh-cn": "HmIP-eTRV-B-2 R4M 添加到自动检测器中\n新测试"
+      "3.1.1": {
+        "en": "some logs in migrate data\nissue #781: fix upload configuration",
+        "de": "einige protokolle in migrieren daten\nausgabe #781: upload-konfiguration beheben",
+        "ru": "некоторые журналы в миграционных данных\nпроблема #781: исправить конфигурацию загрузки",
+        "pt": "alguns logs em dados de migração\nproblema # 781: corrigir configuração de upload",
+        "nl": "sommige logs in migrerende gegevens\nprobleem #781: fix upload configuratie",
+        "fr": "certains journaux dans les données de migration\nnuméro #781: correction de la configuration de téléchargement",
+        "it": "alcuni registri in dati di migrazione\nnumero #781: correzione della configurazione di upload",
+        "es": "algunos registros en datos de migración\nedición #781: fijar configuración de carga",
+        "pl": "niektóre logi w danych migracyjnych\nwydanie # 781: naprawić konfigurację wysyłania",
+        "uk": "деякі журнали в міграції даних\nproblem #781: виправлено налаштування завантаження",
+        "zh-cn": "迁移数据中的一些日志\n781期: 固定上传配置"
       },
-      "2.12.14": {
-        "en": "see issue #635: initial values (-99) not to write to object \nchanges requested by adapter checker\ndependencies updated",
-        "de": "siehe ausgabe #635: anfangswerte (-99) nicht zum objekt schreiben\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
-        "ru": "#635: начальные значения (-99), чтобы не писать\nизменения, запрошенные adapter checker\nобновленные зависимости",
-        "pt": "veja a edição #635: valores iniciais (-99) para não escrever para objeto\nalterações solicitadas pelo verificador do adaptador\ndependências atualizadas",
-        "nl": "zie nummer #635: initiële waarden (-99) om niet naar object te schrijven\nwijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
-        "fr": "voir numéro 635: valeurs initiales (-99) à ne pas écrire pour objet\nmodifications demandées par l'adaptateur checker\ndépendances mises à jour",
-        "it": "vedi numero #635: valori iniziali (-99) per non scrivere a oggetto\nmodifiche richieste da adattatore checker\ndipendenze aggiornate",
-        "es": "ver número #635: valores iniciales (-99) para no escribir al objeto\ncambios solicitados por el adaptador\ndependencias actualizadas",
-        "pl": "zobacz numer # 635: wartości początkowe (-99) nie zapisywać do obiektu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
-        "uk": "переглянути проблему #635: початкові значення (-99) не писати на об'єкт\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
-        "zh-cn": "参见第635期: 初始值 (-99) 不写入对象\n适配器检查器要求的更改\n更新依赖关系"
+      "3.1.0": {
+        "en": "Add optional window-open thermostat priority\nchanges requested by adapter checker\ndependencies updated",
+        "de": "Optionale Fenster-Öffnungsthermostatpriorität hinzufügen\nänderungen, die von adapter checker angefordert werden\naktualisierte abhängigkeiten",
+        "ru": "Добавить дополнительный оконный термостат приоритет\nизменения, запрошенные adapter checker\nобновленные зависимости",
+        "pt": "Adicionar a prioridade opcional do termostato aberto em janelas\nalterações solicitadas pelo verificador de adaptadores\ndependências atualizadas",
+        "nl": "Optionele venster-open thermostaatprioriteit toevoegen\nwijzigingen gevraagd door adaptercontrole\nafhankelijkheden bijgewerkt",
+        "fr": "Ajouter une priorité de thermostat ouverte en option\nmodifications demandées par l'adaptateur checker\ndépendances mises à jour",
+        "it": "Aggiungere la priorità del termostato opzionale\nmodifiche richieste da adattatore checker\ndipendenze aggiornate",
+        "es": "Añadir prioridad opcional de termostato abierto ventana\ncambios solicitados por el adaptador\ndependencias actualizadas",
+        "pl": "Dodaj opcjonalny priorytet termostatu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
+        "uk": "Додавання додаткового пріоритету термостату вікна\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
+        "zh-cn": "添加可选窗口开放自动调温器优先级\n适配器检查器要求的更改\n更新依赖关系"
       },
-      "2.12.13": {
-        "en": "see issue #607: minimum length of telegram user reduced to one char",
-        "de": "siehe ausgabe #607: minimale Länge des telegramm-Benutzernamens reduziert auf ein Zeichen",
-        "ru": "#607: минумная длина пользователя телеграммы уменьшена до одного шара",
-        "pt": "veja a edição #607: comprimento do minumum do usuário do telegrama reduzido a um char",
-        "nl": "zie nummer 607: minimale lengte van de telegramgebruiker gereduceerd tot één teken",
-        "fr": "voir numéro 607: longueur minimale de l'utilisateur de télégramme réduite à un omble",
-        "it": "vedi numero #607: lunghezza minumum dell'utente del telegramma ridotta a un char",
-        "es": "ver número #607: longitud de minumum usuario de telegrama reducido a un char",
-        "pl": "zob. numer # 607: długość minumumu użytkownika telegramu zredukowana do jednego znaku",
-        "uk": "див. питання #607: довжина імпульсу телеграми, знижена до одного char",
-        "zh-cn": "参见第607期:电报用户的微量长度缩小为1个字符"
+      "3.0.4": {
+        "en": "see issue #730: bug fix: if window sensor uses \"false\" for Open window state was always set to open",
+        "de": "siehe Ausgabe #730: Fehlerbehebung: wenn Fenstersensor \"false\" für Open-Fenster-Zustand verwendet wurde immer eingestellt, um zu öffnen",
+        "ru": "проблема No 730: исправление ошибок: если датчик окна использует «ложь» для состояния «Открытое окно»",
+        "pt": "ver problema #730: correção de erros: se o sensor de janela usa \"falso\" para o estado da janela aberta foi sempre definido para abrir",
+        "nl": "zie probleem #730: bug fix: als venstersensor \"vals\" gebruikt voor Open window status is altijd ingesteld om te openen",
+        "fr": "voir le problème #730: correction du bug: si le capteur de fenêtre utilise \"false\" pour l'état de la fenêtre ouverte a toujours été réglé pour ouvrir",
+        "it": "vedi numero #730: fix bug: se il sensore della finestra utilizza \"false\" per lo stato della finestra aperta è sempre stato impostato per aprire",
+        "es": "ver número #730: corrección de errores: si el sensor de ventana utiliza \"falso\" para Open ventana estado siempre fue establecido para abrir",
+        "pl": "zobacz problem # 730: błąd naprawić: jeśli czujnik okna używa \"false\" dla stanu Otwórz okno zawsze było otwarte",
+        "uk": "переглянути номер #730: Виправлення помилок: якщо у віконному сенсорі використовується \"false\" для відкритого вікна",
+        "zh-cn": "参见问题 # 730: 错误修正: 如果窗口传感器使用“ 假” 来打开窗口状态, 总是被设定打开"
       }
     },
     "titleLang": {
@@ -146,7 +146,7 @@
     ],
     "globalDependencies": [
       {
-        "admin": ">=7.6.17"
+        "admin": ">=7.6.20"
       }
     ],
     "plugins": {
@@ -171,18 +171,35 @@
         "condition": {
           "operand": "and",
           "rules": [
-            "oldVersion<=3.0.0",
+            "oldVersion<3.0.0",
             "newVersion>=3.0.0"
           ]
         },
         "title": {
-          "en": "!!! not yet recommended for production use !!! breaking change: configuration of devices / rooms must be done again",
-          "de": "!!! Noch nicht für den Produktiveinsatz empfohlen !!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden."
+          "en": "!!! breaking change: configuration of devices / rooms must be done again",
+          "de": "!!! Wichtige Änderung: Die Konfiguration der Geräte/Räume muss erneut durchgeführt werden.",
+          "ru": "!!! критическое изменение: настройку устройств/комнат необходимо выполнить заново",
+          "pt": "!!! alteração significativa: a configuração de dispositivos/salas deve ser feita novamente",
+          "nl": "!!! belangrijke wijziging: de configuratie van apparaten/kamers moet opnieuw worden uitgevoerd",
+          "fr": "!!! changement avec rupture : la configuration des appareils/pièces doit être refaite",
+          "it": "!!! modifica sostanziale: la configurazione dei dispositivi/stanze deve essere eseguita nuovamente",
+          "es": "!!! Cambio importante: la configuración de dispositivos/salas debe realizarse nuevamente.",
+          "pl": "!!! przełomowa zmiana: konfigurację urządzeń/pomieszczeń należy przeprowadzić od nowa",
+          "uk": "!!! зміна порушення: конфігурація пристроїв / кімнат повинна бути виконана знову",
+          "zh-cn": "!!!尚未推荐用于生产用途！重大更改：必须重新配置设备/房间"
         },
         "text": {
           "en": "Due to the redesign of the administration interface in React, the configuration structure has changed. Devices/rooms must be reconfigured. While the adapter attempts to migrate the data, this cannot be guaranteed. Important: It is no longer possible to create rooms in the adapter. Instead, globally created rooms from the categories will be used.",
-          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet"
-
+          "de": "Aufgrund der Neuentwicklung der Administrationsoberfläche in React hat sich die Konfigurationsstruktur geändert. Geräte/Räume müssen erneut konfiguriert werden. Der Adapter versucht zwar, die Daten zu migrieren, das kann aber nicht garantiert werden. Wichtig: Es können keine Räume im Adapter mehr angelegt werden. Stattdessen werden die global angelegten Räume aus den Kategorien verwendet",
+          "ru": "В связи с редизайном интерфейса администрирования в React изменилась структура конфигурации. Устройства/комнаты необходимо переконфигурировать. Хотя адаптер пытается перенести данные, это не может быть гарантировано. Важно: в адаптере больше нельзя создавать комнаты. Вместо этого будут использоваться глобально созданные комнаты из категорий.",
+          "pt": "Devido ao redesenho da interface de administração do React, a estrutura de configuração mudou. Dispositivos/salas devem ser reconfigurados. Embora o adaptador tente migrar os dados, isso não pode ser garantido. Importante: Não é mais possível criar ambientes no adaptador. Em vez disso, serão utilizadas salas criadas globalmente a partir das categorias.",
+          "nl": "Door het herontwerp van de beheerinterface in React is de configuratiestructuur veranderd. Apparaten/kamers moeten opnieuw worden geconfigureerd. Hoewel de adapter probeert de gegevens te migreren, kan dit niet worden gegarandeerd. Belangrijk: Het is niet langer mogelijk om kamers in de adapter te creëren. In plaats daarvan worden globaal aangemaakte kamers uit de categorieën gebruikt.",
+          "fr": "En raison de la refonte de l'interface d'administration dans React, la structure de configuration a changé. Les appareils/pièces doivent être reconfigurés. Même si l'adaptateur tente de migrer les données, cela ne peut pas être garanti. Important : Il n'est plus possible de créer des pièces dans l'adaptateur. Au lieu de cela, les salles créées globalement à partir des catégories seront utilisées.",
+          "it": "A causa della riprogettazione dell'interfaccia di amministrazione in React, la struttura di configurazione è cambiata. I dispositivi/stanze devono essere riconfigurati. Mentre l'adattatore tenta di migrare i dati, ciò non può essere garantito. Importante: non è più possibile creare stanze nell'adattatore. Verranno invece utilizzate le stanze create globalmente dalle categorie.",
+          "es": "Debido al rediseño de la interfaz de administración en React, la estructura de configuración ha cambiado. Los dispositivos/salas deben reconfigurarse. Mientras el adaptador intenta migrar los datos, esto no se puede garantizar. Importante: Ya no es posible crear habitaciones en el adaptador. En su lugar, se utilizarán salas creadas globalmente a partir de las categorías.",
+          "pl": "W związku z przeprojektowaniem interfejsu administracyjnego w React zmieniła się struktura konfiguracji. Należy ponownie skonfigurować urządzenia/pokoje. Chociaż adapter podejmuje próbę migracji danych, nie można tego zagwarantować. Ważne: Nie można już tworzyć pomieszczeń w adapterze. Zamiast tego zostaną użyte pokoje utworzone globalnie z kategorii.",
+          "uk": "Через редизайн інтерфейсу адміністрування в React змінилася структура конфігурації. Пристрої/кімнати необхідно переналаштувати. Поки адаптер намагається перенести дані, це не можна гарантувати. Важливо: більше неможливо створювати кімнати в адаптері. Замість цього будуть використовуватися глобально створені кімнати з категорій.",
+          "zh-cn": "由于React中管理界面的重新设计，配置结构发生了变化。设备/房间必须重新配置。当适配器尝试迁移数据时，这不能得到保证。重要提示：无法再在适配器中创建房间。相反，将使用类别中全局创建的房间。"
         },
         "level": "warn",
         "buttons": [
@@ -191,10 +208,8 @@
         ]
       }
     ]
-  
   },
   "native": {
-    "devices": [],
     "rooms": [],
     "UseActors": false,
     "Gewerk": "Heizung",
@@ -239,6 +254,7 @@
     "HolidayPresentLikeSunday": true,
     "ExtendOverride": false,
     "ThermostatHandlesWindowOpen": false,
+    "WindowOpenHasPriorityOverThermostat": false,
     "VisMinDecRelTemp": 1,
     "VisMaxDecRelTemp": 10,
     "VisStepWidthDecRelTemp": 1,
@@ -294,6 +310,24 @@
     "notificationsTemperature": false,
     "notificationsActor": false,
     "notificationsWindow": false,
-    "enableCSVLogging": false
+    "enableCSVLogging": false,
+    "UseSensors": false,
+    "PowerInterruptions": [],
+    "ExtHandlingThermostatRepTime": 10000,
+    "ExtHandlingThermostatAckWaitTime": 2000,
+    "discordInstance": "discord.0",
+    "discordTarget": "UserTag",
+    "discordUserTag": "",
+    "discordUserId": "",
+    "discordServerId": "",
+    "discordChannelId": "",
+    "discordWaitToSend": 0,
+    "useCustumizedNotifications": false,
+    "useCustumizedNotificationsWithInstanceName": false,
+    "useCustumizedNotificationsNewTargetTemp": "",
+    "useCustumizedNotificationsActorOn": "",
+    "useCustumizedNotificationsActorOff": "",
+    "useCustumizedNotificationsWindowOpen": "",
+    "useCustumizedNotificationsWindowClosed": ""
   }
 }

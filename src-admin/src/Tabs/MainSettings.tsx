@@ -22,6 +22,7 @@ interface SettingsProps {
     alive: boolean;
 }
 
+
 const schema: ConfigItemPanel = {
     type: 'panel',
     label: 'main settings',
@@ -58,6 +59,16 @@ const schema: ConfigItemPanel = {
             "lg": 12,
             "xl": 12
         },
+        Path2FeiertagAdapter: {
+            newLine: true,
+            type: 'objectId',
+            label: 'Path2FeiertagAdapter',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
+        },
         Path2PresentDP: {
             newLine: true,
             type: 'objectId',
@@ -92,6 +103,16 @@ const schema: ConfigItemPanel = {
             newLine: true,
             type: 'objectId',
             label: 'Path2VacationDP',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
+        },
+        Path2HolidayPresentDP: {
+            newLine: true,
+            type: 'objectId',
+            label: 'Path2HolidayPresentDP',
             "xs": 12,
             "sm": 4,
             "md": 4,
@@ -260,6 +281,16 @@ const schema: ConfigItemPanel = {
             "md": 2,
             "lg": 2,
             "xl": 2
+        },
+        WindowOpenHasPriorityOverThermostat: {
+            newLine: false,
+            type: 'checkbox',
+            label: 'WindowOpenHasPriorityOverThermostat',
+            "xs": 12,
+            "sm": 4,
+            "md": 4,
+            "lg": 4,
+            "xl": 4
         },
         InterThermostatDelay: {
             newLine: false,
@@ -495,7 +526,7 @@ const schema: ConfigItemPanel = {
             "xl": 2,
             "hidden": "if (!data.UseActors) return true;",
         },
-        ExtHandlingRepTime: {
+        ExtHandlingActorRepTime: {
             newLine: true,
             type: 'number',
             min: 0,
@@ -667,7 +698,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -718,7 +749,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -769,7 +800,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -820,7 +851,7 @@ const schema: ConfigItemPanel = {
             options: [
                 {
                     label: "0.5 °C",
-                    value: 1.5
+                    value: 0.5
                 },
                 {
                     label: "1 °C",
@@ -1327,10 +1358,10 @@ const schema: ConfigItemPanel = {
             "xl": 2,
             "hidden": "if (!data.notificationEnabled ) return true;",
         },
-        useCustumizedNotificationsWindowClose: {
+        useCustumizedNotificationsWindowClosed: {
             newLine: false,
             type: 'text',
-            label: 'useCustumizedNotificationsWindowClose',
+            label: 'useCustumizedNotificationsWindowClosed',
             "xs": 12,
             "sm": 2,
             "md": 2,
@@ -1418,6 +1449,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.ExtendOverride = params.ExtendOverride;
                     native.OverrideMode = params.OverrideMode;
                     native.ThermostatHandlesWindowOpen = params.ThermostatHandlesWindowOpen;
+                    native.WindowOpenHasPriorityOverThermostat = params.WindowOpenHasPriorityOverThermostat;
                     native.InterThermostatDelay = params.InterThermostatDelay;
 
                     native.UseAddTempSensors = params.UseAddTempSensors;
@@ -1434,7 +1466,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.ActorBeforeOffDelay = params.ActorBeforeOffDelay;
                     native.InterActorDelay = params.InterActorDelay;
                     native.regulatorType = params.regulatorType;
-                    native.ExtHandlingRepTime = params.ExtHandlingRepTime;
+                    native.ExtHandlingActorRepTime = params.ExtHandlingActorRepTime;
                     native.ExtHandlingActorAckWaitTime = params.ExtHandlingActorAckWaitTime;
                     native.UseActorsIfNotHeating = params.UseActorsIfNotHeating;
                     native.UseActorsIfNoThermostat = params.UseActorsIfNoThermostat;
@@ -1500,7 +1532,7 @@ export default function MainSettings(props: SettingsProps): React.JSX.Element {
                     native.useCustumizedNotificationsActorOn = params.useCustumizedNotificationsActorOn;
                     native.useCustumizedNotificationsActorOff = params.useCustumizedNotificationsActorOff;
                     native.useCustumizedNotificationsWindowOpen = params.useCustumizedNotificationsWindowOpen;
-                    native.useCustumizedNotificationsWindowClosed = params.useCustumizedNotificationsWindowClose;
+                    native.useCustumizedNotificationsWindowClosed = params.useCustumizedNotificationsWindowClosed;
 
                     native.MaintenanceModeTemperature = params.MaintenanceModeTemperature;
                     native.enableCSVLogging = params.enableCSVLogging;

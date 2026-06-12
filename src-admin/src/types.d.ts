@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 //ist das gleiche interface wie in adapter-config.d.ts
 export interface RoomConfig {
     isActive: boolean;
@@ -12,7 +13,7 @@ export interface RoomConfig {
 export interface powerInterruptions {
     active: boolean;
     Start: string;
-    End: strin;
+    End: string;
 }
 export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     /** Configuration of the adapter */
@@ -34,6 +35,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     ExtendOverride: boolean;
     OverrideMode: number;
     ThermostatHandlesWindowOpen: boolean;
+    WindowOpenHasPriorityOverThermostat: boolean;
     InterThermostatDelay: number;
 
     UseAddTempSensors: boolean;
@@ -77,7 +79,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     extendedInfoLogWindow: boolean;
 
     notificationEnabled: boolean;
-    notificationsType: number;
+    notificationsType: string;
     notificationsTemperature: boolean;
     notificationsActor: boolean;
     notificationsWindow: boolean;
@@ -132,6 +134,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     UseFireplaceMode: boolean;
     UseFireplaceModeResetAt: Date;
     UseFixHeatingPeriod: boolean;
+    HeatingPeriodAsDP: boolean;
     FixHeatingPeriodStart: string;
     FixHeatingPeriodEnd: string;
     ThermostatModeIfNoHeatingperiod: number;
@@ -141,6 +144,7 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     //room settings
     rooms: RoomConfig[];
     roomSelector: string;
+    functionSelector: string;
 
     //just temporary to copy from GUI to room config
     isActive: boolean;
