@@ -289,6 +289,11 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 --->
+### **WORK IN PROGRESS**
+- (arteck) add TemperatureIfNoHeatingPeriod to Pittini Script
+- (arteck) redesign Settings
+- (arteck) add descaling trip
+
 ### 3.2.0 (2026-06-03)
 - (copilot) Adapter requires node.js >= 22 now
 - (René) see issue #810: HeatingPeriod configurable via datapoint (like in admin) as option

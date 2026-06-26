@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
-/* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
+ 
+ 
 import React, {  useRef, useState } from 'react';
 import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
 import { I18n } from '@iobroker/adapter-react-v5';
