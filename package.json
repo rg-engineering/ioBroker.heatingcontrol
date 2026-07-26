@@ -20,7 +20,7 @@
     "node": ">= 22"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.3.2",
+    "@iobroker/adapter-core": "^3.4.3",
     "cron": "^4.4.0",
     "csv-writer": "^1.6.0"
   },
