@@ -2,8 +2,8 @@
 /* eslint-disable quote-props */
 /* eslint-disable prettier/prettier */
 import React, {  useRef, useState } from 'react';
-import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
-import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/gui-components';
+import { I18n } from '@iobroker/gui-components';
 import type { HeatingControlAdapterConfig } from "../types";
 import BoxDivider from '../Components/BoxDivider'
 

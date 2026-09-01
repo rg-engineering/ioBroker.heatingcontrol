@@ -4,7 +4,7 @@
 
 import {  FormControl, Button, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { DialogSelectID } from '@iobroker/adapter-react-v5';
+import { DialogSelectID } from '@iobroker/gui-components';
 import type {
     AdminConnection,
     IobTheme,
@@ -12,7 +12,7 @@ import type {
     ThemeType,
     ObjectBrowserCustomFilter,
     ObjectBrowserType
-} from '@iobroker/adapter-react-v5';
+} from '@iobroker/gui-components';
 
 export type SelectOIDItem = { name: string; value: string; };
 

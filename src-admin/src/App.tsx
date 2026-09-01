@@ -19,7 +19,7 @@ import {
     type GenericAppProps,
     type GenericAppState,
     AdminConnection,
-} from '@iobroker/adapter-react-v5';
+} from '@iobroker/gui-components';
 
 
 import TabMainSettings from './Tabs/MainSettings';

@@ -20,7 +20,7 @@
     "node": ">= 22"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.3.2",
+    "@iobroker/adapter-core": "^3.4.3",
     "cron": "^4.4.0",
     "csv-writer": "^1.6.0"
   },
@@ -31,7 +31,7 @@
     "@alcalzone/release-script-plugin-manual-review": "^5.2.0",
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/build-tools": "^3.0.1",
-    "@iobroker/eslint-config": "^2.2.0",
+    "@iobroker/eslint-config": "^2.3.4",
     "@iobroker/testing": "^5.3.0",
     "@tsconfig/node22": "^22.0.6",
     "typescript": "~6.0.3",

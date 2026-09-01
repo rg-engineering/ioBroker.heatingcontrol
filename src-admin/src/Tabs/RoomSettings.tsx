@@ -3,8 +3,8 @@
 /* eslint-disable prettier/prettier */
 
 import React, { useEffect, useMemo, useState } from 'react';
-import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
-import { I18n } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/gui-components';
+import { I18n } from '@iobroker/gui-components';
 import type { HeatingControlAdapterConfig, RoomConfig } from "../types";
 
 import {

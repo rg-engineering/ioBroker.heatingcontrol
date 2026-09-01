@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 
-import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/gui-components';
 
 
 import { type ConfigItemPanel, JsonConfigComponent } from '@iobroker/json-config';

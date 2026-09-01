@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
-import { I18n } from '@iobroker/adapter-react-v5';
-import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/adapter-react-v5';
+import { I18n } from '@iobroker/gui-components';
+import type { AdminConnection, IobTheme, ThemeName, ThemeType } from '@iobroker/gui-components';
 import SelectOID from './SelectOID';
 
 export type SettingTempSensorItem = {

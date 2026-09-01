@@ -7,10 +7,10 @@ import {
     Box,
 
 } from '@mui/material';
-import { I18n } from '@iobroker/adapter-react-v5';
+import { I18n } from '@iobroker/gui-components';
 import type {
     IobTheme,
-} from '@iobroker/adapter-react-v5';
+} from '@iobroker/gui-components';
 
 
 
