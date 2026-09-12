@@ -1,0 +1,70 @@
+name: AI Fix Bot Issues
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+
+    outputs:
+      allowed: ${{ steps.check.outputs.allowed }}
+
+    steps:
+      - name: Check issue source and title
+        id: check
+        run: |
+          AUTHOR="${{ github.event.issue.user.login }}"
+          TITLE="${{ github.event.issue.title }}"
+
+          echo "Author: $AUTHOR"
+          echo "Title: $TITLE"
+
+          if [ "$AUTHOR" != "iobroker-bot" ]; then
+            echo "allowed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if echo "$TITLE" | grep -Ei \
+            "missing|translation|typo|readme|documentation|lint|eslint"; then
+            echo "allowed=true" >> $GITHUB_OUTPUT
+          else
+            echo "allowed=false" >> $GITHUB_OUTPUT
+          fi
+
+  copilot:
+    needs: filter
+    if: needs.filter.outputs.allowed == 'true'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Request Copilot work
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: ` 🤖 Dieses Issue wurde automatisch für die AI-Bearbeitung markiert. `
+            });
+
+      - name: Add copilot label
+        uses: actions/github-script@v9
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['copilot']
+            });
