@@ -204,11 +204,35 @@
   "room is inactive - activate to edit settings": "room is inactive - activate to edit settings",
   "select a room to display settings": "select a room to display settings",
   "no room selected": "no room selected",
-  "no function selected": "no function selected"
+  "no function selected": "no function selected",
 
-
-
-
-
-
+  "add new device": "add new device",
+  "Delete device": "Delete device",
+  "add a new thermostat": "add a new thermostat",
+  "add a new actor": "add a new actor",
+  "add a new window sensor": "add a new window sensor",
+  "add a new temperature sensor": "add a new temperature sensor",
+  "additional temperature sensors": "additional temperature sensors",
+  "window sensors": "window sensors",
+  "Thermostats": "Thermostats",
+  "seconds": "seconds",
+  "Loading...": "Loading...",
+  "Unknown tab": "Unknown tab",
+  "Download configuration": "Download configuration",
+  "Upload configuration": "Upload configuration",
+  "Failed to download configuration": "Failed to download configuration",
+  "Configuration loaded from file": "Configuration loaded from file",
+  "Invalid configuration file": "Invalid configuration file",
+  "Failed to read file": "Failed to read file",
+  "No file selected": "No file selected",
+  "Please select a JSON file": "Please select a JSON file",
+  "Selected file": "Selected file",
+  "Download profile": "Download profile",
+  "Upload profile": "Upload profile",
+  "Upload result": "Upload result",
+  "UseValveProtection": "use valve protection (outside heating period)",
+  "ValveProtectionInterval": "interval [days]",
+  "ValveProtectionTime": "time [hh:mm]",
+  "ValveProtectionWaitTime": "wait time per phase [sec]",
+  "ValveProtectionCloseTemp": "temperature 'fully closed' (frost protection)"
 }

@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+ 
 //ist das gleiche interface wie in adapter-config.d.ts
 export interface RoomConfig {
     isActive: boolean;
@@ -139,6 +139,11 @@ export interface HeatingControlAdapterConfig extends ioBroker.AdapterConfig {
     FixHeatingPeriodEnd: string;
     ThermostatModeIfNoHeatingperiod: number;
     FixTempIfNoHeatingPeriod: number;
+    UseValveProtection: boolean;
+    ValveProtectionInterval: number;
+    ValveProtectionTime: string;
+    ValveProtectionWaitTime: number;
+    ValveProtectionCloseTemp: number;
     PowerInterruptions: powerInterruptions[];
 
     //room settings

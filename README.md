@@ -292,7 +292,9 @@ When the adapter crashes or an other Code error happens, this error message that
 ### **WORK IN PROGRESS**
 * (René) dependencies updated
 * (GermanBluefox) readme updated
-* 
+* (arteck) add TemperatureIfNoHeatingPeriod to Pittini Script
+* (arteck) redesign Settings
+* (arteck) add descaling trip
 
 
 ### 3.2.0 (2026-06-03)

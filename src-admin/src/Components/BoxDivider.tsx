@@ -1,6 +1,6 @@
-/* eslint-disable prefer-template */
-/* eslint-disable quote-props */
-/* eslint-disable prettier/prettier */
+ 
+ 
+ 
 import React from 'react';
 
 import {
