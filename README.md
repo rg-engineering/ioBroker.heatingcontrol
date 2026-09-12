@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 --->
-### 3.3.0 (2026-09-12)
+### **WORK IN PROGRESS**
 * (René) dependencies updated
 * (GermanBluefox) readme updated
 * (arteck) add TemperatureIfNoHeatingPeriod to Pittini Script
