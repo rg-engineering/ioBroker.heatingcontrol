@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "heatingcontrol",
-    "version": "3.2.0",
+    "version": "3.3.0",
     "news": {
+      "3.3.0": {
+        "en": "dependencies updated\nreadme updated\nadd TemperatureIfNoHeatingPeriod to Pittini Script\nredesign Settings\nadd descaling trip",
+        "de": "Abhängigkeiten aktualisiert\nReadme aktualisiert\nTemperatur ohne Heizung zu Pittini-Skript hinzufügen\nSettings umgestalten\nEntkalker hinzufügen",
+        "ru": "зависимости обновлены\nфайл readme обновлен\nдобавьте в скрипт Питтини температуру, если нет периода нагрева\nНастройки редизайна\nдобавить средство для удаления накипи",
+        "pt": "dependências atualizadas\nreadme atualizado\nadicione TemperatureIfNoHeatingPeriod ao Pittini Script\nredesenhar opções\nadicionar decapagem",
+        "nl": "afhankelijkheden bijgewerkt\nreadme bijgewerkt\nvoeg TemperatureIfNoHeatingPeriod toe aan Pittini Script\ninstellingen opnieuw ontwerpen\nontkalkingstrip toevoegen",
+        "fr": "dépendances mises à jour\nreadme mis à jour\najouter TemperatureIfNoHeatingPeriod à Pittini Script\nredéfinir les paramètres\najouter du détartrage",
+        "it": "dipendenze aggiornate\naggiorna readme\naggiunga temperatura se no a Pittini Script\nredesign Settings\naggiungere decalcificante",
+        "es": "dependencias actualizadas\nléame actualizado\nañadir temperatura si no hay calor al guion de Pittini\nrediseñar ajustes\nañadir descalcificador",
+        "pl": "aktualizacja zależności\nreadme zaktualizowano\ndodaj TemperatureIfNoHeatingPeriod do skryptu Pittini\nprzeprojektowanie ustawień\ndodaj wyciek do usuwania kamienia",
+        "uk": "залежності оновлені\nreadme оновлено\nдодати TemperatureIfNoHeatingPeriod до сценарію Піттіні\nпереробити налаштування\nдодати поїздку для видалення накипу",
+        "zh-cn": "依赖关系已更新\n自述文件已更新\n向 Pittini 脚本添加温度IfnoHeatingPeriod\n重新设计设置\n添加除垢行程"
+      },
       "3.2.0": {
         "en": "Adapter requires node.js >= 22 now\nsee issue #810: HeatingPeriod configurable via datapoint (like in admin) as option\ndependencies updated",
         "de": "Adapter benötigt node.js >= 22 jetzt\nsiehe Ausgabe #810: HeizungPeriod konfigurierbar über Datenpunkt (wie bei admin) als Option\naktualisierte abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "Dodaj opcjonalny priorytet termostatu\nzmiany wymagane przez sprawdzacz adaptera\nzaktualizowane zależności",
         "uk": "Додавання додаткового пріоритету термостату вікна\nзміни, які вимагаються перевіркою адаптера\nоновлені залежності",
         "zh-cn": "添加可选窗口开放自动调温器优先级\n适配器检查器要求的更改\n更新依赖关系"
-      },
-      "3.0.4": {
-        "en": "see issue #730: bug fix: if window sensor uses \"false\" for Open window state was always set to open",
-        "de": "siehe Ausgabe #730: Fehlerbehebung: wenn Fenstersensor \"false\" für Open-Fenster-Zustand verwendet wurde immer eingestellt, um zu öffnen",
-        "ru": "проблема No 730: исправление ошибок: если датчик окна использует «ложь» для состояния «Открытое окно»",
-        "pt": "ver problema #730: correção de erros: se o sensor de janela usa \"falso\" para o estado da janela aberta foi sempre definido para abrir",
-        "nl": "zie probleem #730: bug fix: als venstersensor \"vals\" gebruikt voor Open window status is altijd ingesteld om te openen",
-        "fr": "voir le problème #730: correction du bug: si le capteur de fenêtre utilise \"false\" pour l'état de la fenêtre ouverte a toujours été réglé pour ouvrir",
-        "it": "vedi numero #730: fix bug: se il sensore della finestra utilizza \"false\" per lo stato della finestra aperta è sempre stato impostato per aprire",
-        "es": "ver número #730: corrección de errores: si el sensor de ventana utiliza \"falso\" para Open ventana estado siempre fue establecido para abrir",
-        "pl": "zobacz problem # 730: błąd naprawić: jeśli czujnik okna używa \"false\" dla stanu Otwórz okno zawsze było otwarte",
-        "uk": "переглянути номер #730: Виправлення помилок: якщо у віконному сенсорі використовується \"false\" для відкритого вікна",
-        "zh-cn": "参见问题 # 730: 错误修正: 如果窗口传感器使用“ 假” 来打开窗口状态, 总是被设定打开"
       }
     },
     "titleLang": {
