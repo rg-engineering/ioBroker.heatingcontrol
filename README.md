@@ -75,7 +75,7 @@ Features:
 * visualization from [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) is supported. Thank you!
 * Vis-2 support with [vis-2-widgets-weather-and-heating](https://github.com/rg-engineering/ioBroker.vis-2-widgets-weather-and-heating)
 
-[FAQ](doc/FAQ.md)
+[FAQ](doc/en/FAQ.md)
 
 
 ## Installation
