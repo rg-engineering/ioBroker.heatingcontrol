@@ -6,7 +6,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@iobroker/gui-components": "^10.0.12",
-    "@iobroker/dm-gui-components": "^10.0.17",
+    "@iobroker/dm-gui-components": "^10.0.22",
     "@iobroker/type-detector": "^5.0.15",
     "@mdi/js": "^7.4.47",
     "@types/react": "^19.2.18",
