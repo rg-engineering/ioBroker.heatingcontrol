@@ -129,10 +129,16 @@ function startAdapter(options) {
                     case "listRooms":
                         adapter.log.debug("got list rooms: not implemented");
                         //await ListRooms(obj);
+                        if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, { error: "not implemented" }, obj.callback);
+                        }
                         break;
                     case "listFunctions":
                         adapter.log.debug("got list functions: not implemented");
                         //await ListFunctions(obj);
+                        if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, { error: "not implemented" }, obj.callback);
+                        }
                         break;
                     case "listThermostats":
                         //adapter.log.debug("got list thermostats");
@@ -163,7 +169,9 @@ function startAdapter(options) {
                         await deleteUnusedDP(obj);
                         break;
                     case "Test":
-                        //adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
+                        if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, "das ist ein Test", obj.callback);
+                        }
                         break;
                     case "getTelegramUser":
                         await GetTelegramUser(obj);

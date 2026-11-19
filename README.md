@@ -294,6 +294,7 @@ When the adapter crashes or an other Code error happens, this error message that
 --->
 ### **WORK IN PROGRESS**
 * (GermanBluefox) Added the message "help": a description of the profiles, states and all messages for AI agents (e.g. pi-agent), and common.supportedMessages.help
+* (GermanBluefox) Fixed: the messages "listRooms" and "listFunctions" now answer (with an error, they are no longer implemented) and "Test" answers, so the sender no longer waits forever
 
 ### 3.3.1 (2026-09-12)
 * (René) dependencies updated
