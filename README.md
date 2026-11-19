@@ -265,6 +265,10 @@ Status goes to "EVU Sperrzeit" / "PowerInterruption"
 Aim: switch off electrical heaters and switch them on again in a targeted manner in order to minimize the load on the contactors and to minimize inrush currents
 Configuration: Start / end time of the EVU blocking time, several periods can be configured
 
+## Messages for scripts and AI agents
+The message `help` (`sendTo("heatingcontrol.0", "help", {}, result => ...)`) returns a description of the adapter, its profiles, states and messages (`saveProfile`, `loadProfile` ...), written for AI agents (e.g. pi-agent) and script authors.
+The answer `{ help, commands }` also lists all commands, each with `write: true` if it changes something.
+
 
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
@@ -288,6 +292,9 @@ When the adapter crashes or an other Code error happens, this error message that
   Placeholder for the next version (at the beginning of the line):
   ### **WORK IN PROGRESS**
 --->
+### **WORK IN PROGRESS**
+* (GermanBluefox) Added the message "help": a description of the profiles, states and all messages for AI agents (e.g. pi-agent), and common.supportedMessages.help
+
 ### 3.3.1 (2026-09-12)
 * (René) dependencies updated
 * (GermanBluefox) readme updated

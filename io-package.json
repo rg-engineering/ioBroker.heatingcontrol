@@ -126,6 +126,10 @@
     "icon": "heatingcontrol.png",
     "enabled": true,
     "messagebox": true,
+    "supportedMessages": {
+      "custom": true,
+      "help": true
+    },
     "extIcon": "https://raw.githubusercontent.com/rg-engineering/ioBroker.heatingcontrol/master/admin/heatingcontrol.png",
     "keywords": [
       "heating"

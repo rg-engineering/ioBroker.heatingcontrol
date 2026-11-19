@@ -56,6 +56,9 @@ const Check4Actor = require("./lib/devicedetect").Check4Actor;
 const Check4Sensor = require("./lib/devicedetect").Check4Sensor;
 const Check4TempSensor = require("./lib/devicedetect").Check4TempSensor;
 
+const HELP = require("./lib/help").HELP;
+const COMMANDS = require("./lib/help").COMMANDS;
+
 let SystemLanguage;
 
 let adapter;
@@ -109,6 +112,12 @@ function startAdapter(options) {
         message: async (obj) => {
             if (obj) {
                 switch (obj.command) {
+                    case "help":
+                        // description of all messages for AI agents and scripts
+                        if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, { help: HELP, commands: COMMANDS }, obj.callback);
+                        }
+                        break;
                     case "send":
                         // e.g. send email or pushover or whatever
                         adapter.log.debug("send command");
