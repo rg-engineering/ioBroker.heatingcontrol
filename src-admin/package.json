@@ -19,7 +19,7 @@
         "react-qr-code": "^2.2.0",
         "uuid": "^14.0.3",
         "vis-data": "^8.0.6",
-        "vis-network": "^10.1.0",
+        "vis-network": "^10.1.5",
         "vite": "^8.3.8"
     },
     "scripts": {
